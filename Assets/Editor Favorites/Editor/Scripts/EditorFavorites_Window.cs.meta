@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0e512841f3613f341a1b98977e6a993a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 329989
+  packageName: Editor Favorites
+  packageVersion: 1.0.0
+  assetPath: Assets/Editor Favorites/Editor/Scripts/EditorFavorites_Window.cs
+  uploadId: 788464
