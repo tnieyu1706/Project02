@@ -1,0 +1,11 @@
+{
+  "name": "com.tnieyu1706.tnieyupackage",
+  "displayName": "TnieYu Package",
+  "version": "0.0.5",
+  "unity": "2021.3",
+  "description": "Provide utilities packages for Unity Editor.",
+  "author": {
+    "name": "TnieYu",
+    "url": "https://github.com/tnieyu1706"
+  }
+}
