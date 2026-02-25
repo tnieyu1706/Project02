@@ -45,6 +45,13 @@
       "source": "local-tarball",
       "dependencies": {}
     },
+    "com.tnieyu.setproperty": {
+      "version": "https://github.com/tnieyu1706/SetProperty.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "597bb480ceb327e9ecbc295c9f20bc5a537052a3"
+    },
     "com.unity.2d.animation": {
       "version": "13.0.4",
       "depth": 0,
@@ -341,6 +348,13 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.xavinet.backbonelogger": {
+      "version": "https://github.com/tnieyu1706/BackboneLogger.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "05d2e0b4755bf59668f3a4cd2e0663753c18b37b"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
