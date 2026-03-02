@@ -1,0 +1,14 @@
+{
+  "foldouts": {
+    "-1322_Tower (_Project.Scripts.TowerDefense.Tower.TowerRuntime)_SetContext_String": true,
+    "-1322_Tower (_Project.Scripts.TowerDefense.Tower.TowerRuntime)_UpgradeContext_String": true
+  },
+  "parameterValues": {
+    "-1322_Tower (_Project.Scripts.TowerDefense.Tower.TowerRuntime)_SetContext_String": [
+      "TowerControl1"
+    ],
+    "-1322_Tower (_Project.Scripts.TowerDefense.Tower.TowerRuntime)_UpgradeContext_String": [
+      null
+    ]
+  }
+}

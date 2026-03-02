@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
-using InterfaceUtilities.Runtime;
+using TnieYuPackage.InterfaceUtilities.Runtime;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace InterfaceUtilities.Editor
+namespace TnieYuPackage.InterfaceUtilities.Editor
 {
     [CustomPropertyDrawer(typeof(InterfaceReference<,>), true)]
     [CustomPropertyDrawer(typeof(InterfaceReference<>), true)]

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed25f66ba0a4ea9ba7a34c3f6e69c61, type: 3}
+  m_Name: Tower1
+  m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Tower.TowerAttributePresetSo
+  sprite: {fileID: 0}
+  behaviourInstaller:
+    rid: 751702608914415696
+  references:
+    version: 2
+    RefIds:
+    - rid: 751702608914415696
+      type: {class: TowerAttackBehaviourInstaller, ns: _Project.Scripts.TowerDefense.Tower, asm: TowerDefense}
+      data:
+        projectilePrefab: {fileID: 7904142338903688030, guid: a80b8c1eded42a1459103bfc18230260, type: 3}
+        projectileSpeed: 1
+        projectileDamage: 5
+        projectileRange: 2
+        targetLayer: 64

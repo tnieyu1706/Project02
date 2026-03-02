@@ -3,6 +3,8 @@
   <component name="UserContentModel">
     <attachedFolders />
     <explicitIncludes />
-    <explicitExcludes />
+    <explicitExcludes>
+      <Path>Library/PackageCache/com.github-glitchenzo.nugetforunity@e93995edfb73</Path>
+    </explicitExcludes>
   </component>
 </project>

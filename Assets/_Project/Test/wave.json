@@ -1,0 +1,27 @@
+{
+  "timeScale": 1,
+  "waves": [
+    {
+      "id": "wave_01",
+      "endTime": 6,
+      "keyframes": [
+        {
+          "id": "w6eob8t2mm52fwg3",
+          "time": 4,
+          "paths": [
+            {
+              "pathId": "path_01",
+              "spawns": [
+                {
+                  "entityId": "Entity_01",
+                  "quantity": 5,
+                  "spawnInterval": 1.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

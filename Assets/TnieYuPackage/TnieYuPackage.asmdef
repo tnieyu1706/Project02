@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "EditorAttributes",
-        "SetProperty"
+        "SetProperty",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e69c91766a48edbc5bb7302b2c43ea, type: 3}
+  m_Name: Enemy_01
+  m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Entity.EntityPresetSo
+  entityId: Entity_01
+  maxHp: 20
+  def: 3
+  moveSpeed: 1
+  earningMoney: 15
+  behaviourInstaller:
+    rid: 751702621252747344
+  references:
+    version: 2
+    RefIds:
+    - rid: 751702621252747344
+      type: {class: EntityMeleeAttackBehaviourInstaller, ns: _Project.Scripts.TowerDefense.Entity, asm: TowerDefense}
+      data:
+        attackDmg: 4
+        attackSpeed: 1
+        attackRange: 0.5
+        layerTarget: 128

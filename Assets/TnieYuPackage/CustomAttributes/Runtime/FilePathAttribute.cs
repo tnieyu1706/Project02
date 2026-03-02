@@ -8,6 +8,10 @@ namespace TnieYuPackage.CustomAttributes.Runtime
         public System.Type AssetType;
         public string[] Filters;
 
+        public FilePathAttribute(params string[] filters) : this(typeof(TextAsset), filters)
+        {
+        }
+
         /// <summary>
         /// Default asset dragging is TextAsset type.
         /// With filters is like: .json, .csv, ...
@@ -15,7 +19,7 @@ namespace TnieYuPackage.CustomAttributes.Runtime
         public FilePathAttribute(System.Type assetType, params string[] filters)
         {
             AssetType = assetType;
-            this.Filters = filters;
+            Filters = filters;
         }
     }
 }

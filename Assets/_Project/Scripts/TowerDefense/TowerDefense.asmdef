@@ -1,0 +1,23 @@
+{
+    "name": "TowerDefense",
+    "rootNamespace": "",
+    "references": [
+        "EditorAttributes",
+        "TnieYuPackage",
+        "PrimeTween.Runtime",
+        "Eflatun.SceneReference",
+        "BackboneLogger",
+        "UniTask",
+        "Unity.Splines",
+        "KBCore.Refs"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
