@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace TnieYuPackage.SOAP.Event
+namespace TnieYuPackage.SOAP
 {
 
     [CreateAssetMenu(fileName = "SoapVoidEvent", menuName = "TnieYuPackage/Soap/Event/Void")]

@@ -1,10 +1,10 @@
 using System;
 using EditorAttributes;
 using SetProperty;
-using TnieYuPackage.CustomAttributes.Runtime;
+using TnieYuPackage.CustomAttributes;
 using UnityEngine;
 
-namespace TnieYuPackage.SOAP.Data
+namespace TnieYuPackage.SOAP
 {
     [Serializable]
     public struct SoapAbstractData<T> : ISoapData<T>

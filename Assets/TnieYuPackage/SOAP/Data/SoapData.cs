@@ -3,7 +3,7 @@ using EditorAttributes;
 using SetProperty;
 using UnityEngine;
 
-namespace TnieYuPackage.SOAP.Data
+namespace TnieYuPackage.SOAP
 {
     public interface ISoapData<T>
     {

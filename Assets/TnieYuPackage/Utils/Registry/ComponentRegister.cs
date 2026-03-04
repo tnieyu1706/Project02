@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TnieYuPackage.Utils.Registry
+namespace TnieYuPackage.Utils
 {
     [DefaultExecutionOrder(-100)]
     public class ComponentRegister : MonoBehaviour

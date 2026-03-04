@@ -5,7 +5,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using Void = EditorAttributes.Void;
 
-namespace TnieYuPackage.DesignPatterns.Patterns.SubAsset
+namespace TnieYuPackage.DesignPatterns
 {
     public abstract class BaseParentAsset : ScriptableObject
     {

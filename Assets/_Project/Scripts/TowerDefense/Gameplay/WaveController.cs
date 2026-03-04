@@ -1,12 +1,10 @@
 using System;
-using _Project.Scripts.TowerDefense.Entity;
-using _Project.Scripts.TowerDefense.LevelSystem;
 using BackboneLogger;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace _Project.Scripts.TowerDefense.Gameplay
+namespace Game.Td
 {
     public class WaveController
     {
@@ -80,9 +78,10 @@ namespace _Project.Scripts.TowerDefense.Gameplay
 
         private async UniTaskVoid SpawnCommand(WaveSpawnCommand command, WavePath wavePath)
         {
-            if (!EntityDataManager.Instance.data.Dictionary
-                    .TryGetValue(command.entityId, out EntityPresetSo entityPreset))
+            if (!EnemyPresetManager.Instance.data.Dictionary
+                    .TryGetValue(command.entityId, out EnemyPresetSo entityPreset))
             {
+                BLogger.Log($"Not found {command.entityId} on [EnemyManager]", LogLevel.Error, "TD");
                 return;
             }
 
@@ -99,16 +98,9 @@ namespace _Project.Scripts.TowerDefense.Gameplay
 
                 GameObject enemy = TdSpawnManager.Instance.RuntimePools[TdSpawnKey.Enemy].Get();
                 //entity setup
-                if (enemy.TryGetComponent(out EntityRuntime entityRuntime))
+                if (enemy.TryGetComponent(out EnemyRuntime entityRuntime))
                 {
-                    entityRuntime.Setup(entityPreset);
-                    entityRuntime.OnDead =
-                        () => TdSpawnManager.Instance.RuntimePools[TdSpawnKey.Enemy].Release(enemy);
-                }
-
-                if (enemy.TryGetComponent(out EnemyMover enemyMover))
-                {
-                    enemyMover.Setup(pathMover);
+                    entityRuntime.Setup(entityPreset, pathMover);
                 }
 
                 await UniTask.Delay((int)(command.spawnInterval * 1000));

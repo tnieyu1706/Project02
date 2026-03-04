@@ -1,9 +1,8 @@
-using _Project.Scripts.TowerDefense.Gameplay;
 using KBCore.Refs;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace _Project.Scripts.TowerDefense.LevelSystem
+namespace Game.Td
 {
     [RequireComponent(typeof(SplineContainer))]
     public class PathRegistry : MonoBehaviour

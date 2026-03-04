@@ -13,7 +13,7 @@
               "pathId": "path_01",
               "spawns": [
                 {
-                  "entityId": "Entity_01",
+                  "entityId": "Enemy_01",
                   "quantity": 5,
                   "spawnInterval": 1.5
                 }

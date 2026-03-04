@@ -1,8 +1,8 @@
-using TnieYuPackage.CustomAttributes.Runtime;
+using TnieYuPackage.CustomAttributes;
 using UnityEngine;
 using Button = EditorAttributes.ButtonAttribute;
 
-namespace _Project.Scripts.TowerDefense.LevelSystem
+namespace Game.Td
 {
     public class TestWaveConvert : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TnieYuPackage.CustomAttributes.Runtime
+namespace TnieYuPackage.CustomAttributes
 {
     [System.AttributeUsage(System.AttributeTargets.Field)]
     public class FilePathAttribute : PropertyAttribute

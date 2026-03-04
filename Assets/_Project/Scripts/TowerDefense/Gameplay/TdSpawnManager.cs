@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using TnieYuPackage.DictionaryUtilities;
 using EditorAttributes;
-using TnieYuPackage.DesignPatterns.Patterns.Builder;
-using TnieYuPackage.DesignPatterns.Patterns.Singleton;
+using TnieYuPackage.DesignPatterns;
 using UnityEngine;
 using UnityEngine.Pool;
 using Object = UnityEngine.Object;
 
-namespace _Project.Scripts.TowerDefense.Gameplay
+namespace Game.Td
 {
     public enum TdSpawnKey
     {
-        Tower,
         Enemy,
         Soldier,
         Projectile

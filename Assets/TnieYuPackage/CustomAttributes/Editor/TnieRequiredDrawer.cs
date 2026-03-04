@@ -1,9 +1,8 @@
-using TnieYuPackage.CustomAttributes.Runtime;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace TnieYuPackage.CustomAttributes.Editor
+namespace TnieYuPackage.CustomAttributes
 {
     [CustomPropertyDrawer(typeof(TnieRequiredAttribute))]
     public class TnieRequiredDrawer : PropertyDrawer

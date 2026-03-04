@@ -1,5 +1,88 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1482590813758609024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8485816267728853574}
+  - component: {fileID: 461631663119347478}
+  - component: {fileID: 2990767302481354712}
+  m_Layer: 8
+  m_Name: AttackInteractable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8485816267728853574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482590813758609024}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3271623532971910965}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &461631663119347478
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482590813758609024}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.01
+--- !u!114 &2990767302481354712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482590813758609024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6bdb0ff6109491ab06bcf668ae88619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowerDefense::Game.Td.TdObjectAttackInteractable
+  core: {fileID: 6751720383376620206}
+  circleCollider: {fileID: 461631663119347478}
 --- !u!1 &1702450295288204967
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +183,7 @@ GameObject:
   - component: {fileID: 147563648012868110}
   - component: {fileID: 4288417959320322597}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -192,7 +275,7 @@ GameObject:
   - component: {fileID: 6684814414017155928}
   - component: {fileID: 1958936155416646718}
   m_Layer: 3
-  m_Name: PhysicInteract
+  m_Name: PhysicInteractable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,9 +439,9 @@ GameObject:
   - component: {fileID: 3271623532971910965}
   - component: {fileID: 4920197180112271648}
   - component: {fileID: 3678904683826265236}
-  - component: {fileID: 7867070481482842292}
   - component: {fileID: 721398530957364098}
   - component: {fileID: 3093384406771250982}
+  - component: {fileID: 6492575923140643144}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -382,6 +465,7 @@ Transform:
   - {fileID: 147563648012868110}
   - {fileID: 2213009912135524479}
   - {fileID: 379645886985803529}
+  - {fileID: 8485816267728853574}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4920197180112271648
@@ -419,74 +503,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Entity.EntityRuntime
   animator: {fileID: 4920197180112271648}
-  onHpChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5384460279073470355}
-        m_TargetAssemblyTypeName: TnieYuPackage.Utils.Components.ImageFillComponent,
-          TnieYuPackage
-        m_MethodName: OnFillImage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  hp: 0
-  <MaxHp>k__BackingField: 0
+  mover: {fileID: 3093384406771250982}
+  healthProperty:
+    onHpChanged:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5384460279073470355}
+          m_TargetAssemblyTypeName: TnieYuPackage.Utils.Components.ImageFillComponent,
+            TnieYuPackage
+          m_MethodName: OnFillImage
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    hp: 0
+    <MaxHp>k__BackingField: 0
   <Def>k__BackingField: 0
   <MoveSpeed>k__BackingField: 0
+  <MapDmg>k__BackingField: 0
   <EarningMoney>k__BackingField: 0
-  setPreset: {fileID: 0}
---- !u!61 &7867070481482842292
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6751720383376620206}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.4, y: 0.4}
-  m_EdgeRadius: 0
 --- !u!114 &721398530957364098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,12 +543,12 @@ MonoBehaviour:
   m_PlayOnAwake: 0
   m_LoopMode: 0
   m_Method: 1
-  m_Duration: 1
-  m_MaxSpeed: 21.132935
+  m_Duration: 21.132935
+  m_MaxSpeed: 1
   m_EasingMode: 0
-  m_AlignmentMode: 1
+  m_AlignmentMode: 0
   m_ObjectForwardAxis: 0
-  m_ObjectUpAxis: 5
+  m_ObjectUpAxis: 2
   m_StartOffset: 0
 --- !u!114 &3093384406771250982
 MonoBehaviour:
@@ -523,3 +563,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Entity.EnemyMover
   movementController: {fileID: 721398530957364098}
+--- !u!50 &6492575923140643144
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6751720383376620206}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 1
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

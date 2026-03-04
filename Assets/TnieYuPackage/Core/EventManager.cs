@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using TnieYuPackage.DesignPatterns.Patterns.Singleton;
+using TnieYuPackage.DesignPatterns;
 using UnityEngine;
 
 namespace TnieYuPackage.Core
@@ -24,6 +24,7 @@ namespace TnieYuPackage.Core
             queue.Enqueue(action);
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public async void RegistryDelay(Action action, float delay)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(delay));

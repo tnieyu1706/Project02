@@ -1,6 +1,6 @@
 using System;
 
-namespace TnieYuPackage.Utils.Actions
+namespace TnieYuPackage.Utils
 {
     public abstract class BaseTriggerAction {
         protected Func<bool> ActionEvent;

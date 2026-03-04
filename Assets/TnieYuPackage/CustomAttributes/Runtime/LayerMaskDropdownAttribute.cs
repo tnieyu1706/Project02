@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TnieYuPackage.CustomAttributes.Runtime
+namespace TnieYuPackage.CustomAttributes
 {
     public class LayerMaskDropdownAttribute : PropertyAttribute
     {

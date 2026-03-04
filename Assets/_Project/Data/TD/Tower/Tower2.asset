@@ -12,15 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed25f66ba0a4ea9ba7a34c3f6e69c61, type: 3}
   m_Name: Tower2
   m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Tower.TowerAttributePresetSo
+  animatorController: {fileID: 22100000, guid: d31c8df64cc68274bb73d46951750d86, type: 2}
   behaviourInstaller:
-    rid: 751702613876015184
+    rid: 1479203861549547606
+  configurators: []
   references:
     version: 2
     RefIds:
-    - rid: 751702613876015184
-      type: {class: TowerControlBehaviourInstaller, ns: _Project.Scripts.TowerDefense.Tower, asm: TowerDefense}
+    - rid: 1479203861549547606
+      type: {class: TowerControlBehaviourInstaller, ns: Game.Td, asm: TowerDefense}
       data:
         commandRange: 2
-        spawnDelay: 5
+        spawnDelay: 7
         maxCapacity: 3
-        soldierPreset: {fileID: 11400000, guid: 09aaca5f38fdc7842b4ae2ae787c0b8e, type: 2}
+        soldierPreset: {fileID: 11400000, guid: 47d956fb6bc9eae4eb15e44c05d3811b, type: 2}

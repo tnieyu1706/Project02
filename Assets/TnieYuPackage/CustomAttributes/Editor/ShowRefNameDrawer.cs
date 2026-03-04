@@ -1,10 +1,9 @@
-using TnieYuPackage.CustomAttributes.Runtime;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace TnieYuPackage.CustomAttributes.Editor
+namespace TnieYuPackage.CustomAttributes
 {
     [CustomPropertyDrawer(typeof(ShowRefNameAttribute))]
     public class ShowRefNameDrawer : PropertyDrawer

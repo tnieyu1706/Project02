@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using _Project.Scripts.TowerDefense.LevelSystem;
 using EditorAttributes;
-using TnieYuPackage.DesignPatterns.Patterns.Singleton;
+using TnieYuPackage.DesignPatterns;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace _Project.Scripts.TowerDefense.Gameplay
+namespace Game.Td
 {
     [DefaultExecutionOrder(-49)]
     public class TdGameplayController : SingletonBehavior<TdGameplayController>

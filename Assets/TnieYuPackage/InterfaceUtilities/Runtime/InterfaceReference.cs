@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace TnieYuPackage.InterfaceUtilities.Runtime
+namespace TnieYuPackage.InterfaceUtilities
 {
     [Serializable]
     public class InterfaceReference<TInterface, TObject>

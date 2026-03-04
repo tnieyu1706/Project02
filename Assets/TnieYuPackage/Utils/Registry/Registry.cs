@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using TnieYuPackage.GlobalExtensions;
 
-namespace TnieYuPackage.Utils.Registry
+namespace TnieYuPackage.Utils
 {
-    public delegate T SelectionStrategy<T>(HashSet<T> items);
-
     public static class Registry<T> where T : class
     {
         private static readonly HashSet<T> Items = new();

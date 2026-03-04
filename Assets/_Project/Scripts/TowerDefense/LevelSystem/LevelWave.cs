@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-namespace _Project.Scripts.TowerDefense.LevelSystem
+namespace Game.Td
 {
     [Serializable]
     public class WaveSpawnCommand

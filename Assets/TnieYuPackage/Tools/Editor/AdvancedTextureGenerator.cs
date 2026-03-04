@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace TnieYuPackage.Tools.Editor
+namespace TnieYuPackage.Tools
 {
     public class AdvancedTextureGenerator : EditorWindow
     {

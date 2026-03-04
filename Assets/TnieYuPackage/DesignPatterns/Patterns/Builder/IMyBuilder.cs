@@ -1,4 +1,4 @@
-namespace TnieYuPackage.DesignPatterns.Patterns.Builder
+namespace TnieYuPackage.DesignPatterns
 {
     public interface IMyBuilder<out T>
     {

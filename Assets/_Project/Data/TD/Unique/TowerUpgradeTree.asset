@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Tower.TowerUpgradeTree
   tree:
     data:
+    - key: Tower_Empty
+      value:
+        towerPreset: {fileID: 11400000, guid: eacde09068d7657429c0f1ed87062830, type: 2}
+        nextUpgradeIds:
+        - TowerAttack1
+        - TowerControl1
     - key: TowerAttack1
       value:
         towerPreset: {fileID: 11400000, guid: fe914bc64126e1f498ef2f76b3bb7d55, type: 2}

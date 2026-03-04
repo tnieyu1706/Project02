@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TnieYuPackage.DesignPatterns.Patterns.Singleton
+namespace TnieYuPackage.DesignPatterns
 {
     public class SingletonBehavior<T> : MonoBehaviour
         where T : Component

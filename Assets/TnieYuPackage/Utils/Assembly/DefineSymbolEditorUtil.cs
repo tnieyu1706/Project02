@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Build;
 
-namespace TnieYuPackage.Utils.Assembly
+namespace TnieYuPackage.Utils
 {
     public static class DefineSymbolEditorUtil
     {

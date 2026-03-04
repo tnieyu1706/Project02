@@ -1,10 +1,10 @@
 using Eflatun.SceneReference;
-using TnieYuPackage.CustomAttributes.Runtime;
+using TnieYuPackage.CustomAttributes;
 using UnityEngine;
 using ReadOnly = EditorAttributes.ReadOnlyAttribute;
 using Button = EditorAttributes.ButtonAttribute;
 
-namespace _Project.Scripts.TowerDefense.LevelSystem
+namespace Game.Td
 {
     [CreateAssetMenu(fileName = "LevelData", menuName = "Game/TD/Level")]
     public class LevelData : ScriptableObject

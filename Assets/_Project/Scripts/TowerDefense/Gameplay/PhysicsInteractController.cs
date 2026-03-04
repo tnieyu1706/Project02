@@ -1,10 +1,10 @@
 using EditorAttributes;
 using KBCore.Refs;
-using TnieYuPackage.DesignPatterns.Patterns.Singleton;
+using TnieYuPackage.DesignPatterns;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace _Project.Scripts.TowerDefense.Gameplay
+namespace Game.Td
 {
     [DefaultExecutionOrder(-20)]
     [RequireComponent(typeof(Physics2DRaycaster))]

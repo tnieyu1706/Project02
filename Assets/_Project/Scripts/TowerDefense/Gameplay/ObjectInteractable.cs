@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace _Project.Scripts.TowerDefense.Gameplay
+namespace Game.Td
 {
     public class ObjectInteractable : MonoBehaviour, IPointerClickHandler
     {

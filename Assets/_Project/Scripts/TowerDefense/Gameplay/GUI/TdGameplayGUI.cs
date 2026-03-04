@@ -2,7 +2,7 @@ using EditorAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.Scripts.TowerDefense.Gameplay.GUI
+namespace Game.Td
 {
     public class TdGameplayGUI : MonoBehaviour
     {
