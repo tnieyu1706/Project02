@@ -24,7 +24,7 @@ namespace Game.Td
             behaviour.AttackDmg = attackDmg;
             behaviour.AttackDelay = attackDelay;
             behaviour.TrackingLayer = trackingLayer;
-            behaviour.TargetLayer = targetLayer;
+            behaviour.TargetTags = targetTags;
             behaviour.ProjectileSprite = projectileSprite;
             behaviour.ProjectileDelay = projectileDelay;
         }

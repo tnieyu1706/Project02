@@ -81,20 +81,5 @@ namespace Game.Td
                 RuntimePools[eKvp.Key] = eKvp.Value.Build();
             }
         }
-        
-        //Test
-        [Button]
-        public void Get(TdSpawnKey key)
-        {
-            RuntimePools[key].Get();
-        }
-
-        public GameObject objectRelease;
-
-        [Button]
-        public void Release(TdSpawnKey key)
-        {
-            RuntimePools[key].Release(objectRelease);
-        }
     }
 }

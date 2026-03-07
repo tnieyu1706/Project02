@@ -10,13 +10,14 @@ namespace Game.Td
     [DefaultExecutionOrder(-49)]
     public class TdGameplayController : SingletonBehavior<TdGameplayController>
     {
-        public WaveController WaveController;
-
+        [SerializeField] private LevelData levelData;
+        
+        public TdWaveController tdWaveController;
         private Dictionary<string, SplineContainer> paths = new();
         public Dictionary<string, SplineContainer> Paths => paths ??= new();
 
         #region GAMEPLAY PROPERTIES
-
+        
         [SerializeField] private int health;
         [SerializeField] private int money;
 
@@ -49,12 +50,18 @@ namespace Game.Td
 
         protected override void Awake()
         {
+            dontDestroyOnLoad = false;
+            
             base.Awake();
-
-            WaveController = new WaveController();
+            tdWaveController ??= new TdWaveController();
         }
 
-        public void LoadLevel(LevelData level)
+        private void Start()
+        {
+            LoadLevel(levelData);
+        }
+
+        private void LoadLevel(LevelData level)
         {
             currentLevelWave = level.LevelWave;
             Health = level.maxHealth;
@@ -63,27 +70,12 @@ namespace Game.Td
             //LevelScene load
 
             //wave setup
-            WaveController.SetupLevelWave(level.LevelWave);
+            tdWaveController.SetupLevelWave(level.LevelWave);
         }
 
-        //Test
-        public LevelData setLevelData;
-
-        public TdGameplayController(int health)
-        {
-            Health = health;
-        }
-
-        [Button]
-        private void LoadLevelButton()
-        {
-            LoadLevel(setLevelData);
-        }
-
-        [Button]
         public void PlayWave()
         {
-            WaveController.PlayWave();
+            tdWaveController.PlayWave();
         }
     }
 }

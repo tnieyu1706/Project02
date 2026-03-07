@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using EditorAttributes;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.DictionaryUtilities;
 using UnityEditor;
 using UnityEngine;
+using ZLinq;
 
 namespace Game.Td
 {
@@ -16,13 +18,15 @@ namespace Game.Td
         [Button]
         private void LoadData()
         {
+            List<EnemyPresetSo> presetData = data.Dictionary.Values.AsValueEnumerable().ToList();
+            
             string[] guids = AssetDatabase.FindAssets($"t:{nameof(EnemyPresetSo)}");
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 EnemyPresetSo preset = AssetDatabase.LoadAssetAtPath<EnemyPresetSo>(path);
 
-                if (preset != null)
+                if (preset != null && !presetData.Contains(preset))
                 {
                     data[preset.enemyId] = preset;
                 }

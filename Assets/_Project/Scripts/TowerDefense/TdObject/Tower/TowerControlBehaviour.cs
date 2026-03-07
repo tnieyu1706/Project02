@@ -2,16 +2,46 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using EditorAttributes;
-using Game.Td;
 using PrimeTween;
 using TnieYuPackage.Core;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Game.Td
 {
+    [Serializable]
+    public class TowerControlUIEvent : ITowerUIEvent
+    {
+        [SerializeField] private Sprite icon;
+        public Sprite Icon => icon;
+
+        public void Perform()
+        {
+            MouseEventManager.Instance.enabled = true;
+
+            MouseEventManager.Instance.Registry(HandleMouseClick);
+        }
+
+        private void HandleMouseClick()
+        {
+            if (Camera.main != null)
+            {
+                Vector2 flagWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+                if (TdTowerContextGUI.CurrentTowerContextRuntime
+                    .TryGetComponent(out TowerControlBehaviour controlBehaviour))
+                {
+                    controlBehaviour.RallyAt(flagWorldPos);
+                }
+            }
+
+            MouseEventManager.Instance.enabled = false;
+        }
+    }
+
     [Serializable]
     public class TowerControlBehaviourInstaller : ITowerBehaviourInstaller
     {
@@ -125,17 +155,13 @@ namespace Game.Td
             {
                 soldierAnimator.SetBool(TdConstant.TD_ENTITY_MOVE_PARAMETER, true);
             }
+
             Tween.LocalPositionAtSpeed(
                 soldier.transform,
                 soldier.transform.position,
                 GetFixOffsetAtRallyPos(),
                 MOVE_SPEED
-            );
-            
-            EventManager.Instance.RegistryDelay(
-                () => soldierAnimator.SetBool(TdConstant.TD_ENTITY_MOVE_PARAMETER, false),
-                MOVE_SPEED
-            );
+            ).OnComplete(() => soldierAnimator.SetBool(TdConstant.TD_ENTITY_MOVE_PARAMETER, false));
         }
 
         public void KillAllSoldiers()
@@ -155,6 +181,20 @@ namespace Game.Td
                     Random.Range(-StandFixOffset.x, StandFixOffset.x),
                     Random.Range(-StandFixOffset.y, StandFixOffset.y)
                 ).normalized * TdConstant.MAP_UNIT + currentRallyPos;
+        }
+
+        //test
+        [Button]
+        private void CallFlagEvent()
+        {
+            MouseEventManager.Instance.enabled = true;
+            MouseEventManager.Instance.Registry(() =>
+            {
+                Vector2 screenPos = Mouse.current.position.ReadValue();
+                Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+                Debug.Log(worldPos);
+                MouseEventManager.Instance.enabled = false;
+            });
         }
     }
 }

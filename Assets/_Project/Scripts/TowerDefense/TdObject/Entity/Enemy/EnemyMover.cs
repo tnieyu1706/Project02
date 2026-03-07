@@ -1,4 +1,5 @@
 using System;
+using EditorAttributes;
 using Game.Td;
 using KBCore.Refs;
 using UnityEngine;
@@ -10,16 +11,19 @@ namespace Game.Td
     public class EnemyMover : MonoBehaviour
     {
         [Self] public SplineAnimate movementController;
+        [ReadOnly] public Vector2 offset = Vector2.zero;
 
         void Awake()
         {
             movementController ??= GetComponent<SplineAnimate>();
 
+            movementController.Updated += DeflectMovementEachMoving;
             movementController.Completed += OnEntityMoveEnd;
         }
 
         private void OnDestroy()
         {
+            movementController.Updated -= DeflectMovementEachMoving;
             movementController.Completed -= OnEntityMoveEnd;
         }
 
@@ -29,6 +33,11 @@ namespace Game.Td
             movementController.MaxSpeed = movementSpeed;
 
             movementController.Restart(true);
+        }
+
+        private void DeflectMovementEachMoving(Vector3 pos, Quaternion rot)
+        {
+            transform.position = (Vector2)transform.position + offset;
         }
 
         private void OnEntityMoveEnd()

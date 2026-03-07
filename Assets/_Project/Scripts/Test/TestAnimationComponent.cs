@@ -11,7 +11,7 @@ public class TestAnimationComponent : MonoBehaviour
     {
         
     }
-
+    
     public int Value1
     {
         get => value1;

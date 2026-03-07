@@ -27,7 +27,7 @@ namespace TnieYuPackage.Tools
 
         private Texture2D previewTexture;
 
-        [MenuItem("Tools/TnieYu/Advanced Texture Generator")]
+        [MenuItem("Tools/TnieYu/Texture/Advanced Texture Generator")]
         public static void Open()
         {
             GetWindow<AdvancedTextureGenerator>("Texture Generator");

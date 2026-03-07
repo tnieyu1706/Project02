@@ -17,7 +17,7 @@ namespace TnieYuPackage.Tools
 
         private Vector2 scroll;
 
-        [MenuItem("Tools/TnieYu/Extract Slide In Sprite")]
+        [MenuItem("Tools/TnieYu/Texture/Extract Slide In Sprite")]
         public static void Open()
         {
             GetWindow<SpriteSliceExtractor>("Sprite Extractor");

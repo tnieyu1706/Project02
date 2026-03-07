@@ -4,7 +4,9 @@
     "references": [
         "EditorAttributes",
         "SetProperty",
-        "UniTask"
+        "UniTask",
+        "Unity.InputSystem",
+        "Unity.2D.Tilemap.Extras"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -63,6 +63,7 @@ namespace TnieYuPackage.DictionaryUtilities
             if (dictionary == null) return;
 
             data.Clear();
+            if (dictionary.Count == 0) return;
             foreach (var kvp in dictionary)
             {
                 data.Add(new TKeyPair() { Key = kvp.Key, Value = kvp.Value });

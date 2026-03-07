@@ -9,12 +9,8 @@ namespace Game.Td
     public class TowerRuntime : MonoBehaviour
     {
         [SerializeField, Self] private Animator animator;
-
-        [SerializeField, ReadOnly] private string currentTowerContextId = string.Empty;
-        private TowerPresetSo currentPreset;
-
-        private Dictionary<string, TowerUpgradeTreeNode> UpgradeTree => TowerUpgradeTree.Instance.tree.Dictionary;
-
+        [SerializeField, ReadOnly] public TowerPresetSo currentPreset;
+        
         void Awake()
         {
             animator ??= GetComponent<Animator>();
@@ -28,9 +24,8 @@ namespace Game.Td
         [Button]
         public void UpgradeContext(string contextId)
         {
-            if (currentTowerContextId == string.Empty
-                || !UpgradeTree.TryGetValue(currentTowerContextId, out TowerUpgradeTreeNode upgradeTreeNode)
-                || !upgradeTreeNode.nextUpgradeIds.Contains(contextId))
+            if (!TowerUpgradeTree.Tree.TryGetValue(currentPreset.towerId, out TowerUpgradeTreeNode upgradeTreeNode)
+                || !upgradeTreeNode.NextUpgradeTowerIds.Contains(contextId))
             {
                 return;
             }
@@ -41,12 +36,10 @@ namespace Game.Td
         //Test ==> default Tower = EmptyContext.
         private void SetContext(string contextId)
         {
-            if (!UpgradeTree.TryGetValue(contextId, out TowerUpgradeTreeNode upgradeTreeNode)) return;
+            if (!TowerUpgradeTree.Tree.TryGetValue(contextId, out TowerUpgradeTreeNode upgradeTreeNode)) return;
 
             var preset = upgradeTreeNode.towerPreset;
             SetPreset(preset);
-
-            currentTowerContextId = contextId;
         }
 
         private void SetPreset(TowerPresetSo preset)

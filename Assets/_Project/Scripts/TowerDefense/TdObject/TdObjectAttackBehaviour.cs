@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EditorAttributes;
 using TnieYuPackage.Core;
 using TnieYuPackage.CustomAttributes;
 using TnieYuPackage.GlobalExtensions;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 namespace Game.Td
@@ -16,7 +18,7 @@ namespace Game.Td
         public float attackDmg;
         public float attackRange;
         public float attackDelay;
-        [LayerMaskDropdown] public int targetLayer;
+        [TagDropdown] public string[] targetTags;
 
         public virtual void Install(GameObject tdObject)
         {
@@ -28,7 +30,7 @@ namespace Game.Td
             behaviour.AttackDmg = attackDmg;
             behaviour.AttackDelay = attackDelay;
             behaviour.TrackingLayer = trackingLayer;
-            behaviour.TargetLayer = targetLayer;
+            behaviour.TargetTags = targetTags;
         }
 
         public virtual void UnInstall(GameObject tdObject)
@@ -62,7 +64,7 @@ namespace Game.Td
         [field: SerializeField] public float AttackDmg { get; set; }
         [field: SerializeField] public float AttackDelay { get; set; }
         public int TrackingLayer { get; set; }
-        public int TargetLayer { get; set; }
+        public string[] TargetTags { get; set; }
 
         #endregion
 
@@ -120,7 +122,7 @@ namespace Game.Td
         {
             if (TrackingLayer.ContainLayer(other.gameObject.layer)
                 && other.gameObject.TryGetComponent(out TdObjectAttackInteractable interactable)
-                && TargetLayer.ContainLayer(interactable.core.gameObject.layer))
+                && TargetTags.Contains(interactable.core.gameObject.tag))
             {
                 trackingTargets.Add(interactable.core);
             }
@@ -130,7 +132,7 @@ namespace Game.Td
         {
             if (TrackingLayer.ContainLayer(other.gameObject.layer)
                 && other.gameObject.TryGetComponent(out TdObjectAttackInteractable interactable)
-                && TargetLayer.ContainLayer(interactable.core.gameObject.layer))
+                && TargetTags.Contains(interactable.core.gameObject.tag))
             {
                 trackingTargets.Remove(interactable.core);
             }

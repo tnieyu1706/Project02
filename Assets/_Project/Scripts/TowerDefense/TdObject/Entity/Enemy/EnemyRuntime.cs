@@ -64,15 +64,16 @@ namespace Game.Td
             TdSpawnManager.Instance.RuntimePools[TdSpawnKey.Enemy].Release(gameObject);
         }
 
-        public void Setup(EnemyPresetSo presetSo, SplineContainer pathMove)
+        public void Setup(EnemyPresetSo presetSo, SplineContainer pathMove, Vector2 offset)
         {
             SetPreset(presetSo);
-            SetEnemyMoverComponent(pathMove);
+            SetEnemyMoverComponent(pathMove, offset);
         }
 
-        private void SetEnemyMoverComponent(SplineContainer pathMove)
+        private void SetEnemyMoverComponent(SplineContainer pathMove, Vector2 offset)
         {
             mover.Setup(pathMove, MoveSpeed);
+            mover.offset = offset;
         }
 
         private void SetPreset(EnemyPresetSo preset)

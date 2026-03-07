@@ -5,12 +5,11 @@ namespace TnieYuPackage.Core
     public static class TnieYuCoreInitializer
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Initialize()
+        static void Initialize()
         {
-            if (EventManager.Instance != null) return;
-
-            GameObject eventManagerGo = new GameObject("EventManager");
-            eventManagerGo.AddComponent<EventManager>();
+            GameObject tnieyuCoreGo = new GameObject("TnieYuCore");
+            tnieyuCoreGo.AddComponent<EventManager>();
+            tnieyuCoreGo.AddComponent<MouseEventManager>();
         }
     }
 }

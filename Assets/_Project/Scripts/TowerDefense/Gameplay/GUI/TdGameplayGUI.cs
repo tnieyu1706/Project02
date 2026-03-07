@@ -1,20 +1,28 @@
 using EditorAttributes;
+using TnieYuPackage.DesignPatterns;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game.Td
 {
-    public class TdGameplayGUI : MonoBehaviour
+    public class TdGameplayGUI : SingletonBehavior<TdGameplayGUI>
     {
         [SerializeField, Required] private Text textMapHealth;
         [SerializeField, Required] private Text textWaveInfo;
         [SerializeField, Required] private Text textMoneyInfo;
+        [Required] public Image screenImage;
+
+        protected override void Awake()
+        {
+            dontDestroyOnLoad = false;
+            base.Awake();
+        }
 
         public void OnEnable()
         {
             TdGameplayController.Instance.OnHealthChange += HandleMapHealthChangedGUI;
             TdGameplayController.Instance.OnMoneyChange += HandleMoneyInfoChangedGUI;
-            TdGameplayController.Instance.WaveController.OnCurrentWaveIndexChanged += HandleWaveInfoChangedGUI;
+            TdGameplayController.Instance.tdWaveController.OnCurrentWaveIndexChanged += HandleWaveInfoChangedGUI;
         }
 
         public void OnDisable()
@@ -23,7 +31,7 @@ namespace Game.Td
 
             TdGameplayController.Instance.OnHealthChange -= HandleMapHealthChangedGUI;
             TdGameplayController.Instance.OnMoneyChange -= HandleMoneyInfoChangedGUI;
-            TdGameplayController.Instance.WaveController.OnCurrentWaveIndexChanged -= HandleWaveInfoChangedGUI;
+            TdGameplayController.Instance.tdWaveController.OnCurrentWaveIndexChanged -= HandleWaveInfoChangedGUI;
         }
 
         private void HandleMapHealthChangedGUI(int changedHealth)
@@ -39,6 +47,11 @@ namespace Game.Td
         private void HandleMoneyInfoChangedGUI(int changedMoney)
         {
             textMoneyInfo.text = $"{changedMoney}";
+        }
+
+        public void SceneClick()
+        {
+            TdTowerContextGUI.TurnOff();
         }
     }
 }

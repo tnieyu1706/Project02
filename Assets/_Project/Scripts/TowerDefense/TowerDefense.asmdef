@@ -9,7 +9,8 @@
         "BackboneLogger",
         "UniTask",
         "Unity.Splines",
-        "KBCore.Refs"
+        "KBCore.Refs",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
