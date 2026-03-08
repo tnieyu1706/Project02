@@ -12,25 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 136de8d5777f465aaa7cac2e83db4452, type: 3}
   m_Name: Soldier_01
   m_EditorClassIdentifier: TowerDefense::Game.Td.SoldierPresetSo
-  maxHp: 100
-  def: 3
-  animatorController: {fileID: 22100000, guid: 2c40b44725fe2624b9b66b0cfe95dd1a, type: 2}
+  libraryAsset: {fileID: 7108339969198208228, guid: 2eb1a0d8d9f68964aaee823cc031ea3d, type: 3}
   behaviourInstaller:
     rid: 1479203854303887479
   configurators:
   - rid: 1479203874712322134
+  maxHp: 32
+  def: 3
+  entityLayer: Td Soldier
   references:
     version: 2
     RefIds:
     - rid: 1479203854303887479
       type: {class: TdObjectAttackBehaviourInstaller, ns: Game.Td, asm: TowerDefense}
       data:
-        trackingLayer: 256
+        trackingLayer: 1024
         attackDmg: 4
-        attackRange: 1
-        attackDelay: 2
-        targetTags:
-        - Enemy
+        attackRange: 0.8
+        attackDelay: 0.8
     - rid: 1479203874712322134
       type: {class: TdObjectEachAttackConfigurator, ns: Game.Td, asm: TowerDefense}
       data: 

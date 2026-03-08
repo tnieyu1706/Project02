@@ -3,7 +3,6 @@ using BackboneLogger;
 using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Splines;
 using Random = UnityEngine.Random;
 
@@ -38,11 +37,9 @@ namespace Game.Td
         public void PlayWave()
         {
             var currentWavePlaying = currentLevelWave.waves[CurrentWaveIndex];
-            BLogger.Log($"Playing wave {currentWavePlaying.id}", category: "TD");
+            BLogger.Log($"[TdWaveController] Start wave {currentWavePlaying.id}", category: "TD");
 
             PlayWaveRoutine(currentWavePlaying).Forget();
-
-            CurrentWaveIndex++;
         }
 
         private async UniTaskVoid PlayWaveRoutine(Wave wave)
@@ -56,6 +53,11 @@ namespace Game.Td
                 currentTime += Time.deltaTime;
                 if (currentTime >= wave.endTime || currentKeyframeIndex >= wave.keyframes.Count)
                 {
+                    BLogger.Log(
+                        $"[TdWaveController] End wave {currentLevelWave.waves[CurrentWaveIndex].id}: {currentTime:F1}",
+                        category: "TD");
+                    CurrentWaveIndex++;
+                    
                     OnWaveCompleted?.Invoke();
                     return;
                 }
@@ -64,6 +66,7 @@ namespace Game.Td
 
                 if (currentTime >= keyframe.time)
                 {
+                    BLogger.Log($"[TdWaveController] Spawn keyframe {keyframe.time:F1}: {currentTime:F1}");
                     SpawnKeyframe(keyframe);
 
                     currentKeyframeIndex++;
@@ -75,11 +78,9 @@ namespace Game.Td
 
         private void SpawnKeyframe(WaveKeyFrame waveKeyFrame)
         {
-            foreach (var p in waveKeyFrame.paths)
+            foreach (var p in waveKeyFrame.pathWaves)
             {
-                Debug.Log($"Spawn path - {p.pathId}");
-
-                p.spawns.ForEach(command => SpawnCommand(command, p).Forget());
+                p.spawnCommands.ForEach(command => SpawnCommand(command, p).Forget());
             }
         }
 
@@ -88,23 +89,21 @@ namespace Game.Td
             if (!EnemyPresetManager.Instance.data.Dictionary
                     .TryGetValue(command.entityId, out EnemyPresetSo entityPreset))
             {
-                BLogger.Log($"Not found {command.entityId} on [EnemyManager]", LogLevel.Error, "TD");
+                BLogger.Log($"[TdWaveController] EnemyPreset {command.entityId} not found!", category: "TD", level: LogLevel.Critical);;
                 return;
             }
 
             if (!TdGameplayController.Instance.Paths
                     .TryGetValue(wavePath.pathId, out SplineContainer pathMover))
             {
+                BLogger.Log($"[TdWaveController] Path {wavePath.pathId} not found!", category: "TD", level: LogLevel.Critical);;
                 return;
             }
 
             for (int i = 0; i < command.quantity; i++)
             {
-                //spawn entity in path
-                Debug.Log($"Spawning command {command.entityId} - time {i}");
-
                 GameObject enemy = TdSpawnManager.Instance.RuntimePools[TdSpawnKey.Enemy].Get();
-                //entity setup
+                
                 if (enemy.TryGetComponent(out EnemyRuntime entityRuntime))
                 {
                     float offset = Random.Range(offsetRandom.x, offsetRandom.y);

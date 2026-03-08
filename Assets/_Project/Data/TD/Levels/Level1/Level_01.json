@@ -1,0 +1,208 @@
+{
+  "name": "Level_01",
+  "duration": 60,
+  "paths": [
+    {
+      "id": "path_01",
+      "name": "Path_01"
+    }
+  ],
+  "entities": [
+    {
+      "id": "enemy_01",
+      "name": "Slime",
+      "color": "#a22f3e"
+    },
+    {
+      "id": "enemy_02",
+      "name": "Wolf",
+      "color": "#4e9ee4"
+    },
+    {
+      "id": "enemy_03",
+      "name": "Troll",
+      "color": "#56d63f"
+    },
+    {
+      "id": "enemy_04",
+      "name": "Bee",
+      "color": "#a7f91e"
+    }
+  ],
+  "waves": [
+    {
+      "id": "W01",
+      "name": "Wave_01",
+      "endTime": 19,
+      "keyframes": [
+        {
+          "time": 0,
+          "pathWaves": [
+            {
+              "pathId": "path_01",
+              "waveId": "W01",
+              "spawnCommands": [
+                {
+                  "entityId": "enemy_01",
+                  "quantity": 6,
+                  "spawnInterval": 0.8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "time": 10,
+          "pathWaves": [
+            {
+              "pathId": "path_01",
+              "waveId": "W01",
+              "spawnCommands": [
+                {
+                  "entityId": "enemy_01",
+                  "quantity": 10,
+                  "spawnInterval": 0.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "time": 18,
+          "pathWaves": [
+            {
+              "pathId": "path_01",
+              "waveId": "W01",
+              "spawnCommands": [
+                {
+                  "entityId": "enemy_01",
+                  "quantity": 4,
+                  "spawnInterval": 0.4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W02",
+      "name": "Wave_02",
+      "endTime": 11,
+      "keyframes": [
+        {
+          "time": 0,
+          "pathWaves": [
+            {
+              "pathId": "path_01",
+              "waveId": "W01",
+              "spawnCommands": [
+                {
+                  "entityId": "enemy_01",
+                  "quantity": 4,
+                  "spawnInterval": 0.8
+                },
+                {
+                  "entityId": "enemy_02",
+                  "quantity": 2,
+                  "spawnInterval": 1.4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "time": 10,
+          "pathWaves": [
+            {
+              "pathId": "path_01",
+              "waveId": "W01",
+              "spawnCommands": [
+                {
+                  "entityId": "enemy_01",
+                  "quantity": 6,
+                  "spawnInterval": 1
+                },
+                {
+                  "entityId": "enemy_02",
+                  "quantity": 4,
+                  "spawnInterval": 1.6
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "W03",
+      "name": "Wave_03",
+      "endTime": 29,
+      "keyframes": [
+        {
+          "time": 0,
+          "pathWaves": [
+            {
+              "pathId": "path_01",
+              "waveId": "W01",
+              "spawnCommands": [
+                {
+                  "entityId": "enemy_01",
+                  "quantity": 6,
+                  "spawnInterval": 0.7
+                },
+                {
+                  "entityId": "enemy_02",
+                  "quantity": 3,
+                  "spawnInterval": 1.4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "time": 15,
+          "pathWaves": [
+            {
+              "pathId": "path_01",
+              "waveId": "W01",
+              "spawnCommands": [
+                {
+                  "entityId": "enemy_02",
+                  "quantity": 4,
+                  "spawnInterval": 1.4
+                },
+                {
+                  "entityId": "enemy_03",
+                  "quantity": 2,
+                  "spawnInterval": 5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "time": 28,
+          "pathWaves": [
+            {
+              "pathId": "path_01",
+              "waveId": "W01",
+              "spawnCommands": [
+                {
+                  "entityId": "enemy_01",
+                  "quantity": 6,
+                  "spawnInterval": 0.9
+                },
+                {
+                  "entityId": "enemy_04",
+                  "quantity": 8,
+                  "spawnInterval": 1.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

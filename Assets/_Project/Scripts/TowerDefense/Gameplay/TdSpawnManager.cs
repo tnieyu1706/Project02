@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using TnieYuPackage.DictionaryUtilities;
-using EditorAttributes;
+using BackboneLogger;
 using TnieYuPackage.DesignPatterns;
+using TnieYuPackage.DictionaryUtilities;
 using UnityEngine;
 using UnityEngine.Pool;
 using Object = UnityEngine.Object;
@@ -46,6 +46,7 @@ namespace Game.Td
 
         public ObjectPool<GameObject> Build()
         {
+            BLogger.Log($"[TdSpawnManager] Creating pool for {prefab.name}", category:"TD");
             return new ObjectPool<GameObject>(
                 OnCreate,
                 OnGet,

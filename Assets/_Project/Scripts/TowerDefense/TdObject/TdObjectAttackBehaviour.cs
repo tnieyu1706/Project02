@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using EditorAttributes;
-using TnieYuPackage.Core;
+using System.Collections;
 using TnieYuPackage.CustomAttributes;
-using TnieYuPackage.GlobalExtensions;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 namespace Game.Td
@@ -18,28 +13,24 @@ namespace Game.Td
         public float attackDmg;
         public float attackRange;
         public float attackDelay;
-        [TagDropdown] public string[] targetTags;
 
         public virtual void Install(GameObject tdObject)
         {
-            var collider = tdObject.AddComponent<CircleCollider2D>();
-            collider.isTrigger = true;
-            collider.radius = attackRange;
-
             var behaviour = tdObject.AddComponent<TdObjectAttackBehaviour>();
+            SetupBehaviour(behaviour);
+        }
+
+        protected virtual void SetupBehaviour(TdObjectAttackBehaviour behaviour)
+        {
             behaviour.AttackDmg = attackDmg;
             behaviour.AttackDelay = attackDelay;
+            behaviour.AttackWait = new WaitForSeconds(attackDelay);
+            behaviour.AttackRange = attackRange;
             behaviour.TrackingLayer = trackingLayer;
-            behaviour.TargetTags = targetTags;
         }
 
         public virtual void UnInstall(GameObject tdObject)
         {
-            if (tdObject.TryGetComponent(out CircleCollider2D collider))
-            {
-                Object.DestroyImmediate(collider);
-            }
-
             if (tdObject.TryGetComponent(out TdObjectAttackBehaviour behaviour))
             {
                 Object.DestroyImmediate(behaviour);
@@ -49,11 +40,6 @@ namespace Game.Td
 
     public class TdObjectAttackBehaviour : MonoBehaviour, ITdObjectBehaviour
     {
-        private List<GameObject> trackingTargets = new();
-        private List<GameObject> TrackingTargets => trackingTargets ??= new();
-
-        private bool canAttack = true;
-
         #region PROPERTIES
 
         private bool isAttacking;
@@ -61,104 +47,73 @@ namespace Game.Td
         public Action<GameObject> OnEndAttack;
         public Action<GameObject> OnEachAttack;
 
+        public WaitForSeconds AttackWait;
         [field: SerializeField] public float AttackDmg { get; set; }
         [field: SerializeField] public float AttackDelay { get; set; }
+        [field: SerializeField] public float AttackRange { get; set; }
         public int TrackingLayer { get; set; }
-        public string[] TargetTags { get; set; }
 
         #endregion
 
-        void Update()
+        private void OnEnable()
         {
-            if (!canAttack) return;
-
-            ValidateTargets();
-            if (trackingTargets.Count <= 0) return;
-
-            GameObject target = GetNestedTarget(trackingTargets);
-            Attack(target);
+            StartCoroutine(AttackRoutine());
         }
 
-        private void Attack(GameObject target)
+        private void OnDisable()
         {
-            OnEachAttack?.Invoke(gameObject);
-            HandleAttack(target);
+            StopAllCoroutines();
+        }
 
-            canAttack = false;
-            EventManager.Instance.RegistryDelay(() => canAttack = true, AttackDelay);
+        IEnumerator AttackRoutine()
+        {
+            while (true)
+            {
+                //tracking: using raycast
+                var targetCollider = Physics2D.OverlapCircle(transform.position, AttackRange, TrackingLayer);
+                if (CanAttackTarget(targetCollider, out var interactable))
+                {
+                    if (!isAttacking)
+                    {
+                        OnBeginAttack?.Invoke(gameObject);
+                        isAttacking = true;
+                    }
+
+                    OnEachAttack?.Invoke(gameObject);
+                    HandleAttack(interactable.core);
+                }
+                else
+                {
+                    if (isAttacking)
+                    {
+                        OnEndAttack?.Invoke(gameObject);
+                        isAttacking = false;
+                    }
+                }
+
+                yield return AttackWait;
+            }
+        }
+
+        private static bool CanAttackTarget(Collider2D targetCollider, out EntityAttackInteractable interactable)
+        {
+            interactable = null;
+            return targetCollider != null
+                   && targetCollider.gameObject.TryGetComponent(out interactable)
+                   && interactable.core.TryGetComponent(out IHealthProperty healthProperty)
+                   && !healthProperty.HealthProperty.IsDead;
         }
 
         protected virtual void HandleAttack(GameObject target)
         {
-            if (!target.TryGetComponent(out IHealthProperty targetHealth) || targetHealth.HealthProperty.IsDead) return;
-
-            targetHealth.Hp -= AttackDmg;
+            if (!target.TryGetComponent(out IHealthProperty healthProperty) ||
+                healthProperty.HealthProperty.IsDead) return;
+            CauseDamage(healthProperty);
         }
 
-        private GameObject GetNestedTarget(List<GameObject> targets)
+        protected void CauseDamage(IHealthProperty targetHealthProperty)
         {
-            GameObject result = targets.First();
-            float minDistance = Vector2.Distance(transform.position, result.transform.position);
-
-            if (targets.Count == 1)
-            {
-                return result;
-            }
-
-            for (var i = 1; i < targets.Count; i++)
-            {
-                var target = targets[i];
-                var distance = Vector2.Distance(transform.position, target.transform.position);
-                if (!(distance < minDistance)) continue;
-
-                minDistance = distance;
-                result = target;
-            }
-
-            return result;
-        }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (TrackingLayer.ContainLayer(other.gameObject.layer)
-                && other.gameObject.TryGetComponent(out TdObjectAttackInteractable interactable)
-                && TargetTags.Contains(interactable.core.gameObject.tag))
-            {
-                trackingTargets.Add(interactable.core);
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (TrackingLayer.ContainLayer(other.gameObject.layer)
-                && other.gameObject.TryGetComponent(out TdObjectAttackInteractable interactable)
-                && TargetTags.Contains(interactable.core.gameObject.tag))
-            {
-                trackingTargets.Remove(interactable.core);
-            }
-        }
-
-        private void ValidateTargets()
-        {
-            for (int i = TrackingTargets.Count - 1; i >= 0; i--)
-            {
-                if (!TrackingTargets[i].gameObject.activeSelf)
-                {
-                    TrackingTargets.RemoveAt(i);
-                }
-            }
-
-            if (!isAttacking & trackingTargets.Count > 0)
-            {
-                OnBeginAttack?.Invoke(gameObject);
-                isAttacking = true;
-            }
-
-            if (isAttacking & trackingTargets.Count == 0)
-            {
-                OnEndAttack?.Invoke(gameObject);
-                isAttacking = false;
-            }
+            targetHealthProperty.Hp -= AttackDmg;
         }
     }
 
@@ -172,7 +127,7 @@ namespace Game.Td
                 animator.SetTrigger(TdConstant.TD_OBJECT_ATTACK_PARAMETER);
             }
         }
-        
+
         public void Config(GameObject tdObject)
         {
             if (tdObject.TryGetComponent(out TdObjectAttackBehaviour attackBehaviour))

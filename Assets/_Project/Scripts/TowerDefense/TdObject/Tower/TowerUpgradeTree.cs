@@ -13,7 +13,7 @@ namespace Game.Td
     {
         public TowerPresetSo towerPreset;
 
-        [SerializeField] private List<TowerPresetSo> nextUpgradeTowers = new();
+        [SerializeField] public List<TowerPresetSo> nextUpgradeTowers = new();
 
         public List<string> NextUpgradeTowerIds =>
             nextUpgradeTowers

@@ -1,5 +1,4 @@
 using System;
-using Game.Td;
 using PrimeTween;
 using TnieYuPackage.Core;
 using UnityEngine;
@@ -16,26 +15,21 @@ namespace Game.Td
 
         public override void Install(GameObject tdObject)
         {
-            var collider = tdObject.AddComponent<CircleCollider2D>();
-            collider.isTrigger = true;
-            collider.radius = attackRange;
-
             var behaviour = tdObject.AddComponent<TdObjectRangeAttackBehaviour>();
-            behaviour.AttackDmg = attackDmg;
-            behaviour.AttackDelay = attackDelay;
-            behaviour.TrackingLayer = trackingLayer;
-            behaviour.TargetTags = targetTags;
-            behaviour.ProjectileSprite = projectileSprite;
-            behaviour.ProjectileDelay = projectileDelay;
+            SetupBehaviour(behaviour);
+        }
+
+        protected override void SetupBehaviour(TdObjectAttackBehaviour behaviour)
+        {
+            base.SetupBehaviour(behaviour);
+
+            if (behaviour is not TdObjectRangeAttackBehaviour rangeBehaviour) return;
+            rangeBehaviour.ProjectileSprite = projectileSprite;
+            rangeBehaviour.ProjectileDelay = projectileDelay;
         }
 
         public override void UnInstall(GameObject tdObject)
         {
-            if (tdObject.TryGetComponent(out CircleCollider2D collider))
-            {
-                Object.DestroyImmediate(collider);
-            }
-
             if (tdObject.TryGetComponent(out TdObjectRangeAttackBehaviour behaviour))
             {
                 Object.DestroyImmediate(behaviour);
@@ -71,7 +65,7 @@ namespace Game.Td
             EventManager.Instance.RegistryDelay(
                 () =>
                 {
-                    targetHealth.Hp -= AttackDmg;
+                    CauseDamage(targetHealth);
                     ProjectilePool.Release(projectile);
                 }, ProjectileDelay);
         }

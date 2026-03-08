@@ -168,7 +168,6 @@ GameObject:
   - component: {fileID: 6890698080514554414}
   - component: {fileID: 3576546275602722645}
   - component: {fileID: 3610387943409363091}
-  - component: {fileID: 4049519532546168956}
   m_Layer: 0
   m_Name: Soldier
   m_TagString: Soldier
@@ -205,7 +204,7 @@ Animator:
   m_GameObject: {fileID: 4082741396634806394}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 185da628229f7824390665940f7380d5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -231,6 +230,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: TowerDefense::Game.Td.SoldierRuntime
   currentPreset: {fileID: 0}
   animator: {fileID: 3576546275602722645}
+  spriteLibrary: {fileID: 458091463220210244}
+  attackInteractable: {fileID: 6080175687087615231}
   healthProperty:
     onHpChanged:
       m_PersistentCalls:
@@ -251,33 +252,6 @@ MonoBehaviour:
     hp: 0
     <MaxHp>k__BackingField: 0
   <Def>k__BackingField: 0
---- !u!50 &4049519532546168956
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4082741396634806394}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &4631666283619048617
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,7 +287,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.4}
+  m_AnchoredPosition: {x: 0, y: 0.5}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5840300007798752885
@@ -337,7 +311,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &1753251613608099396
 MonoBehaviour:
@@ -372,6 +346,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2185079944099529775}
   - component: {fileID: 4202532323203808152}
+  - component: {fileID: 458091463220210244}
+  - component: {fileID: 648400390840111000}
   m_Layer: 0
   m_Name: Skin
   m_TagString: Untagged
@@ -389,7 +365,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6890698080514554414}
@@ -443,7 +419,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -451,8 +427,38 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
+--- !u!114 &458091463220210244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5086175673681478050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteLibrary
+  m_Library: []
+  m_SpriteLibraryAsset: {fileID: 0}
+--- !u!114 &648400390840111000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5086175673681478050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
+  m_CategoryHash: 0
+  m_labelHash: 0
+  m_SpriteKey: 0
+  m_SpriteHash: 0
 --- !u!1 &7895894962107728300
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +470,7 @@ GameObject:
   - component: {fileID: 3559007522123032127}
   - component: {fileID: 6206997082034057916}
   - component: {fileID: 6080175687087615231}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: AttackInteractable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,7 +527,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.01
+  m_Radius: 0.1
 --- !u!114 &6080175687087615231
 MonoBehaviour:
   m_ObjectHideFlags: 0

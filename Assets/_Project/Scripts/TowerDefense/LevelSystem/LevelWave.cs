@@ -19,15 +19,14 @@ namespace Game.Td
     public class WavePath
     {
         [JsonProperty] public string pathId;
-        [JsonProperty] public List<WaveSpawnCommand> spawns;
+        [JsonProperty] public List<WaveSpawnCommand> spawnCommands;
     }
 
     [Serializable]
     public class WaveKeyFrame
     {
-        [JsonProperty] public string id;
         [JsonProperty] public float time;
-        [JsonProperty] public List<WavePath> paths;
+        [JsonProperty] public List<WavePath> pathWaves;
     }
 
     [Serializable]
@@ -41,6 +40,7 @@ namespace Game.Td
     [Serializable]
     public class LevelWave
     {
+        [JsonProperty] public string name;
         [JsonProperty] public List<Wave> waves = new();
 
         public static LevelWave ConvertLevelWaveJson(string filePath)

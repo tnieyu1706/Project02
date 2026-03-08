@@ -1,3 +1,4 @@
+using BackboneLogger;
 using KBCore.Refs;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -18,6 +19,7 @@ namespace Game.Td
         void OnEnable()
         {
             TdGameplayController.Instance.Paths.Add(pathId, path);
+            BLogger.Log($"[PathRegistry] {name} get registered path id: {pathId}", category: "TD");
         }
 
         void OnDisable()

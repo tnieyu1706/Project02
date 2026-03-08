@@ -1,3 +1,4 @@
+using BackboneLogger;
 using EditorAttributes;
 using TnieYuPackage.DesignPatterns;
 using UnityEngine;
@@ -23,6 +24,8 @@ namespace Game.Td
             TdGameplayController.Instance.OnHealthChange += HandleMapHealthChangedGUI;
             TdGameplayController.Instance.OnMoneyChange += HandleMoneyInfoChangedGUI;
             TdGameplayController.Instance.tdWaveController.OnCurrentWaveIndexChanged += HandleWaveInfoChangedGUI;
+
+            BLogger.Log("[TdGameplayGUI] Register GUI Events", category: "TD");
         }
 
         public void OnDisable()
@@ -32,6 +35,7 @@ namespace Game.Td
             TdGameplayController.Instance.OnHealthChange -= HandleMapHealthChangedGUI;
             TdGameplayController.Instance.OnMoneyChange -= HandleMoneyInfoChangedGUI;
             TdGameplayController.Instance.tdWaveController.OnCurrentWaveIndexChanged -= HandleWaveInfoChangedGUI;
+            BLogger.Log("[TdGameplayGUI] UnRegister GUI Events", category: "TD");
         }
 
         private void HandleMapHealthChangedGUI(int changedHealth)

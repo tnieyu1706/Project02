@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BackboneLogger;
 using EditorAttributes;
 using TnieYuPackage.DesignPatterns;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace Game.Td
 
         #region GAMEPLAY PROPERTIES
         
+        private LevelWave currentLevelWave;
         [SerializeField] private int health;
         [SerializeField] private int money;
 
@@ -44,7 +46,6 @@ namespace Game.Td
             }
         }
 
-        [SerializeField, ReadOnly] private LevelWave currentLevelWave;
 
         #endregion
 
@@ -61,11 +62,12 @@ namespace Game.Td
             LoadLevel(levelData);
         }
 
-        private void LoadLevel(LevelData level)
+        public void LoadLevel(LevelData level)
         {
             currentLevelWave = level.LevelWave;
             Health = level.maxHealth;
             Money = level.startingMoney;
+            BLogger.Log($"[TdGameplayController] Loading level {level.name}");
 
             //LevelScene load
 

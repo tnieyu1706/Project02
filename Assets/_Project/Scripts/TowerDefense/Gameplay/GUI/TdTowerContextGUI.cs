@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
+using EditorAttributes;
 using TnieYuPackage.DesignPatterns;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,10 +10,9 @@ namespace Game.Td
 {
     public class TdTowerContextGUI : SingletonBehavior<TdTowerContextGUI>
     {
-        public static TowerRuntime CurrentTowerContextRuntime;
+        public static TowerRuntime CurrentContext;
 
-        [SerializeField] private GameObject elementPrefab;
-
+        [SerializeField, Required] private GameObject upgradeElementPrefab;
         private IObjectPool<TdTowerUpgradeElement> elementPool;
         private readonly List<TdTowerUpgradeElement> activeElements = new();
 
@@ -37,7 +36,7 @@ namespace Game.Td
 
         private TdTowerUpgradeElement CreateElement()
         {
-            GameObject elementGo = Instantiate(elementPrefab, transform);
+            GameObject elementGo = Instantiate(upgradeElementPrefab, transform);
             return new TdTowerUpgradeElement(elementGo);
         }
 
@@ -69,7 +68,7 @@ namespace Game.Td
         {
             transform.position = (Vector2)towerRuntime.transform.position;
 
-            CurrentTowerContextRuntime = towerRuntime;
+            CurrentContext = towerRuntime;
             var currentTowerPreset = towerRuntime.currentPreset;
 
             //pre-install
@@ -81,21 +80,21 @@ namespace Game.Td
             activeElements.Clear();
 
             //setup
-            var nextUpgradeIds = TowerUpgradeTree.Tree[currentTowerPreset.towerId].NextUpgradeTowerIds;
+            var nextUpgradeTowerPresets = TowerUpgradeTree.Tree[currentTowerPreset.towerId].nextUpgradeTowers;
 
-            Dictionary<string, TowerPresetSo> nextUpgradePresets = nextUpgradeIds
-                .ToDictionary(id => id, id => TowerUpgradeTree.Tree[id].towerPreset);
-
-            //install
-            foreach (var nextUpgradeKvp in nextUpgradePresets)
+            //install: upgrade elements
+            foreach (var nextPreset in nextUpgradeTowerPresets)
             {
                 var element = elementPool.Get();
+                int cost = nextPreset.towerPriceValue - currentTowerPreset.towerPriceValue;
 
                 element.SetElement(
-                    nextUpgradeKvp.Value.towerIcon,
+                    nextPreset.towerIcon,
+                    cost,
                     () =>
                     {
-                        CurrentTowerContextRuntime.UpgradeContext(nextUpgradeKvp.Key);
+                        CurrentContext.Setup(nextPreset);
+                        TdGameplayController.Instance.Money -= cost;
                         TurnOff();
                     }
                 );
@@ -103,15 +102,19 @@ namespace Game.Td
                 activeElements.Add(element);
             }
 
+            //install: event elements
             foreach (var uiEvent in currentTowerPreset.uiEvents)
             {
                 var element = elementPool.Get();
 
-                element.SetElement(uiEvent.Icon, () =>
-                {
-                    uiEvent.Perform();
-                    TurnOff();
-                });
+                element.SetElement(
+                    uiEvent.Icon,
+                    0,
+                    () =>
+                    {
+                        uiEvent.Perform();
+                        TurnOff();
+                    });
 
                 activeElements.Add(element);
             }
@@ -137,6 +140,7 @@ namespace Game.Td
         public GameObject ElementGo { get; }
         private readonly Image elementImage;
         private readonly Button elementButton;
+        private readonly Text elementText;
 
         public TdTowerUpgradeElement(GameObject elementGo)
         {
@@ -144,13 +148,30 @@ namespace Game.Td
 
             elementGo.TryGetComponent(out elementImage);
             elementGo.TryGetComponent(out elementButton);
+            elementText = elementGo.GetComponentInChildren<Text>();
         }
 
-        public void SetElement(Sprite icon, UnityAction onClick)
+        private void SetElement(Sprite icon, UnityAction onClick)
         {
             elementImage.sprite = icon;
             elementButton.onClick.RemoveAllListeners();
             elementButton.onClick.AddListener(onClick);
+        }
+
+        public void SetElement(Sprite icon, int cost, UnityAction onClick)
+        {
+            if (elementText != null)
+                elementText.text = cost <= 0 ? "" : cost.ToString();
+            SetElement(icon, onClick);
+
+            if (TdGameplayController.Instance.Money < cost)
+            {
+                elementButton.interactable = false;
+            }
+            else
+            {
+                elementButton.interactable = true;
+            }
         }
     }
 }

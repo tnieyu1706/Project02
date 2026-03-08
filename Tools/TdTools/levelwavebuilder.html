@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>WaveLevelBuilder · TD</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@600;700&display=swap');
+:root{
+  --bg:#07090e;--bg2:#0b0e16;--bg3:#0f1320;--panel:#0d1119;
+  --b1:#161e2e;--b2:#1e2c44;--b3:#263450;
+  --ac:#00c8ff;--ac2:#ff6b2b;--ac3:#4dff91;--ac4:#ff3355;--ac5:#a78bfa;--ac6:#fbbf24;
+  --tx:#b8cce0;--tx2:#4e6080;--tx3:#2a3a52;
+  --TH:32px;--LW:164px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:11px;}
+button{font-family:inherit;cursor:pointer;}
+
+/* ── LAYOUT ── */
+#app{display:flex;flex-direction:column;height:100vh;}
+#hdr{height:40px;background:var(--panel);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;}
+#body{flex:1;display:flex;overflow:hidden;}
+
+/* HEADER */
+.logo{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--ac);letter-spacing:2px;}
+.logo b{color:var(--ac2);}
+.vs{width:1px;height:20px;background:var(--b2);flex-shrink:0;}
+#wl-name{background:none;border:none;border-bottom:1px solid var(--b2);color:var(--tx);font-family:inherit;font-size:11px;padding:2px 5px;outline:none;width:130px;}
+#wl-name:focus{border-color:var(--ac);}
+.sp{flex:1;}
+.hb{background:var(--bg3);border:1px solid var(--b2);color:var(--tx2);padding:3px 10px;font-size:10px;border-radius:2px;transition:.1s;}
+.hb:hover{border-color:var(--ac);color:var(--ac);}
+.hb.ok{background:var(--ac);color:#000;border-color:var(--ac);font-weight:700;}
+.hb.ok:hover{opacity:.85;}
+.hb.play{background:#0a2010;border-color:var(--ac3);color:var(--ac3);}
+.hb.play:hover,.hb.play.on{background:var(--ac3);color:#000;}
+.hb.stop{background:#1a080e;border-color:var(--ac4);color:var(--ac4);}
+#ph-t{font-size:11px;color:var(--ac);font-weight:700;min-width:50px;text-align:right;}
+
+/* shortcut hint */
+.kb-hint{color:var(--tx3);font-size:8px;letter-spacing:.5px;display:flex;gap:6px;align-items:center;flex-shrink:0;}
+.kb-hint kbd{background:var(--bg3);border:1px solid var(--b2);color:var(--tx2);padding:1px 4px;border-radius:2px;font-family:inherit;font-size:8px;}
+
+/* ── LEFT ── */
+#left{width:252px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;}
+.vtab{width:100%;padding:8px 11px;color:var(--tx2);font-size:9px;letter-spacing:1.2px;text-transform:uppercase;border:none;border-left:2px solid transparent;border-bottom:1px solid var(--b1);background:none;display:flex;align-items:center;gap:7px;transition:.1s;text-align:left;}
+.vtab:hover{color:var(--tx);background:var(--bg3);}
+.vtab.on{color:var(--ac);border-left-color:var(--ac);background:#00c8ff08;}
+.vtab .vi{font-size:12px;width:14px;text-align:center;}
+#lbody{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.lp{flex:1;display:none;flex-direction:column;overflow:hidden;}
+.lp.on{display:flex;}
+
+/* builder */
+#tb{padding:5px 7px;background:var(--bg2);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:4px;flex-wrap:wrap;flex-shrink:0;}
+.tb{background:var(--bg3);border:1px solid var(--b2);color:var(--tx2);padding:2px 7px;font-size:9px;border-radius:2px;transition:.1s;}
+.tb:hover{color:var(--tx);}
+.tb.on{border-color:var(--ac);color:var(--ac);background:#00c8ff0e;}
+.tl{color:var(--tx3);font-size:9px;letter-spacing:.8px;text-transform:uppercase;}
+#zv{color:var(--ac);min-width:34px;text-align:center;font-size:9px;}
+.di{width:42px;background:var(--bg);border:1px solid var(--b2);color:var(--tx);padding:1px 4px;font-family:inherit;font-size:9px;outline:none;border-radius:1px;}
+.di:focus{border-color:var(--ac);}
+#wlist-wrap{overflow-y:auto;padding:7px;flex:1;}
+.st{color:var(--tx3);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 0 5px;display:flex;align-items:center;justify-content:space-between;}
+.st button{background:none;border:none;color:var(--tx3);font-size:14px;line-height:1;padding:0;}
+.st button:hover{color:var(--ac);}
+.wi{padding:5px 7px;border:1px solid var(--b1);border-radius:2px;margin-bottom:3px;cursor:pointer;background:var(--bg3);display:flex;align-items:center;gap:4px;transition:.1s;}
+.wi:hover{border-color:var(--b2);background:var(--bg2);}
+.wi.on{border-color:var(--ac);background:#00c8ff07;}
+.wi .wn{flex:1;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.wi .wb{color:var(--tx3);font-size:8px;}
+.ib{background:none;border:none;font-size:9px;padding:1px 2px;color:var(--tx3);}
+.ib:hover{color:var(--ac);}
+.ib.d:hover{color:var(--ac4);}
+.addb{width:100%;padding:4px;background:none;border:1px dashed var(--b2);color:var(--tx3);font-size:9px;border-radius:2px;margin-top:3px;transition:.1s;}
+.addb:hover{border-color:var(--ac);color:var(--ac);}
+
+/* kf tab */
+#kfhd{padding:8px 10px;border-bottom:1px solid var(--b1);flex-shrink:0;}
+#kf-wl{color:var(--ac2);font-size:10px;font-weight:700;margin-bottom:5px;}
+#kf-tr{display:none;align-items:center;gap:6px;}
+.kfl{color:var(--tx3);font-size:8px;text-transform:uppercase;letter-spacing:.8px;}
+#kf-ti{background:var(--bg);border:1px solid var(--b2);color:var(--ac);font-family:inherit;font-size:12px;font-weight:700;padding:2px 6px;outline:none;width:74px;border-radius:1px;}
+#kf-ti:focus{border-color:var(--ac);}
+.kdb{background:none;border:1px solid var(--ac4);color:var(--ac4);font-family:inherit;font-size:8px;padding:2px 6px;border-radius:1px;}
+.kdb:hover{background:var(--ac4);color:#fff;}
+#kf-bs{flex:1;overflow-y:auto;padding:7px;}
+.kfe{color:var(--tx3);font-size:10px;padding:20px 8px;text-align:center;line-height:2;}
+.pwb{border:1px solid var(--b2);border-radius:2px;margin-bottom:7px;overflow:hidden;}
+.pwh{background:var(--bg3);padding:4px 7px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.pwn{color:var(--ac2);font-size:9px;font-weight:700;min-width:20px;}
+.pws{background:var(--bg);border:1px solid var(--b2);color:var(--tx);padding:1px 4px;font-family:inherit;font-size:9px;outline:none;border-radius:1px;max-width:88px;}
+.pws:focus{border-color:var(--ac);}
+.pwdb{background:none;border:none;color:var(--tx3);font-size:10px;margin-left:auto;padding:0 1px;}
+.pwdb:hover{color:var(--ac4);}
+.pwbody{padding:5px 7px;}
+.sgh{display:grid;grid-template-columns:1fr 44px 52px 16px;gap:3px;margin-bottom:2px;}
+.sgh span{color:var(--tx3);font-size:8px;text-transform:uppercase;letter-spacing:.4px;}
+.sg{display:grid;grid-template-columns:1fr 44px 52px 16px;gap:3px;margin-bottom:3px;align-items:center;}
+.si{background:var(--bg);border:1px solid var(--b2);color:var(--tx);padding:2px 4px;font-family:inherit;font-size:9px;outline:none;width:100%;border-radius:1px;}
+.si:focus{border-color:var(--ac);}
+.sd{background:none;border:none;color:var(--tx3);font-size:11px;padding:0;text-align:center;}
+.sd:hover{color:var(--ac4);}
+.ma{background:none;border:1px dashed var(--b1);color:var(--tx3);font-family:inherit;font-size:8px;padding:2px 6px;border-radius:1px;margin-top:2px;}
+.ma:hover{border-color:var(--ac);color:var(--ac);}
+
+/* entity tab */
+#elist-wrap{overflow-y:auto;padding:7px;flex:1;}
+.ei{padding:5px 7px;border:1px solid var(--b1);border-radius:2px;margin-bottom:3px;background:var(--bg3);display:flex;align-items:center;gap:4px;}
+.en{flex:1;font-size:10px;overflow:hidden;text-overflow:ellipsis;}
+.eid{color:var(--tx3);font-size:8px;}
+.etag{display:inline-block;padding:1px 5px;border-radius:1px;font-size:8px;font-weight:700;letter-spacing:.5px;}
+
+/* ── CENTER ── */
+#center{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+#tl-outer{flex:1;overflow:auto;}
+#ruler-row{position:sticky;top:0;z-index:20;display:flex;background:var(--bg2);border-bottom:1px solid var(--b1);height:20px;}
+#ruler-lbl{width:var(--LW);flex-shrink:0;border-right:1px solid var(--b1);display:flex;align-items:center;padding:0 7px;color:var(--tx3);font-size:8px;letter-spacing:1px;background:var(--bg2);}
+#ruler-cw{flex:1;overflow:hidden;}
+#ruler-cv{display:block;}
+#tracks-row{display:flex;}
+#lcol{width:var(--LW);flex-shrink:0;background:var(--bg3);border-right:1px solid var(--b1);}
+#ccol{flex:1;position:relative;min-width:0;}
+#tcv{display:block;}
+#phl{position:absolute;top:0;width:2px;background:var(--ac4);pointer-events:none;z-index:10;display:none;opacity:.9;}
+#phl::before{content:'▼';position:absolute;top:-1px;left:-4px;color:var(--ac4);font-size:9px;}
+.tl-lbl{height:var(--TH);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 5px;gap:3px;}
+.tl-lbl .ti{color:var(--tx3);font-size:8px;min-width:14px;}
+.tl-lbl .tn{flex:1;font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;}
+.tl-lbl.on .tn{color:var(--ac);}
+.tl-lbl.on{background:#00c8ff07;}
+.tb2{background:none;border:none;font-size:8px;padding:1px 2px;color:var(--tx3);}
+.tb2:hover{color:var(--ac);}
+.tb2.d:hover{color:var(--ac4);}
+
+/* ── LOG ── */
+#log{width:280px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;}
+#log-hd{padding:4px 8px;background:var(--bg3);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:5px;flex-shrink:0;}
+#log-title{color:var(--tx3);font-size:8px;letter-spacing:1.2px;text-transform:uppercase;}
+.pbadge{display:none;padding:1px 5px;border:1px solid var(--ac3);color:var(--ac3);font-size:8px;letter-spacing:1px;border-radius:1px;background:#0a2010;}
+.pbadge.on{display:inline-block;}
+#log-clr{background:none;border:none;color:var(--tx3);font-size:8px;margin-left:auto;}
+#log-clr:hover{color:var(--ac4);}
+/* LOG FILTERS */
+#log-filters{padding:4px 6px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:5px;flex-shrink:0;background:var(--panel);position:relative;}
+#lf-label{color:var(--tx3);font-size:8px;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+#lf-toggle{background:var(--bg3);border:1px solid var(--b2);color:var(--tx2);font-size:9px;padding:2px 8px 2px 6px;border-radius:2px;flex:1;text-align:left;display:flex;align-items:center;gap:4px;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+#lf-toggle:hover{border-color:var(--ac);color:var(--tx);}
+#lf-toggle .arr{margin-left:auto;flex-shrink:0;font-size:7px;color:var(--tx3);}
+#lf-dropdown{position:absolute;top:calc(100% + 2px);left:0;right:0;background:var(--bg3);border:1px solid var(--b2);z-index:60;display:none;flex-direction:column;max-height:220px;overflow-y:auto;box-shadow:0 4px 16px #000a;}
+#lf-dropdown.open{display:flex;}
+.lfd-sep{padding:3px 8px 1px;color:var(--tx3);font-size:8px;letter-spacing:1px;text-transform:uppercase;border-top:1px solid var(--b1);margin-top:2px;}
+.lfd-sep:first-child{border-top:none;margin-top:0;}
+.lfd-item{display:flex;align-items:center;gap:6px;padding:3px 8px;cursor:pointer;transition:.08s;}
+.lfd-item:hover{background:var(--bg2);}
+.lfd-item .lfd-chk{width:11px;height:11px;border:1px solid var(--b2);border-radius:1px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;transition:.08s;}
+.lfd-item.on .lfd-chk{background:var(--ac);border-color:var(--ac);color:#000;}
+.lfd-item .lfd-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.lfd-item .lfd-name{font-size:9px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lfd-item .lfd-tag{font-size:7px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;}
+#log-body{flex:1;overflow-y:auto;padding:4px 7px;font-size:9px;line-height:1.9;}
+.ll{display:flex;flex-direction:column;gap:1px;padding:1px 0;}
+.ll.hidden{display:none;}
+/* KF header line */
+.ll-kf-hd{display:flex;gap:4px;align-items:baseline;flex-wrap:wrap;}
+.lt{color:var(--ac);min-width:40px;flex-shrink:0;}
+.lw{color:var(--ac2);flex-shrink:0;max-width:62px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lp2{color:var(--ac5);flex-shrink:0;max-width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.le{color:var(--ac3);}
+.li{color:var(--tx2);}
+.ls{color:var(--tx3);font-style:italic;}
+/* spawn sub-rows inside a KF log block */
+.ll-spawn-row{display:flex;gap:4px;align-items:baseline;padding-left:48px;flex-wrap:wrap;}
+.ll-spawn-path{color:var(--ac5);flex-shrink:0;max-width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ll-spawn-entity{color:var(--ac3);flex-shrink:0;max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ll-spawn-qty{color:var(--ac6);flex-shrink:0;font-weight:700;}
+/* ▸ NEW: end-time badge on spawn row */
+.ll-spawn-end{color:var(--tx3);flex-shrink:0;font-size:8px;letter-spacing:.3px;}
+.ll-spawn-end b{color:#a78bfa;}
+.ll-sep{width:1px;height:10px;background:var(--b2);flex-shrink:0;align-self:center;}
+
+/* ── SIDEBAR ── */
+#sb{width:28px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--b1);display:flex;flex-direction:column;align-items:center;padding:5px 0;gap:2px;}
+.sib{width:24px;height:24px;background:none;border:none;color:var(--tx3);font-size:13px;border-radius:2px;display:flex;align-items:center;justify-content:center;transition:.1s;position:relative;}
+.sib:hover{color:var(--tx);background:var(--bg3);}
+.sib.on{color:var(--ac);background:#00c8ff10;}
+.stt{position:absolute;right:32px;top:50%;transform:translateY(-50%);background:var(--bg3);border:1px solid var(--b2);color:var(--tx);font-size:9px;padding:3px 7px;border-radius:2px;white-space:nowrap;pointer-events:none;opacity:0;transition:.1s;font-family:inherit;z-index:99;}
+.sib:hover .stt{opacity:1;}
+
+/* ── DRAWER ── */
+#drawer{position:fixed;top:40px;right:28px;bottom:0;width:0;overflow:hidden;transition:width .16s;z-index:50;background:var(--panel);border-left:1px solid var(--b1);display:flex;flex-direction:column;}
+#drawer.on{width:204px;}
+#dr-hd{padding:6px 9px;border-bottom:1px solid var(--b1);display:flex;align-items:center;flex-shrink:0;}
+#dr-t{flex:1;font-size:10px;font-weight:700;color:var(--tx);}
+#dr-x{background:none;border:none;color:var(--tx3);font-size:12px;}
+#dr-x:hover{color:var(--ac4);}
+#dr-body{flex:1;overflow-y:auto;padding:7px;}
+.pi{padding:5px 7px;border:1px solid var(--b1);border-radius:2px;margin-bottom:4px;background:var(--bg3);display:flex;align-items:center;gap:4px;}
+.pn{flex:1;font-size:9px;overflow:hidden;text-overflow:ellipsis;}
+.pid{color:var(--tx3);font-size:8px;}
+.pb{background:none;border:none;font-size:9px;padding:1px 2px;color:var(--tx3);}
+.pb:hover{color:var(--ac);}
+.pb.d:hover{color:var(--ac4);}
+.rb{padding:7px;border:1px solid var(--b1);border-radius:2px;margin-bottom:5px;background:var(--bg3);}
+.rbt{color:var(--ac2);font-size:9px;font-weight:700;margin-bottom:3px;}
+.rbr{display:flex;justify-content:space-between;font-size:9px;color:var(--tx2);padding:2px 0;border-bottom:1px solid var(--b1);}
+.rbr:last-child{border:none;}
+.rbr b{color:var(--tx);}
+
+/* MODAL */
+.mbg{position:fixed;inset:0;background:#000c;z-index:200;display:flex;align-items:center;justify-content:center;}
+.mdl{background:var(--panel);border:1px solid var(--b2);padding:16px;min-width:280px;border-radius:3px;}
+.mdl h3{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:var(--ac);letter-spacing:1px;margin-bottom:12px;}
+.fld{margin-bottom:9px;}
+.fld label{display:block;color:var(--tx3);font-size:8px;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.fld input,.fld select,.fld textarea{width:100%;background:var(--bg);border:1px solid var(--b2);color:var(--tx);padding:4px 6px;font-family:inherit;font-size:10px;outline:none;border-radius:1px;}
+.fld input:focus,.fld select:focus{border-color:var(--ac);}
+.fld select option{background:var(--bg);}
+.mbtns{display:flex;gap:6px;justify-content:flex-end;margin-top:12px;}
+
+/* shortcut toast */
+#shortcut-toast{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--b2);color:var(--ac);font-size:10px;padding:4px 14px;border-radius:3px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:300;white-space:nowrap;}
+#shortcut-toast.show{opacity:1;}
+
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- HEADER -->
+<div id="hdr">
+  <div class="logo">Wave<b>Level</b>Builder</div>
+  <div class="vs"></div>
+  <input id="wl-name" placeholder="LevelName..." value="Level_01">
+  <div class="vs"></div>
+  <button class="hb play" id="play-btn" onclick="togglePlay()">▶ PlayTest</button>
+  <button class="hb stop" id="stop-btn" onclick="stopPlay()" style="display:none">■ Stop</button>
+  <span id="ph-t">0.00s</span>
+  <div class="vs"></div>
+  <div class="kb-hint">
+    <kbd>Alt+S</kbd>Select
+    <kbd>Alt+A</kbd>Add KF
+    <kbd>Alt+Z</kbd>Erase
+    <kbd>Alt+M</kbd>Move
+  </div>
+  <div class="sp"></div>
+  <button class="hb" onclick="doImport()">↑ Import</button>
+  <button class="hb ok" onclick="doExport()">↓ Export</button>
+</div>
+
+<!-- BODY -->
+<div id="body">
+
+<!-- LEFT PANEL -->
+<div id="left">
+  <button class="vtab on" id="vt-builder" onclick="switchLeft('builder')"><span class="vi">≋</span>Wave Builder</button>
+  <button class="vtab" id="vt-kf" onclick="switchLeft('kf')"><span class="vi">◆</span>Keyframe</button>
+  <button class="vtab" id="vt-entity" onclick="switchLeft('entity')"><span class="vi">◈</span>Entity</button>
+  <div id="lbody">
+
+    <!-- BUILDER -->
+    <div class="lp on" id="lp-builder">
+      <div id="tb">
+        <span class="tl">Tool:</span>
+        <button class="tb on" id="tool-select" onclick="setTool('select')">Select</button>
+        <button class="tb" id="tool-add" onclick="setTool('add')">+KF</button>
+        <button class="tb" id="tool-erase" onclick="setTool('erase')">Erase</button>
+        <button class="tb on" id="tool-move" onclick="toggleMove()">⇔ Move ON</button>
+        <div class="vs" style="height:14px;"></div>
+        <button class="tb" onclick="zoom(-1)">−</button>
+        <span id="zv">100%</span>
+        <button class="tb" onclick="zoom(1)">+</button>
+        <div class="vs" style="height:14px;"></div>
+        <span class="tl">Dur:</span>
+        <input class="di" type="number" id="dur-inp" value="60" min="5" max="600" onchange="setDur(+this.value)">s
+      </div>
+      <div id="wlist-wrap">
+        <div class="st">Waves <button onclick="addWave()">＋</button></div>
+        <div id="wave-list"></div>
+      </div>
+    </div>
+
+    <!-- KEYFRAME -->
+    <div class="lp" id="lp-kf">
+      <div id="kfhd">
+        <div id="kf-wl">No keyframe selected</div>
+        <div id="kf-tr">
+          <span class="kfl">t =</span>
+          <input id="kf-ti" type="number" step="0.1" min="0" value="0" onchange="moveKfTime(+this.value)">
+          <span class="kfl">s</span>
+          <button class="kdb" onclick="delSelKf()">✕ Del</button>
+        </div>
+      </div>
+      <div id="kf-bs"><div class="kfe">Select a keyframe on the<br>timeline to edit spawn data.</div></div>
+    </div>
+
+    <!-- ENTITY -->
+    <div class="lp" id="lp-entity">
+      <div id="elist-wrap">
+        <div class="st">Entities <button onclick="addEntity()">＋</button></div>
+        <div id="entity-list"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CENTER -->
+<div id="center">
+  <div id="tl-outer" onscroll="syncRuler(this)">
+    <div id="ruler-row">
+      <div id="ruler-lbl">TIMELINE</div>
+      <div id="ruler-cw"><canvas id="ruler-cv"></canvas></div>
+    </div>
+    <div id="tracks-row">
+      <div id="lcol"></div>
+      <div id="ccol">
+        <canvas id="tcv"></canvas>
+        <div id="phl"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOG -->
+<div id="log">
+  <div id="log-hd">
+    <span id="log-title">Runtime Log</span>
+    <span class="pbadge" id="pbadge">● LIVE</span>
+    <button id="log-clr" onclick="clearLog()">Clear</button>
+  </div>
+  <div id="log-filters">
+    <span id="lf-label">Filter</span>
+    <button id="lf-toggle" onclick="toggleFilterDropdown()">
+      <span id="lf-summary">All</span>
+      <span class="arr">▼</span>
+    </button>
+    <div id="lf-dropdown"></div>
+  </div>
+  <div id="log-body"></div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sb">
+  <button class="sib" id="si-path" onclick="toggleDrawer('path')">⇢<span class="stt">Paths</span></button>
+  <button class="sib" id="si-result" onclick="toggleDrawer('result')">▤<span class="stt">Result</span></button>
+</div>
+
+</div><!-- body -->
+</div><!-- app -->
+
+<!-- DRAWER -->
+<div id="drawer">
+  <div id="dr-hd"><span id="dr-t">Paths</span><button id="dr-x" onclick="closeDrawer()">✕</button></div>
+  <div id="dr-body"></div>
+</div>
+
+<!-- MODAL -->
+<div class="mbg" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="mdl" id="modal-inner"></div>
+</div>
+<input type="file" id="file-inp" accept=".json" style="display:none" onchange="handleImport(event)">
+
+<!-- Shortcut toast -->
+<div id="shortcut-toast"></div>
+
+<script>
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+const S={
+  waves:[], paths:[], entities:[], selWave:-1, selKf:null,
+  duration:60, zoom:1, pps:90,
+  tool:'select', playing:false, playTime:0, rafId:null,
+  drawerMode:null,
+  logFilters:new Set(['KF','Wave','Path','Entity','Sys']),
+  pendingSpawns:[],
+  moveEnabled:true,
+};
+let wCnt=0, pCnt=0, eCnt=0;
+const TH=32, LW=164;
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+function init(){
+  ['Path_A','Path_B','Path_C'].forEach(n=>_addPath(n));
+  ['Goblin','Orc','Troll','Dragon'].forEach(n=>_addEntity(n, '#'+Math.floor(Math.random()*0xffffff).toString(16).padStart(6,'0')));
+  _addWave('Wave_01'); _addWave('Wave_02'); _addWave('Wave_03');
+  S.selWave=0;
+  renderAll();
+  logSys('WaveLevelBuilder v3 ready.  Alt+S/A/Z/M = Select/AddKF/Erase/Move');
+  initKeyboardShortcuts();
+}
+
+/* ═══════════════════════════════════════
+   KEYBOARD SHORTCUTS
+═══════════════════════════════════════ */
+function initKeyboardShortcuts(){
+  document.addEventListener('keydown', e => {
+    const tag = document.activeElement.tagName.toLowerCase();
+    if(tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if(e.altKey){
+      switch(e.key.toLowerCase()){
+        case 's': e.preventDefault(); setTool('select'); showShortcutToast('Tool → Select  (Alt+S)'); break;
+        case 'a': e.preventDefault(); setTool('add'); showShortcutToast('Tool → Add KF  (Alt+A)'); break;
+        case 'z': e.preventDefault(); setTool('erase'); showShortcutToast('Tool → Erase  (Alt+Z)'); break;
+        case 'm': e.preventDefault(); toggleMove(); break;
+      }
+    }
+  });
+}
+
+let _toastTimer = null;
+function showShortcutToast(msg){
+  const el = document.getElementById('shortcut-toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 1400);
+}
+
+function toggleMove(){
+  S.moveEnabled = !S.moveEnabled;
+  document.getElementById('tool-move').classList.toggle('on', S.moveEnabled);
+  document.getElementById('tool-move').textContent = S.moveEnabled ? '⇔ Move ON' : '⇔ Move OFF';
+  showShortcutToast('KF Move ' + (S.moveEnabled ? 'ENABLED' : 'LOCKED') + '  (Alt+M)');
+}
+function _addEntity(name, color='#7fff00'){
+  eCnt++;
+  S.entities.push({id:'E'+String(eCnt).padStart(2,'0'), name:name||'Entity_'+eCnt, color});
+}
+function addEntity(name,color){
+  _addEntity(name,color);
+  renderEntityList();
+  const kf=getKf();
+  if(kf){ renderKfBody(kf, document.getElementById('kf-bs')); }
+}
+function removeEntity(ei){
+  S.entities.splice(ei,1);
+  renderEntityList();
+}
+function renderEntityList(){
+  const el=document.getElementById('entity-list');
+  el.innerHTML='';
+  S.entities.forEach((en,i)=>{
+    const d=document.createElement('div'); d.className='ei';
+    d.innerHTML=`<span class="etag" style="background:${en.color}22;border:1px solid ${en.color}55;color:${en.color}">●</span>
+      <span class="en">${X(en.name)}</span>
+      <span class="eid">${X(en.id)}</span>
+      <button class="ib" onclick="openEntityModal(${i})">✎</button>
+      <button class="ib d" onclick="removeEntity(${i})">✕</button>`;
+    el.appendChild(d);
+  });
+  el.insertAdjacentHTML('beforeend','<button class="addb" onclick="addEntity()">+ Add Entity</button>');
+}
+
+/* ═══════════════════════════════════════
+   PATH
+═══════════════════════════════════════ */
+function _addPath(name){
+  pCnt++;
+  S.paths.push({id:'PATH_'+String.fromCharCode(64+pCnt), name:name||'Path_'+pCnt});
+}
+function addPath(name){_addPath(name); renderDrawer();}
+function removePath(pi){S.paths.splice(pi,1); renderDrawer();}
+
+/* ═══════════════════════════════════════
+   WAVE
+═══════════════════════════════════════ */
+function _addWave(name){
+  wCnt++;
+  S.waves.push({id:'W'+String(wCnt).padStart(2,'0'), name:name||`Wave_${String(wCnt).padStart(2,'0')}`, keyframes:[]});
+}
+function addWave(name){ _addWave(name); if(S.selWave<0)S.selWave=0; renderWaveList(); renderTimeline(); }
+function removeWave(wi){
+  S.waves.splice(wi,1);
+  if(S.selWave>=S.waves.length)S.selWave=S.waves.length-1;
+  if(S.selKf&&S.selKf.wi===wi){S.selKf=null; updateKfPanel();}
+  renderWaveList(); renderTimeline();
+}
+function selWave(wi){ S.selWave=wi; renderWaveList(); renderTimeline(); }
+function renderWaveList(){
+  const wl=document.getElementById('wave-list'); wl.innerHTML='';
+  S.waves.forEach((w,i)=>{
+    const d=document.createElement('div'); d.className='wi'+(i===S.selWave?' on':'');
+    d.innerHTML=`<span class="wn">${X(w.name)}</span><span class="wb">${X(w.id)}</span>
+      <button class="ib" onclick="openWaveModal(${i})">✎</button>
+      <button class="ib d" onclick="removeWave(${i})">✕</button>`;
+    d.onclick=ev=>{ if(!ev.target.closest('button')) selWave(i); };
+    wl.appendChild(d);
+  });
+  wl.insertAdjacentHTML('beforeend','<button class="addb" onclick="addWave()">+ Add Wave</button>');
+}
+
+/* ═══════════════════════════════════════
+   KEYFRAME
+═══════════════════════════════════════ */
+function getPPS(){ return S.pps*S.zoom; }
+
+function addKfAt(wi, time){
+  time=Math.max(0,Math.min(S.duration, parseFloat(time.toFixed(2))));
+  const w=S.waves[wi]; if(!w)return;
+  const dup=w.keyframes.find(k=>Math.abs(k.time-time)*getPPS()<10);
+  if(dup){ selectKf(wi,dup.time); return; }
+  const kf={ time, pathWaves:[] };
+  if(S.paths.length) kf.pathWaves.push(mkPW());
+  w.keyframes.push(kf);
+  w.keyframes.sort((a,b)=>a.time-b.time);
+  selectKf(wi,time);
+}
+function mkPW(){
+  return{
+    pathId:S.paths[0]?.id||'',
+    waveId:S.waves[0]?.id||'',
+    spawnCommands:[{entityId:S.entities[0]?.id||'',quantity:5,spawnInterval:0.5}]
+  };
+}
+function selectKf(wi,time){
+  S.selKf={wi,time}; S.selWave=wi;
+  renderTimeline(); renderWaveList();
+  switchLeft('kf'); updateKfPanel();
+}
+function getKf(){
+  if(!S.selKf)return null;
+  const w=S.waves[S.selKf.wi]; if(!w)return null;
+  return w.keyframes.find(k=>Math.abs(k.time-S.selKf.time)<0.005)||null;
+}
+function delSelKf(){
+  if(!S.selKf)return;
+  const w=S.waves[S.selKf.wi]; if(!w)return;
+  w.keyframes=w.keyframes.filter(k=>Math.abs(k.time-S.selKf.time)>0.005);
+  S.selKf=null; updateKfPanel(); renderTimeline();
+}
+function moveKfTime(nt){
+  if(!S.selKf)return;
+  nt=Math.max(0,Math.min(S.duration,parseFloat((+nt).toFixed(2))));
+  const w=S.waves[S.selKf.wi]; if(!w)return;
+  const kf=getKf(); if(!kf)return;
+  const col=w.keyframes.find(k=>k!==kf&&Math.abs(k.time-nt)*getPPS()<8);
+  if(col)return;
+  kf.time=nt; w.keyframes.sort((a,b)=>a.time-b.time);
+  S.selKf.time=nt; renderTimeline();
+  document.getElementById('kf-ti').value=nt.toFixed(2);
+}
+
+/* ═══════════════════════════════════════
+   KF PANEL
+═══════════════════════════════════════ */
+function updateKfPanel(){
+  const kf=getKf();
+  const wi=S.selKf?S.selKf.wi:-1;
+  const w=wi>=0?S.waves[wi]:null;
+  document.getElementById('kf-wl').textContent=kf?`${w?.name||''} ◆ KF`:'No keyframe selected';
+  const tr=document.getElementById('kf-tr');
+  tr.style.display=kf?'flex':'none';
+  if(kf) document.getElementById('kf-ti').value=kf.time.toFixed(2);
+  const bs=document.getElementById('kf-bs');
+  if(!kf){ bs.innerHTML='<div class="kfe">Select a keyframe on the<br>timeline to edit spawn data.</div>'; return; }
+  renderKfBody(kf,bs);
+}
+
+function renderKfBody(kf,bs){
+  bs.innerHTML='';
+  kf.pathWaves.forEach((pw,pwi)=>{
+    const pOpts=S.paths.map(p=>`<option value="${X(p.id)}"${pw.pathId===p.id?' selected':''}>${X(p.name)}</option>`).join('');
+    const wOpts=S.waves.map(w=>`<option value="${X(w.id)}"${pw.waveId===w.id?' selected':''}>${X(w.name)}</option>`).join('');
+    const entityOpts=(selId)=>S.entities.map(en=>`<option value="${X(en.id)}"${en.id===selId?' selected':''}>${X(en.name)}</option>`).join('');
+
+    const div=document.createElement('div'); div.className='pwb';
+    div.innerHTML=`<div class="pwh">
+        <span class="pwn">#${pwi+1}</span>
+        <span style="color:var(--tx3);font-size:8px">Path:</span>
+        <select class="pws" id="pw-path-${pwi}" onchange="upPW(${pwi},'pathId',this.value)">${pOpts}</select>
+        <span style="color:var(--tx3);font-size:8px">Ref:</span>
+        <select class="pws" id="pw-wave-${pwi}" onchange="upPW(${pwi},'waveId',this.value)">${wOpts}</select>
+        <button class="pwdb" onclick="delPW(${pwi})">✕</button>
+      </div>
+      <div class="pwbody">
+        <div class="sgh"><span>Entity</span><span>Qty</span><span>Intv(s)</span><span></span></div>
+        ${pw.spawnCommands.map((sc,sci)=>`<div class="sg">
+          <select class="si" onchange="upSC(${pwi},${sci},'entityId',this.value)">${entityOpts(sc.entityId)}</select>
+          <input class="si" type="number" min="1" value="${sc.quantity}" onchange="upSC(${pwi},${sci},'quantity',+this.value)">
+          <input class="si" type="number" step="0.1" min="0.1" value="${sc.spawnInterval}" onchange="upSC(${pwi},${sci},'spawnInterval',+this.value)">
+          <button class="sd" onclick="delSC(${pwi},${sci})">✕</button>
+        </div>`).join('')}
+        <button class="ma" onclick="addSC(${pwi})">+ Spawn</button>
+      </div>`;
+    bs.appendChild(div);
+  });
+  const ab=document.createElement('button');
+  ab.className='ma'; ab.style.cssText='width:100%;margin-top:4px';
+  ab.textContent='+ PathWave'; ab.onclick=addPW;
+  bs.appendChild(ab);
+}
+
+function upPW(pi,f,v){
+  const kf=getKf(); if(!kf)return;
+  kf.pathWaves[pi][f]=v;
+  renderKfBody(kf, document.getElementById('kf-bs'));
+}
+function upSC(pi,si,f,v){ const kf=getKf(); if(kf) kf.pathWaves[pi].spawnCommands[si][f]=v; }
+function addPW(){ const kf=getKf(); if(!kf)return; kf.pathWaves.push(mkPW()); renderKfBody(kf,document.getElementById('kf-bs')); }
+function delPW(pi){ const kf=getKf(); if(!kf)return; kf.pathWaves.splice(pi,1); renderKfBody(kf,document.getElementById('kf-bs')); }
+function addSC(pi){ const kf=getKf(); if(!kf)return; kf.pathWaves[pi].spawnCommands.push({entityId:S.entities[0]?.id||'',quantity:5,spawnInterval:0.5}); renderKfBody(kf,document.getElementById('kf-bs')); }
+function delSC(pi,si){ const kf=getKf(); if(!kf)return; kf.pathWaves[pi].spawnCommands.splice(si,1); renderKfBody(kf,document.getElementById('kf-bs')); }
+
+/* ═══════════════════════════════════════
+   RENDER ALL
+═══════════════════════════════════════ */
+function renderAll(){ renderWaveList(); renderEntityList(); renderTimeline(); }
+
+/* ═══════════════════════════════════════
+   TIMELINE
+═══════════════════════════════════════ */
+function totalW(){ return S.duration*getPPS(); }
+function renderTimeline(){ renderRuler(); renderTracks(); }
+
+function renderRuler(){
+  const cv=document.getElementById('ruler-cv');
+  const cw=document.getElementById('ruler-cw');
+  const W=Math.max(totalW(), cw.clientWidth||600);
+  cv.width=W; cv.height=20;
+  const ctx=cv.getContext('2d');
+  const pps=getPPS();
+  ctx.fillStyle='#0b0e16'; ctx.fillRect(0,0,W,20);
+  const step=pps>160?1:pps>80?2:pps>40?5:10;
+  for(let t=0;t<=S.duration;t+=step){
+    const x=t*pps; const major=t%(step*5)===0;
+    ctx.strokeStyle=major?'#1e2c44':'#161e2e'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,20); ctx.stroke();
+    if(major||step>=5){ ctx.fillStyle='#4e6080'; ctx.font='8px JetBrains Mono'; ctx.fillText(t+'s',x+2,13); }
+  }
+  if(S.playTime>0||S.playing){
+    const px=S.playTime*pps;
+    ctx.fillStyle='#ff3355'; ctx.fillRect(px-1,0,2,20);
+  }
+}
+
+function renderTracks(){
+  const lcol=document.getElementById('lcol');
+  const cv=document.getElementById('tcv');
+  const wrap=document.getElementById('ccol');
+  const pps=getPPS();
+  const W=Math.max(totalW(), wrap.clientWidth||600);
+  const H=Math.max(S.waves.length*TH+20, 100);
+  cv.width=W; cv.height=H;
+  cv.style.width=W+'px'; cv.style.height=H+'px';
+  lcol.innerHTML=''; lcol.style.minHeight=H+'px';
+
+  S.waves.forEach((w,i)=>{
+    const d=document.createElement('div'); d.className='tl-lbl'+(i===S.selWave?' on':'');
+    d.style.height=TH+'px';
+    d.innerHTML=`<span class="ti">${i+1}</span>
+      <span class="tn">${X(w.name)}</span>
+      <button class="tb2" onclick="openWaveModal(${i})">✎</button>
+      <button class="tb2 d" onclick="removeWave(${i})">✕</button>`;
+    d.querySelector('.tn').onclick=()=>selWave(i);
+    lcol.appendChild(d);
+  });
+
+  const ctx=cv.getContext('2d'); ctx.clearRect(0,0,W,H);
+  const step=pps>160?1:pps>80?2:pps>40?5:10;
+
+  for(let t=0;t<=S.duration;t+=step){
+    const x=t*pps;
+    ctx.strokeStyle=t%(step*5)===0?'#161e2e60':'#161e2e28';
+    ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+  }
+
+  S.waves.forEach((w,i)=>{
+    const y=i*TH;
+    ctx.fillStyle=i===S.selWave?'#00c8ff05':i%2?'#0d141e40':'transparent';
+    ctx.fillRect(0,y,W,TH);
+    ctx.strokeStyle='#161e2e'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(0,y+TH); ctx.lineTo(W,y+TH); ctx.stroke();
+
+    w.keyframes.forEach(kf=>{
+      const x=kf.time*pps;
+      const sel=S.selKf&&S.selKf.wi===i&&Math.abs(S.selKf.time-kf.time)<0.005;
+      const pw=kf.pathWaves.length;
+      const ds=sel?8:6;
+      ctx.save(); ctx.translate(x,y+TH/2); ctx.rotate(Math.PI/4);
+      ctx.fillStyle=sel?'#ff6b2b':'#fbbf24';
+      ctx.strokeStyle=sel?'#ff6b2baa':'#fbbf2466';
+      ctx.lineWidth=1;
+      ctx.fillRect(-ds/2,-ds/2,ds,ds);
+      ctx.strokeRect(-ds/2,-ds/2,ds,ds);
+      ctx.restore();
+
+      if(sel){
+        ctx.save();
+        ctx.shadowColor='#ff6b2b'; ctx.shadowBlur=8;
+        ctx.translate(x,y+TH/2); ctx.rotate(Math.PI/4);
+        ctx.fillStyle='#ff6b2b55';
+        ctx.fillRect(-ds/2,-ds/2,ds,ds);
+        ctx.restore();
+      }
+
+      ctx.fillStyle=sel?'#ff6b2bcc':'#4e608088';
+      ctx.font='7px JetBrains Mono';
+      ctx.fillText(kf.time.toFixed(1)+'s', x-8, y+9);
+
+      if(pw>0){
+        ctx.fillStyle=sel?'#ff6b2bcc':'#fbbf2499';
+        ctx.font='bold 7px JetBrains Mono';
+        ctx.fillText(pw, x+7, y+TH-4);
+      }
+    });
+  });
+
+  const ph=document.getElementById('phl');
+  if(S.playing||S.playTime>0){
+    ph.style.display='block'; ph.style.left=S.playTime*pps+'px'; ph.style.height=H+'px';
+  } else { ph.style.display='none'; }
+
+  cv.onmousedown=canvasDown;
+}
+
+function canvasDown(ev){
+  if(S.playing)return;
+  const cv=document.getElementById('tcv');
+  const r=cv.getBoundingClientRect();
+  const mx=ev.clientX-r.left, my=ev.clientY-r.top;
+  const pps=getPPS(), time=mx/pps;
+  const wi=Math.floor(my/TH);
+  if(wi<0||wi>=S.waves.length)return;
+  const w=S.waves[wi];
+  const hit=w.keyframes.find(k=>Math.abs(k.time-time)*pps<12);
+
+  if(S.tool==='add'){ addKfAt(wi,time); return; }
+  if(S.tool==='erase'){
+    if(hit){
+      w.keyframes=w.keyframes.filter(k=>k!==hit);
+      if(S.selKf&&S.selKf.wi===wi&&Math.abs(S.selKf.time-hit.time)<0.005){S.selKf=null; updateKfPanel();}
+      renderTimeline();
+    }
+    return;
+  }
+  selWave(wi);
+  if(hit){
+    selectKf(wi,hit.time);
+    if(!S.moveEnabled) return;  // drag locked via Alt+M
+    const origTime=hit.time, startX=ev.clientX;
+    const onMove=e=>{
+      const dt=(e.clientX-startX)/getPPS();
+      const nt=Math.max(0,Math.min(S.duration,parseFloat((origTime+dt).toFixed(2))));
+      const kf=w.keyframes.find(k=>Math.abs(k.time-S.selKf.time)<0.005);
+      if(kf){ kf.time=nt; S.selKf.time=nt; document.getElementById('kf-ti').value=nt.toFixed(2); renderTracks(); }
+    };
+    const onUp=()=>{
+      w.keyframes.sort((a,b)=>a.time-b.time);
+      renderTimeline(); updateKfPanel();
+      window.removeEventListener('mousemove',onMove); window.removeEventListener('mouseup',onUp);
+    };
+    window.addEventListener('mousemove',onMove); window.addEventListener('mouseup',onUp);
+  } else {
+    S.selKf=null; updateKfPanel(); renderTimeline();
+  }
+}
+
+function syncRuler(el){ document.getElementById('ruler-cw').scrollLeft=el.scrollLeft; }
+
+/* ═══════════════════════════════════════
+   TOOLS / ZOOM / DUR
+═══════════════════════════════════════ */
+function setTool(t){
+  S.tool=t;
+  ['select','add','erase'].forEach(x=>document.getElementById('tool-'+x).classList.toggle('on',x===t));
+  document.getElementById('ccol').style.cursor=t==='add'?'cell':t==='erase'?'not-allowed':'default';
+}
+
+/* ▸ CHANGED: range 5%–200% (0.05–2.0), step 0.25 per click */
+function zoom(d){
+  S.zoom = Math.max(0.05, Math.min(2.0, S.zoom + d * 0.25));
+  document.getElementById('zv').textContent = Math.round(S.zoom * 100) + '%';
+  renderTimeline();
+}
+
+function setDur(v){ S.duration=Math.max(5,Math.min(600,v||60)); renderTimeline(); }
+
+/* ═══════════════════════════════════════
+   LEFT TABS
+═══════════════════════════════════════ */
+function switchLeft(tab){
+  ['builder','kf','entity'].forEach(t=>{
+    document.getElementById('vt-'+t).classList.toggle('on',t===tab);
+    document.getElementById('lp-'+t).classList.toggle('on',t===tab);
+  });
+}
+
+/* ═══════════════════════════════════════
+   PLAYTEST
+═══════════════════════════════════════ */
+function togglePlay(){
+  if(S.playing)return;
+  S.playing=true; S.playTime=0; S.pendingSpawns=[];
+  document.getElementById('play-btn').style.display='none';
+  document.getElementById('stop-btn').style.display='';
+  document.getElementById('pbadge').classList.add('on');
+  clearLog(); logSys('▶ PlayTest started');
+
+  const kfEvents=[];
+  S.waves.forEach(w=>w.keyframes.forEach(kf=>{
+    kfEvents.push({t:kf.time, w, kf});
+  }));
+  kfEvents.sort((a,b)=>a.t-b.t);
+
+  const kfFired=new Set();
+  const t0=performance.now();
+
+  function tick(){
+    if(!S.playing)return;
+    S.playTime=(performance.now()-t0)/1000;
+    document.getElementById('ph-t').textContent=S.playTime.toFixed(2)+'s';
+
+    kfEvents.forEach((ev,i)=>{
+      if(!kfFired.has(i)&&S.playTime>=ev.t){
+        kfFired.add(i);
+        logKFBlock(ev.t, ev.w, ev.kf);
+      }
+    });
+
+    renderTracks(); renderRuler();
+    if(S.playTime>=S.duration){ stopPlay(); return; }
+    S.rafId=requestAnimationFrame(tick);
+  }
+  S.rafId=requestAnimationFrame(tick);
+}
+
+function stopPlay(){
+  S.playing=false; if(S.rafId)cancelAnimationFrame(S.rafId);
+  document.getElementById('play-btn').style.display='';
+  document.getElementById('stop-btn').style.display='none';
+  document.getElementById('pbadge').classList.remove('on');
+  logSys(`■ Stopped @ ${S.playTime.toFixed(2)}s`);
+  S.playTime=0; document.getElementById('ph-t').textContent='0.00s';
+  renderTimeline();
+}
+
+/* ═══════════════════════════════════════
+   LOGGING  — compact KF block with end_time
+   ─────────────────────────────────────
+   end_spawn_time per spawn-command row =
+     kf.time + (quantity - 1) × spawnInterval
+   (first unit spawns at t=kf.time,
+    last unit spawns after (qty-1) intervals)
+   Aggregated rows use the MAX end_time across
+   all commands that share the same path+entity.
+═══════════════════════════════════════ */
+function logKFBlock(fireAt, wave, kf){
+  // Aggregate: key = pathId|entityId
+  const aggMap = new Map();
+  kf.pathWaves.forEach(pw => {
+    const path = S.paths.find(p => p.id === pw.pathId);
+    const pName = path ? path.name : pw.pathId;
+    pw.spawnCommands.forEach(sc => {
+      const ent = S.entities.find(en => en.id === sc.entityId);
+      const eName = ent ? ent.name : sc.entityId;
+      const key = pw.pathId + '|' + sc.entityId;
+
+      // end time: spawn sequence finishes at kf.time + quantity * interval
+      const endT = parseFloat((fireAt + sc.quantity * sc.spawnInterval).toFixed(2));
+
+      if(aggMap.has(key)){
+        const entry = aggMap.get(key);
+        entry.totalQty += sc.quantity;
+        entry.endTime = Math.max(entry.endTime, endT); // keep the latest end
+      } else {
+        aggMap.set(key, {
+          pathName: pName, pathId: pw.pathId,
+          entityName: eName, entityId: sc.entityId,
+          totalQty: sc.quantity,
+          endTime: endT
+        });
+      }
+    });
+  });
+
+  const waveIds   = new Set([wave.id]);
+  const pathIds   = new Set();
+  const entityIds = new Set();
+  aggMap.forEach(v => { pathIds.add(v.pathId); entityIds.add(v.entityId); });
+
+  const body  = document.getElementById('log-body');
+  const block = document.createElement('div');
+  block.className    = 'll';
+  block.dataset.type = 'KF';
+  block.dataset.wave = wave.id;
+  block.dataset.path = [...pathIds].join(',');
+  block.dataset.entity = [...entityIds].join(',');
+
+  // Header row
+  const hd = document.createElement('div');
+  hd.className = 'll-kf-hd';
+  hd.innerHTML =
+    `<span class="lt">[${fireAt.toFixed(2)}s]</span>`
+    + `<span style="color:var(--ac);font-weight:700;flex-shrink:0;min-width:28px">◆KF</span>`
+    + `<span class="lw">${X(wave.name)}</span>`
+    + `<span class="ll-sep"></span>`
+    + `<span style="color:var(--ac6);flex-shrink:0;font-size:8px">t=${fireAt.toFixed(2)}s</span>`;
+  block.appendChild(hd);
+
+  // Sub-rows — one per aggregated (path, entity), now with end_time
+  aggMap.forEach(v => {
+    const row = document.createElement('div');
+    row.className = 'll-spawn-row';
+    row.innerHTML =
+      `<span style="color:var(--tx3);flex-shrink:0">↳</span>`
+      + `<span class="ll-spawn-path">${X(v.pathName)}</span>`
+      + `<span class="ll-spawn-entity">${X(v.entityName)}</span>`
+      + `<span class="ll-spawn-qty">×${v.totalQty}</span>`
+      + `<span class="ll-sep"></span>`
+      // ▸ NEW: end-time badge
+      + `<span class="ll-spawn-end">end <b>${v.endTime.toFixed(2)}s</b></span>`;
+    block.appendChild(row);
+  });
+
+  if(!logLineVisible(block)) block.classList.add('hidden');
+  body.appendChild(block);
+  body.scrollTop = body.scrollHeight;
+}
+
+function logSys(msg){
+  const body=document.getElementById('log-body');
+  const d=document.createElement('div'); d.className='ll'; d.dataset.type='Sys';
+  if(!logLineVisible(d)) d.classList.add('hidden');
+  d.innerHTML=`<span class="ls">// ${X(msg)}</span>`;
+  body.appendChild(d); body.scrollTop=body.scrollHeight;
+}
+function clearLog(){ document.getElementById('log-body').innerHTML=''; }
+
+/* ═══════════════════════════════════════
+   LOG FILTERS
+═══════════════════════════════════════ */
+const activeFilters = new Set();
+let filterDropOpen = false;
+
+function buildFilterDropdown(){
+  const dd = document.getElementById('lf-dropdown');
+  dd.innerHTML = '';
+  const types = [
+    {key:'type:KF',    label:'KF Events',   dot:'#00c8ff'},
+    {key:'type:Entity',label:'Entity Spawn', dot:'#4dff91'},
+    {key:'type:Sys',   label:'System',       dot:'#4e6080'},
+  ];
+  addDDSep(dd, 'Type');
+  types.forEach(t => addDDItem(dd, t.key, t.label, t.dot, 'type'));
+  if(S.waves.length){ addDDSep(dd, 'Wave'); S.waves.forEach(w => addDDItem(dd, 'wave:'+w.id, w.name+' ('+w.id+')', '#ff6b2b', 'wave')); }
+  if(S.paths.length){ addDDSep(dd, 'Path'); S.paths.forEach(p => addDDItem(dd, 'path:'+p.id, p.name+' ('+p.id+')', '#a78bfa', 'path')); }
+  if(S.entities.length){ addDDSep(dd, 'Entity'); S.entities.forEach(en => addDDItem(dd, 'entity:'+en.id, en.name+' ('+en.id+')', en.color, 'entity')); }
+  updateFilterSummary();
+}
+function addDDSep(dd, label){ const s=document.createElement('div'); s.className='lfd-sep'; s.textContent=label; dd.appendChild(s); }
+function addDDItem(dd, key, label, dot, tag){
+  const isOn = activeFilters.size===0 || activeFilters.has(key);
+  const d = document.createElement('div');
+  d.className = 'lfd-item' + (isOn?' on':'');
+  d.dataset.key = key;
+  d.innerHTML = `<span class="lfd-chk">${isOn?'✓':''}</span>
+    <span class="lfd-dot" style="background:${dot}"></span>
+    <span class="lfd-name">${X(label)}</span>
+    <span class="lfd-tag">${tag}</span>`;
+  d.onclick = (e) => { e.stopPropagation(); toggleFilterKey(key); };
+  dd.appendChild(d);
+}
+function toggleFilterDropdown(){
+  filterDropOpen = !filterDropOpen;
+  const dd = document.getElementById('lf-dropdown');
+  if(filterDropOpen){ buildFilterDropdown(); dd.classList.add('open'); }
+  else { dd.classList.remove('open'); }
+}
+function closeFilterDropdown(){ filterDropOpen=false; document.getElementById('lf-dropdown').classList.remove('open'); }
+document.addEventListener('click', e => { if(!document.getElementById('log-filters').contains(e.target)) closeFilterDropdown(); });
+
+function toggleFilterKey(key){
+  if(activeFilters.size === 0){
+    getAllFilterKeys().forEach(k => { if(k!==key) activeFilters.add(k); });
+  } else if(activeFilters.has(key)){
+    activeFilters.delete(key);
+  } else {
+    activeFilters.add(key);
+    const allKeys = getAllFilterKeys();
+    if(allKeys.every(k => activeFilters.has(k))) activeFilters.clear();
+  }
+  buildFilterDropdown();
+  applyFilters();
+}
+function getAllFilterKeys(){
+  const keys = ['type:KF','type:Entity','type:Sys'];
+  S.waves.forEach(w => keys.push('wave:'+w.id));
+  S.paths.forEach(p => keys.push('path:'+p.id));
+  S.entities.forEach(en => keys.push('entity:'+en.id));
+  return keys;
+}
+function updateFilterSummary(){
+  const s = document.getElementById('lf-summary');
+  if(activeFilters.size === 0){ s.textContent = 'All'; return; }
+  const parts = [];
+  if(activeFilters.has('type:KF')) parts.push('KF');
+  if(activeFilters.has('type:Entity')) parts.push('Entity');
+  if(activeFilters.has('type:Sys')) parts.push('Sys');
+  const wNames = S.waves.filter(w=>activeFilters.has('wave:'+w.id)).map(w=>w.name);
+  const pNames = S.paths.filter(p=>activeFilters.has('path:'+p.id)).map(p=>p.name);
+  const eNames = S.entities.filter(en=>activeFilters.has('entity:'+en.id)).map(en=>en.name);
+  const all = [...parts,...wNames,...pNames,...eNames];
+  s.textContent = all.length ? all.join(', ') : 'None';
+}
+
+function applyFilters(){
+  document.querySelectorAll('#log-body .ll').forEach(el => {
+    el.classList.toggle('hidden', !logLineVisible(el));
+  });
+}
+
+function logLineVisible(el){
+  if(activeFilters.size === 0) return true;
+  const type   = el.dataset.type   || 'Sys';
+  const wave   = el.dataset.wave   || '';
+  const path   = el.dataset.path   || '';
+  const entity = el.dataset.entity || '';
+
+  const typeFilters = ['type:KF','type:Entity','type:Sys'].filter(k=>activeFilters.has(k));
+  if(typeFilters.length && !activeFilters.has('type:'+type)) return false;
+
+  const waveFilters = [...activeFilters].filter(k=>k.startsWith('wave:'));
+  if(waveFilters.length && wave && !wave.split(',').some(id=>activeFilters.has('wave:'+id))) return false;
+
+  const pathFilters = [...activeFilters].filter(k=>k.startsWith('path:'));
+  if(pathFilters.length && path && !path.split(',').some(id=>activeFilters.has('path:'+id))) return false;
+
+  const entityFilters = [...activeFilters].filter(k=>k.startsWith('entity:'));
+  if(entityFilters.length && entity && !entity.split(',').some(id=>activeFilters.has('entity:'+id))) return false;
+
+  return true;
+}
+
+/* ═══════════════════════════════════════
+   DRAWER
+═══════════════════════════════════════ */
+function toggleDrawer(mode){
+  if(S.drawerMode===mode){ closeDrawer(); return; }
+  S.drawerMode=mode;
+  document.getElementById('drawer').classList.add('on');
+  document.getElementById('si-path').classList.toggle('on',mode==='path');
+  document.getElementById('si-result').classList.toggle('on',mode==='result');
+  document.getElementById('dr-t').textContent=mode==='path'?'Paths':'Result';
+  renderDrawer();
+}
+function closeDrawer(){
+  S.drawerMode=null;
+  document.getElementById('drawer').classList.remove('on');
+  ['si-path','si-result'].forEach(id=>document.getElementById(id).classList.remove('on'));
+}
+function renderDrawer(){
+  if(!S.drawerMode)return;
+  const body=document.getElementById('dr-body'); body.innerHTML='';
+  if(S.drawerMode==='path'){
+    body.innerHTML=`<div class="st">Paths <button onclick="addPath()">＋</button></div>`;
+    S.paths.forEach((p,i)=>{
+      const d=document.createElement('div'); d.className='pi';
+      d.innerHTML=`<span class="pn">${X(p.name)}</span><span class="pid">${X(p.id)}</span>
+        <button class="pb" onclick="openPathModal(${i})">✎</button>
+        <button class="pb d" onclick="removePath(${i})">✕</button>`;
+      body.appendChild(d);
+    });
+    body.insertAdjacentHTML('beforeend','<button class="addb" onclick="addPath()">+ Add Path</button>');
+  } else {
+    let totKf=0,totSp=0;
+    S.waves.forEach(w=>{totKf+=w.keyframes.length; w.keyframes.forEach(kf=>kf.pathWaves.forEach(pw=>pw.spawnCommands.forEach(sc=>totSp+=sc.quantity)));});
+    const rb=document.createElement('div'); rb.className='rb';
+    rb.innerHTML=`<div class="rbt">Level Summary</div>
+      <div class="rbr"><span>Level</span><b>${X(document.getElementById('wl-name').value)}</b></div>
+      <div class="rbr"><span>Duration</span><b>${S.duration}s</b></div>
+      <div class="rbr"><span>Waves</span><b>${S.waves.length}</b></div>
+      <div class="rbr"><span>Paths</span><b>${S.paths.length}</b></div>
+      <div class="rbr"><span>Entities</span><b>${S.entities.length}</b></div>
+      <div class="rbr"><span>Total KF</span><b>${totKf}</b></div>
+      <div class="rbr"><span>Total Spawns</span><b>${totSp}</b></div>`;
+    body.appendChild(rb);
+    S.waves.forEach(w=>{
+      if(!w.keyframes.length)return;
+      let ws=0; w.keyframes.forEach(kf=>kf.pathWaves.forEach(pw=>pw.spawnCommands.forEach(sc=>ws+=sc.quantity)));
+      const rb2=document.createElement('div'); rb2.className='rb'; rb2.style.marginTop='4px';
+      rb2.innerHTML=`<div class="rbt">${X(w.name)}</div>
+        <div class="rbr"><span>KF count</span><b>${w.keyframes.length}</b></div>
+        <div class="rbr"><span>Spawns</span><b>${ws}</b></div>
+        <div class="rbr"><span>Times</span><b style="font-size:8px">${w.keyframes.map(k=>k.time.toFixed(1)+'s').join(' ')}</b></div>`;
+      body.appendChild(rb2);
+    });
+  }
+}
+
+/* ═══════════════════════════════════════
+   MODALS
+═══════════════════════════════════════ */
+function openWaveModal(i){
+  const w=S.waves[i];
+  showModal(`<h3>Edit Wave</h3>
+    <div class="fld"><label>Name</label><input id="mw-n" value="${X(w.name)}"></div>
+    <div class="fld"><label>ID</label><input id="mw-i" value="${X(w.id)}"></div>
+    <div class="mbtns"><button class="hb" onclick="closeModal()">Cancel</button>
+    <button class="hb ok" onclick="saveWave(${i})">Save</button></div>`);
+}
+function saveWave(i){
+  S.waves[i].name=document.getElementById('mw-n').value||S.waves[i].name;
+  S.waves[i].id=document.getElementById('mw-i').value||S.waves[i].id;
+  closeModal(); renderAll();
+}
+function openPathModal(i){
+  const p=S.paths[i];
+  showModal(`<h3>Edit Path</h3>
+    <div class="fld"><label>Name</label><input id="mp-n" value="${X(p.name)}"></div>
+    <div class="fld"><label>ID</label><input id="mp-i" value="${X(p.id)}"></div>
+    <div class="mbtns"><button class="hb" onclick="closeModal()">Cancel</button>
+    <button class="hb ok" onclick="savePath(${i})">Save</button></div>`);
+}
+function savePath(i){
+  S.paths[i].name=document.getElementById('mp-n').value||S.paths[i].name;
+  S.paths[i].id=document.getElementById('mp-i').value||S.paths[i].id;
+  closeModal(); renderDrawer();
+}
+function openEntityModal(i){
+  const en=S.entities[i];
+  showModal(`<h3>Edit Entity</h3>
+    <div class="fld"><label>Name</label><input id="me-n" value="${X(en.name)}"></div>
+    <div class="fld"><label>ID</label><input id="me-i" value="${X(en.id)}"></div>
+    <div class="fld"><label>Color</label><input type="color" id="me-c" value="${en.color}" style="width:60px;height:28px;padding:2px;cursor:pointer;border-radius:2px;"></div>
+    <div class="mbtns"><button class="hb" onclick="closeModal()">Cancel</button>
+    <button class="hb ok" onclick="saveEntity(${i})">Save</button></div>`);
+}
+function saveEntity(i){
+  S.entities[i].name=document.getElementById('me-n').value||S.entities[i].name;
+  S.entities[i].id=document.getElementById('me-i').value||S.entities[i].id;
+  S.entities[i].color=document.getElementById('me-c').value;
+  closeModal(); renderEntityList();
+  const kf=getKf(); if(kf) renderKfBody(kf,document.getElementById('kf-bs'));
+}
+function showModal(html){ document.getElementById('modal-inner').innerHTML=html; document.getElementById('modal').style.display='flex'; }
+function closeModal(){ document.getElementById('modal').style.display='none'; }
+
+/* ═══════════════════════════════════════
+   IMPORT / EXPORT
+═══════════════════════════════════════ */
+function doExport(){
+  const data={
+    name:document.getElementById('wl-name').value,
+    duration:S.duration, paths:S.paths, entities:S.entities,
+    waves:S.waves.map(w=>{
+      const kfsSorted=[...w.keyframes].sort((a,b)=>a.time-b.time);
+      const lastKf=kfsSorted[kfsSorted.length-1];
+      const endTime=lastKf ? parseFloat((lastKf.time+1).toFixed(2)) : 1;
+      return {
+        id:w.id, name:w.name,
+        endTime,
+        keyframes:kfsSorted.map(kf=>({time:kf.time,pathWaves:JSON.parse(JSON.stringify(kf.pathWaves||[]))}))
+      };
+    })
+  };
+  const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(b); const a=document.createElement('a');
+  a.href=u; a.download=(data.name||'WaveLevel')+'.json'; a.click(); URL.revokeObjectURL(u);
+  logSys('Exported: '+(data.name||'WaveLevel')+'.json');
+}
+function doImport(){ document.getElementById('file-inp').click(); }
+function handleImport(ev){
+  const f=ev.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const raw=JSON.parse(e.target.result);
+      const lvlName  = String(raw.name||'Unnamed');
+      const duration = Math.max(5, Math.min(600, Number(raw.duration)||60));
+      const paths = (Array.isArray(raw.paths)?raw.paths:[]).map(p=>({
+        id:String(p.id||''), name:String(p.name||''),
+      })).filter(p=>p.id);
+      const entities = (Array.isArray(raw.entities)?raw.entities:[]).map(en=>({
+        id:String(en.id||''), name:String(en.name||''), color:String(en.color||'#7fff00'),
+      })).filter(en=>en.id);
+      const waves = (Array.isArray(raw.waves)?raw.waves:[]).map(w=>({
+        id:String(w.id||''), name:String(w.name||''),
+        keyframes: (Array.isArray(w.keyframes)?w.keyframes:[]).map(kf=>({
+          time: (isNaN(parseFloat(kf.time)) ? 0 : parseFloat(kf.time)),
+          pathWaves: (Array.isArray(kf.pathWaves)?kf.pathWaves:[]).map(pw=>({
+            pathId:String(pw.pathId||''), waveId:String(pw.waveId||''),
+            spawnCommands: (Array.isArray(pw.spawnCommands)?pw.spawnCommands:[]).map(sc=>({
+              entityId:String(sc.entityId||''),
+              quantity:Math.max(1, parseInt(sc.quantity)||1),
+              spawnInterval:Math.max(0.01, parseFloat(sc.spawnInterval)||0.5),
+            })),
+          })),
+        })).sort((a,b)=>a.time-b.time).filter((kf,i,arr)=>i===0||Math.abs(kf.time-arr[i-1].time)>0.001),
+      })).filter(w=>w.id);
+
+      document.getElementById('wl-name').value = lvlName;
+      S.duration = duration;
+      document.getElementById('dur-inp').value = duration;
+      S.paths=paths; S.entities=entities; S.waves=waves;
+      S.selWave=waves.length?0:-1; S.selKf=null;
+
+      wCnt=S.waves.reduce((mx,w)=>Math.max(mx,parseInt((w.id||'').replace(/\D/g,''))||0),0);
+      eCnt=S.entities.reduce((mx,en)=>Math.max(mx,parseInt((en.id||'').replace(/\D/g,''))||0),0);
+      pCnt=S.paths.reduce((mx,p)=>{
+        const code=(p.id||'').replace(/^PATH_/,'');
+        const n=code.length===1?(code.charCodeAt(0)-64):(parseInt(code)||0);
+        return Math.max(mx,isNaN(n)?0:n);
+      },0);
+
+      updateKfPanel(); renderAll();
+      const kfTotal=waves.reduce((s,w)=>s+w.keyframes.length,0);
+      logSys('Imported: '+f.name+'  ['+waves.length+' waves · '+kfTotal+' KFs · '+entities.length+' entities · '+paths.length+' paths]');
+      waves.forEach(w=>{ logSys('  '+w.name+' → '+w.keyframes.length+' KF(s): '+w.keyframes.map(k=>k.time.toFixed(2)+'s').join(', ')); });
+    }catch(err){
+      logSys('ERROR importing: '+err.message);
+      console.error(err);
+    }
+    ev.target.value='';
+  };
+  r.readAsText(f);
+}
+
+/* ═══════════════════════════════════════
+   UTIL
+═══════════════════════════════════════ */
+function X(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+let rt; window.addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(renderTimeline,80); });
+
+/* ═══════════════════════════════════════
+   START
+═══════════════════════════════════════ */
+init();
+</script>
+</body>
+</html>

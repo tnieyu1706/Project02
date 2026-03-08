@@ -31,7 +31,7 @@ namespace Game.Td
             {
                 Vector2 flagWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
-                if (TdTowerContextGUI.CurrentTowerContextRuntime
+                if (TdTowerContextGUI.CurrentContext
                     .TryGetComponent(out TowerControlBehaviour controlBehaviour))
                 {
                     controlBehaviour.RallyAt(flagWorldPos);

@@ -12,11 +12,11 @@ namespace TnieYuPackage.Utils.Components
         {
             foreach (var obj in objects)
             {
-                if (obj.activeSelf) obj.SetActive(false);
+                if (!obj.activeSelf) obj.SetActive(true);
             }
             foreach (var behaviour in behaviours)
             {
-                if (behaviour.enabled) behaviour.enabled = false;
+                if (!behaviour.enabled) behaviour.enabled = true;
             }
 
             objects.ForEach(o => o.SetActive(false));

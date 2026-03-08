@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3431319199765663943}
   - component: {fileID: 6038877565856423993}
   - component: {fileID: 5777142260493074018}
-  - component: {fileID: 2387255282144908364}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -46,7 +45,7 @@ Animator:
   m_GameObject: {fileID: 1469061889602349850}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: acdad41589876d84f9dab6e87f53d7e4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -70,35 +69,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7ce9643fdf8414fae33f608d0823376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Tower.TowerAttributeRuntime
-  animator: {fileID: 6038877565856423993}
   currentPreset: {fileID: 0}
---- !u!50 &2387255282144908364
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1469061889602349850}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  animator: {fileID: 6038877565856423993}
+  spriteLibrary: {fileID: 3410127496318298893}
 --- !u!1 &6680773108961353573
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,6 +82,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4068536575866234179}
   - component: {fileID: 6526173109628258141}
+  - component: {fileID: 3410127496318298893}
+  - component: {fileID: 2685047295003848492}
   m_Layer: 0
   m_Name: Skin
   m_TagString: Untagged
@@ -180,16 +155,46 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a6aed51396f7ad544bf31ea88c2b2844, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.9375, y: 1.90625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &3410127496318298893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680773108961353573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteLibrary
+  m_Library: []
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 3672bc70a8be27640a1504331b16ec73, type: 3}
+--- !u!114 &2685047295003848492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680773108961353573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
+  m_CategoryHash: 0
+  m_labelHash: 0
+  m_SpriteKey: 0
+  m_SpriteHash: 1024277896
 --- !u!1 &7040047337178141361
 GameObject:
   m_ObjectHideFlags: 0

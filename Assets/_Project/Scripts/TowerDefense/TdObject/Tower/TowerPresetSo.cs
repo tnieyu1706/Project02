@@ -5,26 +5,11 @@ using UnityEngine;
 namespace Game.Td
 {
     [CreateAssetMenu(fileName = "Tower", menuName = "Game/TD/Tower")]
-    public class TowerPresetSo : ScriptableObject
+    public class TowerPresetSo : TdObjectPresetSo
     {
         public string towerId;
         public Sprite towerIcon;
-
-        public RuntimeAnimatorController animatorController;
-
-        [SerializeReference]
-        [AbstractSupport(
-            classAssembly: typeof(ITdObjectBehaviourInstaller),
-            abstractTypes: typeof(ITdObjectBehaviourInstaller)
-        )]
-        public ITdObjectBehaviourInstaller behaviourInstaller;
-
-        [SerializeReference]
-        [AbstractSupport(
-            classAssembly: typeof(ITdObjectConfigurator),
-            abstractTypes: typeof(ITdObjectConfigurator)
-        )]
-        public List<ITdObjectConfigurator> configurators = new();
+        public int towerPriceValue;
 
         [SerializeReference]
         [AbstractSupport(

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c2f520c3a992a58449855073fa8562b3
+guid: a80af1f8ed13e6e43a439e1a106e3b1e
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -66,7 +66,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 48
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -87,7 +87,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -131,12 +131,12 @@ TextureImporter:
       name: D_Walk_0
       rect:
         serializedVersion: 2
-        x: 12
-        y: 9
-        width: 23
-        height: 29
+        x: 0
+        y: 0
+        width: 48
+        height: 48
       alignment: 9
-      pivot: {x: 0.5217391, y: 0.10344828}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -153,12 +153,12 @@ TextureImporter:
       name: D_Walk_1
       rect:
         serializedVersion: 2
-        x: 60
-        y: 9
-        width: 23
-        height: 29
+        x: 48
+        y: 0
+        width: 48
+        height: 48
       alignment: 9
-      pivot: {x: 0.5217391, y: 0.10344828}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -175,12 +175,12 @@ TextureImporter:
       name: D_Walk_2
       rect:
         serializedVersion: 2
-        x: 108
-        y: 9
-        width: 23
-        height: 29
+        x: 96
+        y: 0
+        width: 48
+        height: 48
       alignment: 9
-      pivot: {x: 0.5217391, y: 0.10344828}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -197,12 +197,12 @@ TextureImporter:
       name: D_Walk_3
       rect:
         serializedVersion: 2
-        x: 156
-        y: 9
-        width: 23
-        height: 29
+        x: 144
+        y: 0
+        width: 48
+        height: 48
       alignment: 9
-      pivot: {x: 0.5217391, y: 0.10344828}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -219,12 +219,12 @@ TextureImporter:
       name: D_Walk_4
       rect:
         serializedVersion: 2
-        x: 204
-        y: 9
-        width: 23
-        height: 29
+        x: 192
+        y: 0
+        width: 48
+        height: 48
       alignment: 9
-      pivot: {x: 0.5217391, y: 0.10344828}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -241,12 +241,12 @@ TextureImporter:
       name: D_Walk_5
       rect:
         serializedVersion: 2
-        x: 252
-        y: 9
-        width: 23
-        height: 29
+        x: 240
+        y: 0
+        width: 48
+        height: 48
       alignment: 9
-      pivot: {x: 0.5217391, y: 0.10344828}
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -263,7 +263,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 398387d791d016347b327257bef6b3fd
+    spriteID: 2943aefa26c362744bc9cc796fb14d62
     internalID: 0
     vertices: []
     indices: 
@@ -273,7 +273,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":6.0,"y":1.0},"gridSpriteSize":{"x":23.0,"y":29.0},"gridSpriteOffset":{"x":12.0,"y":10.0},"gridSpritePadding":{"x":25.0,"y":0.0},"pivot":{"x":0.5,"y":0.1034482792019844},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":9,"pivotUnitMode":1,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.25},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":9,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       D_Walk_0: 6808733625049879353
       D_Walk_1: 2958005836100429432
