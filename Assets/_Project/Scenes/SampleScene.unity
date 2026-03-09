@@ -1218,6 +1218,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower
       objectReference: {fileID: 0}
+    - target: {fileID: 1469061889602349850, guid: 8c6817bce2e9fe648bb0ec5cd7177782, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3431319199765663943, guid: 8c6817bce2e9fe648bb0ec5cd7177782, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.204615
