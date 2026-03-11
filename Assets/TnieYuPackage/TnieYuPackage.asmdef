@@ -3,7 +3,10 @@
     "rootNamespace": "",
     "references": [
         "EditorAttributes",
-        "SetProperty"
+        "SetProperty",
+        "UniTask",
+        "Unity.InputSystem",
+        "Unity.2D.Tilemap.Extras"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,11 +1,11 @@
 using UnityEngine;
 
-namespace TnieYuPackage.DesignPatterns.Patterns.Singleton
+namespace TnieYuPackage.DesignPatterns
 {
     public class SingletonBehavior<T> : MonoBehaviour
         where T : Component
     {
-        [SerializeField] private bool dontDestroyOnLoad = true;
+        [SerializeField] protected bool dontDestroyOnLoad = true;
 
         private static T instance;
 

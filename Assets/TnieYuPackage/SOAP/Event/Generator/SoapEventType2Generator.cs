@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace TnieYuPackage.SOAP.Event.Generator
+namespace TnieYuPackage.SOAP
 {
     public class SoapEventType2Generator : EditorWindow
     {

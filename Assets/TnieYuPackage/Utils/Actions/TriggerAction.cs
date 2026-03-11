@@ -1,6 +1,6 @@
 using System;
 
-namespace TnieYuPackage.Utils.Actions
+namespace TnieYuPackage.Utils
 {
     /// <summary>
     /// TriggerAction is a normal Action with ensure when func call & return true

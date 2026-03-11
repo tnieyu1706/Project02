@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TnieYuPackage.DesignPatterns.Patterns.SubAsset
+namespace TnieYuPackage.DesignPatterns
 {
     public abstract class BaseSubAsset : ScriptableObject
     {

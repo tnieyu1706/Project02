@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace TnieYuPackage.SOAP.Data.Generator
+namespace TnieYuPackage.SOAP
 {
     public class SoapAbstractDataTypeGenerator : EditorWindow
     {

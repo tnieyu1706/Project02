@@ -1,37 +1,53 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TnieYuPackage.CustomAttributes.Runtime;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
+using ZLinq;
 
-namespace TnieYuPackage.CustomAttributes.Editor
+namespace TnieYuPackage.CustomAttributes
 {
     [CustomPropertyDrawer(typeof(AbstractSupportAttribute))]
     public class AbstractSupportDrawer : PropertyDrawer
     {
-        private Type[] _implementations;
+        private readonly List<Type> implementations = new();
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             var attr = (AbstractSupportAttribute)attribute;
-            var abstractType = attr.AbstractType ?? fieldInfo.FieldType;
+            Type[] abstractTypes = attr.AbstractTypes ?? new[] { fieldInfo.FieldType };
+            Type[] excludedTypes = attr.ExcludedTypes ?? Type.EmptyTypes;
 
-            var root = new VisualElement();
-            root.style.flexDirection = FlexDirection.Column;
-            root.style.marginBottom = 2;
+            var root = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Column,
+                    marginBottom = 2
+                }
+            };
 
-            if (_implementations == null)
-                CacheImplementations(abstractType);
+            if (implementations.Count == 0)
+            {
+                if (attr.Assembly != null)
+                    implementations.AddRange(GetImplementationsOfAssembly(attr.Assembly, abstractTypes, excludedTypes));
+                else
+                    CacheFullImplementations(abstractTypes, excludedTypes);
+            }
 
+            // ================= HEADER =================
             var header = new VisualElement
             {
                 style =
                 {
                     flexDirection = FlexDirection.Row,
-                    alignItems = Align.Center
+                    alignItems = Align.Center,
+                    position = Position.Relative, // 🔥 QUAN TRỌNG
+                    minHeight = 20
                 }
             };
 
@@ -40,12 +56,12 @@ namespace TnieYuPackage.CustomAttributes.Editor
                 style =
                 {
                     unityFontStyleAndWeight = FontStyle.Bold,
-                    flexGrow = 1
+                    marginRight = 4
                 }
             };
-            header.Add(label);
 
             var fieldContainer = new VisualElement();
+
             root.Add(header);
             root.Add(fieldContainer);
 
@@ -64,26 +80,52 @@ namespace TnieYuPackage.CustomAttributes.Editor
             void RefreshUI()
             {
                 header.Clear();
+
+                // ===== Left side (flow layout)
                 header.Add(label);
+
+                if (property.managedReferenceValue != null)
+                {
+                    var typeName = property.managedReferenceFullTypename
+                        .Split(' ')
+                        .Last();
+
+                    var typeLabel = new Label($"({typeName})")
+                    {
+                        style =
+                        {
+                            color = new Color(0.6f, 0.8f, 0.9f),
+                            unityFontStyleAndWeight = FontStyle.Italic,
+                            marginLeft = 4,
+                            marginRight = 28 // 🔥 chừa chỗ cho button
+                        }
+                    };
+
+                    header.Add(typeLabel);
+                }
+
+                // ===== Button overlay (absolute)
+                Button actionButton;
 
                 if (property.managedReferenceValue == null)
                 {
-                    var selectButton = new Button(() =>
+                    actionButton = new Button(() =>
                     {
                         var menu = new GenericMenu();
-                        foreach (var type in _implementations)
+
+                        foreach (var type in implementations)
                         {
                             menu.AddItem(new GUIContent(type.Name), false, () =>
                             {
                                 var instance = Activator.CreateInstance(type);
+
                                 property.serializedObject.Update();
                                 property.managedReferenceValue = instance;
                                 property.serializedObject.ApplyModifiedProperties();
 
-                                // Rebuild toàn bộ UI
                                 RefreshUI();
                                 EditorApplication.delayCall +=
-                                    UnityEditorInternal.InternalEditorUtility.RepaintAllViews;
+                                    InternalEditorUtility.RepaintAllViews;
                             });
                         }
 
@@ -93,43 +135,33 @@ namespace TnieYuPackage.CustomAttributes.Editor
                         text = "+",
                         tooltip = "Select type"
                     };
-                    selectButton.style.width = 24;
-                    selectButton.style.marginLeft = 2;
-
-                    header.Add(selectButton);
                 }
                 else
                 {
-                    var typeLabel = new Label($"({property.managedReferenceFullTypename.Split(' ').Last()})")
-                    {
-                        style =
-                        {
-                            color = new Color(0.6f, 0.8f, 0.9f),
-                            unityFontStyleAndWeight = FontStyle.Italic,
-                            marginLeft = 4
-                        }
-                    };
-                    header.Add(typeLabel);
-
-                    var resetButton = new Button(() =>
+                    actionButton = new Button(() =>
                     {
                         property.serializedObject.Update();
                         property.managedReferenceValue = null;
                         property.serializedObject.ApplyModifiedProperties();
 
                         RefreshUI();
-                        EditorApplication.delayCall += UnityEditorInternal.InternalEditorUtility.RepaintAllViews;
+                        EditorApplication.delayCall +=
+                            InternalEditorUtility.RepaintAllViews;
                     })
                     {
                         text = "X",
                         tooltip = "Reset value"
                     };
-                    resetButton.style.width = 24;
-                    resetButton.style.marginLeft = 2;
-                    header.Add(resetButton);
                 }
 
-                // Cập nhật lại property hiển thị phía dưới
+                actionButton.style.position = Position.Absolute;
+                actionButton.style.right = 0;
+                actionButton.style.top = 0;
+                actionButton.style.width = 24;
+                actionButton.style.height = 18;
+
+                header.Add(actionButton);
+
                 BuildPropertyField();
             }
 
@@ -137,31 +169,35 @@ namespace TnieYuPackage.CustomAttributes.Editor
             return root;
         }
 
-        private void CacheImplementations(Type abstractType)
+        private void CacheFullImplementations(Type[] abstractTypes, Type[] excludedTypes)
         {
-            _implementations = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a =>
-                {
-                    Type[] types;
-                    try
-                    {
-                        types = a.GetTypes();
-                    }
-                    catch (ReflectionTypeLoadException e)
-                    {
-                        types = e.Types.Where(t => t != null).ToArray();
-                    }
+            implementations.Clear();
 
-                    return types;
-                })
-                .Where(t =>
-                    abstractType.IsAssignableFrom(t)
-                    && !t.IsAbstract
-                    && !t.IsInterface
-                    && t.GetCustomAttribute<SerializableAttribute>() != null
-                )
-                .OrderBy(t => t.Name)
-                .ToArray();
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                implementations.AddRange(GetImplementationsOfAssembly(assembly, abstractTypes, excludedTypes));
+            }
+        }
+
+        private Type[] GetImplementationsOfAssembly(Assembly assembly, Type[] abstractTypes, Type[] excludedTypes)
+        {
+            try
+            {
+                return assembly.GetTypes()
+                    .AsValueEnumerable()
+                    .Where(t =>
+                        !t.IsAbstract
+                        && !t.IsInterface
+                        && t.GetCustomAttribute<SerializableAttribute>() != null
+                        && abstractTypes.All(abs => abs.IsAssignableFrom(t))
+                        && !excludedTypes.Any(ex => ex.IsAssignableFrom(t)))
+                    .OrderBy(t => t.Name)
+                    .ToArray();
+            }
+            catch
+            {
+                return Array.Empty<Type>();
+            }
         }
     }
 }

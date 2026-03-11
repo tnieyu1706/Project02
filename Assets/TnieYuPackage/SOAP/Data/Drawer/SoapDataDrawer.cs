@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace TnieYuPackage.SOAP.Data.Drawer
+namespace TnieYuPackage.SOAP
 {
     [CustomPropertyDrawer(typeof(SoapData<>))]
     [CustomPropertyDrawer(typeof(SoapAbstractData<>))]

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136de8d5777f465aaa7cac2e83db4452, type: 3}
+  m_Name: Soldier_01
+  m_EditorClassIdentifier: TowerDefense::Game.Td.SoldierPresetSo
+  libraryAsset: {fileID: 7108339969198208228, guid: 2eb1a0d8d9f68964aaee823cc031ea3d, type: 3}
+  behaviourInstaller:
+    rid: 1479203854303887479
+  configurators:
+  - rid: 1479203874712322134
+  maxHp: 32
+  def: 3
+  entityLayer: Td Soldier
+  references:
+    version: 2
+    RefIds:
+    - rid: 1479203854303887479
+      type: {class: TdObjectAttackBehaviourInstaller, ns: Game.Td, asm: TowerDefense}
+      data:
+        trackingLayer: 1024
+        attackDmg: 4
+        attackRange: 0.8
+        attackDelay: 0.8
+    - rid: 1479203874712322134
+      type: {class: TdObjectEachAttackConfigurator, ns: Game.Td, asm: TowerDefense}
+      data: 

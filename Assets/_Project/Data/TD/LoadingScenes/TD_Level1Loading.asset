@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8811eedc33fe4a54bc07a952a7195839, type: 3}
+  m_Name: TD_Level1Loading
+  m_EditorClassIdentifier: 
+  groupName: TD_Level1
+  scenes:
+  - reference:
+      asset: {fileID: 102900000, guid: 2ed26c0622bf4ee49972fcf34c08efc8, type: 3}
+      guid: 2ed26c0622bf4ee49972fcf34c08efc8
+    sceneType: 0
+    alwaysReload: 0
+    completedAction:
+      rid: -2
+  - reference:
+      asset: {fileID: 102900000, guid: ff49758905358d54fb371d3f845dcda4, type: 3}
+      guid: ff49758905358d54fb371d3f845dcda4
+    sceneType: 3
+    alwaysReload: 1
+    completedAction:
+      rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e69c91766a48edbc5bb7302b2c43ea, type: 3}
+  m_Name: Enemy_04
+  m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Entity.EntityPresetSo
+  libraryAsset: {fileID: 7108339969198208228, guid: d67b1596cbdc1ed46aea132e62e5bd59, type: 3}
+  behaviourInstaller:
+    rid: 1479203854303887477
+  configurators: []
+  maxHp: 8
+  def: 2
+  entityLayer: Td Fly Enemy
+  enemyId: enemy_04
+  moveSpeed: 2
+  mapDmg: 1
+  earningMoney: 8
+  references:
+    version: 2
+    RefIds:
+    - rid: 1479203854303887477
+      type: {class: TdObjectAttackBehaviourInstaller, ns: Game.Td, asm: TowerDefense}
+      data:
+        trackingLayer: 0
+        attackDmg: 0
+        attackRange: 0.1
+        attackDelay: 1

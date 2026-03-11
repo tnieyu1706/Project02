@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TnieYuPackage.DesignPatterns.Patterns.Singleton
+namespace TnieYuPackage.DesignPatterns
 {
     public abstract class SingletonScriptable<T> : ScriptableObject
         where T : ScriptableObject

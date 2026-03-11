@@ -1,0 +1,14 @@
+{
+  "foldouts": {
+    "-1372_Tower (Game.Td.TowerRuntime)_UpgradeContext_String": true,
+    "-1372_Tower (Game.Td.TowerRuntime)_SetContext_String": true
+  },
+  "parameterValues": {
+    "-1372_Tower (Game.Td.TowerRuntime)_UpgradeContext_String": [
+      "TowerControl1"
+    ],
+    "-1372_Tower (Game.Td.TowerRuntime)_SetContext_String": [
+      "TowerControl1"
+    ]
+  }
+}

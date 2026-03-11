@@ -1,0 +1,74 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace TnieYuPackage.DictionaryUtilities
+{
+    [Serializable]
+    public abstract class BaseSerializableDictionary<TKeyPair, TKey, TValue> : ISerializationCallbackReceiver
+        where TKeyPair : struct, ISerializableKeyPair<TKey, TValue>
+    {
+        /// <summary>
+        /// Editor Dictionary [List]. Data for RuntimeDictionary.
+        /// </summary>
+        [SerializeField] private List<TKeyPair> data = new();
+
+        private Dictionary<TKey, TValue> dictionary;
+
+        /// <summary>
+        /// Runtime Dictionary. It not affect when Editor.
+        /// </summary>
+        public Dictionary<TKey, TValue> Dictionary
+        {
+            get
+            {
+                if (dictionary == null)
+                {
+                    BuildDictionary();
+                }
+
+                return dictionary;
+            }
+        }
+
+        public TValue this[TKey key]
+        {
+            get => Dictionary[key];
+            set => Dictionary[key] = value;
+        }
+
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
+            dictionary = null;
+        }
+
+        public void BuildDictionary()
+        {
+            data ??= new();
+
+            dictionary = new Dictionary<TKey, TValue>();
+
+            foreach (var kvp in data)
+            {
+                dictionary[kvp.Key] = kvp.Value;
+            }
+        }
+
+        public void RebuildData()
+        {
+            if (dictionary == null) return;
+
+            data.Clear();
+            if (dictionary.Count == 0) return;
+            foreach (var kvp in dictionary)
+            {
+                data.Add(new TKeyPair() { Key = kvp.Key, Value = kvp.Value });
+            }
+        }
+        
+    }
+}

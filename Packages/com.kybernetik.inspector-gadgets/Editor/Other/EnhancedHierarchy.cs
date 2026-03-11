@@ -13,12 +13,12 @@ namespace InspectorGadgets.Editor
     {
         /************************************************************************************************************************/
 
-        [InitializeOnLoadMethod]
-        private static void Initialize()
-        {
-            EditorApplication.hierarchyWindowItemOnGUI += OnHierarchyWindowItemGUI;
-            EditorApplication.hierarchyChanged += OnHierarchyChanged;
-        }
+        // [InitializeOnLoadMethod]
+        // private static void Initialize()
+        // {
+        //     EditorApplication.hierarchyWindowItemOnGUI += OnHierarchyWindowItemGUI;
+        //     EditorApplication.hierarchyChanged += OnHierarchyChanged;
+        // }
 
         /************************************************************************************************************************/
 

@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace TnieYuPackage.SOAP.Data.Generator
+namespace TnieYuPackage.SOAP
 {
     public class SoapDataTypeGenerator : EditorWindow
     {

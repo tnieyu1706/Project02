@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ce255010df4fbb89de90dd5bef4377, type: 3}
+  m_Name: LevelData1
+  m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.LevelSystem.LevelData
+  maxHealth: 20
+  startingMoney: 200
+  levelScene:
+    asset: {fileID: 0}
+    guid: 00000000000000000000000000000000
+  levelWavePath: Assets/_Project/Data/TD/Levels/Level1/Level_01.json
+  levelWave:
+    name: Level_01
+    waves:
+    - id: W01
+      endTime: 19
+      keyframes:
+      - time: 0
+        pathWaves:
+        - pathId: path_01
+          spawnCommands:
+          - entityId: enemy_01
+            quantity: 6
+            spawnInterval: 0.8
+      - time: 10
+        pathWaves:
+        - pathId: path_01
+          spawnCommands:
+          - entityId: enemy_01
+            quantity: 10
+            spawnInterval: 0.5
+      - time: 18
+        pathWaves:
+        - pathId: path_01
+          spawnCommands:
+          - entityId: enemy_01
+            quantity: 4
+            spawnInterval: 0.4
+    - id: W02
+      endTime: 11
+      keyframes:
+      - time: 0
+        pathWaves:
+        - pathId: path_01
+          spawnCommands:
+          - entityId: enemy_01
+            quantity: 4
+            spawnInterval: 0.8
+          - entityId: enemy_02
+            quantity: 2
+            spawnInterval: 1.4
+      - time: 10
+        pathWaves:
+        - pathId: path_01
+          spawnCommands:
+          - entityId: enemy_01
+            quantity: 6
+            spawnInterval: 1
+          - entityId: enemy_02
+            quantity: 4
+            spawnInterval: 1.6
+    - id: W03
+      endTime: 29
+      keyframes:
+      - time: 0
+        pathWaves:
+        - pathId: path_01
+          spawnCommands:
+          - entityId: enemy_01
+            quantity: 6
+            spawnInterval: 0.7
+          - entityId: enemy_02
+            quantity: 3
+            spawnInterval: 1.4
+      - time: 15
+        pathWaves:
+        - pathId: path_01
+          spawnCommands:
+          - entityId: enemy_02
+            quantity: 4
+            spawnInterval: 1.4
+          - entityId: enemy_03
+            quantity: 2
+            spawnInterval: 5
+      - time: 28
+        pathWaves:
+        - pathId: path_01
+          spawnCommands:
+          - entityId: enemy_01
+            quantity: 6
+            spawnInterval: 0.9
+          - entityId: enemy_04
+            quantity: 8
+            spawnInterval: 1.5

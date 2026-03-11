@@ -1,12 +1,16 @@
 using UnityEngine;
 
-namespace TnieYuPackage.CustomAttributes.Runtime
+namespace TnieYuPackage.CustomAttributes
 {
     [System.AttributeUsage(System.AttributeTargets.Field)]
     public class FilePathAttribute : PropertyAttribute
     {
         public System.Type AssetType;
         public string[] Filters;
+
+        public FilePathAttribute(params string[] filters) : this(typeof(TextAsset), filters)
+        {
+        }
 
         /// <summary>
         /// Default asset dragging is TextAsset type.
@@ -15,7 +19,7 @@ namespace TnieYuPackage.CustomAttributes.Runtime
         public FilePathAttribute(System.Type assetType, params string[] filters)
         {
             AssetType = assetType;
-            this.Filters = filters;
+            Filters = filters;
         }
     }
 }

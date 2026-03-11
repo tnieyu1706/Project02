@@ -1,10 +1,10 @@
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using FilePathAttribute = TnieYuPackage.CustomAttributes.Runtime.FilePathAttribute;
 
-namespace TnieYuPackage.CustomAttributes.Editor
+namespace TnieYuPackage.CustomAttributes
 {
-    [CustomPropertyDrawer(typeof(Runtime.FilePathAttribute))]
+    [CustomPropertyDrawer(typeof(FilePathAttribute))]
     public class FilePathDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -40,7 +40,7 @@ namespace TnieYuPackage.CustomAttributes.Editor
                     // ✅ Kiểm tra filters nếu có
                     if (attr.Filters != null && attr.Filters.Length > 0)
                     {
-                        string ext = System.IO.Path.GetExtension(newPath).ToLowerInvariant();
+                        string ext = Path.GetExtension(newPath).ToLowerInvariant();
                         bool valid = false;
 
                         foreach (string filter in attr.Filters)
