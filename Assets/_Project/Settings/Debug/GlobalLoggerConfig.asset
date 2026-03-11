@@ -37,3 +37,6 @@ MonoBehaviour:
   - name: TD
     active: 1
     color: {r: 0.012609455, g: 0.6075471, b: 0.19160292, a: 1}
+  - name: System
+    active: 1
+    color: {r: 0.62632346, g: 0.21436086, b: 0.9547169, a: 1}

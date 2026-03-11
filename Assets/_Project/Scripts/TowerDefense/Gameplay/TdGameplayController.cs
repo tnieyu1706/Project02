@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using BackboneLogger;
-using EditorAttributes;
 using TnieYuPackage.DesignPatterns;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -67,7 +66,7 @@ namespace Game.Td
             currentLevelWave = level.LevelWave;
             Health = level.maxHealth;
             Money = level.startingMoney;
-            BLogger.Log($"[TdGameplayController] Loading level {level.name}");
+            BLogger.Log($"[TdGameplayController] Loading level {level.name}", category: "TD");
 
             //LevelScene load
 

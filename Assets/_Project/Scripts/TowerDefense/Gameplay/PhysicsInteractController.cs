@@ -14,6 +14,7 @@ namespace Game.Td
 
         protected override void Awake()
         {
+            dontDestroyOnLoad = false;
             base.Awake();
 
             physics2DRaycaster ??= GetComponent<Physics2DRaycaster>();

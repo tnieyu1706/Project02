@@ -208,7 +208,6 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4288417959320322597
 SpriteRenderer:
-  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -227,8 +226,6 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -250,11 +247,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -264,6 +259,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &3965180645072458608
 MonoBehaviour:
@@ -374,6 +370,7 @@ GameObject:
   - component: {fileID: 2213009912135524479}
   - component: {fileID: 9096951580012029618}
   - component: {fileID: 474253629413059036}
+  - component: {fileID: 4651275961091078108}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -447,6 +444,19 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
+--- !u!114 &4651275961091078108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921597588273301168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8930c9d5f031425f8c11d1af9b5af03c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 9096951580012029618}
 --- !u!1 &6751720383376620206
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,8 +553,8 @@ MonoBehaviour:
           m_CallState: 2
     hp: 0
     <MaxHp>k__BackingField: 0
-  mover: {fileID: 3093384406771250982}
   <Def>k__BackingField: 0
+  mover: {fileID: 3093384406771250982}
   <MoveSpeed>k__BackingField: 0
   <MapDmg>k__BackingField: 0
   <EarningMoney>k__BackingField: 0

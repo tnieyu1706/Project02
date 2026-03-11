@@ -40,6 +40,11 @@ namespace Game.Td
 
         private void Display()
         {
+            if (TdGameplayController.Instance.tdWaveController.IsEndWave())
+            {
+                return;
+            }
+
             WaveGuis.ForEach(w => w.gameObject.SetActive(true));
         }
 

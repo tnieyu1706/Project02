@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3140852416106122640}
   - component: {fileID: 65754707468720550}
   - component: {fileID: 4870631025262867123}
+  - component: {fileID: 6439195100767522315}
   m_Layer: 5
   m_Name: TdLevelCanvas
   m_TagString: Untagged
@@ -102,6 +103,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6439195100767522315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933348947729667837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8930c9d5f031425f8c11d1af9b5af03c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 3140852416106122640}
 --- !u!1 &5437195741044051266
 GameObject:
   m_ObjectHideFlags: 0
