@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TnieYuPackage.Utils.Components
+namespace TnieYuPackage.Utils
 {
     [DefaultExecutionOrder(-20)]
     [RequireComponent(typeof(Canvas))]

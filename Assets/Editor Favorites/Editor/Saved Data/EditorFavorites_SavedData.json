@@ -5,21 +5,27 @@
             "items": [
                 {
                     "asset": {
-                        "instanceID": 51410
+                        "instanceID": 51276
                     },
                     "guid": "baf15ab7c972fa74c8370f0b7df9f6d7"
                 },
                 {
                     "asset": {
-                        "instanceID": 51412
+                        "instanceID": 51278
                     },
                     "guid": "f2a66e28b3a9c11409d7cb250bd052db"
                 },
                 {
                     "asset": {
-                        "instanceID": 51414
+                        "instanceID": 51280
                     },
                     "guid": "b1843584f9611ab42a799447107dc3b4"
+                },
+                {
+                    "asset": {
+                        "instanceID": 51282
+                    },
+                    "guid": "662635610ef0fff40bd5e1afce612d9a"
                 }
             ]
         },
@@ -28,13 +34,13 @@
             "items": [
                 {
                     "asset": {
-                        "instanceID": 50330
+                        "instanceID": 50642
                     },
                     "guid": "fe914bc64126e1f498ef2f76b3bb7d55"
                 },
                 {
                     "asset": {
-                        "instanceID": 50326
+                        "instanceID": 50638
                     },
                     "guid": "02fe83449147e134abde8ff863a916fd"
                 }
@@ -46,5 +52,5 @@
         }
     ],
     "selectedTabIndex": 0,
-    "itemScale01": 0.3731343448162079
+    "itemScale01": 0.0
 }

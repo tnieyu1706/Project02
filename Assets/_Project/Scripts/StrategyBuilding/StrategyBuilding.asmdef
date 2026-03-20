@@ -1,0 +1,22 @@
+{
+    "name": "StrategyBuilding",
+    "rootNamespace": "",
+    "references": [
+        "EditorAttributes",
+        "TnieYuPackage",
+        "KBCore.Refs",
+        "Eflatun.SceneReference",
+        "BackboneLogger",
+        "UniTask",
+        "Game.Summons"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

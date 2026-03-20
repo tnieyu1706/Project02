@@ -6,7 +6,8 @@
         "SetProperty",
         "UniTask",
         "Unity.InputSystem",
-        "Unity.2D.Tilemap.Extras"
+        "Unity.2D.Tilemap.Extras",
+        "KBCore.Refs"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

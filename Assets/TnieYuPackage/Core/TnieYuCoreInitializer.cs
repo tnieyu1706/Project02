@@ -9,7 +9,7 @@ namespace TnieYuPackage.Core
         {
             GameObject tnieyuCoreGo = new GameObject("TnieYuCore");
             tnieyuCoreGo.AddComponent<EventManager>();
-            tnieyuCoreGo.AddComponent<MouseEventManager>();
+            tnieyuCoreGo.AddComponent<InputEventManager>();
         }
     }
 }

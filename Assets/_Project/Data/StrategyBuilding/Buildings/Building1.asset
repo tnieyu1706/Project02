@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2801744087154efca992afe0cbbacf4a, type: 3}
+  m_Name: Building1
+  m_EditorClassIdentifier: 
+  buildingId: Building1
+  buildingTile: {fileID: 11400000, guid: 0836099a58ac6994e8968467fb7e3858, type: 2}
+  costBuilding:
+    moneyCost: 12
+    woodCost: 12
+    stoneCost: 12
+    peopleCost: 2
+    resourceRefundable: 0
+    peopleRefundable: 1
+    refundDelayTime: 12
+  behaviourInstaller:
+    rid: 1479204213195014264
+  references:
+    version: 2
+    RefIds:
+    - rid: 1479204213195014264
+      type: {class: ArmyBuildingBehaviourInstaller, ns: Game.StrategyBuilding, asm: StrategyBuilding}
+      data:
+        buildingName: ArmyBuilding
+        styleSheets:
+        - {fileID: 7433441132597879392, guid: 6da13179c06944078311dd375afcb632, type: 3}
+        - {fileID: 7433441132597879392, guid: d07ffbb31c7e4f2683adc061bf5680e7, type: 3}
+        defaultCostUpgrade:
+          moneyCost: 8
+          woodCost: 8
+          stoneCost: 8
+          peopleCost: 1
+          resourceRefundable: 0
+          peopleRefundable: 0
+          refundDelayTime: 0
+        defaultCostUpgradeIncrease:
+          moneyCost: 4
+          woodCost: 4
+          stoneCost: 4
+          peopleCost: 1
+          resourceRefundable: 0
+          peopleRefundable: 0
+          refundDelayTime: 0
+        defaultGenerateRate: 1
+        defaultGenerateRateIncrease: 0.3
+        defaultMaxSlotGenerate: 4

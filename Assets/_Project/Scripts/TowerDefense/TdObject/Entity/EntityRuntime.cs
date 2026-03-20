@@ -1,3 +1,4 @@
+using Game.Summons;
 using KBCore.Refs;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Game.Td
     public abstract class EntityRuntime<TPreset> : TdObjectRuntime<TPreset>, IHealthProperty
         where TPreset : EntityPresetSo
     {
-        [SerializeField, Child] protected EntityAttackInteractable attackInteractable;
+        [SerializeField, Child] protected ObjectInteractable attackInteractable;
 
         [SerializeField] private HealthProperty healthProperty;
         public HealthProperty HealthProperty => healthProperty;

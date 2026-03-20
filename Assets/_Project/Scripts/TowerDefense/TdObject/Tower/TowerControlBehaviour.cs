@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EditorAttributes;
 using PrimeTween;
 using TnieYuPackage.Core;
+using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -20,16 +21,17 @@ namespace Game.Td
 
         public void Perform()
         {
-            MouseEventManager.Instance.enabled = true;
+            InputEventManager.Instance.enabled = true;
 
-            MouseEventManager.Instance.Registry(HandleMouseClick);
+            InputEventManager.Instance.RegistryOnce(KeyCode.Mouse0, HandleMouseClick);
         }
 
         private void HandleMouseClick()
         {
-            if (Camera.main != null)
+            Camera activeCamera = Registry<Camera>.GetFirst();
+            if (activeCamera != null)
             {
-                Vector2 flagWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                Vector2 flagWorldPos = activeCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
                 if (TdTowerContextGUI.CurrentContext
                     .TryGetComponent(out TowerControlBehaviour controlBehaviour))
@@ -38,7 +40,7 @@ namespace Game.Td
                 }
             }
 
-            MouseEventManager.Instance.enabled = false;
+            InputEventManager.Instance.enabled = false;
         }
     }
 
@@ -181,20 +183,6 @@ namespace Game.Td
                     Random.Range(-StandFixOffset.x, StandFixOffset.x),
                     Random.Range(-StandFixOffset.y, StandFixOffset.y)
                 ).normalized * TdConstant.MAP_UNIT + currentRallyPos;
-        }
-
-        //test
-        [Button]
-        private void CallFlagEvent()
-        {
-            MouseEventManager.Instance.enabled = true;
-            MouseEventManager.Instance.Registry(() =>
-            {
-                Vector2 screenPos = Mouse.current.position.ReadValue();
-                Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
-                Debug.Log(worldPos);
-                MouseEventManager.Instance.enabled = false;
-            });
         }
     }
 }

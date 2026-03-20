@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Game.Summons;
 using TnieYuPackage.CustomAttributes;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -95,7 +96,7 @@ namespace Game.Td
             }
         }
 
-        private static bool CanAttackTarget(Collider2D targetCollider, out EntityAttackInteractable interactable)
+        private static bool CanAttackTarget(Collider2D targetCollider, out ObjectInteractable interactable)
         {
             interactable = null;
             return targetCollider != null
