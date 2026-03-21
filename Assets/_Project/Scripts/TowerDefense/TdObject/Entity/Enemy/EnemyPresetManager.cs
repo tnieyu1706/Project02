@@ -32,14 +32,14 @@ namespace Game.Td
                 }
             }
 
-            data.RebuildData();
+            data.RewriteData();
         }
 
         [Button]
         private void ClearData()
         {
             data.Dictionary.Clear();
-            data.RebuildData();
+            data.RewriteData();
         }
 
 #endif

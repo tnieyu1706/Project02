@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TnieYuPackage.Utils.Components
+namespace TnieYuPackage.Utils
 {
     public class HideObjectSceneManager : MonoBehaviour
     {

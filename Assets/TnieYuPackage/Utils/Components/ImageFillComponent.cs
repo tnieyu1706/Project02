@@ -2,7 +2,7 @@ using EditorAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TnieYuPackage.Utils.Components
+namespace TnieYuPackage.Utils
 {
     [RequireComponent(typeof(Image))]
     public class ImageFillComponent : MonoBehaviour

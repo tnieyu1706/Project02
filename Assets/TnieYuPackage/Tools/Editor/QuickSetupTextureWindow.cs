@@ -13,6 +13,7 @@ namespace TnieYuPackage.Tools
             public int Width;
             public int Height;
             public int CurrentMaxSize;
+            public float PixelUnit;
         }
 
         private readonly List<TextureItem> textures = new();
@@ -149,7 +150,8 @@ namespace TnieYuPackage.Tools
                 Texture = tex,
                 Width = tex.width,
                 Height = tex.height,
-                CurrentMaxSize = importer.maxTextureSize
+                CurrentMaxSize = importer.maxTextureSize,
+                PixelUnit = importer.spritePixelsPerUnit
             });
         }
 
@@ -206,7 +208,10 @@ namespace TnieYuPackage.Tools
                 GUILayout.Space(6);
 
                 GUILayout.Label(
-                    $"{item.Texture.name}   ({item.Width} x {item.Height}) | Max:{item.CurrentMaxSize}",
+                    $"{item.Texture.name}: " +
+                    $"w&h({item.Width} x {item.Height}) | " +
+                    $"Max:{item.CurrentMaxSize} | " +
+                    $"Pixel: {item.PixelUnit}",
                     GUILayout.ExpandWidth(true)
                 );
 
@@ -231,6 +236,11 @@ namespace TnieYuPackage.Tools
             if (GUILayout.Button("Auto ReMaxSize", GUILayout.Height(35)))
             {
                 ExecuteAutoMaxSize();
+            }
+
+            if (GUILayout.Button("Auto Pixels", GUILayout.Height(35)))
+            {
+                ExecuteAutoSetPixel();
             }
 
             if (GUILayout.Button("Apply Import Settings", GUILayout.Height(35)))
@@ -263,6 +273,31 @@ namespace TnieYuPackage.Tools
                 }
 
                 item.CurrentMaxSize = importer.maxTextureSize;
+            }
+        }
+        
+        void ExecuteAutoSetPixel()
+        {
+            foreach (var item in textures)
+            {
+                string path = AssetDatabase.GetAssetPath(item.Texture);
+
+                var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+
+                if (importer == null)
+                    continue;
+
+                // Only Sprite
+                if (importer.textureType != TextureImporterType.Sprite)
+                    continue;
+
+                int size = Mathf.Max(item.Width, item.Height);
+
+                if (importer.spritePixelsPerUnit != size)
+                {
+                    importer.spritePixelsPerUnit = size;
+                    importer.SaveAndReimport();
+                }
             }
         }
 

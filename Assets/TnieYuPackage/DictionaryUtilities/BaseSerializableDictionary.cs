@@ -5,18 +5,18 @@ using UnityEngine;
 namespace TnieYuPackage.DictionaryUtilities
 {
     [Serializable]
-    public abstract class BaseSerializableDictionary<TKeyPair, TKey, TValue> : ISerializationCallbackReceiver
+    public abstract class BaseSerializableDictionary<TKeyPair, TKey, TValue>
         where TKeyPair : struct, ISerializableKeyPair<TKey, TValue>
     {
         /// <summary>
-        /// Editor Dictionary [List]. Data for RuntimeDictionary.
+        /// Editor data. Only change on editor | Rebuild
         /// </summary>
         [SerializeField] private List<TKeyPair> data = new();
 
         private Dictionary<TKey, TValue> dictionary;
 
         /// <summary>
-        /// Runtime Dictionary. It not affect when Editor.
+        /// Runtime data. Core Dictionary for runtime
         /// </summary>
         public Dictionary<TKey, TValue> Dictionary
         {
@@ -37,15 +37,9 @@ namespace TnieYuPackage.DictionaryUtilities
             set => Dictionary[key] = value;
         }
 
-        public void OnBeforeSerialize()
-        {
-        }
-
-        public void OnAfterDeserialize()
-        {
-            dictionary = null;
-        }
-
+        /// <summary>
+        /// Build data.List => data.Dictionary
+        /// </summary>
         public void BuildDictionary()
         {
             data ??= new();
@@ -58,12 +52,14 @@ namespace TnieYuPackage.DictionaryUtilities
             }
         }
 
-        public void RebuildData()
+        /// <summary>
+        /// Build data.Dictionary => data.List
+        /// </summary>
+        public void RewriteData()
         {
-            if (dictionary == null) return;
-
             data.Clear();
-            if (dictionary.Count == 0) return;
+            if (dictionary == null || dictionary.Count == 0) return;
+
             foreach (var kvp in dictionary)
             {
                 data.Add(new TKeyPair() { Key = kvp.Key, Value = kvp.Value });

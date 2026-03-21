@@ -1,0 +1,86 @@
+/* CONTAINER */
+.container {
+    width: 40%;
+    height: 80%;
+    
+    align-self: flex-start;
+
+    margin-left: 2.5%;
+    margin-top: 5%;
+
+    flex-direction: column;
+
+    background-color: rgba(255, 228, 196, 0.95);
+
+    border-width: 2px;
+    border-color: black;
+    border-radius: 16px;
+
+    padding: 10px;
+}
+
+/* HEADER */
+.header {
+    height: 10%;
+    
+    justify-content: center;
+    align-items: center;
+
+    border-color: black;
+    border-bottom-width: 2px;
+}
+
+/* TITLE */
+.title {
+    -unity-text-align: middle-center;
+
+    font-size: 28px;
+    -unity-font-style: bold;
+}
+
+/* CONTENT */
+.content {
+    flex-grow: 1;
+
+    margin-top: 8px;
+    margin-bottom: 8px;
+
+    padding: 6px;
+}
+
+/* FOOTER */
+.footer {
+    height: 8%;
+
+    justify-content: center;
+    align-items: center;
+
+    border-top-width: 2px;
+    border-color: black;
+}
+
+/* UPGRADE BUTTON */
+.footer-btn {
+    width: 120px;
+    height: 32px;
+
+    -unity-text-align: middle-center;
+
+    font-size: 14px;
+}
+
+/*TOOL TIP*/
+.tooltip {
+    position: absolute;
+
+    background-color: rgba(0,0,0,0.9);
+    color: white;
+
+    padding: 4px 8px;
+
+    border-radius: 4px;
+
+    font-size: 16px;
+
+    display: none;
+}

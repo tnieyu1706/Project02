@@ -40,3 +40,6 @@ MonoBehaviour:
   - name: System
     active: 1
     color: {r: 0.62632346, g: 0.21436086, b: 0.9547169, a: 1}
+  - name: SB
+    active: 1
+    color: {r: 0.97735846, g: 0.73722786, b: 0.3153364, a: 1}

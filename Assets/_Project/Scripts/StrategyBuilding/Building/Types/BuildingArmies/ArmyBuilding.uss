@@ -1,0 +1,84 @@
+/* ROOT CONTENT */
+.content {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* LEFT CONTAINER */
+.content__left-container {
+    flex-grow: 1;
+
+    padding: 6px;
+
+    border-right-width: 2px;
+    border-right-color: black;
+
+    justify-content: flex-start;
+}
+
+/* TEXT INSIDE LEFT */
+.content_left-container-text {
+    font-size: 18px;
+    -unity-font-style: bold;
+}
+
+/* RIGHT CONTAINER */
+.content__right-container {
+    width: 60%;
+
+    flex-direction: column;
+    align-items: flex-end;
+
+    padding: 10px;
+}
+
+/* TITLE */
+.content__right-container__name {
+    font-size: 18px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+    
+    border-bottom-color: black;
+    border-bottom-width: 2px;
+}
+
+/* SLOT LIST */
+.content__right-container__list {
+    flex-grow: 1;
+
+    padding: 6px;
+}
+
+/*SLOT ITEM WRAPPER*/
+.item-slot-item-wrapper {
+    width: 280px;
+    height: 72px;
+    
+    padding-bottom: 6px;
+}
+
+/* SLOT ITEM */
+.army-slot-item {
+    width: 100%;
+    height: 100%;
+
+    flex-direction: row;
+    align-items: flex-start;
+
+    padding-left: 4px;
+    padding-right: 4px;
+
+    border-width: 2px;
+    border-color: black;
+}
+
+/* ICON */
+.army-slot-item__display {
+    width: 60px;
+    height: 60px;
+}
+
+/* PROGRESS BAR */
+.army-slot-item__progress-bar {
+    flex-grow: 1;
+}

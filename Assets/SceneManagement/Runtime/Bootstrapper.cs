@@ -7,11 +7,11 @@ namespace SceneManagement
     {
         public const string BOOTSTRAPPER_SCENE_NAME = "Bootstrapper";
         
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static async void Init()
-        {
-            Debug.Log("Bootstrapper Initialized...");
-            await SceneManager.LoadSceneAsync(BOOTSTRAPPER_SCENE_NAME, LoadSceneMode.Single);
-        }
+        // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        // static async void Init()
+        // {
+        //     Debug.Log("Bootstrapper Initialized...");
+        //     await SceneManager.LoadSceneAsync(BOOTSTRAPPER_SCENE_NAME, LoadSceneMode.Single);
+        // }
     }
 }
