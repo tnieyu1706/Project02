@@ -1,3 +1,4 @@
+using EditorAttributes;
 using KBCore.Refs;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,7 +16,7 @@ namespace Game.StrategyBuilding
 
         [SerializeField, Child] protected BuildingInteractable interactable;
 
-        public Vector3Int TilePosition { get; set; }
+        public Vector2Int TilePosition { get; set; }
 
         protected void OnEnable()
         {
@@ -32,7 +33,14 @@ namespace Game.StrategyBuilding
             BuildingInfoUIToolkit.Instance.Display(this);
         }
 
-        public void SetPreset(BuildingPresetSo preset)
+        public void Setup(BuildingPresetSo preset, Vector2Int spawnPos)
+        {
+            TilePosition = spawnPos;
+
+            SetPreset(preset);
+        }
+
+        private void SetPreset(BuildingPresetSo preset)
         {
             //pre-setup
             if (currentPreset != null && currentPreset.behaviourInstaller != null)
@@ -44,6 +52,13 @@ namespace Game.StrategyBuilding
 
             //post-setup
             currentPreset.behaviourInstaller.Init(gameObject);
+        }
+
+        //test
+        [Button]
+        private void CheckConvenientEnv()
+        {
+            Debug.Log($"Count: {buildingBehaviour.ConvenientTiles.Count}");
         }
     }
 }

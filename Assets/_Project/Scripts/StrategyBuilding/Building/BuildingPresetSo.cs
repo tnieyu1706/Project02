@@ -24,6 +24,11 @@ namespace Game.StrategyBuilding
     public interface IBuildingBehaviourInstaller
     {
         string BuildingName { get; }
+        Vector2Int BuildingPos { get; }
+        
+        MapEnvType ConvenientEnv { get; }
+        MapEnvType AdverseEnv { get; }
+        
         void Init(GameObject go);
         void Destroy(GameObject go);
     }
@@ -31,8 +36,17 @@ namespace Game.StrategyBuilding
     public interface IBuildingBehaviour : IUIDisplay
     {
         string BuildingName { get; }
+        Vector2Int BuildingPos { get; }
         ref ActionCost UpgradeCost { get; }
+        
+        MapEnvType ConvenientEnv { get; }
+        List<Vector2Int> ConvenientTiles { get; }
+        MapEnvType AdverseEnv { get; }
+        List<Vector2Int> AdverseTiles { get; }
+        
         void Upgrade();
+        void ApplyConvenientNeighborTiles(Dictionary<Vector2Int, SbTileData> tiles);
+        void ApplyAdverseNeighborTiles(Dictionary<Vector2Int, SbTileData> tiles);
     }
 
     public interface IUIDisplay

@@ -50,6 +50,8 @@ MonoBehaviour:
           resourceRefundable: 0
           peopleRefundable: 0
           refundDelayTime: 0
+        convenientEnv: 1
+        adverseEnv: 4
         defaultGenerateRate: 1
         defaultGenerateRateIncrease: 0.3
         defaultMaxSlotGenerate: 4

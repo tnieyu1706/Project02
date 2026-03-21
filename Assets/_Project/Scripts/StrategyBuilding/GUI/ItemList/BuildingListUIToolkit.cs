@@ -46,7 +46,7 @@ namespace Game.StrategyBuilding
             Hide();
             BlurBackground.CloseManual();
                 
-            SbMapController.Instance.StartBuilding(currentBuildingPreset);
+            SbMapController.Instance.buildingManager.StartBuilding(currentBuildingPreset);
         }
 
         [Button]

@@ -9,15 +9,7 @@ namespace Game.StrategyBuilding
     {
         protected override IBuildingBehaviour Create()
         {
-            return new CapacityResourceBuildingBehaviour(
-                buildingName,
-                styleSheets,
-                defaultCostUpgrade,
-                defaultCostUpgradeIncrease,
-                resourceType,
-                value,
-                upgradeValueIncrease
-            );
+            return new CapacityResourceBuildingBehaviour(this);
         }
 
         protected override void OnInit(BuildingRuntime buildingRuntime)
@@ -42,7 +34,7 @@ namespace Game.StrategyBuilding
     [Serializable]
     public class CapacityResourceBuildingBehaviour : IncreaseResourceBuildingBehaviour
     {
-        public CapacityResourceBuildingBehaviour(string buildingName, List<StyleSheet> styleSheets, ActionCost upgradeCost, ActionCost upgradeCostIncrease, SbResource resourceType, int value, int upgradeValueIncrease) : base(buildingName, styleSheets, upgradeCost, upgradeCostIncrease, resourceType, value, upgradeValueIncrease)
+        public CapacityResourceBuildingBehaviour(CapacityResourceBuildingBehaviourInstaller installer) : base(installer)
         {
         }
 

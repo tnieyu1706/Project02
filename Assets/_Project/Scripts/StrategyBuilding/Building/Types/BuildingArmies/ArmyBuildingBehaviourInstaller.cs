@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using BackboneLogger;
 using Cysharp.Threading.Tasks;
 using TnieYuPackage.GlobalExtensions;
-using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace Game.StrategyBuilding
@@ -16,17 +13,12 @@ namespace Game.StrategyBuilding
         public float defaultGenerateRateIncrease;
         public int defaultMaxSlotGenerate;
 
+        public float convenientRatePerTile;
+        public float adverseRatePerTile;
+
         protected override IBuildingBehaviour Create()
         {
-            return new ArmyBuildingBehaviour(
-                buildingName,
-                styleSheets,
-                defaultCostUpgrade,
-                defaultCostUpgradeIncrease,
-                defaultGenerateRate,
-                defaultGenerateRateIncrease,
-                defaultMaxSlotGenerate
-            );
+            return new ArmyBuildingBehaviour(this);
         }
 
         protected override void OnInit(BuildingRuntime buildingRuntime)
@@ -82,6 +74,9 @@ namespace Game.StrategyBuilding
         private readonly int maxSlotGenerate;
         private readonly List<ArmySpawnSlot> spawnSlots;
 
+        private readonly float convenientRatePerTile;
+        private readonly float adverseRatePerTile;
+
         private Action<float> onRateChanged;
 
         public class ArmySpawnSlot
@@ -100,6 +95,22 @@ namespace Game.StrategyBuilding
                     OnArmyChanged?.Invoke(currentProgress);
                 }
             }
+        }
+
+        public ArmyBuildingBehaviour(ArmyBuildingBehaviourInstaller installer) : base(installer)
+        {
+            generateRate = installer.defaultGenerateRate;
+            generateRateIncrease = installer.defaultGenerateRateIncrease;
+            maxSlotGenerate = installer.defaultMaxSlotGenerate;
+
+            spawnSlots = new(maxSlotGenerate);
+            for (int i = 0; i < maxSlotGenerate; i++)
+            {
+                spawnSlots.Add(new ArmySpawnSlot());
+            }
+
+            convenientRatePerTile = installer.convenientRatePerTile;
+            adverseRatePerTile = installer.adverseRatePerTile;
         }
 
         internal readonly struct ItemSlotHandlerData
@@ -162,21 +173,6 @@ namespace Game.StrategyBuilding
             }
         }
 
-        public ArmyBuildingBehaviour(string buildingName, List<StyleSheet> styleSheets, ActionCost upgradeCost,
-            ActionCost upgradeCostIncrease, float generateRate, float generateRateIncrease, int maxSlotGenerate)
-            : base(buildingName, styleSheets, upgradeCost, upgradeCostIncrease)
-        {
-            this.generateRate = generateRate;
-            this.generateRateIncrease = generateRateIncrease;
-            this.maxSlotGenerate = maxSlotGenerate;
-
-            spawnSlots = new(this.maxSlotGenerate);
-            for (int i = 0; i < this.maxSlotGenerate; i++)
-            {
-                spawnSlots.Add(new ArmySpawnSlot());
-            }
-        }
-
         protected override void HandleUpgrade()
         {
             generateRate += generateRateIncrease;
@@ -188,11 +184,9 @@ namespace Game.StrategyBuilding
             //state & list click => choose spawn.
             var leftContainer = content.CreateChild<VisualElement>("content__left-container");
             var propertiesText = leftContainer.CreateChild<Label>("content_left-container-text");
-            propertiesText.text = $"Properties:\n" +
-                                  $"-SpeedRate: {generateRate}";
+            propertiesText.text = GetPropertiesText(generateRate);
             Action<float> rateChangedHandler =
-                value => propertiesText.text = $"Properties:\n" +
-                                               $"-SpeedRate: {value}";
+                value => propertiesText.text = GetPropertiesText(value);
             onRateChanged += rateChangedHandler;
             propertiesText.RegisterCallback<DetachFromPanelEvent>(_ => onRateChanged -= rateChangedHandler);
 
@@ -208,6 +202,15 @@ namespace Game.StrategyBuilding
 
             slotList.makeItem = MakeItemSlot;
             slotList.bindItem = BindItemSlot;
+        }
+
+        private string GetPropertiesText(float rate)
+        {
+            return $"Properties:\n" +
+                   $"-SpeedRate: {rate}\n" +
+                   $"-ConvenientRate/Tile: {convenientRatePerTile} - Count: {ConvenientTiles.Count}\n" +
+                   $"-AdverseRate/Tile: {adverseRatePerTile} - Count: {AdverseTiles.Count}\n" +
+                   $"Total Rate: {GetTotalRate()}";
         }
 
         private VisualElement MakeItemSlot()
@@ -299,10 +302,17 @@ namespace Game.StrategyBuilding
             }
         }
 
+        private float GetTotalRate()
+        {
+            return generateRate
+                   + convenientRatePerTile * ConvenientTiles.Count
+                   - adverseRatePerTile * AdverseTiles.Count;
+        }
+
         public void SetGeneratedArmy(ArmyTypePresetSo armyType, int slotIndex)
         {
             var spawnSlot = spawnSlots[slotIndex];
-            var spawnProcess = new ArmySpawnProgress(armyType, generateRate)
+            var spawnProcess = new ArmySpawnProgress(armyType, GetTotalRate())
             {
                 OnCompleted = _ => spawnSlot.CurrentProgress = null
             };

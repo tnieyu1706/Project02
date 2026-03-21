@@ -13,13 +13,20 @@ namespace Game.StrategyBuilding
         public List<StyleSheet> styleSheets;
         public ActionCost defaultCostUpgrade;
         public ActionCost defaultCostUpgradeIncrease;
+        public MapEnvType convenientEnv;
+        public MapEnvType adverseEnv;
 
+        public Vector2Int BuildingPos { get; private set; }
+
+        public MapEnvType ConvenientEnv => convenientEnv;
+        public MapEnvType AdverseEnv => adverseEnv;
         public string BuildingName => buildingName;
 
         public void Init(GameObject go)
         {
             if (go.TryGetComponent(out BuildingRuntime buildingRuntime))
             {
+                BuildingPos = buildingRuntime.TilePosition;
                 buildingRuntime.buildingBehaviour = Create();
 
                 OnInit(buildingRuntime);
@@ -46,19 +53,36 @@ namespace Game.StrategyBuilding
     public abstract class BaseBuildingBehaviour : IBuildingBehaviour
     {
         public string BuildingName { get; }
+        public Vector2Int BuildingPos { get; }
+
         public List<StyleSheet> StyleSheets { get; }
 
         private ActionCost upgradeCost;
+        private MapEnvType convenientEnv;
+        private List<Vector2Int> convenientTiles;
+        private MapEnvType adverseEnv;
+        private List<Vector2Int> adverseTiles;
+
         public ref ActionCost UpgradeCost => ref upgradeCost;
         private ActionCost UpgradeCostIncrease { get; }
+        public MapEnvType ConvenientEnv => convenientEnv;
+        public List<Vector2Int> ConvenientTiles => convenientTiles;
+        public MapEnvType AdverseEnv => adverseEnv;
+        public List<Vector2Int> AdverseTiles => adverseTiles;
 
-        protected BaseBuildingBehaviour(string buildingName, List<StyleSheet> styleSheets, ActionCost upgradeCost,
-            ActionCost upgradeCostIncrease)
+        public BaseBuildingBehaviour(BaseBuildingBehaviourInstaller installer)
         {
-            this.upgradeCost = upgradeCost;
-            BuildingName = buildingName;
-            StyleSheets = styleSheets;
-            UpgradeCostIncrease = upgradeCostIncrease;
+            BuildingName = installer.BuildingName;
+            BuildingPos = installer.BuildingPos;
+            StyleSheets = installer.styleSheets;
+
+            upgradeCost = installer.defaultCostUpgrade;
+            UpgradeCostIncrease = installer.defaultCostUpgradeIncrease;
+
+            convenientEnv = installer.convenientEnv;
+            adverseEnv = installer.adverseEnv;
+            convenientTiles = new List<Vector2Int>();
+            adverseTiles = new List<Vector2Int>();
         }
 
         public void Upgrade()
@@ -69,6 +93,28 @@ namespace Game.StrategyBuilding
             //cost
             UpgradeCost.CollectCost();
             ActionCost.AddCost(ref UpgradeCost, UpgradeCostIncrease);
+        }
+
+        public void ApplyConvenientNeighborTiles(Dictionary<Vector2Int, SbTileData> tiles)
+        {
+            foreach (var tile in tiles)
+            {
+                if (tile.Value.EnvType != convenientEnv) continue;
+
+                convenientTiles.Add(tile.Key);
+                tile.Value.BuildingTiles.Add(BuildingPos);
+            }
+        }
+
+        public void ApplyAdverseNeighborTiles(Dictionary<Vector2Int, SbTileData> tiles)
+        {
+            foreach (var tile in tiles)
+            {
+                if (tile.Value.EnvType != adverseEnv) continue;
+
+                adverseTiles.Add(tile.Key);
+                tile.Value.BuildingTiles.Add(BuildingPos);
+            }
         }
 
         protected abstract void HandleUpgrade();
@@ -93,7 +139,7 @@ namespace Game.StrategyBuilding
             //content
             VisualElement content = container.CreateChild<VisualElement>("content");
             RenderContent(content);
-            
+
             //tooltip
             var tooltip = root.CreateChild<Label>("tooltip");
             tooltip.BringToFront();
@@ -103,7 +149,7 @@ namespace Game.StrategyBuilding
             var upgradeBtn = footer.CreateChild<Button>("footer-btn");
             upgradeBtn.text = "Upgrade";
             upgradeBtn.clicked += Upgrade;
-            
+
             upgradeBtn.RegisterCallback<MouseEnterEvent>(evt =>
             {
                 tooltip.text = UpgradeCost.ToString();
@@ -114,10 +160,7 @@ namespace Game.StrategyBuilding
                 tooltip.style.left = pos.x + 10;
                 tooltip.style.top = pos.y + 10;
             });
-            upgradeBtn.RegisterCallback<MouseLeaveEvent>(_ =>
-            {
-                tooltip.style.display = DisplayStyle.None;
-            });
+            upgradeBtn.RegisterCallback<MouseLeaveEvent>(_ => { tooltip.style.display = DisplayStyle.None; });
         }
 
         protected abstract void RenderContent(VisualElement content);

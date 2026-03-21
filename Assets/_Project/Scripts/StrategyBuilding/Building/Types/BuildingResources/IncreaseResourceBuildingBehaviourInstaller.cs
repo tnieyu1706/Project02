@@ -15,17 +15,13 @@ namespace Game.StrategyBuilding
         public SbResource resourceType;
         public int value;
         public int upgradeValueIncrease;
-        
+
+        public int convenientValuePerTile;
+        public int adverseValuePerTile;
+
         protected override IBuildingBehaviour Create()
         {
-            return new IncreaseResourceBuildingBehaviour(
-                buildingName,
-                styleSheets,
-                defaultCostUpgrade,
-                defaultCostUpgradeIncrease,
-                resourceType,
-                value,
-                upgradeValueIncrease);
+            return new IncreaseResourceBuildingBehaviour(this);
         }
 
         protected override void OnInit(BuildingRuntime buildingRuntime)
@@ -52,13 +48,16 @@ namespace Game.StrategyBuilding
         public int value;
         private readonly int upgradeValueIncrease;
 
-        public IncreaseResourceBuildingBehaviour(string buildingName, List<StyleSheet> styleSheets, ActionCost upgradeCost,
-            ActionCost upgradeCostIncrease,
-            SbResource resourceType, int value, int upgradeValueIncrease) : base(buildingName, styleSheets, upgradeCost, upgradeCostIncrease)
+        private readonly int convenientValuePerTile;
+        private readonly int adverseValuePerTile;
+
+        public IncreaseResourceBuildingBehaviour(IncreaseResourceBuildingBehaviourInstaller installer) : base(installer)
         {
-            ResourceType = resourceType;
-            this.value = value;
-            this.upgradeValueIncrease = upgradeValueIncrease;
+            ResourceType = installer.resourceType;
+            value = installer.value;
+            upgradeValueIncrease = installer.upgradeValueIncrease;
+            convenientValuePerTile = installer.convenientValuePerTile;
+            adverseValuePerTile = installer.adverseValuePerTile;
         }
 
         protected override void HandleUpgrade()
@@ -75,9 +74,16 @@ namespace Game.StrategyBuilding
             valueText.text = $"Value: {value}";
         }
 
+        protected int GetTotalValue()
+        {
+            return value
+                   + convenientValuePerTile * ConvenientTiles.Count
+                   - adverseValuePerTile * AdverseTiles.Count;
+        }
+
         public void Execute()
         {
-            SbGameplayController.GetResource(ResourceType).Value += value;
+            SbGameplayController.GetResource(ResourceType).Value += GetTotalValue();
         }
     }
 }
