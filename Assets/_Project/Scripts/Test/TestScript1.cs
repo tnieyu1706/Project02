@@ -1,57 +1,39 @@
-using System;
+using System.Threading;
+using _Project.Test.SOAP;
+using Cysharp.Threading.Tasks;
 using EditorAttributes;
+using TnieYuPackage.DictionaryUtilities;
 using UnityEngine;
-using UnityEngine.Splines;
-using UnityEngine.U2D.Animation;
+using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 
 public class TestScript1 : MonoBehaviour
 {
-    public SplineAnimate SplineAnimate;
-    [SerializeField, TagDropdown] public string[] tag;
-    
-    private SplineContainer spline => SplineAnimate.Container;
+    public TestSoData testSoData;
 
-    [SerializeField]
-    private Vector2 offset;
+    public SerializableDictionary<string, int> values;
 
-    void Start()
+    private void Update()
     {
-        SplineAnimate.Updated += MoveOffsetEachUpdated;
-    }
-
-    private void OnDestroy()
-    {
-        SplineAnimate.Updated -= MoveOffsetEachUpdated;
-    }
-
-    void MoveOffsetEachUpdated(Vector3 pos, Quaternion rot)
-    {
-        gameObject.transform.position = (Vector2)pos + offset;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DoSomething(100, "Hello World");
+        }
     }
 
     [Button]
-    public void TestMove(float progress)
+    private void DoSomething(int scoreValue, string stringValue)
     {
-        float t = progress;
+        testSoData.score = scoreValue;
+        testSoData.stringValue = stringValue;
 
-        Vector3 pos = spline.EvaluatePosition(t);
-        transform.position = (Vector2)pos + offset;
-    }
+        var dictSource = testSoData.data1.dictData;
+        dictSource.Dictionary.Clear();
+        foreach (var value in values.Dictionary)
+        {
+            dictSource[value.Key] = value.Value;
+        }
 
-    public void Test()
-    {
-        
-    }
-
-    [Button]
-    private void Play()
-    {
-        SplineAnimate.Play();
-    }
-
-    [Button]
-    private void Stop()
-    {
-        SplineAnimate.Pause();
+        dictSource.RewriteData();
     }
 }

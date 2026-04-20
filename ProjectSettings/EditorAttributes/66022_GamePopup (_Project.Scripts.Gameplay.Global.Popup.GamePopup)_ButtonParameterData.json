@@ -1,0 +1,11 @@
+{
+  "foldouts": {
+    "66022_GamePopup (_Project.Scripts.Gameplay.Global.Popup.GamePopup)_DisplayManual_String_String": true
+  },
+  "parameterValues": {
+    "66022_GamePopup (_Project.Scripts.Gameplay.Global.Popup.GamePopup)_DisplayManual_String_String": [
+      "Test",
+      "Hello xin chao"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2323ba05a0594a90affe654fbbc2020b, type: 3}
+  m_Name: _BuildingPresetManager
+  m_EditorClassIdentifier: 
+  data:
+    data:
+    - key: Army
+      value: {fileID: 11400000, guid: 094a0a17837492443b62e1631f33193d, type: 2}
+    - key: StoneCapacity1
+      value: {fileID: 11400000, guid: 3ea65974db9ba7d4dbbd654d9bd36d08, type: 2}
+    - key: WoodCapcity1
+      value: {fileID: 11400000, guid: 08a976c73d50c074a94582705d888f65, type: 2}
+    - key: CoinIncrease1
+      value: {fileID: 11400000, guid: 52fdc581ed8410749a59c7a4f125be52, type: 2}
+    - key: WoodIncrease1
+      value: {fileID: 11400000, guid: 7178a99cf5b1e544d8ef5315ee206589, type: 2}
+    - key: SkillPointIncrease
+      value: {fileID: 11400000, guid: 80ba7b23d8fb4f042af2245afa94272a, type: 2}
+    - key: VillagerCapacity
+      value: {fileID: 11400000, guid: f2604668b136ef2448775eed6afddb86, type: 2}
+    - key: MainTowerHall
+      value: {fileID: 11400000, guid: 82fb38faae0fa104dae3c1d6e98930e0, type: 2}
+  excludedIds: []

@@ -1,0 +1,81 @@
+/* Background overlay */
+.skill-tree-root {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(169, 169, 169, 0.4);
+    justify-content: center;
+}
+
+/* Frame limiting the visible area */
+.skill-tree-viewport {
+    align-self: center;
+    width: 80%;
+    height: 80%;
+    overflow: hidden;
+    background-color: #85684a;
+    border-radius: 32px;
+}
+
+/* The actual transformable canvas */
+.skill-tree-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* Required for correct mouse-to-zoom calculations */
+    transform-origin: 0 0;
+}
+
+.skill-tree-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.skill-tree-edge-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Visual style for each skill node */
+.skill-node {
+    position: absolute;
+    border-width: 2px;
+    border-color: #ddf1fa;
+    border-radius: 20%;
+    /*background-color: #1e293b;*/
+    transition-property: scale, background-color;
+    transition-duration: 0.2s;
+}
+
+.skill-node:hover {
+    scale: 1.2;
+    background-color: #334155;
+}
+
+.skill-node:active {
+    scale: 0.95;
+    background-color: #0ea5e9;
+}
+
+.skill-lock-state {
+    /*-unity-background-image-tint-color: rgba(255, 255, 255, 0.2);*/
+    background-color: rgba(30, 41, 59, 0.2);
+}
+
+.skill-allow-state {
+    /*-unity-background-image-tint-color: rgba(255, 255, 255, 0.6);*/
+    background-color: rgba(30, 41, 59, 0.6);
+}
+
+.skill-unlock-state {
+    /*-unity-background-image-tint-color: rgba(255, 255, 255, 1);*/
+    background-color: rgba(30, 41, 59, 1);
+}
+
+/* Special style for the root skill node */
+.root-skill-node {
+    border-color: #38bdf8;
+    border-width: 4px;
+}

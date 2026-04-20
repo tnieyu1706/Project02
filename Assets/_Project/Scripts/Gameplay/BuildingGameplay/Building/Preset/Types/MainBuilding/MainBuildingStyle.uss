@@ -1,0 +1,46 @@
+/* Style cho tiêu đề của Trung Tâm Điều Hành */
+.behaviour-title {
+    font-size: 16px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    margin-bottom: 8px;
+    margin-top: 8px;
+    -unity-text-align: middle-center;
+}
+
+/* Style cho dòng chứa thông tin giới hạn xây dựng */
+.resource-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(0, 0, 0, 0.4); /* Nền tối mờ để nổi bật nội dung */
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+/* Khung hiển thị icon (khi chưa có ảnh sẽ hiện ô xám) */
+.resource-icon-placeholder {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(200, 200, 200, 0.2);
+    border-radius: 4px;
+    margin-right: 12px;
+}
+
+/* Tên của chỉ số (vd: "Giới hạn xây dựng") */
+.resource-name {
+    flex-grow: 1;
+    font-size: 14px;
+    color: rgb(220, 220, 220);
+    -unity-text-align: middle-left;
+}
+
+/* Giá trị chỉ số - Sử dụng màu Vàng (Gold) cho Nhà Chính để tạo điểm nhấn */
+.resource-value {
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: rgb(255, 215, 0); /* Gold */
+    -unity-text-align: middle-right;
+}

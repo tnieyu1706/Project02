@@ -1,0 +1,45 @@
+/* --- INCREASE RESOURCE BEHAVIOUR ELEMENTS --- */
+
+.title-increase {
+    color: rgb(156, 163, 175); /* text-gray-400 */
+    font-size: 12px;
+    -unity-font-style: bold;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    -unity-text-align: middle-center;
+}
+
+.resource-row {
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(30, 30, 36); /* bg-[#1e1e24] */
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-color: rgb(75, 85, 99); /* border-gray-600 */
+    border-width: 1px;
+    margin-top: 5px;
+}
+
+.resource-icon-placeholder {
+    width: 32px;
+    height: 32px;
+    background-color: rgb(234, 179, 8); /* bg-yellow-500 */
+    border-radius: 16px; /* Tạo hình tròn hoàn hảo */
+    margin-right: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
+.resource-name {
+    color: white;
+    -unity-font-style: bold;
+    font-size: 16px;
+    flex-grow: 1;
+}
+
+.resource-value {
+    color: rgb(74, 222, 128); /* text-green-400 */
+    -unity-font-style: bold;
+    font-size: 18px;
+    margin-left: 15px;
+}

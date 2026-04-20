@@ -7,8 +7,9 @@ using UnityEngine;
 
 namespace SceneManagement
 {
-    [CreateAssetMenu(fileName = "SceneGroup", menuName = "SceneManagement/SceneGroup")]
-    public class SceneGroup : ScriptableObject
+    //can refactor sceneGroup => sceneGroup tree to allow dependencies for a sceneData.
+    [Serializable]
+    public class SceneGroup : ICloneable
     {
         public string groupName;
         public List<SceneData> scenes;
@@ -16,6 +17,20 @@ namespace SceneManagement
         public string FindSceneNameByType(SceneType sceneType)
         {
             return scenes.FirstOrDefault(scene => scene.sceneType == sceneType)?.Name;
+        }
+
+        public SceneData FindSceneDataByType(SceneType sceneType)
+        {
+            return scenes.FirstOrDefault(scene => scene.sceneType == sceneType);
+        }
+
+        public object Clone()
+        {
+            return new SceneGroup
+            {
+                groupName = this.groupName,
+                scenes = scenes.ToList()
+            };
         }
     }
 
@@ -25,8 +40,9 @@ namespace SceneManagement
         public SceneReference reference;
         public SceneType sceneType;
         public bool alwaysReload;
-        [SerializeReference] [AbstractSupport(abstractTypes: typeof(ISceneCompletedAction))]
-        public ISceneCompletedAction completedAction;
+
+        [SerializeReference] [AbstractSupport(abstractTypes: typeof(ICompletedAction))]
+        public List<ICompletedAction> completedActions = new();
 
         public string Name => reference.Name;
     }
@@ -35,13 +51,31 @@ namespace SceneManagement
     public enum SceneType
     {
         Active,
-        MainMenu,
+        Level,
+        GlobalGameplay,
+        Gameplay,
+        HUD,
         UI,
-        Level
+        Support,
     }
 
-    public interface ISceneCompletedAction
+    public interface ICompletedAction
     {
         void Complete(string sceneName);
+    }
+
+    public class DefaultCompletedAction : ICompletedAction
+    {
+        public Action OnPerform;
+
+        public DefaultCompletedAction(Action onPerform)
+        {
+            this.OnPerform = onPerform;
+        }
+
+        public void Complete(string sceneName)
+        {
+            OnPerform?.Invoke();
+        }
     }
 }

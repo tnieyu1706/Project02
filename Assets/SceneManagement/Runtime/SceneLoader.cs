@@ -1,77 +1,57 @@
 using System;
 using BackboneLogger;
-using EditorAttributes;
+using Cysharp.Threading.Tasks;
 using TnieYuPackage.DesignPatterns;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace SceneManagement
 {
+    public class FloatProgress : IProgress<float>
+    {
+        public event Action<float> ProgressChanged;
+
+        public void Report(float value)
+        {
+            ProgressChanged?.Invoke(value);
+        }
+    }
+
     [DefaultExecutionOrder(-500)]
     public class SceneLoader : SingletonBehavior<SceneLoader>
     {
         public SceneGroupManager manager;
+        
+        public readonly FloatProgress LoadingProgress = new();
         private bool isLoading;
-
-        #region PROPERTIES
-
-        [SerializeField, Required] private Camera loadingCamera;
-        [SerializeField, Required] private Canvas loadingCanvas;
-
-        [SerializeField] private UnityEvent<float> onLoadingProgressUpdate;
-
-        #endregion
 
         protected override void Awake()
         {
             dontDestroyOnLoad = false;
             base.Awake();
 
-            manager = new SceneGroupManager();
+            manager.OnLoadStarted += OnPreSceneGroupLoaded;
+            manager.OnLoadEnded += OnPostSceneGroupLoaded;
         }
 
-        private void OnEnable()
+        private void OnPreSceneGroupLoaded()
         {
-            manager.OnPreAllLoad += PreSceneGroupLoad;
-            manager.OnAllCompletedLoad += CompleteSceneGroupLoad;
-        }
-
-        private void OnDisable()
-        {
-            manager.OnPreAllLoad -= PreSceneGroupLoad;
-            manager.OnAllCompletedLoad -= CompleteSceneGroupLoad;
-        }
-
-        #region LOADING EVENTS
-
-        private void PreSceneGroupLoad()
-        {
-            loadingCamera.enabled = true;
-            loadingCanvas.enabled = true;
             isLoading = true;
         }
 
-        private void CompleteSceneGroupLoad()
+        private void OnPostSceneGroupLoaded()
         {
-            loadingCanvas.enabled = false;
             isLoading = false;
-            loadingCamera.enabled = false;
         }
 
-        #endregion
-
-        public void Load(SceneGroup sceneGroup)
+        public UniTask Load(SceneGroup sceneGroup)
         {
             if (isLoading)
             {
-                BLogger.Log($"[SceneLoader] Still loading scene", LogLevel.Warning,category: "System");
-                return;
+                BLogger.Log($"[SceneLoader] Still loading scene", LogLevel.Warning, category: "System");
+                return UniTask.CompletedTask;
             }
 
-            IProgress<float> loadingProgress =
-                new Progress<float>(p => onLoadingProgressUpdate?.Invoke(p));
-
-            manager.LoadSceneAsync(sceneGroup, loadingProgress).Forget();
+            return manager.LoadSceneAsync(sceneGroup, LoadingProgress);
         }
     }
 }

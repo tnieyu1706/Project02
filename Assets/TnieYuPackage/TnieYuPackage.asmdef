@@ -7,7 +7,11 @@
         "UniTask",
         "Unity.InputSystem",
         "Unity.2D.Tilemap.Extras",
-        "KBCore.Refs"
+        "KBCore.Refs",
+        "Unity.Addressables",
+        "Unity.Addressables.Editor",
+        "LitMotion",
+        "LitMotion.Extensions"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

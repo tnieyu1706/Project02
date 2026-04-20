@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +8,44 @@ using UnityEditor.UIElements;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
-using ZLinq;
 
 namespace TnieYuPackage.CustomAttributes
 {
     [CustomPropertyDrawer(typeof(AbstractSupportAttribute))]
     public class AbstractSupportDrawer : PropertyDrawer
     {
-        private readonly List<Type> implementations = new();
+        static readonly Dictionary<int, List<Type>> cache = new();
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
+            if (property.propertyType != SerializedPropertyType.ManagedReference)
+            {
+                var tempRoot = new VisualElement();
+
+                var field = new PropertyField(property);
+                field.Bind(property.serializedObject);
+
+                var warning = new HelpBox(
+                    "[AbstractSupport] only works with [SerializeReference].",
+                    HelpBoxMessageType.Warning);
+
+                warning.style.marginTop = 2;
+
+                tempRoot.Add(field);
+                tempRoot.Add(warning);
+
+                return tempRoot;
+            }
+
             var attr = (AbstractSupportAttribute)attribute;
-            Type[] abstractTypes = attr.AbstractTypes ?? new[] { fieldInfo.FieldType };
+
+            Type[] abstractTypes = attr.AbstractTypes?.Length > 0
+                ? attr.AbstractTypes
+                : new[] { fieldInfo.FieldType };
+
             Type[] excludedTypes = attr.ExcludedTypes ?? Type.EmptyTypes;
+
+            var implementations = GetImplementations(attr.Assembly, abstractTypes, excludedTypes);
 
             var root = new VisualElement
             {
@@ -31,22 +56,13 @@ namespace TnieYuPackage.CustomAttributes
                 }
             };
 
-            if (implementations.Count == 0)
-            {
-                if (attr.Assembly != null)
-                    implementations.AddRange(GetImplementationsOfAssembly(attr.Assembly, abstractTypes, excludedTypes));
-                else
-                    CacheFullImplementations(abstractTypes, excludedTypes);
-            }
-
-            // ================= HEADER =================
             var header = new VisualElement
             {
                 style =
                 {
                     flexDirection = FlexDirection.Row,
                     alignItems = Align.Center,
-                    position = Position.Relative, // 🔥 QUAN TRỌNG
+                    position = Position.Relative,
                     minHeight = 20
                 }
             };
@@ -71,9 +87,61 @@ namespace TnieYuPackage.CustomAttributes
 
                 if (property.managedReferenceValue != null)
                 {
-                    var propertyField = new PropertyField(property, "");
-                    propertyField.Bind(property.serializedObject);
-                    fieldContainer.Add(propertyField);
+                    var field = new PropertyField(property, "");
+                    field.Bind(property.serializedObject);
+                    fieldContainer.Add(field);
+                }
+            }
+
+            void SetManagedReferenceForAll(Type type)
+            {
+                foreach (var target in property.serializedObject.targetObjects)
+                {
+                    var so = new SerializedObject(target);
+                    var sp = so.FindProperty(property.propertyPath);
+
+                    sp.managedReferenceValue = Activator.CreateInstance(type);
+                    so.ApplyModifiedProperties();
+                }
+            }
+
+            void ClearManagedReferenceForAll()
+            {
+                foreach (var target in property.serializedObject.targetObjects)
+                {
+                    var so = new SerializedObject(target);
+                    var sp = so.FindProperty(property.propertyPath);
+
+                    sp.managedReferenceValue = null;
+                    so.ApplyModifiedProperties();
+                }
+            }
+
+            void EnsureSerializableInstance()
+            {
+                if (property.propertyType != SerializedPropertyType.Generic)
+                    return;
+
+                if (property.managedReferenceValue != null)
+                    return;
+
+                var type = fieldInfo.FieldType;
+
+                if (type.IsClass && !type.IsAbstract)
+                {
+                    foreach (var target in property.serializedObject.targetObjects)
+                    {
+                        var so = new SerializedObject(target);
+                        var sp = so.FindProperty(property.propertyPath);
+
+                        if (sp.managedReferenceValue == null)
+                        {
+                            var instance = Activator.CreateInstance(type);
+                            sp.managedReferenceValue = instance;
+                        }
+
+                        so.ApplyModifiedProperties();
+                    }
                 }
             }
 
@@ -81,77 +149,80 @@ namespace TnieYuPackage.CustomAttributes
             {
                 header.Clear();
 
-                // ===== Left side (flow layout)
                 header.Add(label);
 
-                if (property.managedReferenceValue != null)
+                if (property.propertyType == SerializedPropertyType.ManagedReference &&
+                    property.managedReferenceValue != null)
                 {
                     var typeName = property.managedReferenceFullTypename
                         .Split(' ')
                         .Last();
 
-                    var typeLabel = new Label($"({typeName})")
+                    var shortTypeName = typeName
+                        .Split('.')
+                        .Last();
+
+                    var typeLabel = new Label($"({shortTypeName})")
                     {
                         style =
                         {
                             color = new Color(0.6f, 0.8f, 0.9f),
                             unityFontStyleAndWeight = FontStyle.Italic,
                             marginLeft = 4,
-                            marginRight = 28 // 🔥 chừa chỗ cho button
+                            marginRight = 28
                         }
                     };
 
                     header.Add(typeLabel);
                 }
 
-                // ===== Button overlay (absolute)
                 Button actionButton;
 
-                if (property.managedReferenceValue == null)
+                if (property.propertyType == SerializedPropertyType.ManagedReference)
                 {
-                    actionButton = new Button(() =>
+                    if (property.managedReferenceValue == null)
                     {
-                        var menu = new GenericMenu();
-
-                        foreach (var type in implementations)
-                        {
-                            menu.AddItem(new GUIContent(type.Name), false, () =>
+                        actionButton = new Button(() =>
                             {
-                                var instance = Activator.CreateInstance(type);
+                                var menu = new GenericMenu();
 
-                                property.serializedObject.Update();
-                                property.managedReferenceValue = instance;
-                                property.serializedObject.ApplyModifiedProperties();
+                                foreach (var type in implementations)
+                                {
+                                    menu.AddItem(new GUIContent(type.Name), false, () =>
+                                    {
+                                        SetManagedReferenceForAll(type);
+
+                                        RefreshUI();
+                                        EditorApplication.delayCall +=
+                                            InternalEditorUtility.RepaintAllViews;
+                                    });
+                                }
+
+                                menu.ShowAsContext();
+                            })
+                            { text = "+", tooltip = "Select type" };
+                    }
+                    else
+                    {
+                        actionButton = new Button(() =>
+                            {
+                                ClearManagedReferenceForAll();
 
                                 RefreshUI();
                                 EditorApplication.delayCall +=
                                     InternalEditorUtility.RepaintAllViews;
-                            });
-                        }
-
-                        menu.ShowAsContext();
-                    })
-                    {
-                        text = "+",
-                        tooltip = "Select type"
-                    };
+                            })
+                            { text = "X", tooltip = "Reset value" };
+                    }
                 }
                 else
                 {
                     actionButton = new Button(() =>
-                    {
-                        property.serializedObject.Update();
-                        property.managedReferenceValue = null;
-                        property.serializedObject.ApplyModifiedProperties();
-
-                        RefreshUI();
-                        EditorApplication.delayCall +=
-                            InternalEditorUtility.RepaintAllViews;
-                    })
-                    {
-                        text = "X",
-                        tooltip = "Reset value"
-                    };
+                        {
+                            EnsureSerializableInstance();
+                            RefreshUI();
+                        })
+                        { text = "Create", tooltip = "Create instance" };
                 }
 
                 actionButton.style.position = Position.Absolute;
@@ -166,38 +237,63 @@ namespace TnieYuPackage.CustomAttributes
             }
 
             RefreshUI();
+
             return root;
         }
 
-        private void CacheFullImplementations(Type[] abstractTypes, Type[] excludedTypes)
+        static List<Type> GetImplementations(Assembly assembly, Type[] abstractTypes, Type[] excludedTypes)
         {
-            implementations.Clear();
+            int key = HashCode.Combine(
+                assembly?.GetHashCode() ?? 0,
+                abstractTypes.Aggregate(0, (a, b) => a ^ b.GetHashCode()),
+                excludedTypes.Aggregate(0, (a, b) => a ^ b.GetHashCode())
+            );
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                implementations.AddRange(GetImplementationsOfAssembly(assembly, abstractTypes, excludedTypes));
-            }
-        }
+            if (cache.TryGetValue(key, out var list))
+                return list;
 
-        private Type[] GetImplementationsOfAssembly(Assembly assembly, Type[] abstractTypes, Type[] excludedTypes)
-        {
-            try
+            list = new List<Type>();
+
+            var assemblies = assembly != null
+                ? new[] { assembly }
+                : AppDomain.CurrentDomain.GetAssemblies();
+
+            foreach (var asm in assemblies)
             {
-                return assembly.GetTypes()
-                    .AsValueEnumerable()
-                    .Where(t =>
-                        !t.IsAbstract
-                        && !t.IsInterface
-                        && t.GetCustomAttribute<SerializableAttribute>() != null
-                        && abstractTypes.All(abs => abs.IsAssignableFrom(t))
-                        && !excludedTypes.Any(ex => ex.IsAssignableFrom(t)))
-                    .OrderBy(t => t.Name)
-                    .ToArray();
+                Type[] types;
+
+                try
+                {
+                    types = asm.GetTypes();
+                }
+                catch
+                {
+                    continue;
+                }
+
+                foreach (var t in types)
+                {
+                    if (t.IsAbstract || t.IsInterface)
+                        continue;
+
+                    if (t.GetCustomAttribute<SerializableAttribute>() == null)
+                        continue;
+
+                    if (!abstractTypes.All(a => a.IsAssignableFrom(t)))
+                        continue;
+
+                    if (excludedTypes.Any(e => e.IsAssignableFrom(t)))
+                        continue;
+
+                    list.Add(t);
+                }
             }
-            catch
-            {
-                return Array.Empty<Type>();
-            }
+
+            list.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+
+            cache[key] = list;
+            return list;
         }
     }
 }
+#endif

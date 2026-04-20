@@ -1,0 +1,24 @@
+.detail-item {
+    width: 184px;
+    height: 140px;
+
+    flex-direction: column;
+
+    padding: 4px;
+    background-color: cornsilk;
+
+    border-width: 2px;
+    border-color: black;
+    border-radius: 12px;
+}
+
+.detail-item:hover {
+    background-color: coral;
+}
+
+/* SMALL IMAGE */
+.detail-item__container__image {
+    width: 40%;
+    
+    margin-right: 14px;
+}

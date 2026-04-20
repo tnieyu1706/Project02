@@ -1,0 +1,38 @@
+/* EnemyBaseElement.uss */
+
+.enemy-base-icon {
+    /* Quan trọng: sử dụng absolute để có thể đặt X, Y tùy ý */
+    position: absolute;
+
+    width: 48px;
+    height: 48px;
+    background-color: #23272e;
+    border-radius: 24px;
+    border-color: #FF5555;
+    border-width: 2px;
+
+    /* Margin không còn cần thiết khi dùng absolute */
+    margin: 0;
+
+    transition: scale 0.15s, background-color 0.2s, border-color 0.2s;
+    justify-content: center;
+    align-items: center;
+}
+
+.enemy-base-icon:hover {
+    background-color: #3e4451;
+    border-color: #FFD700;
+    scale: 1.25;
+    /* Đảm bảo icon đang hover nằm trên các icon khác */
+    border-width: 3px;
+}
+
+.enemy-base-icon--completed {
+    border-color: #4f999c;
+}
+
+/* Các Label thông tin sẽ được xử lý qua Popup nên ẩn đi */
+.enemy-base__name,
+.enemy-base__level {
+    display: none;
+}

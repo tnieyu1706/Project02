@@ -12,20 +12,25 @@ namespace SceneManagement
     [Serializable]
     public class SceneGroupManager
     {
-        private const int PROGRESS_DELAY = 100;
+        public const int PROGRESS_DELAY_MILLISECONDS = 100;
+        [SerializeField] [Range(0, 3f)] private float delayCompletedAll = 0.5f;
 
         public SceneGroup currentActiveSceneGroup;
 
-        public event Action OnPreAllLoad = delegate { };
-        public event Action<string> OnOldUnloaded = delegate { };
-        public event Action OnOldsCompletedLoad = delegate { };
-        public event Action<string> OnNewLoaded = delegate { };
-        public event Action OnAllCompletedLoad = delegate { };
-        public event Action<string> OnActiveLoaded = delegate { };
+        public event Action OnLoadStarted = delegate { };
+        
+        public event Action<string> OnSceneUnloaded = delegate { };
+        public event Action OnUnloadCompleted = delegate { };
+        
+        
+        public event Action<string> OnSceneLoaded = delegate { };
+        public event Action<string> OnActiveSceneChanged = delegate { };
+        
+        public event Action OnLoadEnded = delegate { };
 
-        public async UniTaskVoid LoadSceneAsync(SceneGroup sceneGroup, IProgress<float> progress)
+        public async UniTask LoadSceneAsync(SceneGroup sceneGroup, IProgress<float> progress)
         {
-            OnPreAllLoad?.Invoke();
+            OnLoadStarted?.Invoke();
             var timer = Stopwatch.StartNew();
             BLogger.Log($"[SceneGroupManager] Begin unload: {timer.Elapsed}", category: "System");
 
@@ -52,8 +57,8 @@ namespace SceneManagement
                 if (operation == null) continue;
                 operation.completed += _ =>
                 {
-                    OnNewLoaded?.Invoke(scene.Name);
-                    scene.completedAction?.Complete(scene.Name);
+                    OnSceneLoaded?.Invoke(scene.Name);
+                    scene.completedActions.ForEach(a => a?.Complete(scene.Name));
                 };
 
                 operationGroup.Operations.Add(operation);
@@ -63,7 +68,7 @@ namespace SceneManagement
             while (!operationGroup.IsDone)
             {
                 progress?.Report(operationGroup.Progress);
-                await UniTask.Delay(PROGRESS_DELAY);
+                await UniTask.Delay(PROGRESS_DELAY_MILLISECONDS);
             }
 
             BLogger.Log($"[SceneGroupManager] Completed load: {timer.Elapsed}", category: "System");
@@ -71,6 +76,7 @@ namespace SceneManagement
 
             var sceneActiveName = sceneGroup.FindSceneNameByType(SceneType.Active);
             var sceneNeedActive = SceneManager.GetSceneByName(sceneActiveName);
+            
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (sceneNeedActive == null)
             {
@@ -80,10 +86,12 @@ namespace SceneManagement
             else
             {
                 SceneManager.SetActiveScene(sceneNeedActive);
-                OnActiveLoaded?.Invoke(sceneActiveName);
+                OnActiveSceneChanged?.Invoke(sceneActiveName);
             }
 
-            OnAllCompletedLoad?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(delayCompletedAll));
+
+            OnLoadEnded?.Invoke();
         }
 
         private async UniTask UnLoadScenesAsync(SceneGroup sceneGroup)
@@ -109,19 +117,19 @@ namespace SceneManagement
                 var operation = SceneManager.UnloadSceneAsync(s);
                 operationGroup.Operations.Add(operation);
 
-                OnOldUnloaded?.Invoke(s);
+                OnSceneUnloaded?.Invoke(s);
             }
 
             //Waiting
             while (!operationGroup.IsDone)
             {
-                await UniTask.Delay(PROGRESS_DELAY); // tight loop
+                await UniTask.Delay(PROGRESS_DELAY_MILLISECONDS); // tight loop
             }
 
             // Optional: UnloadUnusedAssets - unload all unused asset from memory 
             await Resources.UnloadUnusedAssets();
 
-            OnOldsCompletedLoad?.Invoke();
+            OnUnloadCompleted?.Invoke();
             BLogger.Log($"[SceneGroupManager] Unload old scenes completed", category: "System");
         }
     }

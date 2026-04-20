@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9eb926df464e4480a0d8d4b3a60fcc, type: 3}
+  m_Name: Building_VillagerCapacity
+  m_EditorClassIdentifier: 
+  buildingId: VillagerCapacity
+  defaultMaxVillagersCanUse: 1
+  requireVillagers: 0
+  buildingCategory: 2
+  tileLayer: 3
+  buildingTile: {fileID: 11400000, guid: 41b7f68d09af45b4b905d73a3405a0cd, type: 2}
+  costBuilding:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 10
+  styleSheets:
+  - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
+  - {fileID: 7433441132597879392, guid: 380941c23fd447de98d46db3d292a33b, type: 3}
+  influenceEffects:
+    data:
+    - key: 3
+      value:
+        rid: 6075148410538164311
+  defaultUpgradeCost:
+    resourceCosts:
+      data: []
+  incrementUpgradeCost:
+    resourceCosts:
+      data: []
+  consumedResources:
+    data: []
+  defaultCapacityValue: 10
+  incrementCapacityValue: 2
+  references:
+    version: 2
+    RefIds:
+    - rid: 6075148410538164311
+      type: {class: AdverseBuildingInfluenceEffect, ns: Game.StrategyBuilding, asm: Core.Gameplay}
+      data:
+        influenceRatio: 0.1

@@ -1,4 +1,5 @@
 using System;
+using TnieYuPackage.CustomAttributes;
 using UnityEngine;
 
 namespace TnieYuPackage.DictionaryUtilities
@@ -38,15 +39,14 @@ namespace TnieYuPackage.DictionaryUtilities
     [Serializable]
     public struct SerializableKeyPairAbstract<TKey, TValue> : ISerializableKeyPair<TKey, TValue>
     {
-        [SerializeReference] private TKey key;
+        [SerializeField] private TKey key;
+        [SerializeReference] [AbstractSupport] public TValue value;
 
         public TKey Key
         {
             get => key;
             set => key = value;
         }
-
-        public TValue value;
 
         public TValue Value
         {

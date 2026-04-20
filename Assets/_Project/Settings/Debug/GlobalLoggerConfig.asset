@@ -43,3 +43,12 @@ MonoBehaviour:
   - name: SB
     active: 1
     color: {r: 0.97735846, g: 0.73722786, b: 0.3153364, a: 1}
+  - name: WA
+    active: 1
+    color: {r: 0.17924517, g: 1, b: 0.9583508, a: 1}
+  - name: Building
+    active: 1
+    color: {r: 0.2924527, g: 0.3431517, b: 1, a: 1}
+  - name: Base
+    active: 1
+    color: {r: 1, g: 0.98003286, b: 0.20188677, a: 1}

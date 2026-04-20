@@ -11,11 +11,11 @@ namespace TnieYuPackage.SOAP
         public Action<T> OnValueChange { get; set; }
     }
 
-
     [Serializable]
-    public struct SoapData<T> : ISoapData<T>
+    public class SoapData<T> : ISoapData<T>
     {
-        [SerializeField] [SetProperty(nameof(Value))] private T value;
+        [SerializeField] [SetProperty(nameof(Value))]
+        private T value;
 
         public T Value
         {
@@ -31,7 +31,7 @@ namespace TnieYuPackage.SOAP
     }
 
     public abstract class SoapDataSo<TData, T> : ScriptableObject
-        where TData : struct, ISoapData<T>
+        where TData : ISoapData<T>
     {
         public TData data;
 
@@ -40,12 +40,17 @@ namespace TnieYuPackage.SOAP
         [SerializeField] private bool resetOnPlay = false;
 
         [SerializeField] [ShowField(nameof(resetOnPlay))]
-        private T defaultValue;
+        protected T defaultValue;
 
-        protected virtual void OnDisable()
+        private void OnDisable()
         {
             if (resetOnPlay)
-                data.Value = defaultValue;
+                ReloadData();
+        }
+
+        protected virtual void ReloadData()
+        {
+            data.Value = defaultValue;
         }
 
         #endregion

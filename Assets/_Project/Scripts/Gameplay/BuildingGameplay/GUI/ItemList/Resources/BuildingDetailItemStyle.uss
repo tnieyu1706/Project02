@@ -1,0 +1,80 @@
+/* Root container */
+.building-tooltip-root {
+    min-width: 250px;
+    padding: 10px;
+    background-color: antiquewhite;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: gray;
+}
+
+Label {
+    -unity-font-style: bold;
+}
+
+/* Header Row */
+.tooltip-header-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    
+    border-width: 2px;
+    border-bottom-color: black;
+}
+
+.tooltip-building-name {
+    -unity-font-style: bold;
+    font-size: 18px;
+}
+
+/* Tile Layer Badge */
+.tooltip-tile-layer {
+    border-width: 2px;
+    border-color: coral;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 12px;
+}
+
+/* Reusable Bordered Box Class (Thay thế cho Helper Function cũ) */
+.tooltip-bordered-box {
+    border-width: 1px;
+    border-color: gray;
+    border-radius: 5px;
+    padding: 6px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+/* Specific Box Adjustments (Ghi đè hoặc thêm logic cho từng Box) */
+.tooltip-cost-container {
+    flex-direction: row;
+    background-color: peru;
+}
+
+.tooltip-cost-text {
+    
+}
+
+.tooltip-desc-text {
+    white-space: normal;
+    -unity-text-align: middle-center;
+    font-size: 12px;
+}
+
+.tooltip-effects-container {
+    margin-bottom: 0px; /* Bỏ margin ở phần tử cuối cùng */
+    background-color: burlywood;
+}
+
+/* Effects List Elements */
+.tooltip-effects-title {
+    -unity-font-style: bold;
+    margin-bottom: 5px;
+}
+
+.tooltip-effect-row-class {
+    flex-direction: row;
+    justify-content: center;
+}

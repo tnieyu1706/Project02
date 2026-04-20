@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed25f66ba0a4ea9ba7a34c3f6e69c61, type: 3}
+  m_Name: Tower_Archer_03
+  m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Tower.TowerAttributePresetSo
+  subAssetName: TowerAttack
+  deletingSubAsset: {fileID: 0}
+  objectId: Tower_Archer_03
+  libraryAsset: {fileID: 7108339969198208228, guid: 07022f85af6ca3142b6b54c63966e850, type: 3}
+  interactStrategies:
+  - {fileID: 5911211998441503237}
+  strategyType: Game.BaseGameplay.Strategies.UndirectlyCauseDamageInstaller, Core.Gameplay
+  configurators: []
+  towerIcon: {fileID: 21300000, guid: 2a2cf40245e6bf0429890f4c7c55fbcf, type: 3}
+  towerPriceValue: 70
+  towerType: 0
+  towerLevel: 0
+  towerEvents: []
+--- !u!114 &5911211998441503237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 562c9cfbd6d8483d928b5a9f6da77711, type: 3}
+  m_Name: TowerAttack
+  m_EditorClassIdentifier: 
+  installerId:
+    value: de4256ec-12e3-48bd-a877-2ffadd9692d4
+  trackingLayerMask: 3072
+  interactRange: 3
+  baseDamage: 4
+  attackCooldown: 1
+  projectileSpeed: 6
+  projectileOffset: {x: 0, y: 0, z: 0}
+  projectileSprite: {fileID: 21300000, guid: 8905732d219a84f4f945898390d525e2, type: 3}

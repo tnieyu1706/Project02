@@ -1,0 +1,32 @@
+{
+    "name": "Core.Gameplay",
+    "rootNamespace": "",
+    "references": [
+        "EditorAttributes",
+        "TnieYuPackage",
+        "PrimeTween.Runtime",
+        "Eflatun.SceneReference",
+        "BackboneLogger",
+        "UniTask",
+        "Unity.Splines",
+        "KBCore.Refs",
+        "Unity.InputSystem",
+        "Unity.2D.Animation.Runtime",
+        "Unity.Addressables",
+        "UniTask.Addressables",
+        "Unity.ResourceManager",
+        "SceneManagement",
+        "LitMotion",
+        "LitMotion.Extensions",
+        "LitMotion.Animation"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,46 @@
+/* Style cho tiêu đề của Behaviour */
+.behaviour-title {
+    font-size: 16px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    margin-bottom: 8px;
+    margin-top: 8px;
+    -unity-text-align: middle-center;
+}
+
+/* Style cho dòng chứa thông tin sức chứa */
+.resource-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(0, 0, 0, 0.4); /* Nền tối mờ để nổi bật nội dung */
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+/* Khung hiển thị icon dân làng (khi chưa gán ảnh sẽ hiện ô xám) */
+.resource-icon-placeholder {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(200, 200, 200, 0.2);
+    border-radius: 4px;
+    margin-right: 12px;
+}
+
+/* Tên của chỉ số (vd: "Sức chứa") */
+.resource-name {
+    flex-grow: 1;
+    font-size: 14px;
+    color: rgb(220, 220, 220);
+    -unity-text-align: middle-left;
+}
+
+/* Giá trị chỉ số (vd: "+2 Người") */
+.resource-value {
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: rgb(150, 255, 150); /* Màu xanh nhạt tượng trưng cho việc tăng thêm */
+    -unity-text-align: middle-right;
+}

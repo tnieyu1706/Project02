@@ -8,53 +8,50 @@ namespace TnieYuPackage.Core
     /// <summary>
     /// Input Event System support for Registry/UnRegistry & relative handle
     /// for Input: Mouse, Keyboard
-    /// Once Key select per frame.
+    /// Once Key catching per frame.
     /// Once Key contain 1 Action.
     /// </summary>
     [DefaultExecutionOrder(-50)]
     public class InputEventManager : SingletonBehavior<InputEventManager>
     {
-        private readonly Queue<Action> events = new();
+        private readonly Dictionary<KeyCode, Func<bool>> keyboardEvents = new();
 
-        private Dictionary<KeyCode, Action> keyboardEvents = new();
+        public event Action<Vector2> OnMouseMove;
 
-        public Action EnableEvent;
-        public Action DisableEvent;
+        protected override void Awake()
+        {
+            dontDestroyOnLoad = true;
+            base.Awake();
+        }
 
         void Start()
         {
             Instance.enabled = false;
         }
 
-        private void OnEnable()
-        {
-            EnableEvent?.Invoke();
-        }
-
-        private void OnDisable()
-        {
-            DisableEvent?.Invoke();
-        }
-
-        private KeyCode currentKey;
-
         private void Update()
         {
+            OnMouseMove?.Invoke(Input.mousePosition);
+
             if (!Input.anyKeyDown) return;
 
             foreach (var key in keyboardEvents.Keys)
             {
                 if (!Input.GetKeyDown(key)) continue;
+                
+                if (keyboardEvents[key].Invoke())
+                {
+                    // remove when action -> true.
+                    keyboardEvents.Remove(key);
+                }
 
-                keyboardEvents[key]?.Invoke();
-                keyboardEvents.Remove(key);
                 return;
             }
         }
 
-        public void RegistryOnce(KeyCode key, Action action)
+        public void RegistryOnce(KeyCode key, Func<bool> action)
         {
-            keyboardEvents.Add(key, action);
+            keyboardEvents[key] = action;
         }
 
         public void UnRegistryKey(KeyCode key)

@@ -363,7 +363,9 @@ namespace TnieYuPackage.Tools
                 // -------- Multiple Sprite --------
                 else if (importer.spriteImportMode == SpriteImportMode.Multiple)
                 {
+#pragma warning disable CS0618 // Type or member is obsolete
                     var metas = importer.spritesheet;
+#pragma warning restore CS0618 // Type or member is obsolete
 
                     foreach (var pivotItem in group.Value)
                     {
@@ -377,7 +379,9 @@ namespace TnieYuPackage.Tools
                         }
                     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
                     importer.spritesheet = metas;
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
 
                 EditorUtility.SetDirty(importer);

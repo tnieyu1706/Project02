@@ -99,7 +99,9 @@ namespace TnieYuPackage.Tools
                 return;
             }
 
+#pragma warning disable CS0618 // Type or member is obsolete
             sprites = importer.spritesheet;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             spriteNames = sprites
                 .Select(s => s.name)

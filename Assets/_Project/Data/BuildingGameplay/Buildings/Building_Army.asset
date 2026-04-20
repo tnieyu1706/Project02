@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 199bc71301414fbcb6581a98b2ef131b, type: 3}
+  m_Name: Building_Army
+  m_EditorClassIdentifier: 
+  buildingId: Army
+  defaultMaxVillagersCanUse: 2
+  requireVillagers: 1
+  buildingCategory: 1
+  tileLayer: 3
+  buildingTile: {fileID: 11400000, guid: fea4ae1e8db3b7149b367cb570ce9031, type: 2}
+  costBuilding:
+    resourceCosts:
+      data:
+      - key: 1
+        value: 10
+  styleSheets:
+  - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
+  - {fileID: 7433441132597879392, guid: d07ffbb31c7e4f2683adc061bf5680e7, type: 3}
+  - {fileID: 7433441132597879392, guid: 18aef36b6d3d4f899ce29b723f22487f, type: 3}
+  influenceEffects:
+    data: []
+  defaultUpgradeCost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 20
+  incrementUpgradeCost:
+    resourceCosts:
+      data: []
+  consumedResources:
+    data: []
+  maxSpawnSlot: 4
+  defaultRate: 0.5
+  incrementRate: 0.1
+  references:
+    version: 2
+    RefIds: []
