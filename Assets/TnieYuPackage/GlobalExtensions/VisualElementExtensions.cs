@@ -47,6 +47,19 @@ namespace TnieYuPackage.GlobalExtensions
             return visualElement;
         }
 
+        public static T RemoveClass<T>(this T visualElement, params string[] classes) where T : VisualElement
+        {
+            foreach (string cls in classes)
+            {
+                if (!string.IsNullOrEmpty(cls))
+                {
+                    visualElement.RemoveFromClassList(cls);
+                }
+            }
+
+            return visualElement;
+        }
+
         public static T WithManipulator<T>(this T visualElement, IManipulator manipulator) where T : VisualElement
         {
             visualElement.AddManipulator(manipulator);

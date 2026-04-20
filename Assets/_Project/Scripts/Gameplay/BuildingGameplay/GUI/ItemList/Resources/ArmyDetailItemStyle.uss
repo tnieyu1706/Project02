@@ -1,0 +1,54 @@
+/* Root container - Tùy chỉnh màu nền/viền một chút để phân biệt với Building */
+.army-tooltip-root {
+    min-width: 250px;
+    padding: 10px;
+    background-color: antiquewhite; /* Màu nền hơi ám xanh dương ngầm cho quân đội */
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: #5c7e9e; /* Viền xanh xám */
+}
+
+Label {
+    -unity-font-style: bold;
+}
+
+/* Header Title */
+.tooltip-army-name {
+    -unity-font-style: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+    -unity-text-align: middle-center; /* Căn giữa tên quân lính */
+
+    border-width: 2px;
+    border-bottom-color: black;
+}
+
+/* Reusable Bordered Box Class cho phần thông tin */
+.tooltip-bordered-box {
+    border-width: 1px;
+    border-color: gray;
+    border-radius: 5px;
+    padding: 6px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+/* Cost Layout */
+.tooltip-cost-container {
+    flex-direction: row;
+    background-color: peru;
+}
+
+.tooltip-cost-text {
+}
+
+/* Description Layout */
+.tooltip-desc-container {
+    margin-bottom: 0px; /* Bỏ margin ở thẻ box cuối cùng */
+}
+
+.tooltip-desc-text {
+    white-space: normal;
+    -unity-text-align: middle-center;
+    font-size: 12px;
+}

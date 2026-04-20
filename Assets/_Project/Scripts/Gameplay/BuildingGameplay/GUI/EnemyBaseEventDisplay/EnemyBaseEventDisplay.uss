@@ -1,0 +1,62 @@
+/* EnemyBaseDisplay.uss */
+
+/* Khung viền chính của cửa sổ hiển thị */
+.container {
+    align-self: flex-start;
+    flex-direction: column;
+
+    margin-left: 5%;
+    margin-top: 5%;
+
+    background-color: #181c22;
+    border-radius: 12px;
+    border-width: 1px;
+    border-color: #333;
+
+    padding: 20px;
+    /* Kích thước của toàn bộ bảng hiển thị */
+    width: 30%;
+    height: 70%;
+
+
+}
+
+/* Phần tiêu đề bên trên */
+.header {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom-width: 2px;
+    border-bottom-color: #FF5555;
+}
+
+.header__title {
+    font-size: 24px;
+    -unity-font-style: bold;
+    color: #FF5555;
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 4px #000;
+    -unity-text-align: middle-center;
+}
+
+/* Vùng chứa các EnemyBaseElement (Icon) */
+.content {
+    margin-top: 5px;
+    /* Quan trọng: flex-grow để chiếm hết phần còn lại của container */
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+
+    /* Quan trọng: Phải là relative để các phần tử con dùng absolute 
+       có thể tính toán vị trí dựa trên khung này */
+    position: relative;
+    overflow: hidden;
+
+
+}
+
+/* Hiệu ứng mờ cho background nếu cần */
+.root {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}

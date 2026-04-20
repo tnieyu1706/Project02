@@ -13,7 +13,7 @@ namespace InspectorGadgets.Editor.PropertyDrawers
 {
     /// <summary>[Editor-Only] [Pro-Only] A custom drawer for <see cref="Object"/> fields.</summary>
 #if !DISABLE_IG_OBJECT_DRAWER
-    [CustomPropertyDrawer(typeof(Object), true)]
+    // [CustomPropertyDrawer(typeof(Object), true)]
 #endif
     public class ObjectDrawer : PropertyDrawer
     {

@@ -1,0 +1,41 @@
+.action-cost-display {
+    flex-grow: 1;
+
+    margin-left: 6px;
+
+    font-size: 14px;
+    -unity-font-style: bold;
+    
+    background-color: darkolivegreen;
+}
+
+.action-cost-display .keypair-element__key {
+    width: 16px;
+    height: 16px;
+}
+
+.action-cost-display Label {
+    font-size: 16px;
+}
+
+.action-cost-display__container {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.action-cost-display__coin {
+    /*yellow*/
+}
+
+.action-cost-display__wood {
+    /*brown*/
+}
+
+.action-cost-display__stone {
+    /*grey*/
+}
+
+.action-cost-display__people {
+    /*orange*/
+}

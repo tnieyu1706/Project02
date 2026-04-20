@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4075cb1a77ff48938986749104f39bb9, type: 3}
+  m_Name: ArmyTypeDataManager
+  m_EditorClassIdentifier: 
+  refs:
+    data:
+    - key: 0
+      value:
+        entityId: Enemy01
+        entityPreset: {fileID: 11400000, guid: 8b942fdd5b1c488489aceb13257c62ea, type: 2}
+        spawnInterval: 0.4
+        pathScore: 0.3
+    - key: 1
+      value:
+        entityId: Enemy02
+        entityPreset: {fileID: 11400000, guid: 75da174d56b7ba44eb7363993370ab56, type: 2}
+        spawnInterval: 0.7
+        pathScore: 0.5
+    - key: 2
+      value:
+        entityId: Enemy03
+        entityPreset: {fileID: 11400000, guid: 7ba0b3e6499e3754b9987bcc2ed544da, type: 2}
+        spawnInterval: 1.6
+        pathScore: 1.2
+    - key: 3
+      value:
+        entityId: Enemy04
+        entityPreset: {fileID: 11400000, guid: f2f01a687919c774cb8de936123d3c61, type: 2}
+        spawnInterval: 0.56
+        pathScore: 0.6

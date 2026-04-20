@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5477493969684064930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d48055d55a74bde98c1c4c27d842348, type: 3}
+  m_Name: MeleeAttack
+  m_EditorClassIdentifier: 
+  installerId:
+    value: 7301e6f9-d6b0-4a44-8ffe-41b6b448a196
+  trackingLayerMask: 512
+  interactRange: 1
+  baseDamage: 6
+  attackCooldown: 2
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e69c91766a48edbc5bb7302b2c43ea, type: 3}
+  m_Name: Enemy_03
+  m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Entity.EntityPresetSo
+  subAssetName: MeleeAttack
+  deletingSubAsset: {fileID: 0}
+  objectId: Enemy03
+  libraryAsset: {fileID: 7108339969198208228, guid: cef22f051ec75b24792f86b8126908ac, type: 3}
+  interactStrategies:
+  - {fileID: -5477493969684064930}
+  strategyType: Game.BaseGameplay.Strategies.DirectlyCauseDamageInstaller, Core.Gameplay
+  configurators:
+  - {fileID: 11400000, guid: 8a72cf3a1abe97745a4d9c8eba1b28aa, type: 2}
+  maxHp: 24
+  def: 1.6
+  armyType: 2
+  entityLayer: Td Ground Enemy
+  moveSpeed: 0.7
+  baseCausingDmg: 1
+  dropMoney: 24

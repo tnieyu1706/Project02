@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/Assets/_Project/Scripts/Gameplay/Global/Popup/GamePopUIToolkit.uss">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/_Project/Scripts/Gameplay/Global/Popup/GamePopUIToolkit.uss" />
+              <option name="updatedContent" value=":root {&#10;    --popup-width-min: 320px;&#10;    --popup-height-min: 240px;&#10;    --popup-bg: #23272e;&#10;    --popup-border-radius: 16px;&#10;    --popup-shadow: 0 4px 24px rgba(0,0,0,0.25);&#10;    --popup-header-bg: #2c313a;&#10;    --popup-title-color: #fff;&#10;    --popup-content-color: #d1d5db;&#10;    --popup-padding: 24px;&#10;}&#10;&#10;.container {&#10;    min-width: var(--popup-width-min);&#10;    min-height: var(--popup-height-min);&#10;    background-color: var(--popup-bg);&#10;    border-radius: var(--popup-border-radius);&#10;    box-shadow: var(--popup-shadow);&#10;    padding: var(--popup-padding);&#10;    flex-direction: column;&#10;    align-items: stretch;&#10;    justify-content: flex-start;&#10;    display: flex;&#10;}&#10;&#10;.header {&#10;    background-color: var(--popup-header-bg);&#10;    border-radius: var(--popup-border-radius) var(--popup-border-radius) 0 0;&#10;    padding: 12px 0 12px 0;&#10;    margin-bottom: 16px;&#10;    display: flex;&#10;    align-items: center;&#10;    justify-content: center;&#10;}&#10;&#10;.title {&#10;    color: var(--popup-title-color);&#10;    font-size: 1.5em;&#10;    font-weight: bold;&#10;    letter-spacing: 0.02em;&#10;    text-align: center;&#10;}&#10;&#10;.content {&#10;    color: var(--popup-content-color);&#10;    font-size: 1.1em;&#10;    line-height: 1.5;&#10;    text-align: left;&#10;    margin-top: 8px;&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/_Project/Scripts/Gameplay/WaveAttack/ArmyStorageGlobal.uss">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/_Project/Scripts/Gameplay/WaveAttack/ArmyStorageGlobal.uss" />
+              <option name="updatedContent" value="/* ArmyStorageGlobal.uss */&#10;&#10;.container {&#10;    width: 30%;&#10;    height: 60%;&#10;    align-items: flex-start;&#10;    justify-content: flex-start;&#10;    flex-direction: column;&#10;    position: absolute;&#10;    left: 0;&#10;    top: 20%;&#10;}&#10;&#10;.header {&#10;    width: 100%;&#10;    margin-bottom: 12px;&#10;}&#10;&#10;.header__title {&#10;    font-size: 20px;&#10;    font-weight: bold;&#10;    margin-bottom: 8px;&#10;}&#10;&#10;.content {&#10;    width: 100%;&#10;    flex-direction: column;&#10;    gap: 8px;&#10;}&#10;&#10;.army-storage {&#10;    display: flex;&#10;    flex-direction: row;&#10;    align-items: center;&#10;    width: 100%;&#10;    height: 40px;&#10;    margin-bottom: 6px;&#10;}&#10;&#10;.army-storage__label {&#10;    flex: 1 1 60%;&#10;    font-size: 16px;&#10;    text-align: left;&#10;}&#10;&#10;.army-storage__value {&#10;    flex: 1 1 40%;&#10;    font-size: 16px;&#10;    text-align: right;&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

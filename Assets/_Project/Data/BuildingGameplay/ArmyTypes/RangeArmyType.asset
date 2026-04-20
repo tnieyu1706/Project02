@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6e5afdbd9d04ee79d0eef90d209f8d7, type: 3}
+  m_Name: RangeArmyType
+  m_EditorClassIdentifier: 
+  armyType: 1
+  armyCategory: 2
+  icon: {fileID: 21300000, guid: 2971ea6f0e8900c43ae09d78ade71907, type: 3}
+  delaySpawn: 12
+  cost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 20

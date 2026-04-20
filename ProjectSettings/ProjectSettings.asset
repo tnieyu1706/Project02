@@ -581,7 +581,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Standalone: ENABLE_LOGGING
+    Standalone: ENABLE_LOGGING;PUBLISHING_TOOLS_ASSET_STORE_RELEASE;PROCEDURAL_UI_ASSET_STORE_RELEASE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

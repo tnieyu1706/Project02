@@ -1,0 +1,65 @@
+/* MAIN CONTAINER */
+.container {
+    width: 40%;
+    height: 80%;
+
+    margin-top: 5%;
+    margin-right: 2.5%;
+
+    flex-direction: column;
+    align-self: flex-end;
+
+    background-color: rgba(169, 169, 169, 0.9);
+
+    border-width: 2px;
+    border-color: black;
+
+    padding: 10px;
+}
+
+/* TITLE */
+.title {
+    height: 40px;
+
+    -unity-text-align: middle-center;
+
+    font-size: 28px;
+    -unity-font-style: bold;
+
+    margin-bottom: 8px;
+}
+
+/* THÊM STYLE CHO SCROLL VIEW */
+.scroll-view {
+    flex-grow: 1; /* Để ScrollView giãn ra chiếm toàn bộ không gian còn lại */
+    width: 100%;
+}
+
+/* LIST - Đã được hiệu chỉnh để nằm tốt trong ScrollView */
+.grid-view {
+    /* Đã bỏ flex-grow: 1 vì chiều cao grid giờ phụ thuộc vào số lượng item bên trong ScrollView */
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    border-width: 2px;
+    border-color: black;
+
+    padding: 6px;
+    margin-bottom: 10px; /* Cách các khối Category ra một chút */
+}
+
+/* THÊM STYLE CHO TIÊU ĐỀ CATEGORY */
+.category-title {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: white;
+    background-color: rgba(60, 60, 60, 0.8);
+    padding: 5px 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.grid-view > .detail-item {
+    margin: 3px;
+}

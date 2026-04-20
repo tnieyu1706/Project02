@@ -2,16 +2,15 @@ using UnityEngine;
 
 namespace TnieYuPackage.DesignPatterns
 {
-    public class SingletonBehavior<T> : MonoBehaviour
+    public abstract class SingletonBehavior<T> : MonoBehaviour
         where T : Component
     {
-        [SerializeField] protected bool dontDestroyOnLoad = true;
+        [SerializeField] protected bool dontDestroyOnLoad;
 
         private static T instance;
 
-        private static bool isQuitting;
-
         /// <summary>
+        /// Only using for get available Instance
         /// Noted when SingletonBehavior in Disable.
         /// When game Stop/Close, it can stop Singleton before disable call
         /// so Instance will be null.
@@ -20,20 +19,13 @@ namespace TnieYuPackage.DesignPatterns
         {
             get
             {
-                if (isQuitting) return null;
+                if (instance != null) return instance;
 
-                if (instance == null)
-                {
-                    instance = Object.FindFirstObjectByType<T>();
+                return instance = Object.FindFirstObjectByType<T>(FindObjectsInactive.Include);
 
-                    if (instance == null)
-                    {
-                        GameObject go = new GameObject(typeof(T).Name + " (Singleton)");
-                        instance = go.AddComponent<T>();
-                    }
-                }
-
-                return instance;
+                // auto-create singleton
+                // GameObject go = new GameObject(typeof(T).Name + " (Singleton)");
+                // instance = go.AddComponent<T>();
             }
         }
 
@@ -47,15 +39,15 @@ namespace TnieYuPackage.DesignPatterns
 
             instance = this as T;
 
-            gameObject.SetActive(true);
+            InitializeSingleton();
 
             if (dontDestroyOnLoad)
                 DontDestroyOnLoad(gameObject);
         }
 
-        protected virtual void OnApplicationQuit()
+        protected virtual void InitializeSingleton()
         {
-            isQuitting = true;
+            gameObject.SetActive(true);
         }
     }
 }

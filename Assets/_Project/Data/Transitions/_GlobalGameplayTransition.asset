@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd1a69e78e24bfab7b93848f4d1ab2b, type: 3}
+  m_Name: _GlobalGameplayTransition
+  m_EditorClassIdentifier: 
+  buildingGameplaySceneGroup:
+    groupName: Building Gameplay
+    scenes:
+    - reference:
+        asset: {fileID: 102900000, guid: ead3a0437f6f6dc4eae6a793a6649af4, type: 3}
+        guid: ead3a0437f6f6dc4eae6a793a6649af4
+      sceneType: 2
+      alwaysReload: 0
+      completedActions: []
+    - reference:
+        asset: {fileID: 102900000, guid: 4c20d00f8999d0a45b118548e0654201, type: 3}
+        guid: 4c20d00f8999d0a45b118548e0654201
+      sceneType: 0
+      alwaysReload: 0
+      completedActions: []
+    - reference:
+        asset: {fileID: 102900000, guid: 894f7e30cf55c824ea6a9d5e02ea8a3c, type: 3}
+        guid: 894f7e30cf55c824ea6a9d5e02ea8a3c
+      sceneType: 1
+      alwaysReload: 0
+      completedActions: []
+  buildingCacheSoap: {fileID: 11400000, guid: f03a2ee0b1a0abf4bbba0dd6335239ab, type: 2}
+  baseGameplaySceneGroup:
+    groupName: Base Gameplay
+    scenes:
+    - reference:
+        asset: {fileID: 102900000, guid: ead3a0437f6f6dc4eae6a793a6649af4, type: 3}
+        guid: ead3a0437f6f6dc4eae6a793a6649af4
+      sceneType: 2
+      alwaysReload: 0
+      completedActions: []
+    - reference:
+        asset: {fileID: 102900000, guid: 2ed26c0622bf4ee49972fcf34c08efc8, type: 3}
+        guid: 2ed26c0622bf4ee49972fcf34c08efc8
+      sceneType: 0
+      alwaysReload: 0
+      completedActions: []
+  towerDefenseSceneData:
+    reference:
+      asset: {fileID: 102900000, guid: 38ccd84595c08d441a86e00959134db0, type: 3}
+      guid: 38ccd84595c08d441a86e00959134db0
+    sceneType: 3
+    alwaysReload: 0
+    completedActions: []
+  waveAttackSceneData:
+    reference:
+      asset: {fileID: 102900000, guid: c0496c660fd9da64fbbc127608183f4e, type: 3}
+      guid: c0496c660fd9da64fbbc127608183f4e
+    sceneType: 3
+    alwaysReload: 0
+    completedActions: []
+  references:
+    version: 2
+    RefIds: []

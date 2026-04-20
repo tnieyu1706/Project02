@@ -13,7 +13,7 @@ namespace TnieYuPackage.GlobalExtensions
         {
             return new Vector2(vector.x + (x ?? 0), vector.y + (y ?? 0));
         }
-    
+
         public static Vector2 ConvertPixelToWorld(this Vector2 uvPixel, int width, int height)
         {
             float u = uvPixel.x / width - 0.5f;
@@ -35,9 +35,29 @@ namespace TnieYuPackage.GlobalExtensions
             return new Vector2(x, y);
         }
 
-        public static float GetRandomNumber(this Vector2 vector)
+        public static float GetRandom(this Vector2 vector)
         {
             return UnityEngine.Random.Range(vector.x, vector.y);
+        }
+
+        public static Vector2 GetDirectionVector2From(this Vector2 vector, Vector2 target)
+        {
+            return (vector - target);
+        }
+
+        public static Vector2 GetDirectionVector2FromNormalized(this Vector2 vector, Vector2 target)
+        {
+            return (vector - target).normalized;
+        }
+
+        public static Vector2 GetDirectionVector2To(this Vector2 vector, Vector2 target)
+        {
+            return (target - vector);
+        }
+
+        public static Vector2 GetDirectionVector2ToNormalized(this Vector2 vector, Vector2 target)
+        {
+            return (target - vector).normalized;
         }
     }
 }

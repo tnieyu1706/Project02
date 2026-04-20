@@ -2,44 +2,35 @@ using System.Collections.Generic;
 using EditorAttributes;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using Void = EditorAttributes.Void;
 
 namespace TnieYuPackage.DesignPatterns
 {
-    public abstract class BaseParentAsset : ScriptableObject
-    {
-        
-    }
-    
-    public abstract class BaseParentAsset<TSub> : BaseParentAsset
-        where TSub : BaseSubAsset
+    public abstract class BaseParentAsset<TSub> : ScriptableObject
+        where TSub : ScriptableObject
     {
         [SerializeField]
+        [PropertyOrder(5)]
         [FoldoutGroup(
-            "General SubAsset",
-            nameof(generateFoldoutGroup),
-            nameof(deletedFoldoutGroup)
-            )]
-        private Void generalSubAssetFoldout;
-        
-        public abstract List<TSub> SubAssets { get; }
-
-        #region GENERATE_SUBASSET
-
-        [SerializeField]
-        [HideProperty]
-        [FoldoutGroup(
-            "Generate SubAsset",
+            "Sub Assets",
             nameof(subAssetName),
-            nameof(generateSubAssetButton)
+            nameof(generateSubAssetButton),
+            nameof(deletingSubAsset),
+            nameof(deleteSubAssetButton)
         )]
-        private Void generateFoldoutGroup;
+        private Void baseParentAssetFoldout;
 
-        [SerializeField] [HideProperty] private string subAssetName;
-        
+        protected abstract List<TSub> SubAssets { get; }
+
+        [SerializeField] [HideProperty] protected string subAssetName;
+
+        protected virtual TSub CreateSubAsset()
+        {
+            return ScriptableObject.CreateInstance<TSub>();
+        }
+
         [SerializeField] [HideProperty, ButtonField(nameof(GenerateSubAsset), "Generate SubAsset")]
-        private Void generateSubAssetButton;
+        protected Void generateSubAssetButton;
 
         private void GenerateSubAsset()
         {
@@ -50,9 +41,8 @@ namespace TnieYuPackage.DesignPatterns
                 return;
             }
 
-            var subAsset = ScriptableObject.CreateInstance<TSub>();
+            var subAsset = CreateSubAsset();
             subAsset.name = subAssetName;
-            subAsset.Parent = this;
             HandleSubAssetWhenGenerating(subAsset);
 
             //add sub-asset
@@ -68,26 +58,15 @@ namespace TnieYuPackage.DesignPatterns
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
 #endif
         }
-        
-        protected abstract void HandleSubAssetWhenGenerating(TSub subAsset);
 
-        #endregion
+        protected virtual void HandleSubAssetWhenGenerating(TSub subAsset)
+        {
+        }
 
-        #region DELETE_SUBASSET
-
-        [SerializeField]
-        [HideProperty]
-        [FoldoutGroup(
-            "Delete SubAsset",
-            nameof(deletingSubAsset),
-            nameof(deleteSubAssetButton)
-        )]
-        private Void deletedFoldoutGroup;
-
-        [SerializeField] [HideProperty] private TSub deletingSubAsset;
+        [SerializeField] [HideProperty] protected TSub deletingSubAsset;
 
         [SerializeField] [HideProperty, ButtonField(nameof(DeleteSubAsset), "Delete SubAsset")]
-        private Void deleteSubAssetButton;
+        protected Void deleteSubAssetButton;
 
         private void DeleteSubAsset()
         {
@@ -105,9 +84,9 @@ namespace TnieYuPackage.DesignPatterns
                 Debug.LogWarning($"Current Delete_Sub_Asset is not in children of this parent");
                 return;
             }
-            
+
             HandleSubAssetBeforeDelete(deletingSubAsset);
-            Object.DestroyImmediate(deletingSubAsset, true);
+            DestroyImmediate(deletingSubAsset, true);
 
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
@@ -115,8 +94,8 @@ namespace TnieYuPackage.DesignPatterns
 #endif
         }
 
-        protected abstract void HandleSubAssetBeforeDelete(TSub subAsset);
-
-        #endregion
+        protected virtual void HandleSubAssetBeforeDelete(TSub subAsset)
+        {
+        }
     }
 }

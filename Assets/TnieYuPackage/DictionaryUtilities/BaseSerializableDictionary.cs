@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace TnieYuPackage.DictionaryUtilities
 {
+    /// <summary>
+    /// Dictionary wrapper for Unity serialization. Use List to store data, and build & change Dictionary on runtime.
+    /// </summary>
+    /// <typeparam name="TKeyPair"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     [Serializable]
     public abstract class BaseSerializableDictionary<TKeyPair, TKey, TValue>
         where TKeyPair : struct, ISerializableKeyPair<TKey, TValue>
