@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d15728af50b74f64864f3d3c3ad0ea92, type: 3}
+  m_Name: Building_ResourceIncrease_Stone1
+  m_EditorClassIdentifier: 
+  buildingId: StoneIncrease1
+  defaultMaxVillagersCanUse: 2
+  requireVillagers: 1
+  buildingCategory: 4
+  tileLayer: 4
+  buildingTile: {fileID: 11400000, guid: 4a051d6a3ca664440b6274fe19d881ed, type: 2}
+  costBuilding:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 14
+      - key: 1
+        value: 10
+      - key: 2
+        value: 7
+  styleSheets:
+  - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
+  - {fileID: 7433441132597879392, guid: 5ec69aafc765416e818a34e9057d3b54, type: 3}
+  influenceEffects:
+    data:
+    - key: 4
+      value:
+        rid: 6075148577759822143
+    - key: 1
+      value:
+        rid: 6075148577759822144
+  defaultUpgradeCost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 14
+      - key: 1
+        value: 10
+      - key: 2
+        value: 8
+  incrementUpgradeCost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 5
+      - key: 1
+        value: 3
+      - key: 2
+        value: 2
+  consumedResources:
+    data: []
+  resourceType: 2
+  defaultValue: 1.8
+  incrementValue: 0.6
+  references:
+    version: 2
+    RefIds:
+    - rid: 6075148577759822143
+      type: {class: ConvenientBuildingInfluenceEffect, ns: Game.StrategyBuilding, asm: Core.Gameplay}
+      data:
+        influenceRatio: 0.05
+    - rid: 6075148577759822144
+      type: {class: ConvenientBuildingInfluenceEffect, ns: Game.StrategyBuilding, asm: Core.Gameplay}
+      data:
+        influenceRatio: 0.08

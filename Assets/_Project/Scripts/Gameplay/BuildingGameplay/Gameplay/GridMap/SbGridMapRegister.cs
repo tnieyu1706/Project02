@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using EditorAttributes;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.DictionaryUtilities;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 namespace Game.StrategyBuilding

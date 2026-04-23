@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f31ce1c42024886bd45079bdc91ae1b, type: 3}
   m_Name: GridMapDataController
   m_EditorClassIdentifier: 
-  impactedContextSprite: {fileID: 21300000, guid: 9ed9b5ee163022c48b53cf86efa7aef4, type: 3}
-  influenceContextSprite: {fileID: 21300000, guid: c77f4c3d1c81de841b6aef2bf3df0552, type: 3}
+  impactedContextSprite: {fileID: 843532523243758000, guid: 9993c037e278e554d98819bbba466044, type: 3}
+  influenceContextSprite: {fileID: 8925324516288638276, guid: 9993c037e278e554d98819bbba466044, type: 3}

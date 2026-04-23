@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4450968019777071042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d337e6cff42348c384ac067f35c760cb, type: 3}
+  m_Name: RallySpawnInteract
+  m_EditorClassIdentifier: 
+  installerId:
+    value: 885a2f64-98a6-4102-9d59-c98558bf503a
+  trackingLayerMask: 0
+  interactRange: 2
+  soldierPreset: {fileID: 11400000, guid: 47d956fb6bc9eae4eb15e44c05d3811b, type: 2}
+  maxSpawnQuantity: 2
+  spawnCooldown: 12
+  rallyRadius: 0.1
+  moveSpeed: 1.2
+  pathLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed25f66ba0a4ea9ba7a34c3f6e69c61, type: 3}
+  m_Name: Tower_Guardian_01
+  m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Tower.TowerAttributePresetSo
+  subAssetName: RallySpawnInteract
+  deletingSubAsset: {fileID: 0}
+  objectId: Guardian_01
+  libraryAsset: {fileID: 7108339969198208228, guid: 4d0ac29e391355d48a4b151132192014, type: 3}
+  interactStrategies:
+  - {fileID: -4450968019777071042}
+  strategyType: Game.BaseGameplay.Strategies.StaticTowerSpawnInteractStrategyInstaller,
+    Core.Gameplay
+  configurators: []
+  towerIcon: {fileID: -7294876437045788125, guid: 2759d20ca5c2af843a62b7dc207a61d9, type: 3}
+  towerPriceValue: 70
+  towerType: 1
+  towerLevel: 1
+  towerEvents:
+  - {fileID: 11400000, guid: 3d188cfae2fb4244e995e0da00dbbb29, type: 2}

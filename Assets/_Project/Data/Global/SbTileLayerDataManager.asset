@@ -16,7 +16,7 @@ MonoBehaviour:
     data:
     - key: 0
       value:
-        tile: {fileID: 11400000, guid: 5fcd15438efa61b449982a180ba409be, type: 2}
+        tile: {fileID: 11400000, guid: e26c11997e1222340b2f2133d7ecdc06, type: 2}
     - key: 1
       value:
-        tile: {fileID: 11400000, guid: 6ea3a242cfa07e247b4a8ea980b55f1d, type: 2}
+        tile: {fileID: 11400000, guid: fa9c0800e244e5d48a8b8cd59a7e7366, type: 2}

@@ -16,19 +16,19 @@ MonoBehaviour:
     data:
     - key: 0
       value:
-        icon: {fileID: 0}
+        icon: {fileID: -2063530960682472172, guid: fb0c66520fdd74640ac04943ec3fa7de, type: 3}
         emoji: "\U0001F4B0"
     - key: 1
       value:
-        icon: {fileID: 0}
+        icon: {fileID: 3165103790626233761, guid: fb0c66520fdd74640ac04943ec3fa7de, type: 3}
         emoji: "\U0001F332"
     - key: 2
       value:
-        icon: {fileID: 0}
+        icon: {fileID: -1005585325743154358, guid: fb0c66520fdd74640ac04943ec3fa7de, type: 3}
         emoji: "\u26F0\uFE0F"
     - key: 3
       value:
-        icon: {fileID: 0}
+        icon: {fileID: -1260617085003562936, guid: fb0c66520fdd74640ac04943ec3fa7de, type: 3}
         emoji: "\U0001F356"
   limitResources:
     data: []

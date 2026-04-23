@@ -151,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: c021e498f811cd943a90ce01597653ec, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: b8342d14786275946a1635c092a58e89, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 5656ce57c7d01e84ca27fba4348a5198, type: 3}
   m_SortingOrder: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
@@ -287,7 +287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: c021e498f811cd943a90ce01597653ec, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: b8342d14786275946a1635c092a58e89, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 5656ce57c7d01e84ca27fba4348a5198, type: 3}
   m_SortingOrder: 1
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920

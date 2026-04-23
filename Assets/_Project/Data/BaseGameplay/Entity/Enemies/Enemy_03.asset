@@ -33,7 +33,7 @@ MonoBehaviour:
   subAssetName: MeleeAttack
   deletingSubAsset: {fileID: 0}
   objectId: Enemy03
-  libraryAsset: {fileID: 7108339969198208228, guid: cef22f051ec75b24792f86b8126908ac, type: 3}
+  libraryAsset: {fileID: 7108339969198208228, guid: 186defa506bd77f4e8cdd8e62f234e70, type: 3}
   interactStrategies:
   - {fileID: -5477493969684064930}
   strategyType: Game.BaseGameplay.Strategies.DirectlyCauseDamageInstaller, Core.Gameplay
@@ -43,6 +43,6 @@ MonoBehaviour:
   def: 1.6
   armyType: 2
   entityLayer: Td Ground Enemy
-  moveSpeed: 0.7
+  moveSpeed: 0.5
   baseCausingDmg: 1
-  dropMoney: 24
+  dropMoney: 28

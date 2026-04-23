@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sounds
+  m_EditorClassIdentifier: 
+  m_GroupName: Sounds
+  m_GUID: d62656c9739152c438c3a106729e102d
+  m_SerializeEntries:
+  - m_GUID: 05205ed74ac24e74da908db9d63b076e
+    m_Address: BowThrow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 104fb0f2e59e3ee4f890c8947f7ee19d
+    m_Address: PopupPop
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 129acb024b50ec64885eb8b630ecb667
+    m_Address: KeyUp
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 230eeab6425decc4dbf5c8d09a887399
+    m_Address: BreakWood
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2340d683a1dabf849ace79bbfe11ddb0
+    m_Address: CauseDamage
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b9815931e069664181d6ffd2f47df28
+    m_Address: ClaimCoin
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c1f1772e71e2ab4daab495bcc268276
+    m_Address: Command
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a8bded5c63238349ace97053b616743
+    m_Address: ClaimSkill
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58336fb7fd6e77b4bb89222742837cc7
+    m_Address: ToggleOff
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 668785fa11264fd4d9cd1ed597d99f7b
+    m_Address: KeyDownStrong
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 693dcd7b00d1d71479a36dc2c7dfd19c
+    m_Address: ClaimArmy
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88509e890688a8f4486fda66490b5a9c
+    m_Address: BuildConstruction
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 895b535491129a84db7c7cd89015ccf6
+    m_Address: DestroyConstruction
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c522358b057e2e45828b1cb6cf696f4
+    m_Address: ButtonClick
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 95b3c2c4a9f801940b26f25ce7f74cc9
+    m_Address: ToggleOn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98e317b07ceddfd48b6293c3bd1ba8b3
+    m_Address: Punch
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd18d25c398722647be4a059387c0d52
+    m_Address: ClaimWood
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c48dd795649ce034bb681734b5104100
+    m_Address: ShootMagic
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e70ea5894a34012478f718339fd29644
+    m_Address: KeyDownLow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8bb8a7b1ead03e49b6d92c6f81523bb
+    m_Address: ClaimStone
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb721e0b39d5f734c93fc9eea0dec3aa
+    m_Address: ClaimFarm
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3e20a474b6c39d34ebff917ff5c43402, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: c6d7969fa40c8234bab7a62ae27716c9, type: 2}
+    - {fileID: 11400000, guid: 508c9b671a6341d4b91b37c913c180ed, type: 2}

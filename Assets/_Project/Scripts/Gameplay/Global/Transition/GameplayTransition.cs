@@ -30,6 +30,7 @@ namespace Gameplay.Global
 
         public static async UniTask CreateBuildingGameplay(BuildingGameplayLevel buildingLevelSource)
         {
+            // attach buildingGameplayLevel for CreateBuildingGameplay
             await SceneLoader.Instance.Load(Instance.buildingGameplaySceneGroup);
 
             if (SbGameplayController.Instance != null)

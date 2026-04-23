@@ -50,7 +50,8 @@ namespace Game.StrategyBuilding
             // Hỗ trợ trường hợp nếu bạn tạo nhà sản xuất thụ động (requireVillagers = false)
             float multiplier = ActualPreset.requireVillagers ? UsedVillagers : 1f;
 
-            return (float)Math.Round((basePotential * this.InfluenceRatio.Value) * multiplier, 1);
+            float finalValue = Mathf.RoundToInt((basePotential * this.InfluenceRatio.Value) * multiplier * 10) / 10f;
+            return finalValue;
         }
 
         public override void RefreshBehaviour()

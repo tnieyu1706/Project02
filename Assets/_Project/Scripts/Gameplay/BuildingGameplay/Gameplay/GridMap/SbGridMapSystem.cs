@@ -17,6 +17,8 @@ namespace Game.StrategyBuilding
         Stone,
         Water,
         Building,
+        Factory,
+        Storage
         //... Biome, Building, etc.
     }
 

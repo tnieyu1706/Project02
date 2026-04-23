@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   armyType: 1
   armyCategory: 2
-  icon: {fileID: 21300000, guid: 2971ea6f0e8900c43ae09d78ade71907, type: 3}
-  delaySpawn: 12
+  icon: {fileID: -1966948633, guid: d7a28412b83890d45a80ef8158f31dd5, type: 3}
+  delaySpawn: 6
   cost:
     resourceCosts:
       data:
       - key: 0
-        value: 20
+        value: 10

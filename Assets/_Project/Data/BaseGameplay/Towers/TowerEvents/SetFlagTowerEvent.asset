@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e61bc6f52f7459790dd5dd978c4705f, type: 3}
   m_Name: SetFlagTowerEvent
   m_EditorClassIdentifier: 
-  eventIcon: {fileID: 21300000, guid: e09b7562239cd3a48b7618c0f6f166aa, type: 3}
+  eventIcon: {fileID: 21300000, guid: 2e37dd301da92244788762baa36843a2, type: 3}

@@ -13,6 +13,7 @@ namespace Game.StrategyBuilding
         [SerializeField] private GameObject contextPrefab;
         [SerializeField] private Transform transformOffset;
         [SerializeField] private int zLevel;
+        public float mapScale = 1f;
 
         private SpriteRenderer centerContext;
         private Dictionary<Vector2Int, SpriteRenderer> neighborContexts = new();
@@ -32,7 +33,8 @@ namespace Game.StrategyBuilding
         private SpriteRenderer CreateDirectionObject(Vector2Int neighborDir)
         {
             var gObj = Instantiate(contextPrefab, transformOffset);
-            gObj.transform.localPosition = neighborDir.ToVector3Int(zLevel);
+            gObj.transform.localPosition = mapScale * (Vector3)neighborDir.ToVector3Int(zLevel);
+            gObj.transform.localScale = new Vector3(mapScale, mapScale, mapScale);
             var spriteRenderer = gObj.GetComponent<SpriteRenderer>();
             return spriteRenderer;
         }

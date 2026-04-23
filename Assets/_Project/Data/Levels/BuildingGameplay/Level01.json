@@ -3,8 +3,40 @@
     "GridTiles": [
       {
         "Position": {
+          "x": -14,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -12,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -11,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
           "x": -10,
-          "y": -6
+          "y": -8
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -12,7 +44,7 @@
       {
         "Position": {
           "x": -9,
-          "y": -6
+          "y": -8
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -20,47 +52,7 @@
       {
         "Position": {
           "x": -8,
-          "y": -6
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -7,
-          "y": -6
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -6,
-          "y": -6
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -5,
-          "y": -6
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -4,
-          "y": -6
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -3,
-          "y": -6
+          "y": -8
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -68,7 +60,31 @@
       {
         "Position": {
           "x": -2,
-          "y": -6
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -1,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 0,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 1,
+          "y": -8
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -76,6 +92,286 @@
       {
         "Position": {
           "x": 2,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 3,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 4,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 5,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 6,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 7,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 8,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 9,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 10,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 11,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 12,
+          "y": -8
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -14,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -12,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -11,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -10,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -1,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 0,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 1,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 2,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 3,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 4,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 5,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 6,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 7,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 8,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 9,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 10,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 11,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 12,
+          "y": -7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -14,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -12,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -11,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 0,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 1,
           "y": -6
         },
         "TileLayer": "Tree",
@@ -99,7 +395,7 @@
       },
       {
         "Position": {
-          "x": 5,
+          "x": 8,
           "y": -6
         },
         "TileLayer": "Tree",
@@ -107,7 +403,39 @@
       },
       {
         "Position": {
-          "x": -10,
+          "x": 9,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 10,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 11,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 12,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -14,
           "y": -5
         },
         "TileLayer": "Tree",
@@ -115,7 +443,7 @@
       },
       {
         "Position": {
-          "x": -9,
+          "x": -13,
           "y": -5
         },
         "TileLayer": "Tree",
@@ -123,7 +451,7 @@
       },
       {
         "Position": {
-          "x": -8,
+          "x": -12,
           "y": -5
         },
         "TileLayer": "Tree",
@@ -131,7 +459,7 @@
       },
       {
         "Position": {
-          "x": -7,
+          "x": -11,
           "y": -5
         },
         "TileLayer": "Tree",
@@ -139,7 +467,7 @@
       },
       {
         "Position": {
-          "x": -6,
+          "x": 1,
           "y": -5
         },
         "TileLayer": "Tree",
@@ -147,8 +475,136 @@
       },
       {
         "Position": {
-          "x": -5,
+          "x": 2,
           "y": -5
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 3,
+          "y": -5
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 4,
+          "y": -5
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 9,
+          "y": -5
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 10,
+          "y": -5
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 11,
+          "y": -5
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 12,
+          "y": -5
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -14,
+          "y": -4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": -4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -12,
+          "y": -4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 2,
+          "y": -4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 3,
+          "y": -4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 10,
+          "y": -4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 11,
+          "y": -4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 12,
+          "y": -4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -14,
+          "y": -3
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": -3
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -156,7 +612,39 @@
       {
         "Position": {
           "x": -4,
-          "y": -5
+          "y": -3
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 11,
+          "y": -3
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 12,
+          "y": -3
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -5,
+          "y": -2
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -4,
+          "y": -2
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -164,79 +652,15 @@
       {
         "Position": {
           "x": -3,
-          "y": -5
+          "y": -2
         },
         "TileLayer": "Tree",
         "BuildingId": ""
       },
       {
         "Position": {
-          "x": 1,
-          "y": -5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 2,
-          "y": -5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 3,
-          "y": -5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 4,
-          "y": -5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 5,
-          "y": -5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -10,
-          "y": -4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -9,
-          "y": -4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -8,
-          "y": -4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -7,
-          "y": -4
+          "x": 12,
+          "y": -2
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -244,7 +668,7 @@
       {
         "Position": {
           "x": -6,
-          "y": -4
+          "y": -1
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -252,7 +676,7 @@
       {
         "Position": {
           "x": -5,
-          "y": -4
+          "y": -1
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -260,543 +684,7 @@
       {
         "Position": {
           "x": -4,
-          "y": -4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 1,
-          "y": -4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 2,
-          "y": -4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 3,
-          "y": -4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 4,
-          "y": -4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 9,
-          "y": -4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -10,
-          "y": -3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -9,
-          "y": -3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -8,
-          "y": -3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -7,
-          "y": -3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 1,
-          "y": -3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 2,
-          "y": -3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 3,
-          "y": -3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 8,
-          "y": -3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 9,
-          "y": -3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -10,
-          "y": -2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -9,
-          "y": -2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -8,
-          "y": -2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 1,
-          "y": -2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 2,
-          "y": -2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 7,
-          "y": -2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 8,
-          "y": -2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 9,
-          "y": -2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 1,
           "y": -1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 7,
-          "y": -1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 8,
-          "y": -1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 9,
-          "y": -1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 6,
-          "y": 0
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 7,
-          "y": 0
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 8,
-          "y": 0
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 9,
-          "y": 0
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -10,
-          "y": 1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -9,
-          "y": 1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -8,
-          "y": 1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 4,
-          "y": 1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 5,
-          "y": 1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 6,
-          "y": 1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 7,
-          "y": 1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 8,
-          "y": 1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 9,
-          "y": 1
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -10,
-          "y": 2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -9,
-          "y": 2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -8,
-          "y": 2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -7,
-          "y": 2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 4,
-          "y": 2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 5,
-          "y": 2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 6,
-          "y": 2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 7,
-          "y": 2
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -10,
-          "y": 3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -9,
-          "y": 3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -8,
-          "y": 3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -7,
-          "y": 3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -6,
-          "y": 3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 3,
-          "y": 3
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -10,
-          "y": 4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -9,
-          "y": 4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -8,
-          "y": 4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -7,
-          "y": 4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -6,
-          "y": 4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -5,
-          "y": 4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -4,
-          "y": 4
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -10,
-          "y": 5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -9,
-          "y": 5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -8,
-          "y": 5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -7,
-          "y": 5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -6,
-          "y": 5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -5,
-          "y": 5
-        },
-        "TileLayer": "Tree",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -4,
-          "y": 5
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -804,7 +692,7 @@
       {
         "Position": {
           "x": -3,
-          "y": 5
+          "y": -1
         },
         "TileLayer": "Tree",
         "BuildingId": ""
@@ -812,6 +700,230 @@
       {
         "Position": {
           "x": -2,
+          "y": -1
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -1,
+          "y": -1
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -6,
+          "y": 0
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -5,
+          "y": 0
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -4,
+          "y": 0
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -3,
+          "y": 0
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -2,
+          "y": 0
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -1,
+          "y": 0
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": 1
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -4,
+          "y": 1
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -3,
+          "y": 1
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -2,
+          "y": 1
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": 2
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -12,
+          "y": 2
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -11,
+          "y": 2
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -10,
+          "y": 2
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -3,
+          "y": 2
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": 3
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -12,
+          "y": 3
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -11,
+          "y": 3
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -10,
+          "y": 3
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -9,
+          "y": 3
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": 4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -12,
+          "y": 4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -11,
+          "y": 4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -10,
+          "y": 4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -9,
+          "y": 4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -8,
+          "y": 4
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -14,
           "y": 5
         },
         "TileLayer": "Tree",
@@ -819,40 +931,176 @@
       },
       {
         "Position": {
-          "x": 0,
-          "y": -4
+          "x": -13,
+          "y": 5
         },
-        "TileLayer": "Stone",
+        "TileLayer": "Tree",
         "BuildingId": ""
       },
       {
         "Position": {
-          "x": -1,
-          "y": -3
+          "x": -12,
+          "y": 5
         },
-        "TileLayer": "Stone",
+        "TileLayer": "Tree",
         "BuildingId": ""
       },
       {
         "Position": {
-          "x": 0,
-          "y": -3
+          "x": -11,
+          "y": 5
         },
-        "TileLayer": "Stone",
+        "TileLayer": "Tree",
         "BuildingId": ""
       },
       {
         "Position": {
-          "x": -4,
-          "y": -2
+          "x": -10,
+          "y": 5
         },
-        "TileLayer": "Stone",
+        "TileLayer": "Tree",
         "BuildingId": ""
       },
       {
         "Position": {
-          "x": -3,
-          "y": -2
+          "x": -9,
+          "y": 5
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -8,
+          "y": 5
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -14,
+          "y": 6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": 6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -12,
+          "y": 6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -11,
+          "y": 6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -10,
+          "y": 6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -9,
+          "y": 6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -8,
+          "y": 6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -7,
+          "y": 6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -13,
+          "y": 7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -12,
+          "y": 7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -11,
+          "y": 7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -10,
+          "y": 7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -9,
+          "y": 7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -8,
+          "y": 7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -7,
+          "y": 7
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -6,
+          "y": -7
         },
         "TileLayer": "Stone",
         "BuildingId": ""
@@ -860,7 +1108,7 @@
       {
         "Position": {
           "x": -5,
-          "y": -1
+          "y": -7
         },
         "TileLayer": "Stone",
         "BuildingId": ""
@@ -868,7 +1116,23 @@
       {
         "Position": {
           "x": -4,
-          "y": -1
+          "y": -7
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -6,
+          "y": -6
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -5,
+          "y": -6
         },
         "TileLayer": "Stone",
         "BuildingId": ""
@@ -876,6 +1140,78 @@
       {
         "Position": {
           "x": -4,
+          "y": -6
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 5,
+          "y": -3
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 6,
+          "y": -3
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 5,
+          "y": -2
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 6,
+          "y": -2
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -11,
+          "y": -1
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -10,
+          "y": -1
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 5,
+          "y": -1
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": -10,
+          "y": 0
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 9,
           "y": 1
         },
         "TileLayer": "Stone",
@@ -883,7 +1219,7 @@
       },
       {
         "Position": {
-          "x": -3,
+          "x": 10,
           "y": 1
         },
         "TileLayer": "Stone",
@@ -891,16 +1227,136 @@
       },
       {
         "Position": {
-          "x": -1,
-          "y": 1
+          "x": 3,
+          "y": 2
         },
         "TileLayer": "Stone",
         "BuildingId": ""
       },
       {
         "Position": {
-          "x": 0,
-          "y": 1
+          "x": 4,
+          "y": 2
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 8,
+          "y": 2
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 11,
+          "y": 2
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 2,
+          "y": 3
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 3,
+          "y": 3
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 4,
+          "y": 3
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 10,
+          "y": 3
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 2,
+          "y": 4
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 7,
+          "y": 4
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 10,
+          "y": 4
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 7,
+          "y": 5
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 8,
+          "y": 5
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 4,
+          "y": 6
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 6,
+          "y": 6
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 7,
+          "y": 6
+        },
+        "TileLayer": "Stone",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
+          "x": 9,
+          "y": 6
         },
         "TileLayer": "Stone",
         "BuildingId": ""
@@ -908,39 +1364,7 @@
       {
         "Position": {
           "x": 1,
-          "y": 1
-        },
-        "TileLayer": "Stone",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -3,
-          "y": 2
-        },
-        "TileLayer": "Stone",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -1,
-          "y": 2
-        },
-        "TileLayer": "Stone",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": 0,
-          "y": 2
-        },
-        "TileLayer": "Stone",
-        "BuildingId": ""
-      },
-      {
-        "Position": {
-          "x": -2,
-          "y": -1
+          "y": 0
         },
         "TileLayer": "Building",
         "BuildingId": "MainTowerHall",
@@ -953,10 +1377,24 @@
       },
       {
         "Position": {
-          "x": -6,
-          "y": -3
+          "x": 1,
+          "y": -2
         },
         "TileLayer": "Building",
+        "BuildingId": "VillagerHouse1",
+        "BehaviourData": {
+          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
+          "CurrentUpgradeLevel": 1,
+          "UsedVillagers": 0,
+          "MaxVillagersCanUse": 1
+        }
+      },
+      {
+        "Position": {
+          "x": -1,
+          "y": -3
+        },
+        "TileLayer": "Factory",
         "BuildingId": "CoinIncrease1",
         "BehaviourData": {
           "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
@@ -967,53 +1405,25 @@
       },
       {
         "Position": {
+          "x": -2,
+          "y": -2
+        },
+        "TileLayer": "Factory",
+        "BuildingId": "WoodIncrease1",
+        "BehaviourData": {
+          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
+          "CurrentUpgradeLevel": 1,
+          "UsedVillagers": 2,
+          "MaxVillagersCanUse": 2
+        }
+      },
+      {
+        "Position": {
           "x": -5,
-          "y": -3
+          "y": -5
         },
-        "TileLayer": "Building",
-        "BuildingId": "WoodIncrease1",
-        "BehaviourData": {
-          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
-          "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 2,
-          "MaxVillagersCanUse": 2
-        }
-      },
-      {
-        "Position": {
-          "x": -6,
-          "y": -2
-        },
-        "TileLayer": "Building",
-        "BuildingId": "VillagerCapacity",
-        "BehaviourData": {
-          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
-          "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 0,
-          "MaxVillagersCanUse": 1
-        }
-      },
-      {
-        "Position": {
-          "x": -7,
-          "y": -2
-        },
-        "TileLayer": "Building",
-        "BuildingId": "WoodIncrease1",
-        "BehaviourData": {
-          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
-          "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 2,
-          "MaxVillagersCanUse": 2
-        }
-      },
-      {
-        "Position": {
-          "x": -7,
-          "y": 1
-        },
-        "TileLayer": "Building",
-        "BuildingId": "Army",
+        "TileLayer": "Factory",
+        "BuildingId": "StoneIncrease1",
         "BehaviourData": {
           "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
           "CurrentUpgradeLevel": 1,
@@ -1024,9 +1434,65 @@
       {
         "Position": {
           "x": -4,
-          "y": -3
+          "y": -5
         },
-        "TileLayer": "Building",
+        "TileLayer": "Storage",
+        "BuildingId": "StoneCapacity1",
+        "BehaviourData": {
+          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
+          "CurrentUpgradeLevel": 1,
+          "UsedVillagers": 0,
+          "MaxVillagersCanUse": 1
+        }
+      },
+      {
+        "Position": {
+          "x": -9,
+          "y": 2
+        },
+        "TileLayer": "Factory",
+        "BuildingId": "SpawnArmy1",
+        "BehaviourData": {
+          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
+          "CurrentUpgradeLevel": 1,
+          "UsedVillagers": 1,
+          "MaxVillagersCanUse": 2
+        }
+      },
+      {
+        "Position": {
+          "x": -1,
+          "y": -2
+        },
+        "TileLayer": "Factory",
+        "BuildingId": "CoinIncrease1",
+        "BehaviourData": {
+          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
+          "CurrentUpgradeLevel": 1,
+          "UsedVillagers": 2,
+          "MaxVillagersCanUse": 2
+        }
+      },
+      {
+        "Position": {
+          "x": 0,
+          "y": -2
+        },
+        "TileLayer": "Factory",
+        "BuildingId": "FoodIncrease1",
+        "BehaviourData": {
+          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
+          "CurrentUpgradeLevel": 1,
+          "UsedVillagers": 1,
+          "MaxVillagersCanUse": 1
+        }
+      },
+      {
+        "Position": {
+          "x": -5,
+          "y": 1
+        },
+        "TileLayer": "Storage",
         "BuildingId": "WoodCapcity1",
         "BehaviourData": {
           "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
@@ -1037,75 +1503,47 @@
       },
       {
         "Position": {
-          "x": -8,
-          "y": -1
+          "x": -6,
+          "y": -2
         },
-        "TileLayer": "Building",
-        "BuildingId": "WoodIncrease1",
-        "BehaviourData": {
-          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
-          "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 2,
-          "MaxVillagersCanUse": 2
-        }
-      },
-      {
-        "Position": {
-          "x": -9,
-          "y": -1
-        },
-        "TileLayer": "Building",
-        "BuildingId": "WoodIncrease1",
-        "BehaviourData": {
-          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
-          "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 2,
-          "MaxVillagersCanUse": 2
-        }
-      },
-      {
-        "Position": {
-          "x": -8,
-          "y": 0
-        },
-        "TileLayer": "Building",
-        "BuildingId": "WoodIncrease1",
+        "TileLayer": "Storage",
+        "BuildingId": "WoodCapcity1",
         "BehaviourData": {
           "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
           "CurrentUpgradeLevel": 1,
           "UsedVillagers": 0,
-          "MaxVillagersCanUse": 2
+          "MaxVillagersCanUse": 1
         }
       }
     ]
   },
   "timeControllerData": {
-    "currentTime": 180.0,
+    "currentTime": 475.0,
     "eventRaiseThTime": 2,
-    "nextRaisedEventTime": 353.8683,
+    "nextRaisedEventTime": 471.691681,
     "EventDataJson": {
       "EventName": "Event_Defense_Easy_1",
       "IsCompleted": false,
       "EventType": "Defense",
       "LevelType": "Easy",
       "Awards": {
-        "Coin": 66.92242,
-        "Wood": 72.1630859,
-        "Stone": 44.85438,
-        "Food": 31.5672951
+        "Coin": 102.55619,
+        "Wood": 69.33105,
+        "Stone": 42.0078659,
+        "Food": 47.5796852
       }
     }
   },
   "VillagerData": {
-    "Max": 12,
-    "Current": 12,
-    "Used": 12
+    "Max": 10,
+    "Current": 10,
+    "Used": 10
   },
   "ResourceStorage": {
-    "Coin": 349.5,
-    "Wood": 43.0,
-    "Stone": 0.0,
-    "Food": 5.0
+    "Coin": 337.800018,
+    "Wood": 79.0,
+    "Stone": 53.0,
+    "Food": 20.0
   },
   "ArmyStorage": {
     "Melee": 0,

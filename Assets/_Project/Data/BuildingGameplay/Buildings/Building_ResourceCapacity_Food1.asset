@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eedc1398057349a2b2586757a6631d08, type: 3}
+  m_Name: Building_ResourceCapacity_Food1
+  m_EditorClassIdentifier: 
+  buildingId: FoodCapacity1
+  defaultMaxVillagersCanUse: 1
+  requireVillagers: 0
+  buildingCategory: 5
+  tileLayer: 5
+  buildingTile: {fileID: 11400000, guid: 87c8ffc0128540f4aa631a549f0b9d70, type: 2}
+  costBuilding:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 15
+      - key: 1
+        value: 10
+      - key: 2
+        value: 5
+  styleSheets:
+  - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
+  - {fileID: 7433441132597879392, guid: 20194e480b6448248a4a76a748564001, type: 3}
+  influenceEffects:
+    data:
+    - key: 4
+      value:
+        rid: 6075148353470464087
+    - key: 4
+      value:
+        rid: 6075148577759822142
+  defaultUpgradeCost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 15
+      - key: 1
+        value: 10
+      - key: 2
+        value: 5
+  incrementUpgradeCost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 5
+      - key: 1
+        value: 4
+      - key: 2
+        value: 3
+  consumedResources:
+    data: []
+  limitResourceType: 2
+  defaultValue: 20
+  incrementValue: 10
+  references:
+    version: 2
+    RefIds:
+    - rid: 6075148353470464087
+      type: {class: ConvenientBuildingInfluenceEffect, ns: Game.StrategyBuilding, asm: Core.Gameplay}
+      data:
+        influenceRatio: 0.1
+    - rid: 6075148577759822142
+      type: {class: AdverseBuildingInfluenceEffect, ns: Game.StrategyBuilding, asm: Core.Gameplay}
+      data:
+        influenceRatio: 0.05

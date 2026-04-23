@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f044293bfdae49028524fa9f97a6144d, type: 3}
+  m_Name: Building_SPIncrease1
+  m_EditorClassIdentifier: 
+  buildingId: SPIncrease1
+  defaultMaxVillagersCanUse: 2
+  requireVillagers: 1
+  buildingCategory: 6
+  tileLayer: 3
+  buildingTile: {fileID: 11400000, guid: 2c3e3c81a02e997418a5269e8d98706e, type: 2}
+  costBuilding:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 24
+      - key: 1
+        value: 16
+      - key: 2
+        value: 12
+  styleSheets:
+  - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
+  - {fileID: 7433441132597879392, guid: d0018fc049bb4a87a3709b5c4f233ff5, type: 3}
+  influenceEffects:
+    data:
+    - key: 3
+      value:
+        rid: 6075148577759822147
+  defaultUpgradeCost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 20
+      - key: 1
+        value: 12
+      - key: 2
+        value: 10
+  incrementUpgradeCost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 8
+      - key: 1
+        value: 8
+      - key: 2
+        value: 6
+  consumedResources:
+    data:
+    - key: 0
+      value: 1
+    - key: 3
+      value: 0.4
+  defaultSkillPoints: 2
+  incrementSkillPoints: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 6075148577759822147
+      type: {class: ConvenientBuildingInfluenceEffect, ns: Game.StrategyBuilding, asm: Core.Gameplay}
+      data:
+        influenceRatio: 0.1
