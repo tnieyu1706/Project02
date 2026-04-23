@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: MeleeArmyType
   m_EditorClassIdentifier: 
   armyType: 0
-  icon: {fileID: 21300000, guid: 66197568d844a84468048a53f8f1db9f, type: 3}
-  delaySpawn: 8
+  armyCategory: 0
+  icon: {fileID: -1655173022420944900, guid: d7a28412b83890d45a80ef8158f31dd5, type: 3}
+  delaySpawn: 4
   cost:
     resourceCosts:
       data:
       - key: 0
-        value: 10
+        value: 4

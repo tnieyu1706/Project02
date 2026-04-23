@@ -31,26 +31,26 @@ namespace Game.BuildingGameplay
 
         private Dictionary<ResourceType, ObservableValue<float>> ResourceStorage { get; } = new()
         {
-            { ResourceType.Coin, new(0) },
-            { ResourceType.Wood, new(0) },
-            { ResourceType.Stone, new(0) },
-            { ResourceType.Food, new(0) }
+            { ResourceType.Coin, new(60) },
+            { ResourceType.Wood, new(35) },
+            { ResourceType.Stone, new(25) },
+            { ResourceType.Food, new(25) }
         };
 
         public Dictionary<ResourceType, ObservableValue<float>> IncrementResources { get; } =
             new Dictionary<ResourceType, ObservableValue<float>>()
             {
-                { ResourceType.Coin, new ObservableValue<float>(0) },
-                { ResourceType.Wood, new ObservableValue<float>(0) },
-                { ResourceType.Stone, new ObservableValue<float>(0) },
-                { ResourceType.Food, new ObservableValue<float>(0) },
+                { ResourceType.Coin, new ObservableValue<float>(1f) },
+                { ResourceType.Wood, new ObservableValue<float>(0.6f) },
+                { ResourceType.Stone, new ObservableValue<float>(0.3f) },
+                { ResourceType.Food, new ObservableValue<float>(0.4f) },
             };
 
         public Dictionary<LimitResourceType, ObservableValue<int>> LimitResourceStorage { get; } = new()
         {
-            { LimitResourceType.MaxWood, new(20) },
-            { LimitResourceType.MaxStone, new(10) },
-            { LimitResourceType.MaxFood, new(20) }
+            { LimitResourceType.MaxWood, new(40) },
+            { LimitResourceType.MaxStone, new(30) },
+            { LimitResourceType.MaxFood, new(40) }
         };
 
         private Dictionary<ArmyType, ObservableValue<int>> ArmyStorage { get; } = new()
@@ -69,8 +69,8 @@ namespace Game.BuildingGameplay
         [Serializable]
         public class VillagerDataManager : ISaveLoadData<JObject>
         {
-            [field: SerializeField] public ObservableValue<int> MaxVillagers { get; set; } = new(6);
-            [field: SerializeField] public ObservableValue<int> CurrentVillagers { get; set; } = new(0);
+            [field: SerializeField] public ObservableValue<int> MaxVillagers { get; set; } = new(10);
+            [field: SerializeField] public ObservableValue<int> CurrentVillagers { get; set; } = new(4);
             [field: SerializeField] public ObservableValue<int> UsedVillagers { get; set; } = new(0);
 
             public int RemainingVillagers => CurrentVillagers.Value - UsedVillagers.Value;
@@ -80,9 +80,10 @@ namespace Game.BuildingGameplay
                 var next = Mathf.Clamp(CurrentVillagers.Value + amount, 0, MaxVillagers.Value);
                 if (next != CurrentVillagers.Value)
                 {
-                    var preVillagers = CurrentVillagers.Value;
+                    // using building decrease food instead of depending on current villager exists.
+                    // var preVillagers = CurrentVillagers.Value;
                     CurrentVillagers.Value = next;
-                    Instance.ResourceStorage[ResourceType.Food].Value -= (next - preVillagers) * RATIO_VILLAGER_FOOD;
+                    // Instance.ResourceStorage[ResourceType.Food].Value -= (next - preVillagers) * RATIO_VILLAGER_FOOD;
                 }
 
                 return next - CurrentVillagers.Value;
@@ -167,9 +168,11 @@ namespace Game.BuildingGameplay
 
         private static float CalculateResourceAmount(ResourceType resourceType, float amount)
         {
-            return amount
-                   * GamePropertiesRuntime.Instance.GeneralResourceReceivedScale
-                   * GamePropertiesRuntime.Instance.ResourceReceivedScaleDict[resourceType];
+            return Mathf.RoundToInt(
+                amount
+                * GamePropertiesRuntime.Instance.GeneralResourceReceivedScale
+                * GamePropertiesRuntime.Instance.ResourceReceivedScaleDict[resourceType]
+                * 10) / 10f;
         }
 
         private static void AddResource(ResourceType type, float value)

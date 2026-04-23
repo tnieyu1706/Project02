@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using TnieYuPackage.DesignPatterns;
+using TnieYuPackage.GlobalExtensions;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;
@@ -14,14 +15,22 @@ namespace _Project.Scripts.Gameplay.Global.GameController
     /// Get/Release Pool when you need control AudioSource, likes BGM.
     /// Call PlayOnce when you just want to play sound with controller by GameSoundMaster, likes SFX, short.
     /// </summary>
+    [DefaultExecutionOrder(-20)]
     public class GameSoundMaster : SingletonBehavior<GameSoundMaster>
     {
         // current load all sound
-        private const string SOUND_LABEL_NAME = "Sound";
+        private const string SOUND_LABEL_NAME = "sfx";
         private const int WAIT_TIME_MILLISECONDS = 100;
 
-        [SerializeField, Required] private Transform container;
+        [SerializeField] private Transform container;
         [SerializeField] private GameObject sfxPrefab;
+
+        [SerializeField] [MinMaxSlider(-0.5f, 0.5f)]
+        private Vector2 volumeVariant = Vector2.zero;
+
+        [SerializeField] [MinMaxSlider(-0.5f, 1.5f)]
+        private Vector2 pitchVariant = Vector2.zero;
+
         public ObjectPool<AudioSource> Pool { get; set; }
 
         public readonly Dictionary<string, SoundData> Sounds = new();
@@ -71,7 +80,9 @@ namespace _Project.Scripts.Gameplay.Global.GameController
 
         private async void LoadSfxSounds()
         {
-            var resourcesTask = Addressables.LoadResourceLocationsAsync(SOUND_LABEL_NAME).ToUniTask();
+            var resourcesTask =
+                Addressables.LoadResourceLocationsAsync(SOUND_LABEL_NAME, type: typeof(SoundData))
+                    .ToUniTask();
             var resources = await resourcesTask;
 
             Sounds.Clear();
@@ -81,14 +92,15 @@ namespace _Project.Scripts.Gameplay.Global.GameController
                 Sounds.Add(re.PrimaryKey, data);
             }
         }
+
         public static async UniTask PlayOnce(SoundData soundData)
         {
             var audioSource = Instance.Pool.Get();
 
             // setup
-            audioSource.clip = soundData.audioClip;
-            audioSource.volume = GetTotalVolume(soundData.volume) * Random.Range(0.9f, 1.1f);
-            audioSource.pitch = Random.Range(0.8f, 1.2f);
+            audioSource.resource = soundData.resource;
+            audioSource.volume = GetTotalVolume(soundData.volume) + Instance.volumeVariant.GetRandom();
+            audioSource.pitch = soundData.pitch + Instance.pitchVariant.GetRandom();
             // audioSource.time = Random.Range(0, soundData.audioClip.length);
             audioSource.loop = false; //default vfx play one-time
 

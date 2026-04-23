@@ -18,7 +18,7 @@ namespace Game.BaseGameplay
     [Serializable]
     public class EntitySpawn : ISpawnCommand<PathSpawn>
     {
-        private static Vector2 offsetSpawn = new(-0.6f, 0.6f);
+        private static Vector2 offsetSpawn = new(-0.4f, 0.4f);
 
         public string entityId;
         public int quantity;

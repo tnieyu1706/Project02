@@ -1,18 +1,24 @@
 using EditorAttributes;
+using KBCore.Refs;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace _Project.Scripts.Gameplay.Global.GameController
 {
+    [RequireComponent(typeof(AudioSource))]
     public class BGMPlayer : MonoBehaviour
     {
-        public string bgmName;
+        [SerializeField] AudioResource resource;
+        [SerializeField] bool isLooping;
+        [SerializeField] [Range(0f, 1f)] private float volume = 1f;
+
         [SerializeField] private bool isPlayOnStart;
 
-        private AudioSource audioSource;
+        [SerializeField, Self] private AudioSource audioSource;
 
-        private void OnEnable()
+        void Awake()
         {
-            audioSource = GameSoundMaster.Instance.Pool.Get();
+            audioSource ??= GetComponent<AudioSource>();
         }
 
         void Start()
@@ -25,20 +31,17 @@ namespace _Project.Scripts.Gameplay.Global.GameController
 
         private void OnDisable()
         {
-            if (GameSoundMaster.Instance != null)
-            {
-                GameSoundMaster.Instance.Pool.Release(audioSource);
-            }
+            audioSource?.Stop();
         }
-        
+
         [Button]
         public void Play()
         {
-            if (!GameSoundMaster.Instance.Sounds.TryGetValue(bgmName, out var soundData)) return;
+            if (resource == null || audioSource == null) return;
 
-            audioSource.clip = soundData.audioClip;
-            audioSource.loop = soundData.loop;
-            audioSource.volume = GameSoundMaster.GetTotalVolume(soundData.volume);
+            audioSource.resource = resource;
+            audioSource.loop = isLooping;
+            audioSource.volume = GameSoundMaster.GetTotalVolume(volume);
 
             audioSource.Play();
         }

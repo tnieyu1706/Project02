@@ -55,7 +55,7 @@ namespace Game.BuildingGameplay
         public static Dictionary<ResourceType, ResourceTypeData> Resources => Instance.resources.Dictionary;
         public static Dictionary<LimitResourceType, ResourceTypeData> LimitResources => Instance.limitResources.Dictionary;
         
-        public static ResourceTypeData ConvenientData => Instance.convenientData;
-        public static ResourceTypeData AdverseData => Instance.adverseData;
+        // public static ResourceTypeData ConvenientData => Instance.convenientData;
+        // public static ResourceTypeData AdverseData => Instance.adverseData;
     }
 }

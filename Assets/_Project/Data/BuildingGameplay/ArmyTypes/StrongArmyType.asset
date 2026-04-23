@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: StrongArmyType
   m_EditorClassIdentifier: 
   armyType: 2
-  icon: {fileID: 21300000, guid: 62feafeb26b417e4b914ed379a5b4c81, type: 3}
-  delaySpawn: 24
+  armyCategory: 0
+  icon: {fileID: -1202183669, guid: d7a28412b83890d45a80ef8158f31dd5, type: 3}
+  delaySpawn: 10
   cost:
     resourceCosts:
       data:
       - key: 0
-        value: 40
+        value: 18
+      - key: 3
+        value: 2

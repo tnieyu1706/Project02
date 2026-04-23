@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d15728af50b74f64864f3d3c3ad0ea92, type: 3}
+  m_Name: Building_ResourceIncrease_Wood1
+  m_EditorClassIdentifier: 
+  buildingId: WoodIncrease1
+  defaultMaxVillagersCanUse: 2
+  requireVillagers: 1
+  buildingCategory: 4
+  tileLayer: 4
+  buildingTile: {fileID: 11400000, guid: ee0cb0d4671482d4ab34cc674aab1a8d, type: 2}
+  costBuilding:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 12
+      - key: 1
+        value: 10
+  styleSheets:
+  - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
+  - {fileID: 7433441132597879392, guid: 5ec69aafc765416e818a34e9057d3b54, type: 3}
+  influenceEffects:
+    data:
+    - key: 4
+      value:
+        rid: 6075148362736730200
+    - key: 0
+      value:
+        rid: 6075148577759822145
+    - key: 1
+      value:
+        rid: 6075148577759822129
+  defaultUpgradeCost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 12
+      - key: 1
+        value: 10
+  incrementUpgradeCost:
+    resourceCosts:
+      data:
+      - key: 0
+        value: 8
+      - key: 1
+        value: 5
+  consumedResources:
+    data: []
+  resourceType: 1
+  defaultValue: 2
+  incrementValue: 0.8
+  references:
+    version: 2
+    RefIds:
+    - rid: 6075148362736730200
+      type: {class: ConvenientBuildingInfluenceEffect, ns: Game.StrategyBuilding, asm: Core.Gameplay}
+      data:
+        influenceRatio: 0.02
+    - rid: 6075148577759822129
+      type: {class: AdverseBuildingInfluenceEffect, ns: Game.StrategyBuilding, asm: Core.Gameplay}
+      data:
+        influenceRatio: 0.03
+    - rid: 6075148577759822145
+      type: {class: ConvenientBuildingInfluenceEffect, ns: Game.StrategyBuilding, asm: Core.Gameplay}
+      data:
+        influenceRatio: 0.06

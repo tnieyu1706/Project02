@@ -15,9 +15,9 @@ MonoBehaviour:
   buildingId: MainTowerHall
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
-  buildingCategory: 2
+  buildingCategory: 0
   tileLayer: 3
-  buildingTile: {fileID: 11400000, guid: 2a0524cc022578346b64efdf4e181fd2, type: 2}
+  buildingTile: {fileID: 11400000, guid: 7278c9d263a58744bac2ea684e5d3b9d, type: 2}
   costBuilding:
     resourceCosts:
       data: []
@@ -30,18 +30,34 @@ MonoBehaviour:
     resourceCosts:
       data:
       - key: 0
-        value: 10
+        value: 100
+      - key: 1
+        value: 40
+      - key: 2
+        value: 20
+      - key: 3
+        value: 30
   incrementUpgradeCost:
     resourceCosts:
       data:
+      - key: 0
+        value: 50
       - key: 1
-        value: 5
+        value: 25
+      - key: 2
+        value: 16
+      - key: 3
+        value: 12
   consumedResources:
     data: []
   levelConfigs:
-  - maxBuildingLimit: 5
+  - maxBuildingLimit: 6
     unlockBuildingTypes: 
   - maxBuildingLimit: 12
+    unlockBuildingTypes: 
+  - maxBuildingLimit: 18
+    unlockBuildingTypes: 
+  - maxBuildingLimit: 24
     unlockBuildingTypes: 
   references:
     version: 2

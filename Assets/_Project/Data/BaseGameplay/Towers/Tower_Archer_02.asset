@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Tower.TowerAttributePresetSo
   subAssetName: StaticSpawn
   deletingSubAsset: {fileID: 0}
-  objectId: Tower_Archer_02
-  libraryAsset: {fileID: 7108339969198208228, guid: 07022f85af6ca3142b6b54c63966e850, type: 3}
+  objectId: Archer_02
+  libraryAsset: {fileID: 7108339969198208228, guid: 7480b67d181e1bd4287682a08309157c, type: 3}
   interactStrategies:
   - {fileID: 657628919129985204}
   strategyType: Game.BaseGameplay.Strategies.StaticTowerSpawnInteractStrategyInstaller,
     Core.Gameplay
   configurators: []
-  towerIcon: {fileID: 21300000, guid: 2a2cf40245e6bf0429890f4c7c55fbcf, type: 3}
-  towerPriceValue: 70
+  towerIcon: {fileID: -9043125133014701950, guid: 2759d20ca5c2af843a62b7dc207a61d9, type: 3}
+  towerPriceValue: 160
   towerType: 0
-  towerLevel: 0
+  towerLevel: 2
   towerEvents: []
 --- !u!114 &657628919129985204
 MonoBehaviour:
@@ -42,8 +42,8 @@ MonoBehaviour:
     value: 2bc979db-bf36-47c4-8a40-e7c282ae412f
   trackingLayerMask: 0
   interactRange: 0
-  soldierPreset: {fileID: 11400000, guid: 19c6e2d121d6e5349a263cd61ba0c153, type: 2}
+  soldierPreset: {fileID: 11400000, guid: 4d8957ea231a6bc42a4f97f5530da269, type: 2}
   maxSpawnQuantity: 2
   spawnCooldown: 3
-  centerOffset: {x: 0, y: 0.65}
+  centerOffset: {x: 0, y: 0.25}
   spawnRadiusOffset: 0.15

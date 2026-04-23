@@ -15,14 +15,21 @@ MonoBehaviour:
   nodes:
   - towerPreset: {fileID: 11400000, guid: eacde09068d7657429c0f1ed87062830, type: 2}
     nextUpgradeTowers:
-    - {fileID: 11400000, guid: 02fe83449147e134abde8ff863a916fd, type: 2}
     - {fileID: 11400000, guid: 203a7ea04fffc0142bf83d0d163ce19c, type: 2}
-  - towerPreset: {fileID: 11400000, guid: fe914bc64126e1f498ef2f76b3bb7d55, type: 2}
-    nextUpgradeTowers: []
-  - towerPreset: {fileID: 11400000, guid: 02fe83449147e134abde8ff863a916fd, type: 2}
-    nextUpgradeTowers: []
+    - {fileID: 11400000, guid: 02fe83449147e134abde8ff863a916fd, type: 2}
+    - {fileID: 11400000, guid: 026fdeb7b775a78478393253d79cadb6, type: 2}
   - towerPreset: {fileID: 11400000, guid: 203a7ea04fffc0142bf83d0d163ce19c, type: 2}
     nextUpgradeTowers:
-    - {fileID: 11400000, guid: 47141e4acc55633468f839e5a796ee6c, type: 2}
-  - towerPreset: {fileID: 11400000, guid: 47141e4acc55633468f839e5a796ee6c, type: 2}
+    - {fileID: 11400000, guid: 6af01f4da161b01488279603613842d9, type: 2}
+  - towerPreset: {fileID: 11400000, guid: 6af01f4da161b01488279603613842d9, type: 2}
+    nextUpgradeTowers: []
+  - towerPreset: {fileID: 11400000, guid: 02fe83449147e134abde8ff863a916fd, type: 2}
+    nextUpgradeTowers:
+    - {fileID: 11400000, guid: 9d29d620aa3b0d0499b9660c98dc8ea7, type: 2}
+  - towerPreset: {fileID: 11400000, guid: 9d29d620aa3b0d0499b9660c98dc8ea7, type: 2}
+    nextUpgradeTowers: []
+  - towerPreset: {fileID: 11400000, guid: 026fdeb7b775a78478393253d79cadb6, type: 2}
+    nextUpgradeTowers:
+    - {fileID: 11400000, guid: a3b96482699c18d4d819d12d9712c366, type: 2}
+  - towerPreset: {fileID: 11400000, guid: a3b96482699c18d4d819d12d9712c366, type: 2}
     nextUpgradeTowers: []

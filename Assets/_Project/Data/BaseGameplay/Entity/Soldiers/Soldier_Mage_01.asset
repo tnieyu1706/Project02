@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2845334438865011553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 562c9cfbd6d8483d928b5a9f6da77711, type: 3}
+  m_Name: RangeAttack
+  m_EditorClassIdentifier: 
+  installerId:
+    value: 0d4a671f-6c6f-4a64-bdd0-da92dfa80676
+  trackingLayerMask: 3072
+  interactRange: 2.2
+  baseDamage: 4
+  attackCooldown: 1
+  projectileSpeed: 4
+  projectileOffset: {x: 0, y: 0.3, z: 0}
+  projectileSprite: {fileID: 21300000, guid: 0554f67809889994496db241c4054984, type: 3}
+  trajectoryStrategy:
+    rid: 6075148582666633330
+  references:
+    version: 2
+    RefIds:
+    - rid: 6075148582666633330
+      type: {class: LinearTrajectoryStrategy, ns: TnieYuPackage.Strategies.Projectile, asm: TnieYuPackage}
+      data:
+        autoRotate: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136de8d5777f465aaa7cac2e83db4452, type: 3}
+  m_Name: Soldier_Mage_01
+  m_EditorClassIdentifier: TowerDefense::Game.Td.SoldierPresetSo
+  subAssetName: RangeAttack
+  deletingSubAsset: {fileID: -2845334438865011553, guid: 4d8957ea231a6bc42a4f97f5530da269, type: 2}
+  objectId: Soldier_Mage01
+  libraryAsset: {fileID: 7108339969198208228, guid: 8d091d44c94e86c45a888a8e47601103, type: 3}
+  interactStrategies:
+  - {fileID: -2845334438865011553}
+  strategyType: Game.BaseGameplay.Strategies.DirectlyCauseDamageInstaller, Core.Gameplay
+  configurators:
+  - {fileID: 11400000, guid: 1a7a1d059b5ee2c4a9e062355d8d4a21, type: 2}
+  maxHp: 32
+  def: 1.2
+  armyType: 1
+  entityLayer: Ignore Raycast

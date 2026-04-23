@@ -14,11 +14,13 @@ namespace Game.StrategyBuilding
 
     public enum BuildingCategory
     {
-        ResourceProduction,
-        Military,
-        Civilian,
+        None, // not display in list.
         WareHouse,
-        None // not display in list.
+        Civilian,
+        Military,
+        ResourceProduction,
+        ResourceStorage,
+        Research,
     }
 
     public abstract class BuildingPresetSo : ScriptableObject

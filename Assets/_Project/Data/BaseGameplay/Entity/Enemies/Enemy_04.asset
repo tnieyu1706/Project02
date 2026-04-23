@@ -15,14 +15,15 @@ MonoBehaviour:
   subAssetName: 
   deletingSubAsset: {fileID: 0}
   objectId: Enemy04
-  libraryAsset: {fileID: 7108339969198208228, guid: d67b1596cbdc1ed46aea132e62e5bd59, type: 3}
+  libraryAsset: {fileID: 7108339969198208228, guid: ea80402edb46ac74cb00c148d15f1cb8, type: 3}
   interactStrategies: []
   strategyType: Game.BaseGameplay.Strategies.DirectlyCauseDamageInstaller, Core.Gameplay
-  configurators: []
-  maxHp: 8
-  def: 0.4
+  configurators:
+  - {fileID: 11400000, guid: 8a72cf3a1abe97745a4d9c8eba1b28aa, type: 2}
+  maxHp: 12
+  def: 0.6
   armyType: 3
-  entityLayer: Td Fly Enemy
-  moveSpeed: 2
+  entityLayer: Td Ground Enemy
+  moveSpeed: 1.2
   baseCausingDmg: 1
-  dropMoney: 15
+  dropMoney: 18
