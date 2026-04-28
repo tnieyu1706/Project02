@@ -1,0 +1,52 @@
+/* Container để căn giữa các nội dung bên trong trên toàn màn hình */
+.popup-container {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Khung popup chính */
+.main-panel {
+    background-color: rgb(45, 45, 45);
+    border-radius: 15px;
+    padding: 30px;
+    width: 400px;
+    border-width: 2px;
+    border-color: rgb(150, 150, 150);
+    align-items: center;
+}
+
+/* Các nhãn Text */
+.title-label {
+    font-size: 24px;
+    -unity-font-style: bold;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.score-label {
+    font-size: 18px;
+    color: rgb(200, 200, 200);
+    margin-bottom: 10px;
+}
+
+.status-label {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Nút Play */
+.play-button {
+    width: 200px;
+    height: 50px;
+    font-size: 20px;
+    -unity-font-style: bold;
+    background-color: rgb(50, 150, 50);
+    color: white;
+    border-radius: 10px;
+}

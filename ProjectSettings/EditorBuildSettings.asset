@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/GameMenuScene.unity
     guid: e80ddf6c8fda4ed4aa6988a35ed28e4d
   - enabled: 1
+    path: Assets/_Project/Scenes/WorldMap.unity
+    guid: 8f076add9be41de42b504877a94ed639
+  - enabled: 1
     path: Assets/_Project/Scenes/GlobalGameplayScene.unity
     guid: ead3a0437f6f6dc4eae6a793a6649af4
   - enabled: 1

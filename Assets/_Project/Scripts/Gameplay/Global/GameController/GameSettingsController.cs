@@ -13,7 +13,6 @@ namespace _Project.Scripts.Gameplay.Global.GameController
 
         public float masterVolume = 1;
         public float sfxVolume = 1;
-        public bool hasGameCreated = false;
 
         #endregion
 
@@ -35,18 +34,12 @@ namespace _Project.Scripts.Gameplay.Global.GameController
             {
                 sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY);
             }
-
-            if (PlayerPrefs.HasKey(HAS_GAME_CREATED_KEY))
-            {
-                hasGameCreated = PlayerPrefs.GetInt(HAS_GAME_CREATED_KEY) == 1;
-            }
         }
 
         private void SaveProperties()
         {
             PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, masterVolume);
             PlayerPrefs.SetFloat(SFX_VOLUME_KEY, sfxVolume);
-            PlayerPrefs.SetInt(HAS_GAME_CREATED_KEY, hasGameCreated ? 1 : 0);
         }
 
         private void OnApplicationQuit()

@@ -17,10 +17,18 @@ namespace Game.BaseGameplay
     }
 
     [Serializable]
+    public class SerializableEventData
+    {
+        public EventData data;
+        public Sprite icon;
+    }
+
+    [Serializable]
     public class EventData : ISaveLoadData<JObject>
     {
         public string eventName;
         public bool isCompleted;
+        public bool shouldChange;
 
         public EventType eventType;
         public LevelType levelType;
@@ -52,21 +60,23 @@ namespace Game.BaseGameplay
             }
         }
 
-        public void ExecuteAsLose()
+        public void ApplyEventResult()
         {
+            if (isCompleted)
+            {
+                foreach (var award in Awards)
+                {
+                    SbGameplayController.AddResourceAndRefresh(award.Key, award.Value);
+                }
+
+                SbGameplayController.RefreshEvents();
+
+                return;
+            }
+
             if (eventType == EventType.Defense)
             {
-                //minus health of BuildingGameplay.
-            }
-        }
-
-        public void ExecuteAsWin()
-        {
-            if (!isCompleted) return;
-
-            foreach (var award in Awards)
-            {
-                SbGameplayController.AddResourceAndRefresh(award.Key, award.Value);
+                SbGameplayController.Instance.currentHealth.Value--;
             }
         }
 
@@ -76,6 +86,10 @@ namespace Game.BaseGameplay
 
             return levelRef.GetGameplayLevelBy(eventType);
         }
+
+        public string GetEventHandlerName() => eventType.ToString();
+
+        #region SaveLoad
 
         public void BindData(JObject data)
         {
@@ -87,6 +101,11 @@ namespace Game.BaseGameplay
             if (data.TryGetValue("IsCompleted", out var isCompletedToken))
             {
                 this.isCompleted = isCompletedToken.Value<bool>();
+            }
+
+            if (data.TryGetValue("ShouldChange", out var shouldChangeToken))
+            {
+                this.shouldChange = shouldChangeToken.Value<bool>();
             }
 
             if (data.TryGetValue("EventType", out var eventTypeToken))
@@ -114,6 +133,7 @@ namespace Game.BaseGameplay
             {
                 ["EventName"] = eventName,
                 ["IsCompleted"] = isCompleted,
+                ["ShouldChange"] = shouldChange,
                 ["EventType"] = eventType.ToString(),
                 ["LevelType"] = levelType.ToString(),
             };
@@ -129,5 +149,7 @@ namespace Game.BaseGameplay
 
             return result;
         }
+
+        #endregion
     }
 }

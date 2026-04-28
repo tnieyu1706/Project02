@@ -13,13 +13,20 @@ MonoBehaviour:
   m_Name: BuildingGameplayLevel01
   m_EditorClassIdentifier: 
   events:
-  - eventName: Attack01
-    isCompleted: 0
-    eventType: 1
-    levelType: 0
-  - eventName: Attack02
-    isCompleted: 0
-    eventType: 1
-    levelType: 0
-  saveFilePath: Assets/_Project/Data/Levels/BuildingGameplay/Level01.json
-  isCompleted: 0
+  - data:
+      eventName: Attack Enemy Base 1
+      isCompleted: 0
+      shouldChange: 0
+      eventType: 1
+      levelType: 0
+    icon: {fileID: 21300000, guid: 6bfada5ef4488b4468464e3894ca688a, type: 3}
+  - data:
+      eventName: Attack Enemy Base 2
+      isCompleted: 0
+      shouldChange: 0
+      eventType: 1
+      levelType: 0
+    icon: {fileID: 21300000, guid: de4732424caba704a87aa4da76bb5daa, type: 3}
+  sceneReference:
+    asset: {fileID: 102900000, guid: 894f7e30cf55c824ea6a9d5e02ea8a3c, type: 3}
+    guid: 894f7e30cf55c824ea6a9d5e02ea8a3c

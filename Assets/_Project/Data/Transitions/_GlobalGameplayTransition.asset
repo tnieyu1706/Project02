@@ -12,6 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fd1a69e78e24bfab7b93848f4d1ab2b, type: 3}
   m_Name: _GlobalGameplayTransition
   m_EditorClassIdentifier: 
+  mainMenuSceneGroup:
+    groupName: MainMenu
+    scenes:
+    - reference:
+        asset: {fileID: 102900000, guid: e80ddf6c8fda4ed4aa6988a35ed28e4d, type: 3}
+        guid: e80ddf6c8fda4ed4aa6988a35ed28e4d
+      sceneType: 0
+      alwaysReload: 0
+      completedActions: []
+  worldMapSceneGroup:
+    groupName: WorldMap
+    scenes:
+    - reference:
+        asset: {fileID: 102900000, guid: 8f076add9be41de42b504877a94ed639, type: 3}
+        guid: 8f076add9be41de42b504877a94ed639
+      sceneType: 0
+      alwaysReload: 0
+      completedActions: []
   buildingGameplaySceneGroup:
     groupName: Building Gameplay
     scenes:
@@ -27,13 +45,6 @@ MonoBehaviour:
       sceneType: 0
       alwaysReload: 0
       completedActions: []
-    - reference:
-        asset: {fileID: 102900000, guid: 894f7e30cf55c824ea6a9d5e02ea8a3c, type: 3}
-        guid: 894f7e30cf55c824ea6a9d5e02ea8a3c
-      sceneType: 1
-      alwaysReload: 0
-      completedActions: []
-  buildingCacheSoap: {fileID: 11400000, guid: f03a2ee0b1a0abf4bbba0dd6335239ab, type: 2}
   baseGameplaySceneGroup:
     groupName: Base Gameplay
     scenes:

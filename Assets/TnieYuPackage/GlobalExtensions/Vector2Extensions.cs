@@ -37,7 +37,7 @@ namespace TnieYuPackage.GlobalExtensions
 
         public static float GetRandom(this Vector2 vector)
         {
-            return UnityEngine.Random.Range(vector.x, vector.y);
+            return Random.Range(vector.x, vector.y);
         }
 
         public static Vector2 GetDirectionVector2From(this Vector2 vector, Vector2 target)

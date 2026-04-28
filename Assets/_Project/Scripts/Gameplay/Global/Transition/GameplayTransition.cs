@@ -1,5 +1,7 @@
 using System;
+using _Project.Scripts.Gameplay.Global.UI.WorldMap;
 using Cysharp.Threading.Tasks;
+using Eflatun.SceneReference;
 using Game.BaseGameplay;
 using Game.BuildingGameplay;
 using SceneManagement;
@@ -13,6 +15,9 @@ namespace Gameplay.Global
     public class GameplayTransition : SingletonScriptable<GameplayTransition>
     {
         public static GameplayTransitionDataManager DataManager;
+
+        [SerializeField] private SceneGroup mainMenuSceneGroup;
+        [SerializeField] private SceneGroup worldMapSceneGroup;
 
         [Header("Building Gameplay")] [SerializeField]
         private SceneGroup buildingGameplaySceneGroup;
@@ -28,10 +33,22 @@ namespace Gameplay.Global
 
         #region Building Gameplay Transition
 
-        public static async UniTask CreateBuildingGameplay(BuildingGameplayLevel buildingLevelSource)
+        public static async UniTask LoadMainMenuGame()
         {
-            // attach buildingGameplayLevel for CreateBuildingGameplay
-            await SceneLoader.Instance.Load(Instance.buildingGameplaySceneGroup);
+            await SceneLoader.Instance.Load(Instance.mainMenuSceneGroup);
+        }
+
+        public static async UniTask LoadWorldMapGame()
+        {
+            await SceneLoader.Instance.Load(Instance.worldMapSceneGroup);
+        }
+
+        public static async UniTask CreateBuildingGameplay(BuildingGameplayLevel buildingLevelSource,
+            LevelData levelData)
+        {
+            var buildingGameplaySg = GetBuildingGameplaySgWithLevel(buildingLevelSource);
+
+            await SceneLoader.Instance.Load(buildingGameplaySg);
 
             if (SbGameplayController.Instance != null)
             {
@@ -39,27 +56,28 @@ namespace Gameplay.Global
                 buildingLevelSource.Reset();
                 SbGameplayController.Instance.CreateGameplay(buildingLevelSource);
                 DataManager.CurrentBuildingLevel = buildingLevelSource;
-
-                //setup once-time for events in building level.
-                foreach (var eventData in DataManager.CurrentBuildingLevel.events)
-                {
-                    EventData.SetupAwardsRandomized(eventData);
-                }
+                DataManager.CurrentLevel = levelData;
             }
+        }
+
+        private static SceneGroup GetBuildingGameplaySgWithLevel(BuildingGameplayLevel buildingLevelSource)
+        {
+            var buildingLevelSceneData = LevelSceneData(buildingLevelSource.sceneReference);
+            var buildingGameplaySg = (SceneGroup)Instance.buildingGameplaySceneGroup.Clone();
+            buildingGameplaySg.scenes.Add(buildingLevelSceneData);
+            return buildingGameplaySg;
         }
 
         public static async UniTask LoadBuildingGameplay()
         {
-            await SceneLoader.Instance.Load(Instance.buildingGameplaySceneGroup);
+            var buildingGameplaySg = GetBuildingGameplaySgWithLevel(DataManager.CurrentBuildingLevel);
+            await SceneLoader.Instance.Load(buildingGameplaySg);
             if (SbGameplayController.Instance != null)
             {
                 SbGameplayController.Instance.SetupGameplay(DataManager.CurrentBuildingLevel);
-                if (DataManager.ActiveEvent is { isCompleted: true })
-                {
-                    DataManager.ActiveEvent.ExecuteAsWin();
-                }
+                await SbGameplayController.Instance.LoadAll();
 
-                SbGameplayController.Instance.LoadAll();
+                DataManager.ActiveEvent?.ApplyEventResult();
             }
         }
 
@@ -69,6 +87,7 @@ namespace Gameplay.Global
 
         public static async UniTask LoadBaseGameplayWithEvent(EventData eventData)
         {
+            //setup
             var gameLevel = eventData.GetGameplayLevel();
             var loadingSceneGroup = GetBaseGameplayAndLevelSceneGroup(gameLevel);
 
@@ -76,6 +95,7 @@ namespace Gameplay.Global
             {
                 case EventType.Defense:
                     loadingSceneGroup.scenes.Add(Instance.towerDefenseSceneData);
+                    eventData.shouldChange = true;
                     break;
                 case EventType.Attack:
                     //only get ArmyStorageUsing when Attack event 
@@ -86,6 +106,7 @@ namespace Gameplay.Global
                     throw new ArgumentOutOfRangeException(nameof(eventData.eventType));
             }
 
+            //handle loading...
             PreLoadBaseGameplay(eventData);
             await SceneLoader.Instance.Load(loadingSceneGroup);
 
@@ -104,7 +125,7 @@ namespace Gameplay.Global
 
         private static SceneGroup GetBaseGameplayAndLevelSceneGroup(BaseGameplayLevel gameLevel)
         {
-            var levelSceneData = LevelSceneData(gameLevel);
+            var levelSceneData = LevelSceneData(gameLevel.levelScene);
 
             SceneGroup globalSceneGroupClone = Instance.baseGameplaySceneGroup.Clone() as SceneGroup;
             if (globalSceneGroupClone == null) return new SceneGroup();
@@ -114,11 +135,11 @@ namespace Gameplay.Global
             return globalSceneGroupClone;
         }
 
-        private static SceneData LevelSceneData(BaseGameplayLevel gameplayLevel)
+        private static SceneData LevelSceneData(SceneReference scene)
         {
             return new SceneData()
             {
-                reference = gameplayLevel.levelScene,
+                reference = scene,
                 alwaysReload = true,
                 sceneType = SceneType.Level
             };

@@ -67,7 +67,9 @@ namespace Game.BuildingGameplay
             foreach (var baseConfig in SbGameplayController.Instance.currentLevel.events)
             {
                 var el = contentContainer.CreateChild<EnemyBaseElement>();
-                el.SetData(baseConfig);
+                
+                el.eventImg.sprite = baseConfig.icon;
+                el.SetData(baseConfig.data);
                 elements.Add(el);
             }
 
@@ -83,8 +85,8 @@ namespace Game.BuildingGameplay
             float containerWidth = evt.newRect.width;
             float containerHeight = evt.newRect.height;
 
-            // Giả định size icon là 48px (khớp với USS)
-            float iconSize = 48f;
+            // Giả định size icon là 80px (khớp với USS)
+            float iconSize = 80f;
             float padding = 10f;
 
             foreach (var el in elements)
@@ -120,12 +122,14 @@ namespace Game.BuildingGameplay
     public class EnemyBaseElement : VisualElement
     {
         private EventData baseConfig;
+        public Image eventImg;
 
         public EnemyBaseElement()
         {
-            this.AddToClassList("enemy-base-icon");
+            this.AddToClassList("enemy-base-element");
             // Set absolute ngay trong code hoặc qua USS
             this.style.position = Position.Absolute;
+            eventImg = this.CreateChild<Image>("enemy-base-icon");
         }
 
         public void SetData(EventData baseConfigSource)
@@ -135,9 +139,7 @@ namespace Game.BuildingGameplay
             this.RegisterCallback<PointerLeaveEvent>(HandlePointerLeave);
             this.RegisterCallback<ClickEvent>(HandleEnemyBaseClicked);
 
-            // Neu ban co Sprite trong config, co the set vao day:
-            // this.style.backgroundImage = new StyleBackground(baseConfig.icon);
-            this.style.backgroundColor = Color.white.With(a: baseConfigSource.isCompleted ? 1f : 0.5f);
+            this.SetEnabled(!baseConfigSource.isCompleted);
         }
 
         private void HandlePointerEnter(PointerEnterEvent evt)

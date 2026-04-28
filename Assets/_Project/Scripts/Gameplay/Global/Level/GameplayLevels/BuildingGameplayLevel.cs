@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-using TnieYuPackage.CustomAttributes;
+using Eflatun.SceneReference;
 using UnityEngine;
 
 namespace Game.BaseGameplay
@@ -8,19 +8,18 @@ namespace Game.BaseGameplay
     [CreateAssetMenu(fileName = "BuildingGameplayLevel", menuName = "Game/Level/BuildingGameplayLevel")]
     public class BuildingGameplayLevel : ScriptableObject
     {
-        public List<EventData> events = new();
+        private const string TEMP_FILE_NAME = "BuildingGameplayDataTemporate";
+        public List<SerializableEventData> events = new();
+        public SceneReference sceneReference;
 
-        [FilePath(".json")] public string saveFilePath;
-
-        public bool isCompleted;
+        public string TempFilePath => $"{Application.persistentDataPath}/{TEMP_FILE_NAME}.json";
 
         public void Reset()
         {
-            isCompleted = false;
-            File.WriteAllText(saveFilePath, string.Empty);
+            File.WriteAllText(TempFilePath, string.Empty);
             foreach (var baseConfig in events)
             {
-                baseConfig.isCompleted = false;
+                baseConfig.data.isCompleted = false;
             }
         }
     }

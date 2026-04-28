@@ -76,14 +76,14 @@ namespace Game.BuildingGameplay
             foreach (var resourceNumberKvp in ResourceNumberTexts)
             {
                 Action<float> onResourceDataChanged =
-                    changedValue => resourceNumberKvp.Value.text = changedValue.ToString(CultureInfo.InvariantCulture);
+                    changedValue => resourceNumberKvp.Value.text = changedValue.ToString("F1");
 
                 var observableResource = SbGameplayController.GetObservableResource(resourceNumberKvp.Key);
                 observableResource.OnValueChanged += onResourceDataChanged;
                 ResourceNumberEvents[resourceNumberKvp.Key] = onResourceDataChanged;
 
                 // Cập nhật Text UI lần đầu tiên ngay lúc đăng ký
-                resourceNumberKvp.Value.text = observableResource.Value.ToString(CultureInfo.InvariantCulture);
+                resourceNumberKvp.Value.text = observableResource.Value.ToString("F1");
             }
 
             // 2. Đăng ký và hiển thị Limit Resource

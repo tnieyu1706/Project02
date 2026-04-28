@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Gameplay.Global.UI.WorldMap;
+using Cysharp.Threading.Tasks;
 using Game.BaseGameplay;
 using Game.Global;
 using SceneManagement;
@@ -9,12 +11,11 @@ namespace Gameplay.Global
 {
     public class GameplayTransitionDataManager : MonoBehaviour
     {
-        [SerializeField] private SceneGroup mainMenuSceneGroup;
-
         public Dictionary<ArmyType, int> MilitaryTemp { get; set; }
 
         public EventData ActiveEvent { get; set; }
         public BuildingGameplayLevel CurrentBuildingLevel { get; set; }
+        public LevelData CurrentLevel { get; set; }
 
         void Awake()
         {
@@ -28,7 +29,7 @@ namespace Gameplay.Global
 
         public void LoadMainMenu()
         {
-            SceneLoader.Instance.Load(mainMenuSceneGroup);
+            GameplayTransition.LoadMainMenuGame().Forget();
         }
 
         private void OnDestroy()

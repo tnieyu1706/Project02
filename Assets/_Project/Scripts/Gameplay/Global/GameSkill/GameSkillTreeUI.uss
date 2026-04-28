@@ -12,7 +12,7 @@
     width: 80%;
     height: 80%;
     overflow: hidden;
-    background-color: #85684a;
+    background-color: #09051c;
     border-radius: 32px;
 }
 
@@ -61,17 +61,17 @@
 
 .skill-lock-state {
     /*-unity-background-image-tint-color: rgba(255, 255, 255, 0.2);*/
-    background-color: rgba(30, 41, 59, 0.2);
+    background-color: rgba(0, 0, 0, 1);
 }
 
 .skill-allow-state {
     /*-unity-background-image-tint-color: rgba(255, 255, 255, 0.6);*/
-    background-color: rgba(30, 41, 59, 0.6);
+    background-color: rgba(129, 129, 129, 1);
 }
 
 .skill-unlock-state {
     /*-unity-background-image-tint-color: rgba(255, 255, 255, 1);*/
-    background-color: rgba(30, 41, 59, 1);
+    background-color: rgb(255, 255, 255);
 }
 
 /* Special style for the root skill node */
