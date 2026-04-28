@@ -419,7 +419,7 @@ namespace Game.StrategyBuilding
                 float totalConsumed = kvp.Value * multiplier;
                 if (totalConsumed > 0)
                 {
-                    texts.Add(($"{-totalConsumed} {kvp.Key}", Color.red));
+                    texts.Add(($"-{totalConsumed:F1} {kvp.Key}", Color.red));
                 }
             }
 

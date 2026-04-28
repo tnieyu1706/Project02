@@ -379,6 +379,14 @@
       },
       {
         "Position": {
+          "x": 2,
+          "y": -6
+        },
+        "TileLayer": "Tree",
+        "BuildingId": ""
+      },
+      {
+        "Position": {
           "x": 3,
           "y": -6
         },
@@ -1363,8 +1371,8 @@
       },
       {
         "Position": {
-          "x": 1,
-          "y": 0
+          "x": 2,
+          "y": -1
         },
         "TileLayer": "Building",
         "BuildingId": "MainTowerHall",
@@ -1377,44 +1385,16 @@
       },
       {
         "Position": {
-          "x": 1,
-          "y": -2
-        },
-        "TileLayer": "Building",
-        "BuildingId": "VillagerHouse1",
-        "BehaviourData": {
-          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
-          "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 0,
-          "MaxVillagersCanUse": 1
-        }
-      },
-      {
-        "Position": {
-          "x": -1,
-          "y": -3
-        },
-        "TileLayer": "Factory",
-        "BuildingId": "CoinIncrease1",
-        "BehaviourData": {
-          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
-          "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 2,
-          "MaxVillagersCanUse": 2
-        }
-      },
-      {
-        "Position": {
           "x": -2,
           "y": -2
         },
         "TileLayer": "Factory",
-        "BuildingId": "WoodIncrease1",
+        "BuildingId": "FoodIncrease1",
         "BehaviourData": {
           "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
           "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 2,
-          "MaxVillagersCanUse": 2
+          "UsedVillagers": 1,
+          "MaxVillagersCanUse": 1
         }
       },
       {
@@ -1433,7 +1413,21 @@
       },
       {
         "Position": {
-          "x": -4,
+          "x": -5,
+          "y": -3
+        },
+        "TileLayer": "Factory",
+        "BuildingId": "WoodIncrease1",
+        "BehaviourData": {
+          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
+          "CurrentUpgradeLevel": 3,
+          "UsedVillagers": 2,
+          "MaxVillagersCanUse": 2
+        }
+      },
+      {
+        "Position": {
+          "x": -6,
           "y": -5
         },
         "TileLayer": "Storage",
@@ -1447,53 +1441,25 @@
       },
       {
         "Position": {
-          "x": -9,
-          "y": 2
-        },
-        "TileLayer": "Factory",
-        "BuildingId": "SpawnArmy1",
-        "BehaviourData": {
-          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
-          "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 1,
-          "MaxVillagersCanUse": 2
-        }
-      },
-      {
-        "Position": {
-          "x": -1,
-          "y": -2
+          "x": -5,
+          "y": -4
         },
         "TileLayer": "Factory",
         "BuildingId": "CoinIncrease1",
         "BehaviourData": {
           "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
           "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 2,
+          "UsedVillagers": 1,
           "MaxVillagersCanUse": 2
         }
       },
       {
         "Position": {
-          "x": 0,
-          "y": -2
+          "x": -9,
+          "y": -3
         },
-        "TileLayer": "Factory",
-        "BuildingId": "FoodIncrease1",
-        "BehaviourData": {
-          "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
-          "CurrentUpgradeLevel": 1,
-          "UsedVillagers": 1,
-          "MaxVillagersCanUse": 1
-        }
-      },
-      {
-        "Position": {
-          "x": -5,
-          "y": 1
-        },
-        "TileLayer": "Storage",
-        "BuildingId": "WoodCapcity1",
+        "TileLayer": "Building",
+        "BuildingId": "VillagerHouse1",
         "BehaviourData": {
           "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
           "CurrentUpgradeLevel": 1,
@@ -1503,11 +1469,11 @@
       },
       {
         "Position": {
-          "x": -6,
-          "y": -2
+          "x": -8,
+          "y": -3
         },
-        "TileLayer": "Storage",
-        "BuildingId": "WoodCapcity1",
+        "TileLayer": "Building",
+        "BuildingId": "VillagerHouse1",
         "BehaviourData": {
           "$type": "Game.StrategyBuilding.BuildingBehaviourSaveData, Core.Gameplay",
           "CurrentUpgradeLevel": 1,
@@ -1518,32 +1484,33 @@
     ]
   },
   "timeControllerData": {
-    "currentTime": 475.0,
+    "currentTime": 440.0,
     "eventRaiseThTime": 2,
-    "nextRaisedEventTime": 471.691681,
+    "nextRaisedEventTime": 437.928345,
     "EventDataJson": {
       "EventName": "Event_Defense_Easy_1",
       "IsCompleted": false,
+      "ShouldChange": true,
       "EventType": "Defense",
       "LevelType": "Easy",
       "Awards": {
-        "Coin": 102.55619,
-        "Wood": 69.33105,
-        "Stone": 42.0078659,
-        "Food": 47.5796852
+        "Coin": 80.38442,
+        "Wood": 37.4680443,
+        "Stone": 46.77337,
+        "Food": 77.30589
       }
     }
   },
   "VillagerData": {
-    "Max": 10,
-    "Current": 10,
-    "Used": 10
+    "Max": 14,
+    "Current": 14,
+    "Used": 6
   },
   "ResourceStorage": {
-    "Coin": 337.800018,
-    "Wood": 79.0,
+    "Coin": 23.1999569,
+    "Wood": 37.5999832,
     "Stone": 53.0,
-    "Food": 20.0
+    "Food": 40.0
   },
   "ArmyStorage": {
     "Melee": 0,

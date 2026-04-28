@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Global.GameController;
 using Cysharp.Threading.Tasks;
+using EditorAttributes;
 using Game.BaseGameplay;
-using Game.Global;
 using Gameplay.Global;
 using KBCore.Refs;
 using TnieYuPackage.GlobalExtensions;
@@ -47,22 +46,26 @@ namespace Game.BuildingGameplay
             titleLabel.text = eventData.eventName;
             var gameLevel = eventData.GetGameplayLevel();
             contentLabel.text = gameLevel.GetDisplayedText();
+            attackButton.text = eventData.GetEventHandlerName();
+            
             awardsContainer.Clear();
             foreach (var award in eventData.Awards)
             {
                 awardsContainer.CreateChild<Label>("award-container__award", "content__text")
-                        .text = $"[{award.Key}]: {award.Value}";
+                        .text = $"[{award.Key}]: {award.Value:F1}";
             }
-
+            
             if (eventData.isCompleted)
             {
                 attackButton.SetEnabled(false);
-                attackButton.style.backgroundColor = Color.white.With(a: 0.5f);
+                attackButton.RemoveClass("button-active");
+                attackButton.AddClass("button-disable");
             }
             else
             {
                 attackButton.SetEnabled(true);
-                attackButton.style.backgroundColor = Color.white.With(a: 1f);
+                attackButton.RemoveClass("button-disable");
+                attackButton.AddClass("button-active");
             }
         }
 
@@ -74,6 +77,9 @@ namespace Game.BuildingGameplay
             {
                 root.styleSheets.Add(styleSheet);
             }
+
+            root.AddClass("root");
+            root.pickingMode = PickingMode.Ignore;
 
             var container = root.CreateChild("container");
 
@@ -97,8 +103,6 @@ namespace Game.BuildingGameplay
 
             var footer = container.CreateChild("footer");
             attackButton = footer.CreateChild<Button>("footer__attack-button");
-
-            attackButton.text = "Attack";
             attackButton.clicked += HandleAttackButtonClicked;
         }
 
@@ -108,7 +112,7 @@ namespace Game.BuildingGameplay
             GameplayTransition.LoadBaseGameplayWithEvent(currentConfig).Forget();
         }
 
-        [EditorAttributes.Button]
+        [Button]
         private void Open(bool stopTimer)
         {
             root.style.display = DisplayStyle.Flex;
@@ -121,7 +125,7 @@ namespace Game.BuildingGameplay
             GameTimeController.SetGameStop();
         }
 
-        [EditorAttributes.Button]
+        [Button]
         public override void Hide()
         {
             root.style.display = DisplayStyle.None;

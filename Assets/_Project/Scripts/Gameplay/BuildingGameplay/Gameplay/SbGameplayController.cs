@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using _Project.Scripts.Gameplay.Global.UI.WorldMap;
+using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using Game.BaseGameplay;
 using Game.Global;
 using Game.StrategyBuilding;
+using Gameplay.Global;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TnieYuPackage.DesignPatterns;
@@ -18,8 +21,11 @@ namespace Game.BuildingGameplay
     public class SbGameplayController : SingletonBehavior<SbGameplayController>
     {
         public const float RATIO_VILLAGER_FOOD = 1f;
+        public const int MAX_HEALTH = 3;
 
         public BuildingGameplayLevel currentLevel;
+        private bool isCompleted;
+        public ObservableValue<int> currentHealth;
 
         [Header("Starting Settings")]
         [Tooltip("Gán Scriptable Object của Nhà Chính vào đây để tự động đặt ra khi bắt đầu game")]
@@ -129,13 +135,33 @@ namespace Game.BuildingGameplay
 
         protected override void Awake()
         {
-            dontDestroyOnLoad = false;
             base.Awake();
             VillagerData ??= new VillagerDataManager();
         }
 
+        private void OnEnable()
+        {
+            currentHealth.OnValueChanged += OnCurrentHealthChanged;
+        }
+
+        private void OnCurrentHealthChanged(int changedValue)
+        {
+            if (changedValue > 0) return;
+            // lose game
+            // temp: directly load main menu
+            RecordResult(GameplayTransition.DataManager.CurrentLevel);
+            GameplayTransition.LoadWorldMapGame().Forget();
+        }
+
+        private void OnDisable()
+        {
+            currentHealth.OnValueChanged -= OnCurrentHealthChanged;
+        }
+
         public void CreateGameplay(BuildingGameplayLevel level)
         {
+            currentHealth.Value = MAX_HEALTH;
+
             SbTimeController.Instance.Init();
             SetupGameplay(level);
             SbGridMapRegister.Instance.RegisterEnvironmentMaps();
@@ -145,6 +171,11 @@ namespace Game.BuildingGameplay
             {
                 SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false, timeStop: true);
             }
+
+            foreach (var eventData in currentLevel.events)
+            {
+                EventData.SetupAwardsRandomized(eventData.data);
+            }
         }
 
         public void SetupGameplay(BuildingGameplayLevel level)
@@ -152,7 +183,27 @@ namespace Game.BuildingGameplay
             currentLevel = level;
         }
 
+        public void RecordResult(LevelData levelData)
+        {
+            levelData.score = currentHealth.Value;
+            // set unlocked for nest levels
+        }
+
         #region SUPPORTS
+
+        public static void RefreshEvents()
+        {
+            //check all events state
+            foreach (var eventData in Instance.currentLevel.events)
+            {
+                if (!eventData.data.isCompleted) return;
+            }
+
+            // all event is completed => win game
+            // temp: load directly main menu
+            Instance.RecordResult(GameplayTransition.DataManager.CurrentLevel);
+            GameplayTransition.LoadWorldMapGame().Forget();
+        }
 
         public static void ApplyResourceIncrement()
         {
@@ -168,11 +219,9 @@ namespace Game.BuildingGameplay
 
         private static float CalculateResourceAmount(ResourceType resourceType, float amount)
         {
-            return Mathf.RoundToInt(
-                amount
-                * GamePropertiesRuntime.Instance.GeneralResourceReceivedScale
-                * GamePropertiesRuntime.Instance.ResourceReceivedScaleDict[resourceType]
-                * 10) / 10f;
+            return amount
+                   * GamePropertiesRuntime.Instance.GeneralResourceReceivedScale
+                   * GamePropertiesRuntime.Instance.ResourceReceivedScaleDict[resourceType];
         }
 
         private static void AddResource(ResourceType type, float value)
@@ -277,17 +326,16 @@ namespace Game.BuildingGameplay
 
         #region SAVE-LOAD
 
-        // ... Mọi đoạn Save Load bên dưới giữ nguyên y hệt logic hiện tại của bạn
-
-        [Button]
-        private void SaveManual() => SaveAll();
-
-        [Button]
-        private void LoadManual() => LoadAll();
-
         public async void SaveAll()
         {
             JObject data = new JObject();
+
+            JObject properties = new JObject()
+            {
+                ["CurrentHealth"] = Instance.currentHealth.Value
+            };
+
+            data["properties"] = properties;
 
             var gridMapSaveData = SbGridMapSystem.Instance.SaveData();
             data["gridMapSaveData"] = JObject.FromObject(gridMapSaveData, GameJsonSettings.GetJsonSerializer());
@@ -313,17 +361,32 @@ namespace Game.BuildingGameplay
 
             data["ArmyStorage"] = armyStorageJObject;
 
-            if (!File.Exists(currentLevel.saveFilePath)) return;
+            if (!File.Exists(currentLevel.TempFilePath)) return;
 
-            await File.WriteAllTextAsync(currentLevel.saveFilePath, data.ToString(Formatting.Indented));
+            await File.WriteAllTextAsync(currentLevel.TempFilePath, data.ToString(Formatting.Indented));
         }
 
-        public async void LoadAll()
+        public async UniTask LoadAll()
         {
-            if (!File.Exists(currentLevel.saveFilePath)) return;
+            if (!File.Exists(currentLevel.TempFilePath))
+            {
+                Debug.LogError($"Temp file not found at path: {currentLevel.TempFilePath}");
+                return;
+            }
 
-            string json = await File.ReadAllTextAsync(currentLevel.saveFilePath);
+            string json = await File.ReadAllTextAsync(currentLevel.TempFilePath);
             JObject jObject = JObject.Parse(json);
+
+            if (jObject.TryGetValue("properties", out JToken propertiesToken) &&
+                propertiesToken is JObject propertiesObj)
+            {
+                if (propertiesObj.TryGetValue("CurrentHealth", out JToken healthToken))
+                {
+                    Instance.currentHealth.Value = healthToken.Value<int>();
+                }
+            }
+
+            await UniTask.CompletedTask;
 
             if (jObject.TryGetValue("gridMapSaveData", out JToken gridMapToken))
             {

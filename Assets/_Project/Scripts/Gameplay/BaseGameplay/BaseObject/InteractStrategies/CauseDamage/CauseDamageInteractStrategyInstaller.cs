@@ -82,7 +82,7 @@ namespace Game.BaseGameplay.Strategies
             PerformAttackAction(interactable, cts.Token).Forget();
 
             // Chờ theo attackCooldown
-            await UniTask.Delay(TimeSpan.FromSeconds(ActualInstaller.attackCooldown));
+            await UniTask.Delay(TimeSpan.FromSeconds(ActualInstaller.attackCooldown), cancellationToken: cts.Token);
 
             CanUse = true;
         }

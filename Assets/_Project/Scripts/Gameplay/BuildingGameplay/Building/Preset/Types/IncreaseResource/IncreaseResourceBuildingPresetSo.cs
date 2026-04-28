@@ -50,8 +50,7 @@ namespace Game.StrategyBuilding
             // Hỗ trợ trường hợp nếu bạn tạo nhà sản xuất thụ động (requireVillagers = false)
             float multiplier = ActualPreset.requireVillagers ? UsedVillagers : 1f;
 
-            float finalValue = Mathf.RoundToInt((basePotential * this.InfluenceRatio.Value) * multiplier * 10) / 10f;
-            return finalValue;
+            return (basePotential * this.InfluenceRatio.Value) * multiplier;
         }
 
         public override void RefreshBehaviour()
@@ -99,7 +98,7 @@ namespace Game.StrategyBuilding
             // 3. Nếu có sản xuất, nhét thêm vào danh sách (Mang dấu + để ScreenTextDisplayController tô màu xanh)
             if (produceValue > 0)
             {
-                popupTexts.Add(($"+{produceValue} {ActualPreset.resourceType}", Color.green));
+                popupTexts.Add(($"+{produceValue:F1} {ActualPreset.resourceType}", Color.green));
             }
 
             return popupTexts;
@@ -122,7 +121,7 @@ namespace Game.StrategyBuilding
             nameLabel.AddToClassList("resource-name");
 
             // Giá trị khởi tạo lúc xây (sẽ là 0 vì UsedVillager ban đầu = 0)
-            resourceValueLabel = new Label($"+{CalculateTotalValue()} / s");
+            resourceValueLabel = new Label($"+{CalculateTotalValue():F1} / s");
             resourceValueLabel.AddToClassList("resource-value");
 
             resourceRow.Add(iconPlaceholder);
@@ -137,13 +136,13 @@ namespace Game.StrategyBuilding
         {
             if (resourceValueLabel != null)
             {
-                resourceValueLabel.text = $"+{currentTotal} / s";
+                resourceValueLabel.text = $"+{currentTotal:F1} / s";
             }
 
             // Cập nhật cả cái label Usage icon nhỏ ở layout base nếu bạn móc được tham chiếu
             if (usageIconValueLabel != null)
             {
-                usageIconValueLabel.text = currentTotal.ToString();
+                usageIconValueLabel.text = $"+{currentTotal:F1}";
             }
         }
     }

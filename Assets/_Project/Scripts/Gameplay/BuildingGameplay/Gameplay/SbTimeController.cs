@@ -64,9 +64,17 @@ namespace Game.BuildingGameplay
             eventRaiseThTime = data.eventRaiseThTime;
             nextRaisedEventTime = data.nextRaisedEventTime;
 
+            var shouldChangeEvent = false;
+
+            if (data.EventDataJson != null
+                && data.EventDataJson.TryGetValue("ShouldChange", out var shouldChangeToken))
+            {
+                shouldChangeEvent = shouldChangeToken.Value<bool>();
+            }
+
             // Khôi phục Event Config từ JSON
             // Validate RaisedEvent is format with current time (tránh trường hợp load game đã quá thời gian Raise Event đó rồi)
-            if (nextRaisedEventTime > currentTime.Value - 1f && data.EventDataJson != null)
+            if (!shouldChangeEvent && nextRaisedEventTime > currentTime.Value - 1f && data.EventDataJson != null)
             {
                 CurrentEventConfig ??= new();
                 CurrentEventConfig.BindData(data.EventDataJson);

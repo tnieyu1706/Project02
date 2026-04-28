@@ -1,0 +1,14 @@
+{
+  "foldouts": {
+    "71334_GameController (_Project.Scripts.Gameplay.Global.GameController.GameTimeController)_SetFrameRateManual_Int32": true,
+    "71334_GameController (_Project.Scripts.Gameplay.Global.GameController.GameTimeController)_SetTimeScaleManual_Single": true
+  },
+  "parameterValues": {
+    "71334_GameController (_Project.Scripts.Gameplay.Global.GameController.GameTimeController)_SetFrameRateManual_Int32": [
+      null
+    ],
+    "71334_GameController (_Project.Scripts.Gameplay.Global.GameController.GameTimeController)_SetTimeScaleManual_Single": [
+      1.0
+    ]
+  }
+}

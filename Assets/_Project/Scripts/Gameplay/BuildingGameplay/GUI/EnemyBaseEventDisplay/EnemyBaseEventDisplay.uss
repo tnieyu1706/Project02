@@ -2,31 +2,25 @@
 
 /* Khung viền chính của cửa sổ hiển thị */
 .container {
-    align-self: flex-start;
+    /* Kích thước của toàn bộ bảng hiển thị */
+    width: 70%;
+    height: 80%;
+    
+    align-self: center;
     flex-direction: column;
 
-    margin-left: 5%;
     margin-top: 5%;
 
-    background-color: #181c22;
+    background-color: rgba(24, 28, 34, 0.9);
     border-radius: 12px;
     border-width: 1px;
     border-color: #333;
 
     padding: 20px;
-    /* Kích thước của toàn bộ bảng hiển thị */
-    width: 30%;
-    height: 70%;
-
-
 }
 
 /* Phần tiêu đề bên trên */
 .header {
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom-width: 2px;
-    border-bottom-color: #FF5555;
 }
 
 .header__title {
@@ -43,7 +37,7 @@
     margin-top: 5px;
     /* Quan trọng: flex-grow để chiếm hết phần còn lại của container */
     flex-grow: 1;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.9);
     border-radius: 8px;
 
     /* Quan trọng: Phải là relative để các phần tử con dùng absolute 

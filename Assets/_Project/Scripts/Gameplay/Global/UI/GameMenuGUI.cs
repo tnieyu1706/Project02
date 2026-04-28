@@ -1,4 +1,5 @@
 using _Project.Scripts.Gameplay.Global.GameController;
+using _Project.Scripts.Gameplay.Global.PlayerDataSystem;
 using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using Game.BaseGameplay;
@@ -10,9 +11,6 @@ namespace _Project.Scripts.Gameplay.Global.UI
 {
     public class GameMenuGUI : MonoBehaviour
     {
-        // current: temp
-        [SerializeField] private BuildingGameplayLevel buildingGameplayLevel;
-
         [SerializeField] private CanvasGroup gameMenuCanvas;
         [SerializeField] private CanvasGroup settingsCanvas;
         [SerializeField, Required] private Button loadButton;
@@ -21,25 +19,29 @@ namespace _Project.Scripts.Gameplay.Global.UI
 
         void Start()
         {
-            if (!GameSettingsController.Instance.hasGameCreated)
-            {
-                loadButton.interactable = false;
-            }
-            
+            loadButton.interactable = PlayerDataManager.IsDataFileExist();
+
             OpenOnlyMainMenu();
             masterSlider.value = GameSettingsController.Instance.masterVolume * masterSlider.maxValue;
             sfxSlider.value = GameSettingsController.Instance.sfxVolume * sfxSlider.maxValue;
         }
 
-        public void CreateGame()
+        public void StartGame()
         {
-            GameplayTransition.CreateBuildingGameplay(buildingGameplayLevel).Forget();
-            GameSettingsController.Instance.hasGameCreated = true;
+            LoadWorldMap();
         }
 
-        public void PlayGame()
+        public void ContinueGame()
         {
-            GameplayTransition.LoadBuildingGameplay().Forget();
+            if (!PlayerDataManager.IsDataFileExist()) return;
+
+            LoadWorldMap();
+        }
+
+        private void LoadWorldMap()
+        {
+            PlayerDataManager.Instance?.Load();
+            GameplayTransition.LoadWorldMapGame().Forget();
         }
 
         public void OpenSettingsPanel()
