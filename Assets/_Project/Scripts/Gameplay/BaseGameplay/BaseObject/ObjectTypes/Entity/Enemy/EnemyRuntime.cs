@@ -19,7 +19,7 @@ namespace Game.BaseGameplay
         protected override void OnEnable()
         {
             base.OnEnable();
-            
+
             // ensure default animation is move-animation
             EntityAnimator.SetTrigger(BaseConstant.ENTITY_MOVE_TRIGGER);
         }
@@ -79,7 +79,7 @@ namespace Game.BaseGameplay
 
         private void OnEntityMoveEnd()
         {
-            BaseGameplayController.Instance.baseHealth.Value -= currentPreset.baseCausingDmg;
+            BaseGameplayController.Instance.CauseBaseDamage(currentPreset.baseCausingDmg);
             BaseGameplayPrefabSpawnManager.Instance.PoolTrackers[PrefabType.BaseEnemy].Release(gameObject);
         }
     }

@@ -34,11 +34,6 @@ namespace Game.BaseGameplay
             base.Awake();
         }
 
-        private void OnDestroy()
-        {
-            OnMenuPanelClosed();
-        }
-
         #region EVENTS
 
         public void OnEnable()
@@ -113,6 +108,7 @@ namespace Game.BaseGameplay
 
         public void HandleConfirmGameplayButtonClicked()
         {
+            OnMenuPanelClosed();
             GameplayTransition.LoadBuildingGameplay().Forget();
         }
 

@@ -65,7 +65,6 @@ namespace Game.BaseGameplay.Strategies
             // Được gọi từ BaseGameplayInteractSystem (nếu System đã check CanUse thì ở đây double check cho an toàn)
             if (!CanUse || interactable == null || interactable.Hp.Value <= 0) return;
 
-            Debug.Log("Interact Cause Damage Strategy");
             // Kích hoạt luồng đánh bằng UniTaskVoid để tách khỏi main thread update
             ExecuteAttackSequence(interactable).Forget();
         }
@@ -106,7 +105,6 @@ namespace Game.BaseGameplay.Strategies
             }
 
             target.Hp.Value = Mathf.Max(0, target.Hp.Value - finalDamage);
-            Debug.Log($"[{GetType().Name}] Gây {finalDamage} sát thương. Máu: {target.Hp.Value}");
         }
     }
 }

@@ -50,11 +50,11 @@ namespace Game.WaveAttack
             BaseGameplayGUI.Instance.OnPlayButtonPressed += PlayGame;
         }
 
-        private bool ValidateCausingBaseDamage() => currentBaseDamageOutput.Value <= maxBaseDamageOutput.Value;
+        private bool ValidateCausingBaseDamage() => currentBaseDamageOutput.Value < maxBaseDamageOutput.Value;
 
-        private void HandlePerBaseTakenDamage()
+        private void HandlePerBaseTakenDamage(int damage)
         {
-            currentBaseDamageOutput.Value++;
+            currentBaseDamageOutput.Value += damage;
         }
 
         private void HandleWinGame()

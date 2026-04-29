@@ -18,6 +18,7 @@ namespace Game.BuildingGameplay
         [SerializeField] private SerializableDictionary<LimitResourceType, Text> limitResourceNumberTexts;
         [SerializeField] private Text peopleNumberText;
         [SerializeField] private Text maxPeopleNumberText;
+        [SerializeField] private Slider healthSlider;
 
         [Header("Global Properties UI")] [SerializeField]
         private Text skillPointText;
@@ -57,6 +58,7 @@ namespace Game.BuildingGameplay
         private void OnEnable()
         {
             RegistryGameplayProperties();
+            SbGameplayController.Instance.currentHealth.OnValueChanged += HandleSliderHealthChanged;
 
             RegistryArmyStorageHandlers();
 
@@ -172,6 +174,11 @@ namespace Game.BuildingGameplay
             armyNumberEvents.Clear();
         }
 
+        private void HandleSliderHealthChanged(int health)
+        {
+            healthSlider.value = health;
+        }
+
         private void HandleEventButtonClicked()
         {
             // display next event if not exist.
@@ -257,6 +264,7 @@ namespace Game.BuildingGameplay
 
             if (SbGameplayController.Instance != null)
             {
+                SbGameplayController.Instance.currentHealth.OnValueChanged -= HandleSliderHealthChanged;
                 UnRegistryGameplayProperties();
                 UnRegistryArmyStorageHandlers();
             }

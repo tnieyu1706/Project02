@@ -15,7 +15,7 @@ MonoBehaviour:
   installerId:
     value: 37699af5-023b-4581-90f8-dd496ea9c584
   trackingLayerMask: 512
-  interactRange: 1.8
+  interactRange: 1.4
   baseDamage: 2
   attackCooldown: 1
   projectileSpeed: 4

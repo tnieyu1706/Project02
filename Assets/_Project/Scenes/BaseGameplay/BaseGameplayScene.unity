@@ -1489,6 +1489,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4982545396568287892, guid: 6f1b282434f0c5c4a8b809206908264c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2063530960682472172, guid: fb0c66520fdd74640ac04943ec3fa7de, type: 3}
     - target: {fileID: 6488394984412116785, guid: 6f1b282434f0c5c4a8b809206908264c, type: 3}
       propertyPath: winPanel
       value: 
@@ -1497,6 +1501,14 @@ PrefabInstance:
       propertyPath: losePanel
       value: 
       objectReference: {fileID: 1235477374}
+    - target: {fileID: 6690921832284262803, guid: 6f1b282434f0c5c4a8b809206908264c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3588862563363069780, guid: 85f7c0fd9225a984fb8bb0fe8bcb6786, type: 3}
+    - target: {fileID: 7559011863235415117, guid: 6f1b282434f0c5c4a8b809206908264c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2378904323022377991, guid: 85f7c0fd9225a984fb8bb0fe8bcb6786, type: 3}
     - target: {fileID: 8187203685085229928, guid: 6f1b282434f0c5c4a8b809206908264c, type: 3}
       propertyPath: m_SortingOrder
       value: 8
