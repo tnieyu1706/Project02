@@ -12,12 +12,13 @@ namespace Game.StrategyBuilding
     {
         public TileBase tile;
     }
-    
-    [CreateAssetMenu(fileName = "SbTileLayerDataManager", menuName = "Game/StrategyBuilding/GridMap/SbTileLayerDataManager")]
-    public class SbTileLayerDataManager : SingletonScriptable<SbTileLayerDataManager>
+
+    [CreateAssetMenu(fileName = "SbTileLayerDataManager",
+        menuName = "Game/StrategyBuilding/GridMap/SbTileLayerDataManager")]
+    public class SbTileLayerDataManager : ScriptableObject
     {
         [SerializeField] private SerializableDictionary<SbTileLayer, SbTileLayerData> tileLayerDataMap;
 
-        public static Dictionary<SbTileLayer, SbTileLayerData> Refs => Instance.tileLayerDataMap.Dictionary;
+        public Dictionary<SbTileLayer, SbTileLayerData> Refs => tileLayerDataMap.Dictionary;
     }
 }

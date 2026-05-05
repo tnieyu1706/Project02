@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _Project.Scripts.Gameplay.Global.GameController
 {
     //singleton for easy to read. when build pack to static class only
-    public class GameTimeController : SingletonBehavior<GameTimeController>
+    public class GameTimeController : Singleton<GameTimeController>
     {
         [Header("Current Setting")] [SerializeField, ReadOnly]
         private int targetFrameRate = 60;

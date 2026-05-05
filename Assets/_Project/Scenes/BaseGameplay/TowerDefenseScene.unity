@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 246d97c1c7e8407b938828af8a32be75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
 --- !u!4 &433396059
 Transform:
   m_ObjectHideFlags: 0
@@ -193,7 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2b5a3f3fe143529fe5d2e0cddab04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
 --- !u!4 &1848741329
 Transform:
   m_ObjectHideFlags: 0
@@ -238,8 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76b5775e30374222a64f44821051b12c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  interactLayerMask: 256
+  interactLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!4 &2027803694
 Transform:
   m_ObjectHideFlags: 0
@@ -247,6 +246,53 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027803692}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2112743050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2112743052}
+  - component: {fileID: 2112743051}
+  m_Layer: 0
+  m_Name: SceneScope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2112743051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112743050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5312032623c34414a54ea00e35a7eb8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentScene:
+    sceneAsset: {fileID: 0}
+    scenePath: 
+--- !u!4 &2112743052
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112743050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -378,7 +424,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8708151218593915445}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -505,12 +551,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c363efc687084814b05a8be6d8e5fda3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: TowerDefense::Game.Td.TdTowerContextGUI
-  dontDestroyOnLoad: 0
   blurBackgroundId: Main
   canvas: {fileID: 3304139290599891575}
   guiParentTransform: {fileID: 7235119472970558388}
   upgradeElementPrefab: {fileID: 8069397958310968446, guid: 84384870e167c454d9c10fd5f116a4e8, type: 3}
   towerRangeDisplayTransform: {fileID: 157822413547532268}
+  maxElements: 8
 --- !u!114 &6998763620259783610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,3 +665,4 @@ SceneRoots:
   - {fileID: 1848741329}
   - {fileID: 2027803694}
   - {fileID: 1566487637061104317}
+  - {fileID: 2112743052}

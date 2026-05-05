@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Reflex.Attributes;
+using Reflex.Core;
 using TnieYuPackage.DictionaryUtilities;
 using UnityEngine;
 
@@ -15,15 +17,48 @@ namespace Game.BuildingGameplay
         [SerializeField] private SerializableDictionary<ResourceType, float> resourceCosts;
 
         private ActionCost actionCost;
-        public ActionCost Data => actionCost ??= new ActionCost(resourceCosts.Dictionary);
-        public ActionCost CloneData => new ActionCost(resourceCosts.Dictionary);
+
+        public ActionCost Data
+        {
+            get
+            {
+                if (actionCost == null)
+                {
+                    var container = Container.RootContainer;
+                    actionCost = container.Instantiate<ActionCost>();
+                    actionCost.Setup(resourceCosts.Dictionary);
+                }
+
+                return actionCost;
+            }
+        }
+
+        public ActionCost CloneData
+        {
+            get
+            {
+                var container = Container.RootContainer;
+                var newActionCost = container.Instantiate<ActionCost>();
+                newActionCost.Setup(resourceCosts.Dictionary);
+
+                return newActionCost;
+            }
+        }
     }
 
     public class ActionCost
     {
-        public readonly Dictionary<ResourceType, float> ResourceCosts;
+        [Inject] ResourceTypeDataManager resourceTypeDataManager;
 
-        public ActionCost(Dictionary<ResourceType, float> resourceCosts)
+        public Dictionary<ResourceType, float> ResourceCosts;
+
+        [ReflexConstructor]
+        public ActionCost(ResourceTypeDataManager resourceTypeDataManager)
+        {
+            this.resourceTypeDataManager = resourceTypeDataManager;
+        }
+
+        public void Setup(Dictionary<ResourceType, float> resourceCosts)
         {
             this.ResourceCosts = resourceCosts;
         }
@@ -55,7 +90,10 @@ namespace Game.BuildingGameplay
                 newResourceCosts[kvp.Key] = kvp.Value * multiplier;
             }
 
-            return new ActionCost(newResourceCosts);
+            var container = Container.RootContainer;
+            var newCost = container.Instantiate<ActionCost>();
+            newCost.Setup(newResourceCosts);
+            return newCost;
         }
 
         /// <summary>
@@ -69,7 +107,7 @@ namespace Game.BuildingGameplay
             {
                 if (kvp.Value > 0)
                 {
-                    parts.Add($"{ResourceTypeDataManager.Resources[kvp.Key].emoji} {kvp.Value}");
+                    parts.Add($"{resourceTypeDataManager.Resources[kvp.Key].emoji} {kvp.Value}");
                 }
             }
 
@@ -84,7 +122,7 @@ namespace Game.BuildingGameplay
             {
                 if (kvp.Value > 0)
                 {
-                    parts.Add($"{ResourceTypeDataManager.Resources[kvp.Key].emoji} {kvp.Value}");
+                    parts.Add($"{resourceTypeDataManager.Resources[kvp.Key].emoji} {kvp.Value}");
                 }
             }
 

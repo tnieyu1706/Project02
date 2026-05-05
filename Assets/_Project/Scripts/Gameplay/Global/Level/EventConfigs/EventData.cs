@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.BuildingGameplay;
 using Game.Global;
 using Newtonsoft.Json.Linq;
+using Reflex.Attributes;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.GlobalExtensions;
 using UnityEngine;
@@ -78,13 +79,6 @@ namespace Game.BaseGameplay
             {
                 SbGameplayController.Instance.currentHealth.Value--;
             }
-        }
-
-        public BaseGameplayLevel GetGameplayLevel()
-        {
-            if (!LevelTypeManager.Refs.TryGetValue(levelType, out var levelRef)) return null;
-
-            return levelRef.GetGameplayLevelBy(eventType);
         }
 
         public string GetEventHandlerName() => eventType.ToString();

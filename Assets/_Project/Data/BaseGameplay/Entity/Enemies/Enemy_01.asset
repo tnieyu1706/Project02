@@ -12,13 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e69c91766a48edbc5bb7302b2c43ea, type: 3}
   m_Name: Enemy_01
   m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Entity.EntityPresetSo
-  subAssetName: MeleeAttack
-  deletingSubAsset: {fileID: 0}
   objectId: Enemy01
   libraryAsset: {fileID: 7108339969198208228, guid: 6b45c08ccbd6f224fb68acb1d8622f96, type: 3}
   interactStrategies:
   - {fileID: 3452166693750336350}
-  strategyType: Game.BaseGameplay.Strategies.DirectlyCauseDamageInstaller, Core.Gameplay
   configurators:
   - {fileID: 11400000, guid: 8a72cf3a1abe97745a4d9c8eba1b28aa, type: 2}
   maxHp: 12
@@ -42,7 +39,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   installerId:
     value: 5f74d71f-731d-41e9-a4e3-9986db6c140c
-  trackingLayerMask: 512
-  interactRange: 0.6
+  trackingLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  interactRange: 0.3
   baseDamage: 2
   attackCooldown: 0.8

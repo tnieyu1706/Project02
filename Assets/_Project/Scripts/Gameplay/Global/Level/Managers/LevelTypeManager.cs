@@ -30,6 +30,13 @@ namespace Game.Global
     {
         [SerializeField] private SerializableDictionary<LevelType, LevelTypeData> dict;
 
-        public static Dictionary<LevelType, LevelTypeData> Refs => Instance.dict.Dictionary;
+        public Dictionary<LevelType, LevelTypeData> Refs => dict.Dictionary;
+        
+        public BaseGameplayLevel GetGameplayLevelBy(EventData eventData)
+        {
+            if (!Refs.TryGetValue(eventData.levelType, out var levelRef)) return null;
+
+            return levelRef.GetGameplayLevelBy(eventData.eventType);
+        }
     }
 }

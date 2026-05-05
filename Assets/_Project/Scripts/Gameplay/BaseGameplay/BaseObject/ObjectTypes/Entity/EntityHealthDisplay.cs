@@ -1,6 +1,5 @@
 using System;
 using KBCore.Refs;
-using TnieYuPackage.InterfaceUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +9,7 @@ namespace Game.BaseGameplay
     public class EntityHealthDisplay : MonoBehaviour
     {
         [SerializeField, Self] private Image healthBar;
-        [SerializeField] private InterfaceReference<IEntityProperty> entityProperty;
+        [SerializeField] private InterfaceRef<IEntityProperty> entityProperty;
 
         private void Start()
         {

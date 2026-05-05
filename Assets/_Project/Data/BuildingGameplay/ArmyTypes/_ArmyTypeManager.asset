@@ -12,13 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e1c948a6f647949093ba135bd37d3a, type: 3}
   m_Name: _ArmyTypeManager
   m_EditorClassIdentifier: 
-  data:
-    data:
-    - key: 0
-      value: {fileID: 11400000, guid: 9e44a2ca815dfe3469ac122463981287, type: 2}
-    - key: 3
-      value: {fileID: 11400000, guid: 5c9fdcc49f266ef4da516abce4025d91, type: 2}
-    - key: 1
-      value: {fileID: 11400000, guid: f6c5b2decf8737c4b8665b9122ad2c16, type: 2}
-    - key: 2
-      value: {fileID: 11400000, guid: 7895f18488a7f2a4aa0b42c23609cf99, type: 2}
+  presets:
+  - {fileID: 11400000, guid: 9e44a2ca815dfe3469ac122463981287, type: 2}
+  - {fileID: 11400000, guid: 5c9fdcc49f266ef4da516abce4025d91, type: 2}
+  - {fileID: 11400000, guid: f6c5b2decf8737c4b8665b9122ad2c16, type: 2}
+  - {fileID: 11400000, guid: 7895f18488a7f2a4aa0b42c23609cf99, type: 2}

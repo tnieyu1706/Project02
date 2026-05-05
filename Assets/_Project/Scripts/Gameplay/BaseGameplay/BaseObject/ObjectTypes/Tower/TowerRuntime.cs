@@ -1,4 +1,4 @@
-using BackboneLogger;
+using Reflex.Attributes;
 using UnityEngine;
 
 namespace Game.BaseGameplay
@@ -6,18 +6,18 @@ namespace Game.BaseGameplay
     [RequireComponent(typeof(Animator))]
     public class TowerRuntime : BaseObjectRuntime<TowerPresetSo>
     {
+        [Inject] TowerUpgradeTree towerUpgradeTree;
+
         /// <summary>
         /// score == number paths this tower nest with. set in editor each tower.
         /// </summary>
         public int towerScore;
-        
+
         void Start()
         {
-            if (!TowerUpgradeTree.Tree.TryGetValue(BaseConstant.TOWER_EMPTY_ID, out TowerUpgradeTreeNode node))
+            if (!towerUpgradeTree.Tree.TryGetValue(BaseConstant.TOWER_EMPTY_ID, out TowerUpgradeTreeNode node))
             {
-                BLogger.Log(
-                    $"[TowerRuntime] {name} cannot find empty tower node in upgrade tree. Please check if the empty tower node is added to the upgrade tree.",
-                    LogLevel.Error, "Base");
+                Debug.LogError($"TowerUpgradeTree does not contain empty tower id: {BaseConstant.TOWER_EMPTY_ID}");
                 return;
             }
 

@@ -6,16 +6,10 @@ using UnityEngine;
 
 namespace Game.TowerDefense
 {
-    public class TdInteractSystem : SingletonBehavior<TdInteractSystem>
+    public class TdInteractSystem : Singleton<TdInteractSystem>
     {
-        [SerializeField, LayerMaskDropdown] public int interactLayerMask;
-
-        protected override void Awake()
-        {
-            dontDestroyOnLoad = false;
-            base.Awake();
-        }
-
+        public LayerMask interactLayerMask;
+        
         private void Update()
         {
             if (!Input.GetMouseButtonDown(0)) return;

@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.Gameplay.Global.PlayerDataSystem;
 using Cysharp.Threading.Tasks;
 using Gameplay.Global;
+using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
 {
     public class WorldMapGameplayGUI : MonoBehaviour
     {
+        [Inject] GameplayTransition transition;
+        
         [SerializeField] private Button returnMainMenuBtn;
 
         private void OnEnable()
@@ -33,7 +36,7 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
             returnMainMenuBtn.interactable = false;
 
             // Lưu dữ liệu người chơi trước khi thoát
-            if (PlayerDataManager.Instance != null)
+            if (PlayerDataManager.HasInstance)
             {
                 PlayerDataManager.Instance.Save();
                 Debug.Log("Player data saved successfully before returning to Main Menu.");
@@ -44,7 +47,7 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
             }
 
             // Thực hiện chuyển cảnh về Main Menu
-            GameplayTransition.LoadMainMenuGame().Forget();
+            transition.LoadMainMenuGame().Forget();
         }
     }
 }

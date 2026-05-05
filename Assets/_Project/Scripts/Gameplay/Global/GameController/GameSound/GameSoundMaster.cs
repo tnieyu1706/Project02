@@ -16,7 +16,7 @@ namespace _Project.Scripts.Gameplay.Global.GameController
     /// Call PlayOnce when you just want to play sound with controller by GameSoundMaster, likes SFX, short.
     /// </summary>
     [DefaultExecutionOrder(-20)]
-    public class GameSoundMaster : SingletonBehavior<GameSoundMaster>
+    public class GameSoundMaster : Singleton<GameSoundMaster>
     {
         // current load all sound
         private const string SOUND_LABEL_NAME = "sfx";

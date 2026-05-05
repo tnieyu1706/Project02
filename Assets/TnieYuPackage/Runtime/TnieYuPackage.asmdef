@@ -1,0 +1,22 @@
+{
+    "name": "TnieYuPackage",
+    "rootNamespace": "",
+    "references": [
+        "EditorAttributes",
+        "UniTask",
+        "Unity.InputSystem",
+        "Unity.2D.Tilemap.Extras",
+        "KBCore.Refs",
+        "LitMotion",
+        "LitMotion.Extensions"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

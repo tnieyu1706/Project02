@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Gameplay.Global.GameController; // THÊM LINQ
-using BackboneLogger;
 using Game.BuildingGameplay;
-using TnieYuPackage.Core;
+using Reflex.Attributes;
+using TnieYuPackage.Handlers;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.Utils;
@@ -11,8 +11,10 @@ using UnityEngine;
 
 namespace Game.StrategyBuilding
 {
-    public class SbSpawnBuildingSystem : SingletonBehavior<SbSpawnBuildingSystem>
+    public class SbSpawnBuildingSystem : Singleton<SbSpawnBuildingSystem>
     {
+        [Inject] private SbGridMapDataController gridMap;
+
         [SerializeField] private GameObject buildingPrefab;
         private static BuildingPresetSo currentBuildingPreset;
 
@@ -31,7 +33,7 @@ namespace Game.StrategyBuilding
 
                 if (hasMainBuilding)
                 {
-                    BLogger.Log("Chỉ được phép xây dựng 1 Nhà Chính trên bản đồ!", LogLevel.Warning, category: "SB");
+                    Debug.Log($"[TdWaveConverter] Đã tồn tại Nhà Chính trên bản đồ. Không thể đặt thêm.");
                     return; // Chặn không cho spawn blueprint
                 }
             }
@@ -79,14 +81,14 @@ namespace Game.StrategyBuilding
                     && neighborTileData.BuildingRuntime.currentPreset.InfluenceEffects.ContainsKey(currentBuildingPreset
                         .tileLayer))
                 {
-                    ContextSpritesTemp[dir] = SbGridMapDataController.Instance.influenceContextSprite;
+                    ContextSpritesTemp[dir] = Instance.gridMap.influenceContextSprite;
                     continue; // one sprite can set.
                 }
 
                 // Impacted by neighbors
                 if (currentBuildingPreset.InfluenceEffects.ContainsKey(neighborTileData.TileLayer))
                 {
-                    ContextSpritesTemp[dir] = SbGridMapDataController.Instance.impactedContextSprite;
+                    ContextSpritesTemp[dir] = Instance.gridMap.impactedContextSprite;
                     continue; // one sprite can set.
                 }
             }
@@ -138,7 +140,7 @@ namespace Game.StrategyBuilding
             var buildingRuntime = InitializeBuildingRuntime(position, buildingPreset, spawnPos);
             SbGridMapSystem.Instance.CreateAndWriteTile(position, buildingPreset.tileLayer, buildingRuntime);
 
-            BLogger.Log($"[SbMapController] spawn {buildingPreset.buildingId} at {position}", category: "SB");
+            Debug.Log($"[SbSpawnBuildingSystem] Spawned building {buildingPreset.name} at {position}");
         }
 
         public static BuildingRuntime SpawnBuildingDirectlyForLoad(Vector2Int position, BuildingPresetSo buildingPreset)
@@ -182,7 +184,8 @@ namespace Game.StrategyBuilding
                 if (currentBuildingCount >= Game.Global.GamePropertiesRuntime.Instance.MaxBuildingNumber.Value)
                 {
                     // Can display error message here if you want. (Toast)
-                    BLogger.Log($"Không thể xây dựng! Đã đạt giới hạn tối đa.", LogLevel.Warning, category: "SB");
+                    Debug.Log(
+                        $"[SbSpawnBuildingSystem] Đã đạt giới hạn số lượng công trình ({currentBuildingCount}/{Game.Global.GamePropertiesRuntime.Instance.MaxBuildingNumber.Value}). Không thể đặt thêm.");
                     // Vì đã ExecuteAttachedHandler, người chơi sẽ thoát Blueprint.
                     return true;
                 }

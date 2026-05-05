@@ -180,12 +180,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fe37ff12ce8454bbf741693644fa620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   manager:
     delayCompletedAll: 1.5
     currentActiveSceneGroup:
       groupName: 
       scenes: []
+      unloadUnusedAssets: 0
   references:
     version: 2
     RefIds: []
@@ -245,7 +245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f6d72ae8764d8eb88fece6b036826d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   container: {fileID: 0}
   sfxPrefab: {fileID: 2139905912028754771, guid: 44456001c0f2e3c44b407f95b9e9f9b7, type: 3}
   volumeVariant: {x: -0.2, y: 0.1}
@@ -294,7 +293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a69dd4bb78444cb6ce68bf45ddc13e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   masterVolume: 1
   sfxVolume: 1
 --- !u!4 &830985705
@@ -467,7 +465,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 203be0b5279b432bb4ce32e7017ad696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   uiDocument: {fileID: 1057491301}
   styleSheets:
   - {fileID: 7433441132597879392, guid: 91c5dd87a6c9402dbab25264f3600df0, type: 3}
@@ -534,7 +531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e94c86b2e8cb4604b762bb293b65297d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
 --- !u!4 &1088858173
 Transform:
   m_ObjectHideFlags: 0
@@ -671,6 +667,53 @@ MonoBehaviour:
   onLoadingProgressUpdate:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1443046407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1443046409}
+  - component: {fileID: 1443046408}
+  m_Layer: 0
+  m_Name: SceneScope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1443046408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443046407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5312032623c34414a54ea00e35a7eb8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentScene:
+    sceneAsset: {fileID: 0}
+    scenePath: 
+--- !u!4 &1443046409
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443046407}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1504423635
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,7 +779,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c12269ba2d4bc9961ff38e4df1624a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   targetFrameRate: 60
   timeScale: 1
   defaultFrameRate: 60
@@ -983,7 +1025,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab87dc7c70f492c84ecad005b5c8893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   uiDocument: {fileID: 1621850721}
   styleSheet: {fileID: 7433441132597879392, guid: 087e63ba803642fba4c61a6666e16a16, type: 3}
 --- !u!114 &1621850721
@@ -1050,7 +1091,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e02b1bc4946a4425b14db926becfc7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   uiDocument: {fileID: 1740768009}
   styleSheet: {fileID: 7433441132597879392, guid: 087e63ba803642fba4c61a6666e16a16, type: 3}
 --- !u!114 &1740768009
@@ -1231,3 +1271,4 @@ SceneRoots:
   - {fileID: 1740768010}
   - {fileID: 1057491302}
   - {fileID: 1088858173}
+  - {fileID: 1443046409}

@@ -25,7 +25,7 @@ namespace Game.BaseGameplay
         }
     }
 
-    public abstract class BaseGameplayCalculator : SingletonBehavior<BaseGameplayCalculator>
+    public abstract class BaseGameplayCalculator : Singleton<BaseGameplayCalculator>
     {
         public abstract float GlobalDamageScale { get; }
         public abstract float GlobalDefenseScale { get; }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using EditorAttributes;
-using TnieYuPackage.DesignPatterns;
 using UnityEditor;
 using UnityEngine;
 using ZLinq;
@@ -23,14 +22,14 @@ namespace Game.BaseGameplay
     }
 
     [CreateAssetMenu(fileName = "TowerUpgradeTree", menuName = "Game/TD/UpgradeTree")]
-    public class TowerUpgradeTree : SingletonScriptable<TowerUpgradeTree>
+    public class TowerUpgradeTree : ScriptableObject
     {
         [SerializeField] private List<TowerUpgradeTreeNode> nodes;
 
-        private static Dictionary<string, TowerUpgradeTreeNode> tree;
+        private Dictionary<string, TowerUpgradeTreeNode> tree;
 
-        public static Dictionary<string, TowerUpgradeTreeNode> Tree =>
-            tree ??= Instance.nodes
+        public Dictionary<string, TowerUpgradeTreeNode> Tree =>
+            tree ??= nodes
                 .AsValueEnumerable()
                 .ToDictionary(n => n.towerPreset.objectId, n => n);
 

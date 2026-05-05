@@ -1,5 +1,4 @@
 using System;
-using BackboneLogger;
 using Cysharp.Threading.Tasks;
 using TnieYuPackage.DesignPatterns;
 using UnityEngine;
@@ -17,7 +16,7 @@ namespace SceneManagement
     }
 
     [DefaultExecutionOrder(-500)]
-    public class SceneLoader : SingletonBehavior<SceneLoader>
+    public class SceneLoader : Singleton<SceneLoader>
     {
         public SceneGroupManager manager;
         
@@ -26,7 +25,6 @@ namespace SceneManagement
 
         protected override void Awake()
         {
-            dontDestroyOnLoad = false;
             base.Awake();
 
             manager.OnLoadStarted += OnPreSceneGroupLoaded;
@@ -47,7 +45,7 @@ namespace SceneManagement
         {
             if (isLoading)
             {
-                BLogger.Log($"[SceneLoader] Still loading scene", LogLevel.Warning, category: "System");
+                Debug.Log($"[SceneGroupManager] Loading scene group {sceneGroup}");
                 return UniTask.CompletedTask;
             }
 

@@ -1,6 +1,6 @@
 using Game.BaseGameplay.Strategies;
 using Game.TowerDefense;
-using TnieYuPackage.Core;
+using TnieYuPackage.Handlers;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.GlobalExtensions;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace Game.BaseGameplay.TowerEvents
         {
             runtimeTemp = towerRuntime;
 
-            if (TdInteractSystem.Instance != null)
+            if (TdInteractSystem.HasInstance)
                 TdInteractSystem.Instance.enabled = false;
             InputEventManager.Instance.enabled = true;
             InputEventManager.Instance.RegistryOnce(KeyCode.Mouse0, OnLeftMouseClick);
@@ -49,7 +49,7 @@ namespace Game.BaseGameplay.TowerEvents
 
         private void ExecuteInputEventHandler()
         {
-            if (TdInteractSystem.Instance != null)
+            if (TdInteractSystem.HasInstance)
                 TdInteractSystem.Instance.enabled = true;
 
             InputEventManager.Instance.enabled = false;

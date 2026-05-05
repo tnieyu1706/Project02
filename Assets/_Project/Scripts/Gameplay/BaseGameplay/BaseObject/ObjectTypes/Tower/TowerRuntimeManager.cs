@@ -6,14 +6,8 @@ namespace Game.BaseGameplay
     /// <summary>
     /// Singleton Object exists each Base Levels
     /// </summary>
-    public class TowerRuntimeManager : SingletonBehavior<TowerRuntimeManager>
+    public class TowerRuntimeManager : Singleton<TowerRuntimeManager>
     {
         public List<TowerRuntime> towerRuntimeList = new List<TowerRuntime>();
-
-        protected override void Awake()
-        {
-            dontDestroyOnLoad = false;
-            base.Awake();
-        }
     }
 }

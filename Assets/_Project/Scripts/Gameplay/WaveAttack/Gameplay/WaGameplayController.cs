@@ -5,6 +5,7 @@ using EditorAttributes;
 using Game.BaseGameplay;
 using Game.Global;
 using Gameplay.Global;
+using Reflex.Extensions;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.Utils;
 using UnityEngine;
@@ -12,7 +13,7 @@ using UnityEngine;
 namespace Game.WaveAttack
 {
     [DefaultExecutionOrder(-10)]
-    public class WaGameplayController : SingletonBehavior<WaGameplayController>
+    public class WaGameplayController : Singleton<WaGameplayController>
     {
         private const int TOWER_HANDLER_DELAY_MILLISECONDS = 1500;
 
@@ -87,7 +88,7 @@ namespace Game.WaveAttack
 
         private void OnDisable()
         {
-            if (BaseGameplayController.Instance != null)
+            if (BaseGameplayController.HasInstance)
             {
                 BaseGameplayController.Instance.OnCauseBaseDamageValid = null;
                 BaseGameplayController.Instance.OnBaseTakenDamage -= HandlePerBaseTakenDamage;
@@ -96,7 +97,7 @@ namespace Game.WaveAttack
                 BaseGameplayController.Instance.OnWaveEnded -= RefreshBehaviourAsEndWave;
             }
 
-            if (BaseGameplayGUI.Instance != null)
+            if (BaseGameplayGUI.HasInstance)
             {
                 BaseGameplayGUI.Instance.OnPlayButtonPressed -= PlayGame;
             }
@@ -113,9 +114,9 @@ namespace Game.WaveAttack
 
         public void AddArmyForWave(ArmyType armyType, int amount)
         {
-            // if (WaveStorage[armyType].Value + amount < 0) return;
-            // if (!CheckEntityDeploymentValid(currentEntityDeploymentCount.Value + amount)) return;
-            // if (GlobalStorage[armyType].Value - amount < 0) return;
+            if (WaveStorage[armyType].Value + amount < 0) return;
+            if (!CheckEntityDeploymentValid(currentEntityDeploymentCount.Value + amount)) return;
+            if (GlobalStorage[armyType].Value - amount < 0) return;
 
             WaveStorage[armyType].Value += amount;
             currentEntityDeploymentCount.Value += amount;
@@ -145,7 +146,9 @@ namespace Game.WaveAttack
 
         private void SetupTowerDefenseAI(int mapPathCount, int towerCount)
         {
-            towerDefenseAI = new(
+            var container = gameObject.GetClosestContainer();
+            towerDefenseAI = container.Instantiate<TowerDefenseAI>();
+            towerDefenseAI.Setup(
                 mapPathCount: mapPathCount,
                 towerCount: towerCount
             );

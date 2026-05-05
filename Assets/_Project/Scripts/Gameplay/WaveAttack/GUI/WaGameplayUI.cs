@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Game.WaveAttack
 {
-    public class WaGameplayUI : SingletonBehavior<WaGameplayUI>
+    public class WaGameplayUI : Singleton<WaGameplayUI>
     {
         [SerializeField] private SerializableDictionary<ArmyType, Text> armyNumberTexts;
 
@@ -83,7 +83,7 @@ namespace Game.WaveAttack
 
         private void OnDisable()
         {
-            if (WaGameplayController.Instance != null)
+            if (WaGameplayController.HasInstance)
             {
                 UnRegistryGlobalArmyNumberEvents();
 

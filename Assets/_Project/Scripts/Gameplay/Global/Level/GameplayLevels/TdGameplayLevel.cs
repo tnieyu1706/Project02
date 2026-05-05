@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using BackboneLogger;
 using Game.TowerDefense;
 using UnityEngine;
 
@@ -18,19 +17,17 @@ namespace Game.BaseGameplay
 
         public override void SetupGameplay()
         {
-            if (TdGameplayController.Instance == null)
+            if (!TdGameplayController.HasInstance)
             {
-                BLogger.Log($"[TdGameplayLevel] TdGameplayController is not found after loading scene",
-                    LogLevel.Error, category: "Loading");
+                Debug.LogError($"[TdGameplayLevel] TdGameplayController is not found after loading scene");
                 return;
             }
 
             TdGameplayController.Instance.Setup(this);
 
-            if (BaseGameplayController.Instance == null)
+            if (!BaseGameplayController.HasInstance)
             {
-                BLogger.Log($"[TdGameplayLevel] BaseGameplayController is not found after loading scene",
-                    LogLevel.Error, category: "Loading");
+                Debug.LogError($"[TdGameplayLevel] BaseGameplayController is not found after loading scene");
                 return;
             }
 

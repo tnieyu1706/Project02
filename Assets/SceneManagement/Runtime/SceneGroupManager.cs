@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using BackboneLogger;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using ZLinq;
+using Debug = UnityEngine.Debug;
 
 namespace SceneManagement
 {
@@ -13,29 +13,29 @@ namespace SceneManagement
     public class SceneGroupManager
     {
         public const int PROGRESS_DELAY_MILLISECONDS = 100;
+
         [SerializeField] [Range(0, 3f)] private float delayCompletedAll = 0.5f;
 
         public SceneGroup currentActiveSceneGroup;
 
         public event Action OnLoadStarted = delegate { };
-        
+
         public event Action<string> OnSceneUnloaded = delegate { };
         public event Action OnUnloadCompleted = delegate { };
-        
-        
+
+
         public event Action<string> OnSceneLoaded = delegate { };
         public event Action<string> OnActiveSceneChanged = delegate { };
-        
+
         public event Action OnLoadEnded = delegate { };
 
         public async UniTask LoadSceneAsync(SceneGroup sceneGroup, IProgress<float> progress)
         {
             OnLoadStarted?.Invoke();
             var timer = Stopwatch.StartNew();
-            BLogger.Log($"[SceneGroupManager] Begin unload: {timer.Elapsed}", category: "System");
-
+            Debug.Log($"[SceneGroupManager] Begin unload: {timer.Elapsed}");
             await UnLoadScenesAsync(sceneGroup);
-            BLogger.Log($"[SceneGroupManager] Begin load: {timer.Elapsed}", category: "System");
+            Debug.Log($"[SceneGroupManager] Begin load: {timer.Elapsed}");
 
             currentActiveSceneGroup = sceneGroup;
 
@@ -71,17 +71,16 @@ namespace SceneManagement
                 await UniTask.Delay(PROGRESS_DELAY_MILLISECONDS);
             }
 
-            BLogger.Log($"[SceneGroupManager] Completed load: {timer.Elapsed}", category: "System");
+            Debug.Log($"[SceneGroupManager] End unload: {timer.Elapsed}");
             timer.Stop();
 
             var sceneActiveName = sceneGroup.FindSceneNameByType(SceneType.Active);
             var sceneNeedActive = SceneManager.GetSceneByName(sceneActiveName);
-            
+
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (sceneNeedActive == null)
             {
-                BLogger.Log($"[SceneGroupManager] Failed to load scene: {sceneActiveName}",
-                    LogLevel.Critical, category: "System");
+                Debug.LogError($"[SceneGroupManager] Scene '{sceneActiveName}' not found!");
             }
             else
             {
@@ -127,10 +126,11 @@ namespace SceneManagement
             }
 
             // Optional: UnloadUnusedAssets - unload all unused asset from memory 
-            await Resources.UnloadUnusedAssets();
+            if (sceneGroup.unloadUnusedAssets)
+                await Resources.UnloadUnusedAssets();
 
             OnUnloadCompleted?.Invoke();
-            BLogger.Log($"[SceneGroupManager] Unload old scenes completed", category: "System");
+            Debug.Log($"[SceneGroupManager] Unload completed, unload {unloadSceneNames.Count} scenes");
         }
     }
 

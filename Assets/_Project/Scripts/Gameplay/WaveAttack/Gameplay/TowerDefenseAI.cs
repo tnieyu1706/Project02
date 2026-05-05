@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.BaseGameplay;
+using Reflex.Attributes;
 using TnieYuPackage.GlobalExtensions;
 using UnityEngine;
 using ZLinq;
@@ -9,6 +10,8 @@ namespace Game.WaveAttack
 {
     public class TowerDefenseAI
     {
+        [Inject] TowerUpgradeTree towerUpgradeTree;
+
         //rules: Loop tower_place 0 -> n
         //Priority:
         //1. tower_value.
@@ -31,13 +34,19 @@ namespace Game.WaveAttack
         // private const float TOWER_TYPE_WEIGHT = 0.234f;
 
         // runtime weights
-        private readonly float stepMoveWeight; // follow tower counts. current standard for 10.
+        private float stepMoveWeight; // follow tower counts. current standard for 10.
 
         private float slope;
-        private readonly float growthSlopeFactor; // follow wave context.
+        private float growthSlopeFactor; // follow wave context.
         public float Intercept; // follow map context. current standard for 2 path.
 
-        public TowerDefenseAI(float defaultSlope = 1f, float growthSlopeFactor = 0.128f, int mapPathCount = 2,
+        [ReflexConstructor]
+        public TowerDefenseAI(TowerUpgradeTree towerUpgradeTree)
+        {
+            this.towerUpgradeTree = towerUpgradeTree;
+        }
+
+        public void Setup(float defaultSlope = 1f, float growthSlopeFactor = 0.128f, int mapPathCount = 2,
             int towerCount = 10)
         {
             Intercept = 0.2f + (2 - mapPathCount) * TOWER_VALUE_WEIGHT * 0.8f;
@@ -87,11 +96,11 @@ namespace Game.WaveAttack
             return Random.Range(0, affordablePresets.Count);
         }
 
-        private static List<TowerPresetSo> GetAffordablePresets(TowerRuntime towerPlace)
+        private List<TowerPresetSo> GetAffordablePresets(TowerRuntime towerPlace)
         {
             var currentMoney = BaseGameplayController.Instance.money.Value;
 
-            var formattedTowers = TowerUpgradeTree
+            var formattedTowers = towerUpgradeTree
                 .Tree[towerPlace.currentPreset.objectId]
                 .nextUpgradeTowers
                 .AsValueEnumerable()

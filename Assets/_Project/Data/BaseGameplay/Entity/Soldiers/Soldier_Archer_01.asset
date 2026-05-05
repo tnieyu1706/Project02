@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   installerId:
     value: 0d4a671f-6c6f-4a64-bdd0-da92dfa80676
-  trackingLayerMask: 3072
+  trackingLayerMask:
+    serializedVersion: 2
+    m_Bits: 3072
   interactRange: 2.8
   baseDamage: 2
   attackCooldown: 0.6
@@ -22,15 +24,15 @@ MonoBehaviour:
   projectileOffset: {x: 0, y: 0.3, z: 0}
   projectileSprite: {fileID: 21300000, guid: 36b63253591bc684bb28570d296444f8, type: 3}
   trajectoryStrategy:
-    rid: 6075148479564611712
+    rid: 949500981401092098
   references:
     version: 2
     RefIds:
-    - rid: 6075148479564611712
-      type: {class: ParabolaTrajectoryStrategy, ns: TnieYuPackage.Strategies.Projectile, asm: TnieYuPackage}
+    - rid: 949500981401092098
+      type: {class: ParabolaTrajectoryStrategy, ns: TnieYuPackage.Strategies.Projectile, asm: Core.Gameplay}
       data:
         autoRotate: 1
-        parabolaHeight: 1.2
+        parabolaHeight: 2
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43,13 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 136de8d5777f465aaa7cac2e83db4452, type: 3}
   m_Name: Soldier_Archer_01
   m_EditorClassIdentifier: TowerDefense::Game.Td.SoldierPresetSo
-  subAssetName: RangeAttack
-  deletingSubAsset: {fileID: 0}
   objectId: Soldier_Archer01
   libraryAsset: {fileID: 7108339969198208228, guid: 2eb1a0d8d9f68964aaee823cc031ea3d, type: 3}
   interactStrategies:
   - {fileID: -2845334438865011553}
-  strategyType: Game.BaseGameplay.Strategies.DirectlyCauseDamageInstaller, Core.Gameplay
   configurators:
   - {fileID: 11400000, guid: 1a7a1d059b5ee2c4a9e062355d8d4a21, type: 2}
   maxHp: 32

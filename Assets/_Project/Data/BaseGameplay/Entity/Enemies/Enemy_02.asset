@@ -14,20 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   installerId:
     value: 37699af5-023b-4581-90f8-dd496ea9c584
-  trackingLayerMask: 512
-  interactRange: 1.8
+  trackingLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  interactRange: 1.5
   baseDamage: 2
   attackCooldown: 1
   projectileSpeed: 4
   projectileOffset: {x: 0, y: 0.2, z: 0}
   projectileSprite: {fileID: 21300000, guid: c2a56ec083d642e4aa8a3c2c965182cf, type: 3}
   trajectoryStrategy:
-    rid: 6075148582666633328
+    rid: 949500981401092097
   references:
     version: 2
     RefIds:
-    - rid: 6075148582666633328
-      type: {class: LinearTrajectoryStrategy, ns: TnieYuPackage.Strategies.Projectile, asm: TnieYuPackage}
+    - rid: 949500981401092097
+      type: {class: LinearTrajectoryStrategy, ns: TnieYuPackage.Strategies.Projectile, asm: Core.Gameplay}
       data:
         autoRotate: 1
 --- !u!114 &11400000
@@ -42,13 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e69c91766a48edbc5bb7302b2c43ea, type: 3}
   m_Name: Enemy_02
   m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Entity.EntityPresetSo
-  subAssetName: RangeAttack
-  deletingSubAsset: {fileID: 0}
   objectId: Enemy02
   libraryAsset: {fileID: 7108339969198208228, guid: b30e476aee827d74cb435a7ee4323547, type: 3}
   interactStrategies:
   - {fileID: -2018201915991539822}
-  strategyType: Game.BaseGameplay.Strategies.UndirectlyCauseDamageInstaller, Core.Gameplay
   configurators:
   - {fileID: 11400000, guid: 8a72cf3a1abe97745a4d9c8eba1b28aa, type: 2}
   maxHp: 16

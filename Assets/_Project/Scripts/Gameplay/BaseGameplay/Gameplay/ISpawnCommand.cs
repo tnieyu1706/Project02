@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using BackboneLogger;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -31,18 +30,14 @@ namespace Game.BaseGameplay
 
             if (entityPreset == null)
             {
-                BLogger.Log($"[EntityWave] EnemyPreset {entityId} not found!",
-                    category: "Base",
-                    level: LogLevel.Critical);
+                Debug.LogError($"[TdWaveController] Could not load entity preset: {entityId}");
                 return;
             }
 
             if (!PathManager.Instance.Paths
                     .TryGetValue(data.pathId, out SplineContainer pathMover))
             {
-                BLogger.Log($"[EntityWave] Path {data.pathId} not found!",
-                    category: "Base",
-                    level: LogLevel.Critical);
+                Debug.LogError($"[TdWaveController] Could not find path: {data.pathId}");
                 return;
             }
 
@@ -115,7 +110,7 @@ namespace Game.BaseGameplay
                     nextTime = keyframes[i + 1].time;
                 }
 
-                BLogger.Log($"[WaveSpawn] Spawn keyframe {i}-{kf.time:F1}", category: "Base");
+                Debug.Log($"[TdWaveController] Spawning wave at {nextTime}...");
 
                 await kf.Spawn(token, this);
                 float deltaTime = nextTime - kf.time;

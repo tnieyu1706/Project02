@@ -119,6 +119,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &36985521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 36985523}
+  - component: {fileID: 36985522}
+  m_Layer: 0
+  m_Name: SceneScope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &36985522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36985521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5312032623c34414a54ea00e35a7eb8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentScene:
+    sceneAsset: {fileID: 0}
+    scenePath: 
+--- !u!4 &36985523
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36985521}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1272006225
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b087a682ada7412ea3bcd6c995b3835d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   uiDocument: {fileID: 1272006227}
   displayStyleSheet: {fileID: 7433441132597879392, guid: 45fddeb74e3644f39bf3c58dd8ba3162, type: 3}
 --- !u!1 &1299206332
@@ -215,7 +261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b85a38b8dd8843b286b9962e8e932e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   <MaxBuildingNumber>k__BackingField:
     value: 5
   <CurrentBuildingNumber>k__BackingField:
@@ -267,7 +312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8f5c4ba3d764c7a8ec908ad6b61d392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   uiDocument: {fileID: 2009160412}
   skillTreeStyle: {fileID: 7433441132597879392, guid: 0f94c746f8f847db9729e13f47fbb40d, type: 3}
   radiusStep: 180
@@ -314,3 +358,4 @@ SceneRoots:
   - {fileID: 1299206334}
   - {fileID: 1272006228}
   - {fileID: 2009160413}
+  - {fileID: 36985523}

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
 {
-    public class LevelMapManager : SingletonBehavior<LevelMapManager>
+    public class LevelMapManager : Singleton<LevelMapManager>
     {
         [SerializeField] private List<LevelMapComponent> levelMapComponents = new();    
 
@@ -15,7 +15,7 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
 
         private void OnEnable()
         {
-            if (PlayerDataManager.Instance != null)
+            if (PlayerDataManager.HasInstance)
             {
                 var levelsData = PlayerDataManager.Instance.PlayerData.Levels;
                 var dict = levelsData.ToDictionary(data => data.id, data => data);

@@ -4,7 +4,7 @@ using TnieYuPackage.DesignPatterns;
 
 namespace Game.BaseGameplay
 {
-    public class BaseObjectInteractSystem : SingletonBehavior<BaseObjectInteractSystem>
+    public class BaseObjectInteractSystem : Singleton<BaseObjectInteractSystem>
     {
         public readonly List<IBaseObjectRuntime> ObjectRuntimes = new();
 
@@ -14,7 +14,7 @@ namespace Game.BaseGameplay
             {
                 foreach (var interact in objRuntime.InteractStrategyList.ToList().Where(interact => interact.CanUse))
                 {
-                    if (interact.TrackTarget(objRuntime.CurrentPosition, out var target))
+                    if (interact.CanUse && interact.TrackTarget(objRuntime.CurrentPosition, out var target))
                     {
                         interact.Interact(target);
                     }

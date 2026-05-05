@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 namespace Game.Global
 {
     [RequireComponent(typeof(UIDocument))]
-    public class PropertyRuntimeDisplayUIToolkit : SingletonBehavior<PropertyRuntimeDisplayUIToolkit>, IDisplayGUI
+    public class PropertyRuntimeDisplayUIToolkit : Singleton<PropertyRuntimeDisplayUIToolkit>, IDisplayGUI
     {
         [SerializeField] private UIDocument uiDocument;
         [SerializeField] private StyleSheet displayStyleSheet; // Thêm tham chiếu đến file .uss

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EditorAttributes;
 using Game.BaseGameplay;
+using Reflex.Attributes;
 using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,28 +14,32 @@ namespace Game.TowerDefense
     public class TdTowerContextGUI : SingletonDisplayUI<TdTowerContextGUI>
     {
         public static TowerRuntime CurrentContext;
+        
+        [Inject] TowerUpgradeTree towerUpgradeTree;
 
         [SerializeField] private Canvas canvas;
         [SerializeField] private Transform guiParentTransform;
         [SerializeField, Required] private GameObject upgradeElementPrefab;
         [SerializeField, Required] private Transform towerRangeDisplayTransform;
-        private IObjectPool<TdTowerUpgradeElement> elementPool;
-        private readonly List<TdTowerUpgradeElement> activeElements = new();
+        [SerializeField] private int maxElements = 8;
+        private List<TdTowerUpgradeElement> elements;
 
         protected override void Awake()
         {
-            dontDestroyOnLoad = false;
             base.Awake();
 
-            elementPool = new ObjectPool<TdTowerUpgradeElement>(
-                CreateElement,
-                GetElement,
-                ReleaseElement,
-                DestroyElement,
-                true,
-                4,
-                5
-            );
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            elements = new(8);
+            for (int i = 0; i < maxElements; i++)
+            {
+                var element = CreateElement();
+                element.ElementGo.SetActive(false);
+                elements.Add(element);
+            }
         }
 
         public void Open()
@@ -42,14 +47,22 @@ namespace Game.TowerDefense
             canvas.enabled = true;
 
             BlurBackground.Show();
+            TdInteractSystem.Instance.enabled = false;
         }
 
         public override void Hide()
         {
             canvas.enabled = false;
-        }
+            TdInteractSystem.Instance.enabled = true;
 
-        #region POOL METHODS
+            // disable all elements
+            var actives = elements.Where(e => e.ElementGo.activeSelf);
+
+            foreach (var active in actives)
+            {
+                active.ElementGo.SetActive(false);
+            }
+        }
 
         private TdTowerUpgradeElement CreateElement()
         {
@@ -57,27 +70,15 @@ namespace Game.TowerDefense
             return new TdTowerUpgradeElement(elementGo);
         }
 
-        private void GetElement(TdTowerUpgradeElement element)
+        private TdTowerUpgradeElement GetElement()
         {
-            element.ElementGo.SetActive(true);
-        }
-
-        private void ReleaseElement(TdTowerUpgradeElement element)
-        {
-            element.ElementGo.SetActive(false);
-        }
-
-        private void DestroyElement(TdTowerUpgradeElement element)
-        {
-            if (activeElements.Contains(element))
+            foreach (var element in elements)
             {
-                activeElements.Remove(element);
+                if (!element.ElementGo.activeSelf) return element;
             }
 
-            DestroyImmediate(element.ElementGo);
+            return null;
         }
-
-        #endregion
 
         public void Display(TowerRuntime towerRuntime)
         {
@@ -100,20 +101,17 @@ namespace Game.TowerDefense
             var currentTowerPreset = towerRuntime.currentPreset;
 
             //pre-install
-            foreach (var active in activeElements)
-            {
-                elementPool.Release(active);
-            }
-
-            activeElements.Clear();
 
             //setup
-            var nextUpgradeTowerPresets = TowerUpgradeTree.Tree[currentTowerPreset.objectId].nextUpgradeTowers;
+            var nextUpgradeTowerPresets = towerUpgradeTree.Tree[currentTowerPreset.objectId].nextUpgradeTowers;
 
             //install: upgrade elements
             foreach (var nextPreset in nextUpgradeTowerPresets)
             {
-                var element = elementPool.Get();
+                var element = GetElement();
+                if (element == null) return;
+                element.ElementGo.SetActive(true);
+
                 int cost = TowerPresetSo.CalculateCost(currentTowerPreset, nextPreset);
 
                 element.SetElement(
@@ -127,14 +125,14 @@ namespace Game.TowerDefense
                         BlurBackground.CloseManual();
                     }
                 );
-
-                activeElements.Add(element);
             }
 
             //install: event elements
             foreach (var uiEvent in currentTowerPreset.towerEvents)
             {
-                var element = elementPool.Get();
+                var element = GetElement();
+                if (element == null) return;
+                element.ElementGo.SetActive(true);
 
                 element.SetElement(
                     uiEvent.eventIcon,
@@ -146,8 +144,6 @@ namespace Game.TowerDefense
                         Hide();
                         BlurBackground.CloseManual();
                     });
-
-                activeElements.Add(element);
             }
         }
     }

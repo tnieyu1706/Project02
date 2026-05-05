@@ -7,7 +7,9 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq; // Cần thêm namespace này
+using Newtonsoft.Json.Linq;
+using Reflex.Attributes;
+using Reflex.Extensions; // Cần thêm namespace này
 
 namespace Game.StrategyBuilding
 {
@@ -18,6 +20,7 @@ namespace Game.StrategyBuilding
         Water,
         Building,
         Factory,
+
         Storage
         //... Biome, Building, etc.
     }
@@ -41,13 +44,20 @@ namespace Game.StrategyBuilding
 
     public class SbGridTileData : ITileInfluencer
     {
-        public Vector2Int TilePosition { get; }
-        public SbTileLayer TileLayer { get; }
-        public Dictionary<Vector2Int, IBuildingImpacted> ImpactedBuildings { get; }
+        private SbTileLayerDataManager tileLayerDataManager;
 
-        public BuildingRuntime BuildingRuntime { get; }
+        public Vector2Int TilePosition { get; private set; }
+        public SbTileLayer TileLayer { get; private set; }
+        public Dictionary<Vector2Int, IBuildingImpacted> ImpactedBuildings { get; private set; }
 
-        public SbGridTileData(Vector2Int tilePosition, SbTileLayer tileLayer, BuildingRuntime buildingRuntime)
+        public BuildingRuntime BuildingRuntime { get; private set; }
+
+        public SbGridTileData(SbTileLayerDataManager tileLayerDataManager)
+        {
+            this.tileLayerDataManager = tileLayerDataManager;
+        }
+
+        public void Setup(Vector2Int tilePosition, SbTileLayer tileLayer, BuildingRuntime buildingRuntime)
         {
             TilePosition = tilePosition;
             TileLayer = tileLayer;
@@ -68,9 +78,12 @@ namespace Game.StrategyBuilding
         }
     }
 
-    public class SbGridMapSystem : SingletonBehavior<SbGridMapSystem>, IGridMapSystem<Vector2Int, SbGridTileData>,
+    public class SbGridMapSystem : Singleton<SbGridMapSystem>, IGridMapSystem<Vector2Int, SbGridTileData>,
         ISaveLoadData<GridMapSaveData>
     {
+        [Inject] BuildingPresetManager buildingPresetManager;
+        [Inject] SbTileLayerDataManager tileLayerDataManager;
+
         // Khai báo một Serializer đặc biệt hỗ trợ Đa Hình (Polymorphism)
         // Nó sẽ tự động nhúng thêm thuộc tính "$type" vào chuỗi JSON để giữ lại class con.
         private static readonly JsonSerializer PolymorphicSerializer = new JsonSerializer
@@ -89,7 +102,9 @@ namespace Game.StrategyBuilding
         {
             if (!ValidForCreate(pos)) return null;
 
-            var newTile = new SbGridTileData(pos, layer, building);
+            var container = gameObject.GetClosestContainer();
+            var newTile = container.Instantiate<SbGridTileData>();
+            newTile.Setup(pos, layer, building);
             WriteTile(pos, newTile);
             return newTile;
         }
@@ -100,7 +115,7 @@ namespace Game.StrategyBuilding
             gridTilemap.SetTile((Vector3Int)pos,
                 data.BuildingRuntime != null
                     ? data.BuildingRuntime.currentPreset.buildingTile
-                    : SbTileLayerDataManager.Refs[data.TileLayer].tile);
+                    : tileLayerDataManager.Refs[data.TileLayer].tile);
 
             if (data.BuildingRuntime != null)
             {
@@ -255,7 +270,7 @@ namespace Game.StrategyBuilding
 
                 if (!string.IsNullOrEmpty(dto.BuildingId))
                 {
-                    var preset = BuildingPresetManager.Instance.Refs[dto.BuildingId];
+                    var preset = buildingPresetManager.Refs[dto.BuildingId];
 
                     if (preset != null)
                     {

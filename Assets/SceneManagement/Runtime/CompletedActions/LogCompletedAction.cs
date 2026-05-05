@@ -1,5 +1,4 @@
 using System;
-using BackboneLogger;
 using UnityEngine;
 
 namespace SceneManagement.CompletedActions
@@ -11,7 +10,7 @@ namespace SceneManagement.CompletedActions
 
         public void Complete(string sceneName)
         {
-            BLogger.Log(message, category: "Loading");
+            Debug.Log(message);
         }
     }
 }

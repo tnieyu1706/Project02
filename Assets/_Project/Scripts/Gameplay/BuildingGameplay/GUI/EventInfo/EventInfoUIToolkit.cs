@@ -3,8 +3,10 @@ using _Project.Scripts.Gameplay.Global.GameController;
 using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using Game.BaseGameplay;
+using Game.Global;
 using Gameplay.Global;
 using KBCore.Refs;
+using Reflex.Attributes;
 using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.Utils;
 using UnityEngine;
@@ -15,6 +17,8 @@ namespace Game.BuildingGameplay
     [RequireComponent(typeof(UIDocument))]
     public class EventInfoUIToolkit : SingletonDisplayUI<EventInfoUIToolkit>
     {
+        [Inject] GameplayTransition transition;
+
         [SerializeField, Self] private UIDocument uiDocument;
         public List<StyleSheet> styleSheets;
 
@@ -44,17 +48,17 @@ namespace Game.BuildingGameplay
             Open(stopTimer);
 
             titleLabel.text = eventData.eventName;
-            var gameLevel = eventData.GetGameplayLevel();
+            var gameLevel = LevelTypeManager.Instance.GetGameplayLevelBy(eventData);
             contentLabel.text = gameLevel.GetDisplayedText();
             attackButton.text = eventData.GetEventHandlerName();
-            
+
             awardsContainer.Clear();
             foreach (var award in eventData.Awards)
             {
                 awardsContainer.CreateChild<Label>("award-container__award", "content__text")
                         .text = $"[{award.Key}]: {award.Value:F1}";
             }
-            
+
             if (eventData.isCompleted)
             {
                 attackButton.SetEnabled(false);
@@ -109,7 +113,7 @@ namespace Game.BuildingGameplay
         private static void HandleAttackButtonClicked()
         {
             Instance.Hide();
-            GameplayTransition.LoadBaseGameplayWithEvent(currentConfig).Forget();
+            Instance.transition.LoadBaseGameplayWithEvent(currentConfig).Forget();
         }
 
         [Button]

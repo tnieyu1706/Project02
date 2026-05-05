@@ -39,7 +39,7 @@ namespace Game.BuildingGameplay
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            if (SbGameplayGUI.Instance != null)
+            if (SbGameplayGUI.HasInstance)
             {
                 SbGameplayGUI.Instance.enemyBaseEventDisplay = null;
             }

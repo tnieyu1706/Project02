@@ -6,15 +6,9 @@ using TnieYuPackage.DesignPatterns;
 
 namespace Game.TowerDefense
 {
-    public class TdGameplayController : SingletonBehavior<TdGameplayController>
+    public class TdGameplayController : Singleton<TdGameplayController>
     {
         public List<WaveDataConfig> Waves = new();
-
-        protected override void Awake()
-        {
-            dontDestroyOnLoad = false;
-            base.Awake();
-        }
 
         #region EVENTS
 
@@ -57,14 +51,14 @@ namespace Game.TowerDefense
 
         private void OnDisable()
         {
-            if (BaseGameplayController.Instance != null)
+            if (BaseGameplayController.HasInstance)
             {
                 BaseGameplayController.Instance.OnGameplayBaseDestroyed -= OnGameplayBaseDestroyed;
                 BaseGameplayController.Instance.OnGameplayWaveClosed -= OnGameplayWaveClosed;
                 BaseGameplayController.Instance.OnCauseBaseDamageValid = null;
             }
 
-            if (BaseGameplayGUI.Instance != null)
+            if (BaseGameplayGUI.HasInstance)
             {
                 BaseGameplayGUI.Instance.OnPlayButtonPressed -= PlayWave;
             }

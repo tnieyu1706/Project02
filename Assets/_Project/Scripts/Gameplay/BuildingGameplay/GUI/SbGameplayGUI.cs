@@ -12,12 +12,13 @@ using Button = UnityEngine.UI.Button;
 
 namespace Game.BuildingGameplay
 {
-    public class SbGameplayGUI : SingletonBehavior<SbGameplayGUI>
+    public class SbGameplayGUI : Singleton<SbGameplayGUI>
     {
         [Header("Gameplay")] [SerializeField] private SerializableDictionary<ResourceType, Text> resourceNumberTexts;
         [SerializeField] private SerializableDictionary<LimitResourceType, Text> limitResourceNumberTexts;
         [SerializeField] private Text peopleNumberText;
         [SerializeField] private Text maxPeopleNumberText;
+        [SerializeField] private Slider healthSlider;
 
         [Header("Global Properties UI")] [SerializeField]
         private Text skillPointText;
@@ -57,6 +58,7 @@ namespace Game.BuildingGameplay
         private void OnEnable()
         {
             RegistryGameplayProperties();
+            SbGameplayController.Instance.currentHealth.OnValueChanged += HandleHealthSliderChanged;
 
             RegistryArmyStorageHandlers();
 
@@ -110,7 +112,7 @@ namespace Game.BuildingGameplay
             OnMaxVillagerDataChanged(SbGameplayController.Instance.VillagerData.MaxVillagers.Value);
 
             // 4. Đăng ký Global Properties (Skill Points, Building Numbers)
-            if (GamePropertiesRuntime.Instance != null)
+            if (GamePropertiesRuntime.HasInstance)
             {
                 GamePropertiesRuntime.Instance.SkillPoints.OnValueChanged += OnSkillPointChanged;
                 GamePropertiesRuntime.Instance.CurrentBuildingNumber.OnValueChanged += OnCurrentBuildingNumberChanged;
@@ -140,7 +142,7 @@ namespace Game.BuildingGameplay
             SbGameplayController.Instance.VillagerData.CurrentVillagers.OnValueChanged -= OnCurrentVillagerDataChanged;
             SbGameplayController.Instance.VillagerData.MaxVillagers.OnValueChanged -= OnMaxVillagerDataChanged;
 
-            if (GamePropertiesRuntime.Instance != null)
+            if (GamePropertiesRuntime.HasInstance)
             {
                 GamePropertiesRuntime.Instance.SkillPoints.OnValueChanged -= OnSkillPointChanged;
                 GamePropertiesRuntime.Instance.CurrentBuildingNumber.OnValueChanged -= OnCurrentBuildingNumberChanged;
@@ -170,6 +172,11 @@ namespace Game.BuildingGameplay
             }
 
             armyNumberEvents.Clear();
+        }
+
+        private void HandleHealthSliderChanged(int changedHealth)
+        {
+            healthSlider.value = changedHealth;
         }
 
         private void HandleEventButtonClicked()
@@ -202,7 +209,7 @@ namespace Game.BuildingGameplay
 
         private void HandleSkillTreeButtonClicked()
         {
-            if (GameSkillTreeDisplayController.Instance != null)
+            if (GameSkillTreeDisplayController.HasInstance)
             {
                 GameSkillTreeDisplayController.Instance.Open();
             }
@@ -210,7 +217,7 @@ namespace Game.BuildingGameplay
 
         private void HandleGamePropertyButtonClicked()
         {
-            if (PropertyRuntimeDisplayUIToolkit.Instance != null)
+            if (PropertyRuntimeDisplayUIToolkit.HasInstance)
             {
                 PropertyRuntimeDisplayUIToolkit.Instance.Open();
             }
@@ -249,14 +256,15 @@ namespace Game.BuildingGameplay
             gamePropertyBtn.onClick.RemoveListener(HandleGamePropertyButtonClicked);
             eventButton.onClick.RemoveListener(HandleEventButtonClicked);
 
-            if (SbTimeController.Instance != null)
+            if (SbTimeController.HasInstance)
             {
                 SbTimeController.Instance.OnEventStarted -= HandleEventStarted;
                 SbTimeController.Instance.currentTime.OnValueChanged -= HandleTimerChangedValue;
             }
 
-            if (SbGameplayController.Instance != null)
+            if (SbGameplayController.HasInstance)
             {
+                SbGameplayController.Instance.currentHealth.OnValueChanged -= HandleHealthSliderChanged;
                 UnRegistryGameplayProperties();
                 UnRegistryArmyStorageHandlers();
             }

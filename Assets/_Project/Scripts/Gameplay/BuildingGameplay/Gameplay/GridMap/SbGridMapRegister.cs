@@ -10,7 +10,7 @@ namespace Game.StrategyBuilding
     /// Component dùng để đặt trên Scene. Hỗ trợ quét các Tilemap môi trường do Level Designer vẽ, 
     /// sau đó merge (gộp) tất cả vào GridMapSystem (cả logic data lẫn visual).
     /// </summary>
-    public class SbGridMapRegister : SingletonBehavior<SbGridMapRegister>
+    public class SbGridMapRegister : Singleton<SbGridMapRegister>
     {
         [Header("Environment Settings")]
         [Tooltip("Danh sách các Tilemap chứa tài nguyên môi trường cần đăng ký vào hệ thống")]
@@ -22,17 +22,24 @@ namespace Game.StrategyBuilding
         [Header("Auto Execute")] [Tooltip("Nếu true, tự động Merge Map khi game bắt đầu")]
         public bool registerBlockOnStart = true;
 
+        public bool autoHideEnvOnStart = true;
+
         private void Start()
         {
             if (registerBlockOnStart)
             {
                 RegisterBlockMaps();
             }
+
+            if (autoHideEnvOnStart)
+            {
+                HideAllEnvironmentMaps();
+            }
         }
 
         private void RegisterBlockMaps()
         {
-            if (SbGridMapSystem.Instance == null) return;
+            if (!SbGridMapSystem.HasInstance) return;
 
             foreach (var blockTilemap in blockMaps)
             {
@@ -58,7 +65,7 @@ namespace Game.StrategyBuilding
 
         public void RegisterEnvironmentMaps()
         {
-            if (SbGridMapSystem.Instance == null) return;
+            if (!SbGridMapSystem.HasInstance) return;
             // Sử dụng Dictionary từ SerializableDictionary
             foreach (var kvp in environmentMaps.Dictionary)
             {
@@ -94,6 +101,16 @@ namespace Game.StrategyBuilding
 
                 // Tắt Gameobject chứa Tilemap này đi để tránh việc render đè lên mainGrid
                 sourceTilemap.gameObject.SetActive(false);
+            }
+        }
+
+        private void HideAllEnvironmentMaps()
+        {
+            foreach (var env in environmentMaps.Dictionary.Values)
+            {
+                if (!env.gameObject.activeSelf) continue;
+
+                env.gameObject.SetActive(false);
             }
         }
     }

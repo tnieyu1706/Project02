@@ -44,7 +44,7 @@ namespace SceneManagement
 
         private void OnDisable()
         {
-            if (SceneLoader.Instance == null) return;
+            if (!SceneLoader.HasInstance) return;
             SceneLoader.Instance.manager.OnLoadStarted -= OnLoadStarted;
             SceneLoader.Instance.manager.OnLoadEnded -= OnLoadEnded;
             SceneLoader.Instance.LoadingProgress.ProgressChanged -= OnProgressChanged;

@@ -13,7 +13,7 @@ namespace _Project.Scripts.Gameplay.Global.PlayerDataSystem
         public readonly List<LevelData> Levels = new();
     }
 
-    public class PlayerDataManager : SingletonBehavior<PlayerDataManager>
+    public class PlayerDataManager : Singleton<PlayerDataManager>
     {
         private const string FILE_NAME = "PlayerData";
         public static string FilePath => $"{Application.persistentDataPath}/{FILE_NAME}.json";

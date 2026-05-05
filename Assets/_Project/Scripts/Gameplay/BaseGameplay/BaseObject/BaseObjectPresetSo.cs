@@ -8,41 +8,15 @@ using UnityEngine.U2D.Animation;
 
 namespace Game.BaseGameplay
 {
-    public abstract class BaseObjectPresetSo : BaseParentAsset<IBaseObjectInteractStrategyInstaller>
+    public abstract class BaseObjectPresetSo : ScriptableObject
     {
         public string objectId;
         public SpriteLibraryAsset libraryAsset;
 
         [SerializeReference] [PropertyOrder(4)]
         public List<IBaseObjectInteractStrategyInstaller> interactStrategies = new();
-
-        [SerializeField]
-        [PropertyOrder(4)]
-        [SubTypeNameSelected(typeof(IBaseObjectInteractStrategyInstaller),
-            typeof(IBaseObjectInteractStrategyInstaller))]
-        private string strategyType;
         
         public List<BaseObjectConfigurator> configurators = new();
-
-        protected override List<IBaseObjectInteractStrategyInstaller> SubAssets => interactStrategies;
-
-        protected override IBaseObjectInteractStrategyInstaller CreateSubAsset()
-        {
-            Type type = Type.GetType(strategyType);
-            if (type == null)
-            {
-                Debug.LogError($"Type {strategyType} not found.");
-                return null;
-            }
-
-            if (!typeof(IBaseObjectInteractStrategyInstaller).IsAssignableFrom(type))
-            {
-                Debug.LogError($"Type {strategyType} does not implement IBaseObjectInteractStrategyInstaller.");
-                return null;
-            }
-
-            return ScriptableObject.CreateInstance(type) as IBaseObjectInteractStrategyInstaller;
-        }
     }
 
     public interface IObjectInteractable : IHealthProperty

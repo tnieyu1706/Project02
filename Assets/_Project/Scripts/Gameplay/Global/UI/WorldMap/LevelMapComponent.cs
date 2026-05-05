@@ -52,7 +52,7 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
         private void ShowLevelInfo()
         {
             // Gọi Singleton của UI Toolkit để hiển thị thông tin
-            if (LevelMapInfoUIManager.Instance != null)
+            if (LevelMapInfoUIManager.HasInstance)
             {
                 LevelMapInfoUIManager.Instance.ShowInfo(levelData, level);
             }

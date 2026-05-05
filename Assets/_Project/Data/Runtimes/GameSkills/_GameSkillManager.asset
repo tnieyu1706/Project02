@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1adae92bfb824a7f954b4d9b0bcab399, type: 3}
   m_Name: _GameSkillManager
   m_EditorClassIdentifier: 
-  data:
-    data:
-    - key: RootSkill
-      value: {fileID: 11400000, guid: 9fb8dc5b0b51d10429d5f820c6d02810, type: 2}
-    - key: Resource01
-      value: {fileID: 11400000, guid: 5c9b5b21f2e5aad499290846d43827c1, type: 2}
+  skills:
+  - {fileID: 11400000, guid: 9fb8dc5b0b51d10429d5f820c6d02810, type: 2}
+  - {fileID: 11400000, guid: 5c9b5b21f2e5aad499290846d43827c1, type: 2}
+  - {fileID: 11400000, guid: 60551272d685af046a9d214591859529, type: 2}
+  - {fileID: 11400000, guid: 65ff1921a402b3148ad95503236c47f2, type: 2}
+  - {fileID: 11400000, guid: d25cfd9cebebc094794749fc0eb77999, type: 2}
+  - {fileID: 11400000, guid: e990976d9a7da6f4088cf60c22332ba7, type: 2}

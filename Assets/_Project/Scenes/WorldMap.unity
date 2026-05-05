@@ -119,6 +119,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &20947696
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 20947698}
+  - component: {fileID: 20947697}
+  m_Layer: 0
+  m_Name: SceneScope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &20947697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20947696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5312032623c34414a54ea00e35a7eb8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentScene:
+    sceneAsset: {fileID: 0}
+    scenePath: 
+--- !u!4 &20947698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20947696}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &37552777
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,7 +942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 648fd5801a93463fb64d695a5e35bed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   levelMapComponents:
   - {fileID: 218263012}
 --- !u!1 &1405693999
@@ -1058,7 +1104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e383e0623ad9452cbdf013043b190695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
 --- !u!1 &1503476890
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,7 +1255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11e3d37d6954c71afb5ddcbb2b54fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   blurBackgroundId: Main
   uiDocument: {fileID: 1542649279}
   styleSheet: {fileID: 7433441132597879392, guid: f41f3b30efe84967a92563c1cc3d08e4, type: 3}
@@ -1873,7 +1917,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11665fee47944a4686f8f8a3b2b714ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
   blurBackgroundPrefab: {fileID: 3731508716909245523, guid: f6500fbf584f2e7448bd98afe13406e8, type: 3}
   configs:
   - id: Main
@@ -1905,3 +1948,4 @@ SceneRoots:
   - {fileID: 263556794}
   - {fileID: 2138530865}
   - {fileID: 398207589}
+  - {fileID: 20947698}

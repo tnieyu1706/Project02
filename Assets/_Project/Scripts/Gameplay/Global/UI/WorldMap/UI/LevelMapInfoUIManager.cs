@@ -4,6 +4,7 @@ using EditorAttributes;
 using Game.BaseGameplay;
 using Gameplay.Global;
 using KBCore.Refs;
+using Reflex.Attributes;
 using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,6 +18,8 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
     [RequireComponent(typeof(UIDocument))]
     public class LevelMapInfoUIManager : SingletonDisplayUI<LevelMapInfoUIManager>
     {
+        [Inject] GameplayTransition transition;
+        
         [SerializeField, Self] private UIDocument uiDocument;
         [SerializeField] private StyleSheet styleSheet; // Gắn tệp LevelMapInfoStyle.uss vào đây ở Inspector
 
@@ -153,7 +156,7 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
             BlurBackground.CloseManual(); // Tắt luôn màn hình mờ khi bắt đầu Transition
 
             // Gọi logic transition load màn
-            GameplayTransition.CreateBuildingGameplay(_currentLevelInfo, _currentLevelData).Forget();
+            transition.CreateBuildingGameplay(_currentLevelInfo, _currentLevelData).Forget();
         }
 
         protected override void OnDestroy()

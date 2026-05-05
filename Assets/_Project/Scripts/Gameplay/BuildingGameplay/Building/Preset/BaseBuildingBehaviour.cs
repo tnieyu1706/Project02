@@ -351,7 +351,7 @@ namespace Game.StrategyBuilding
 
         protected Vector3 GetWorldPosition()
         {
-            if (SbGridMapSystem.Instance != null && SbGridMapSystem.Instance.gridTilemap != null)
+            if (SbGridMapSystem.HasInstance && SbGridMapSystem.Instance.gridTilemap != null)
             {
                 return SbGridMapSystem.Instance.gridTilemap.GetCellCenterWorld((Vector3Int)TilePosition);
             }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Cysharp.Threading.Tasks;
+using Reflex.Attributes;
 using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.Utils;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace Game.BuildingGameplay
     [RequireComponent(typeof(UIDocument))]
     public class ArmyTypeListUIToolkit : BaseItemListUIToolkit<ArmyTypePresetSo, ArmyDetailItem, ArmyTypeListUIToolkit>
     {
+        [Inject] private ArmyTypePresetManager armyTypePresetManager;
+
         /// <summary>
         /// Task CompletionSource to get result when player select an army type preset.
         /// </summary>
@@ -67,7 +70,7 @@ namespace Game.BuildingGameplay
 
         protected override List<ArmyTypePresetSo> GetItemsSource()
         {
-            return ArmyTypePresetManager.Instance.data.Dictionary.Values.ToList();
+            return armyTypePresetManager.presets;
         }
 
         protected override ArmyDetailItem CreateItem()
@@ -128,7 +131,7 @@ namespace Game.BuildingGameplay
         {
             base.Hide();
 
-            if (SbGameplayController.Instance != null)
+            if (SbGameplayController.HasInstance)
             {
                 SbGameplayController.OnResourceChanged -= ValidateItems;
             }
@@ -142,7 +145,7 @@ namespace Game.BuildingGameplay
         public override void Show()
         {
             base.Show();
-            if (SbGameplayController.Instance != null)
+            if (SbGameplayController.HasInstance)
             {
                 SbGameplayController.OnResourceChanged += ValidateItems;
                 ValidateItems(); // Cập nhật trạng thái item ngay khi hiển thị lên màn hình

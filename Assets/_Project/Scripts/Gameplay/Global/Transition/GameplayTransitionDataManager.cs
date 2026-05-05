@@ -1,16 +1,17 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Global.UI.WorldMap;
 using Cysharp.Threading.Tasks;
 using Game.BaseGameplay;
 using Game.Global;
-using SceneManagement;
+using Reflex.Attributes;
 using UnityEngine;
 
 namespace Gameplay.Global
 {
     public class GameplayTransitionDataManager : MonoBehaviour
     {
+        [Inject] GameplayTransition gameplayTransition;
+
         public Dictionary<ArmyType, int> MilitaryTemp { get; set; }
 
         public EventData ActiveEvent { get; set; }
@@ -29,7 +30,7 @@ namespace Gameplay.Global
 
         public void LoadMainMenu()
         {
-            GameplayTransition.LoadMainMenuGame().Forget();
+            gameplayTransition.LoadMainMenuGame().Forget();
         }
 
         private void OnDestroy()

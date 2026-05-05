@@ -6,7 +6,6 @@
         "TnieYuPackage",
         "PrimeTween.Runtime",
         "Eflatun.SceneReference",
-        "BackboneLogger",
         "UniTask",
         "Unity.Splines",
         "KBCore.Refs",
@@ -18,7 +17,8 @@
         "SceneManagement",
         "LitMotion",
         "LitMotion.Extensions",
-        "LitMotion.Animation"
+        "LitMotion.Animation",
+        "Reflex"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

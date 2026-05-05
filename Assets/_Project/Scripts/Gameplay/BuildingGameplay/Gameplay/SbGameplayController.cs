@@ -11,6 +11,7 @@ using Game.StrategyBuilding;
 using Gameplay.Global;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Reflex.Attributes;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.Utils;
 using UnityEngine;
@@ -18,10 +19,12 @@ using UnityEngine;
 namespace Game.BuildingGameplay
 {
     [DefaultExecutionOrder(-10)]
-    public class SbGameplayController : SingletonBehavior<SbGameplayController>
+    public class SbGameplayController : Singleton<SbGameplayController>
     {
         public const float RATIO_VILLAGER_FOOD = 1f;
         public const int MAX_HEALTH = 3;
+
+        [Inject] private GameplayTransition transition;
 
         public BuildingGameplayLevel currentLevel;
         private bool isCompleted;
@@ -150,7 +153,7 @@ namespace Game.BuildingGameplay
             // lose game
             // temp: directly load main menu
             RecordResult(GameplayTransition.DataManager.CurrentLevel);
-            GameplayTransition.LoadWorldMapGame().Forget();
+            transition.LoadWorldMapGame().Forget();
         }
 
         private void OnDisable()
@@ -202,7 +205,7 @@ namespace Game.BuildingGameplay
             // all event is completed => win game
             // temp: load directly main menu
             Instance.RecordResult(GameplayTransition.DataManager.CurrentLevel);
-            GameplayTransition.LoadWorldMapGame().Forget();
+            Instance.transition.LoadWorldMapGame().Forget();
         }
 
         public static void ApplyResourceIncrement()

@@ -13,6 +13,7 @@ namespace SceneManagement
     {
         public string groupName;
         public List<SceneData> scenes;
+        public bool unloadUnusedAssets;
 
         public string FindSceneNameByType(SceneType sceneType)
         {

@@ -90,7 +90,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 1520587316616963725}
   entityProperty:
-    obj: {fileID: 3610387943409363091}
+    _implementer: {fileID: 3610387943409363091}
 --- !u!1 &4082741396634806394
 GameObject:
   m_ObjectHideFlags: 0

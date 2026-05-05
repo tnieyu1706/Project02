@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
 {
-    public class LevelMapSelectionHighLight : SingletonBehavior<LevelMapSelectionHighLight>
+    public class LevelMapSelectionHighLight : Singleton<LevelMapSelectionHighLight>
     {
         protected override void Awake()
         {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Game.StrategyBuilding;
+using Reflex.Attributes;
 using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.Utils;
 using UnityEngine;
@@ -14,6 +15,8 @@ namespace Game.BuildingGameplay
         BuildingTypeListUIToolkit : BaseItemListUIToolkit<BuildingPresetSo, BuildingDetailItem,
         BuildingTypeListUIToolkit>
     {
+        [Inject] BuildingPresetManager buildingPresetManager;
+
         protected override void SetupTitle(Label title)
         {
             title.text = "Building Type";
@@ -21,7 +24,7 @@ namespace Game.BuildingGameplay
 
         protected override List<BuildingPresetSo> GetItemsSource()
         {
-            return BuildingPresetManager.Instance.data.Dictionary.Values.ToList();
+            return buildingPresetManager.presets;
         }
 
         // OVERRIDE HÀM NÀY ĐỂ RENDER THEO TỪNG CATEGORY THAY VÌ 1 LIST DÀI
@@ -79,7 +82,7 @@ namespace Game.BuildingGameplay
         public override void Show()
         {
             base.Show();
-            if (SbGameplayController.Instance != null)
+            if (SbGameplayController.HasInstance)
             {
                 SbGameplayController.OnResourceChanged += ValidateItems;
                 ValidateItems(); // Kiểm tra ngay lập tức khi vừa mở giao diện
@@ -89,7 +92,7 @@ namespace Game.BuildingGameplay
         public override void Hide()
         {
             base.Hide();
-            if (SbGameplayController.Instance != null)
+            if (SbGameplayController.HasInstance)
             {
                 SbGameplayController.OnResourceChanged -= ValidateItems;
             }

@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6921886524584349857
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2224156855312741064}
+  - component: {fileID: 5407603179007503739}
+  - component: {fileID: -5244349695088195445}
+  m_Layer: 0
+  m_Name: RootScope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2224156855312741064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6921886524584349857}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5407603179007503739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6921886524584349857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5312032623c34414a54ea00e35a7eb8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentScene:
+    sceneAsset: {fileID: 0}
+    scenePath: 
+--- !u!114 &-5244349695088195445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6921886524584349857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d3d85f7b6d40d987c7a40e2ceb1a9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bindings:
+  - Target: {fileID: 11400000, guid: cb997853736444c4483b38fb44e3e1d2, type: 2}
+    Contracts:
+    - Game.Global.LevelTypeManager, Core.Gameplay, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: fc862b2a8713b024088914b358295abe, type: 2}
+    Contracts:
+    - Game.Global.ArmyTypeDataManager, Core.Gameplay, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: 0d16394fa8892494781934d2266d6bef, type: 2}
+    Contracts:
+    - Game.BuildingGameplay.ResourceTypeDataManager, Core.Gameplay, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: 31fb3515c610cde4a85f807a9eaac67f, type: 2}
+    Contracts:
+    - Game.Global.GameSkillDataManager, Core.Gameplay, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: a64442d84d87f73409b942af686623ba, type: 2}
+    Contracts:
+    - Game.BuildingGameplay.ArmyTypePresetManager, Core.Gameplay, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: bf81451144e4fb541aa37cba134d97b5, type: 2}
+    Contracts:
+    - Game.BuildingGameplay.BuildingPresetManager, Core.Gameplay, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: c85e4ed803f99324685718e54a245ae2, type: 2}
+    Contracts:
+    - Game.StrategyBuilding.SbTileLayerDataManager, Core.Gameplay, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: 36c933b2183ea6b4f913ea3ec5820439, type: 2}
+    Contracts:
+    - Gameplay.Global.GameplayTransition, Core.Gameplay, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: e3eb7f6bccbc1584bb32939f9c7f07e2, type: 2}
+    Contracts:
+    - Game.BaseGameplay.TowerUpgradeTree, Core.Gameplay, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: d96b52fd5c0236b4cbabdaa17e72888f, type: 2}
+    Contracts:
+    - Game.StrategyBuilding.SbGridMapDataController, Core.Gameplay, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null

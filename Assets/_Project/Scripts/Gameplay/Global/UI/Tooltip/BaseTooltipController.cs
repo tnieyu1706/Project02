@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 namespace _Project.Scripts.Gameplay.Global.Tooltip
 {
     [RequireComponent(typeof(UIDocument))]
-    public abstract class BaseTooltipController<TSingleton> : SingletonBehavior<TSingleton>
+    public abstract class BaseTooltipController<TSingleton> : Singleton<TSingleton>
         where TSingleton : BaseTooltipController<TSingleton>
     {
         [SerializeField, Self] private UIDocument uiDocument;

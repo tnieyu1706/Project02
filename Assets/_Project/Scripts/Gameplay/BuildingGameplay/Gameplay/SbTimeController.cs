@@ -5,6 +5,8 @@ using EditorAttributes;
 using Game.BaseGameplay;
 using Gameplay.Global;
 using Newtonsoft.Json.Linq;
+using Reflex.Attributes;
+using Reflex.Extensions;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.Utils;
 using UnityEngine;
@@ -24,11 +26,13 @@ namespace Game.BuildingGameplay
     }
 
     [DefaultExecutionOrder(-12)]
-    public class SbTimeController : SingletonBehavior<SbTimeController>, ISaveLoadData<TimeControllerSaveData>
+    public class SbTimeController : Singleton<SbTimeController>, ISaveLoadData<TimeControllerSaveData>
     {
         public const string PERSISTENCE_KEY = "SbTimeController";
         private const float TIME_UNIT = 5f;
         private static float TotalTimeUnit => TIME_UNIT * Time.timeScale;
+
+        [Inject] private GameplayTransition transition;
 
         [ReadOnly] public ObservableValue<float> currentTime = new(0);
 
@@ -76,7 +80,12 @@ namespace Game.BuildingGameplay
             // Validate RaisedEvent is format with current time (tránh trường hợp load game đã quá thời gian Raise Event đó rồi)
             if (!shouldChangeEvent && nextRaisedEventTime > currentTime.Value - 1f && data.EventDataJson != null)
             {
-                CurrentEventConfig ??= new();
+                if (CurrentEventConfig == null)
+                {
+                    var container = gameObject.GetClosestContainer();
+                    CurrentEventConfig = container.Instantiate<EventData>();
+                }
+
                 CurrentEventConfig.BindData(data.EventDataJson);
                 OnEventStarted?.Invoke(CurrentEventConfig);
             }
@@ -137,7 +146,7 @@ namespace Game.BuildingGameplay
                     await UniTask.Delay(100, cancellationToken: token, delayType: DelayType.DeltaTime);
 
                     var cachedEventToLoad = CurrentEventConfig;
-                    GameplayTransition.LoadBaseGameplayWithEvent(cachedEventToLoad).Forget();
+                    transition.LoadBaseGameplayWithEvent(cachedEventToLoad).Forget();
                 }
             }
         }

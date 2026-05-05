@@ -5,7 +5,7 @@ namespace Game.StrategyBuilding
 {
     [CreateAssetMenu(fileName = "GridMapDataController",
         menuName = "Game/StrategyBuilding/GridMap/GridMapDataController")]
-    public class SbGridMapDataController : SingletonScriptable<SbGridMapDataController>
+    public class SbGridMapDataController : ScriptableObject
     {
         public Sprite impactedContextSprite;
         public Sprite influenceContextSprite;

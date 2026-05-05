@@ -10,7 +10,7 @@ namespace Game.BaseGameplay
     {
         [SerializeField] private SerializableGuid installerId = Guid.NewGuid();
 
-        [LayerMaskDropdown] public int trackingLayerMask;
+        public LayerMask trackingLayerMask;
         public float interactRange;
 
         public abstract IBaseObjectInteractStrategy CreateInteractStrategy();

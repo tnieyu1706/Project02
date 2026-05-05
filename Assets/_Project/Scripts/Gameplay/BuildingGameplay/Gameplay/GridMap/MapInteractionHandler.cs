@@ -1,12 +1,15 @@
 using System.Collections.Generic;
+using Reflex.Attributes;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.Utils;
 using UnityEngine;
 
 namespace Game.StrategyBuilding
 {
-    public class MapInteractionHandler : SingletonBehavior<MapInteractionHandler>
+    public class MapInteractionHandler : Singleton<MapInteractionHandler>
     {
+        [Inject] private SbGridMapDataController gridMap;
+
         [SerializeField] private Sprite centerContextSprite;
 
         private Vector2Int preTilePos;
@@ -64,7 +67,7 @@ namespace Game.StrategyBuilding
             // handle: neighbor impactedBuildings
             foreach (var impacted in tileData.ImpactedBuildings)
             {
-                contextSpritesTemp[impacted.Key] = SbGridMapDataController.Instance.impactedContextSprite;
+                contextSpritesTemp[impacted.Key] = gridMap.impactedContextSprite;
             }
 
             // handle: neighbor BuildingRuntime.Influencers
@@ -72,7 +75,7 @@ namespace Game.StrategyBuilding
             {
                 foreach (var influencer in tileData.BuildingRuntime.behaviour.TileInfluencers)
                 {
-                    contextSpritesTemp[influencer.Key] = SbGridMapDataController.Instance.influenceContextSprite;
+                    contextSpritesTemp[influencer.Key] = gridMap.influenceContextSprite;
                 }
             }
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BackboneLogger;
 using Game.Global;
 using TnieYuPackage.DictionaryUtilities;
 using TnieYuPackage.GlobalExtensions;
@@ -167,7 +166,7 @@ namespace Game.BaseGameplay
 
                         var score = 0f;
                         //handle: entity
-                        var armyData = armyStorage.Key.GetArmyTypeData();
+                        var armyData = ArmyTypeDataManager.Instance.Refs[armyStorage.Key];
                         path.entitySpawns.Add(new EntitySpawn()
                         {
                             entityId = armyData.entityId,
@@ -198,7 +197,7 @@ namespace Game.BaseGameplay
                 keyframes = keyframeSpawns,
             };
 
-            BLogger.Log($"[SmartWaveConverter]: Keyframe number: {keyframeNumber}", category: "AI");
+            Debug.Log($"[SmartWaveConverter] Convert {result.keyframes.Count} keyframes...");
 
             return result;
         }

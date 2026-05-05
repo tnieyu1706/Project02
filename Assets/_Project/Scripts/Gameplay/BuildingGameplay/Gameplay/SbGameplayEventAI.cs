@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.BaseGameplay;
+using Reflex.Core;
 using TnieYuPackage.GlobalExtensions;
 using UnityEngine;
 using EventType = Game.BaseGameplay.EventType;
@@ -41,12 +42,15 @@ namespace Game.BuildingGameplay
             LevelType eventLevelType = LevelType.Easy;
             EventType eventType = EventType.Defense;
 
+            var container = Container.RootContainer;
             EventData nextEvent = new EventData()
             {
                 eventName = $"Event_{eventType}_{eventLevelType}_{eventRaiseThTime}",
-                levelType = eventLevelType,
                 eventType = eventType,
+                levelType = eventLevelType,
             };
+            container.InjectObject(nextEvent);
+
             EventData.SetupAwardsRandomized(nextEvent);
 
             Debug.Log($"[SbGameplayEventAI] Decided next event at {raisedTime}: {nextEvent.eventName}");

@@ -1,23 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 using Game.StrategyBuilding;
-using TnieYuPackage.Utils;
 using UnityEngine;
 
 namespace Game.BuildingGameplay
 {
     [CreateAssetMenu(fileName = "BuildingPresetManager", menuName = "Game/StrategyBuilding/Building/Manager")]
-    public class BuildingPresetManager : BaseAssetManager<string, BuildingPresetSo, BuildingPresetManager>
+    public class BuildingPresetManager : ScriptableObject
     {
-        [SerializeField] private List<string> excludedIds;
+        public List<BuildingPresetSo> presets = new();
 
-        protected override string GetAssetIdentify(BuildingPresetSo asset)
-        {
-            return asset.buildingId;
-        }
+        private Dictionary<string, BuildingPresetSo> refs;
 
-        protected override bool FilterData(BuildingPresetSo asset)
-        {
-            return !excludedIds.Contains(asset.buildingId);
-        }
+        public Dictionary<string, BuildingPresetSo> Refs =>
+            refs ??= presets.ToDictionary(p => p.buildingId, p => p);
     }
 }

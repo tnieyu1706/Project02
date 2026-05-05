@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using BackboneLogger;
 using Game.WaveAttack;
 using Gameplay.Global;
 using UnityEngine;
@@ -20,19 +19,17 @@ namespace Game.BaseGameplay
 
         public override void SetupGameplay()
         {
-            if (PathManager.Instance == null)
+            if (!PathManager.HasInstance)
             {
-                BLogger.Log($"[WaGameplayLevel] PathManager is not found after loading scene", LogLevel.Error,
-                    category: "Loading");
+                Debug.LogError($"[WaGameplayLevel] PathManager is not found after loading scene");
                 return;
             }
 
             var pathCount = PathManager.Instance.Paths.Count;
 
-            if (TowerRuntimeManager.Instance == null)
+            if (!TowerRuntimeManager.HasInstance)
             {
-                BLogger.Log($"[WaGameplayLevel] TowerRuntimeManager is not found after loading scene",
-                    LogLevel.Error, category: "Loading");
+                Debug.LogError($"[WaGameplayLevel] TowerRuntimeManager is not found after loading scene");
                 return;
             }
 
@@ -40,27 +37,24 @@ namespace Game.BaseGameplay
 
             if (GameplayTransition.DataManager == null)
             {
-                BLogger.Log($"[WaGameplayLevel] GameplayTransitionDataManager is not found after loading scene",
-                    LogLevel.Error, category: "Loading");
+                Debug.LogError($"[WaGameplayLevel] GameplayTransition.DataManager is not found after loading scene");
                 return;
             }
 
             var military = GameplayTransition.DataManager.MilitaryTemp;
 
-            if (WaGameplayController.Instance == null)
+            if (!WaGameplayController.HasInstance)
             {
-                BLogger.Log($"[WaGameplayLevel] WaGameplayController is not found after loading scene",
-                    LogLevel.Error, category: "Loading");
+                Debug.LogError($"[WaGameplayLevel] WaGameplayController is not found after loading scene");
                 return;
             }
 
             // setup: Wave Attack
             WaGameplayController.Setup(this, military, pathCount, towerCount);
 
-            if (BaseGameplayController.Instance == null)
+            if (!BaseGameplayController.HasInstance)
             {
-                BLogger.Log($"[WaGameplayLevel] BaseGameplayController is not found after loading scene",
-                    LogLevel.Error, category: "Loading");
+                Debug.LogError($"[WaGameplayLevel] BaseGameplayController is not found after loading scene");
                 return;
             }
 

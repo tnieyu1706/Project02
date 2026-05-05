@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Game.Global
 {
-    public class GamePropertiesRuntime : SingletonBehavior<GamePropertiesRuntime>
+    public class GamePropertiesRuntime : Singleton<GamePropertiesRuntime>
     {
         #region BuildingGameplay Properties
 

@@ -67,23 +67,22 @@ namespace Game.BaseGameplay.Strategies
 
             Debug.Log("Interact Cause Damage Strategy");
             // Kích hoạt luồng đánh bằng UniTaskVoid để tách khỏi main thread update
-            ExecuteAttackSequence(interactable).Forget();
+            ExecuteAttackSequence(interactable, cts.Token).Forget();
         }
 
         /// <summary>
         /// Luồng tấn công bao gồm: Khóa CanUse -> Thực hiện đòn đánh -> Chờ Cooldown -> Mở khóa CanUse
         /// </summary>
-        private async UniTaskVoid ExecuteAttackSequence(IObjectInteractable interactable)
+        private async UniTaskVoid ExecuteAttackSequence(IObjectInteractable interactable, CancellationToken token)
         {
             CanUse = false;
-
+            
             OwnerRuntime.OnInteract?.Invoke(OwnerRuntime, interactable);
             // Thực hiện hành động của loại vũ khí (Cận chiến thì trừ máu ngay, đánh xa thì bắn đạn bay đi)
-            PerformAttackAction(interactable, cts.Token).Forget();
+            PerformAttackAction(interactable, token).Forget();
 
             // Chờ theo attackCooldown
-            await UniTask.Delay(TimeSpan.FromSeconds(ActualInstaller.attackCooldown), cancellationToken: cts.Token);
-
+            await UniTask.Delay(TimeSpan.FromSeconds(ActualInstaller.attackCooldown), cancellationToken: token);
             CanUse = true;
         }
 

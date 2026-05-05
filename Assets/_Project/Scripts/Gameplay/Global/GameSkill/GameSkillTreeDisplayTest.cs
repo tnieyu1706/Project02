@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 namespace Game.Global
 {
     [RequireComponent(typeof(UIDocument))]
-    public class GameSkillTreeDisplayTest : SingletonBehavior<GameSkillTreeDisplayTest>
+    public class GameSkillTreeDisplayTest : Singleton<GameSkillTreeDisplayTest>
     {
         [SerializeField, Self] private UIDocument uiDocument;
         [SerializeField] private StyleSheet skillTreeStyle;

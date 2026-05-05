@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 namespace _Project.Scripts.Gameplay.Global.Popup
 {
     [RequireComponent(typeof(UIDocument))]
-    public class GamePopup : SingletonBehavior<GamePopup>
+    public class GamePopup : Singleton<GamePopup>
     {
         [SerializeField, Self] private UIDocument uiDocument;
         [SerializeField] private List<StyleSheet> styleSheets;

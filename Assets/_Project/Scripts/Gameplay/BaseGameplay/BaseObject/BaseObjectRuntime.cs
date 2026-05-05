@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BackboneLogger;
 using EditorAttributes;
 using KBCore.Refs;
 using UnityEngine;
@@ -47,7 +46,7 @@ namespace Game.BaseGameplay
 
         protected virtual void OnDisable()
         {
-            if (BaseObjectInteractSystem.Instance != null)
+            if (BaseObjectInteractSystem.HasInstance)
                 BaseObjectInteractSystem.Instance.ObjectRuntimes.Remove(this);
         }
 
@@ -62,8 +61,8 @@ namespace Game.BaseGameplay
 
                 if (InteractStrategies.Count != 0)
                 {
-                    BLogger.Log($"[BaseObjectRuntime: {name}] not yet unInstall all interacts previous",
-                        LogLevel.Critical, "Base");
+                    Debug.LogWarning(
+                        $"InteractStrategies is not empty when changing preset for {gameObject.name}. It may cause unexpected behavior if not cleared.");
 
                     //clear
                     // interactStrategies.Clear();

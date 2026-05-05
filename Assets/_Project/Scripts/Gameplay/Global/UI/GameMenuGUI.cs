@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using Game.BaseGameplay;
 using Gameplay.Global;
+using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,8 @@ namespace _Project.Scripts.Gameplay.Global.UI
 {
     public class GameMenuGUI : MonoBehaviour
     {
+        [Inject] private GameplayTransition transition;
+        
         [SerializeField] private CanvasGroup gameMenuCanvas;
         [SerializeField] private CanvasGroup settingsCanvas;
         [SerializeField, Required] private Button loadButton;
@@ -41,7 +44,7 @@ namespace _Project.Scripts.Gameplay.Global.UI
         private void LoadWorldMap()
         {
             PlayerDataManager.Instance?.Load();
-            GameplayTransition.LoadWorldMapGame().Forget();
+            transition.LoadWorldMapGame().Forget();
         }
 
         public void OpenSettingsPanel()

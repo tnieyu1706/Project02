@@ -45,16 +45,16 @@ namespace Game.BuildingGameplay
 
     [CreateAssetMenu(fileName = "ResourceTypeDataManager",
         menuName = "Game/StrategyBuilding/Resource/ResourceTypeDataManager")]
-    public class ResourceTypeDataManager : SingletonScriptable<ResourceTypeDataManager>
+    public class ResourceTypeDataManager : ScriptableObject
     {
         [SerializeField] private SerializableDictionary<ResourceType, ResourceTypeData> resources = new();
         [SerializeField] private SerializableDictionary<LimitResourceType, ResourceTypeData> limitResources = new();
         [SerializeField] private ResourceTypeData convenientData;
         [SerializeField] private ResourceTypeData adverseData;
 
-        public static Dictionary<ResourceType, ResourceTypeData> Resources => Instance.resources.Dictionary;
-        public static Dictionary<LimitResourceType, ResourceTypeData> LimitResources => Instance.limitResources.Dictionary;
-        
+        public Dictionary<ResourceType, ResourceTypeData> Resources => resources.Dictionary;
+        public Dictionary<LimitResourceType, ResourceTypeData> LimitResources => limitResources.Dictionary;
+
         // public static ResourceTypeData ConvenientData => Instance.convenientData;
         // public static ResourceTypeData AdverseData => Instance.adverseData;
     }

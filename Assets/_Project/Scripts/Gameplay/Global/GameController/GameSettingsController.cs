@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Global.GameController
 {
-    public class GameSettingsController : SingletonBehavior<GameSettingsController>
+    public class GameSettingsController : Singleton<GameSettingsController>
     {
         private const string MASTER_VOLUME_KEY = "masterVolume";
         private const string SFX_VOLUME_KEY = "sfxVolume";

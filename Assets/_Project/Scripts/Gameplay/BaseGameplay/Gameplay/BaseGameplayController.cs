@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-using BackboneLogger;
 using Cysharp.Threading.Tasks;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.Utils;
@@ -9,7 +8,7 @@ using UnityEngine;
 namespace Game.BaseGameplay
 {
     [DefaultExecutionOrder(-49)]
-    public class BaseGameplayController : SingletonBehavior<BaseGameplayController>
+    public class BaseGameplayController : Singleton<BaseGameplayController>
     {
         #region GAMEPLAY PROPERTIES
 
@@ -43,7 +42,7 @@ namespace Game.BaseGameplay
 
         private async UniTask RunWave(WaveSpawn waveSpawn, CancellationToken token)
         {
-            BLogger.Log($"[TdWaveController] Start wave...", category: "Base");
+            Debug.Log($"[TdWaveController] Begin wave {currentWaveIndex.Value}...");
             OnWaveStarted?.Invoke();
 
             await waveSpawn.Spawn(token);
@@ -54,17 +53,10 @@ namespace Game.BaseGameplay
                 UniTask.Delay(TimeSpan.FromSeconds(30), cancellationToken: token)
             );
 
-            BLogger.Log($"[TdWaveController] End wave...", category: "Base");
+            Debug.Log($"[TdWaveController] End wave {currentWaveIndex.Value}...");
             currentWaveIndex.Value++;
 
             OnWaveEnded?.Invoke();
-        }
-
-        protected override void Awake()
-        {
-            dontDestroyOnLoad = false;
-
-            base.Awake();
         }
 
         #region EVENTS

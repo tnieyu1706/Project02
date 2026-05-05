@@ -1,6 +1,7 @@
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using KBCore.Refs;
+using Reflex.Attributes;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.Utils;
@@ -11,8 +12,10 @@ using SerializeButton = EditorAttributes.ButtonAttribute;
 namespace Game.Global
 {
     [RequireComponent(typeof(UIDocument))]
-    public class GameSkillTreeDisplayController : SingletonBehavior<GameSkillTreeDisplayController>, IDisplayGUI
+    public class GameSkillTreeDisplayController : Singleton<GameSkillTreeDisplayController>, IDisplayGUI
     {
+        [Inject] GameSkillDataManager skillDataManager;
+        
         [SerializeField, Self] private UIDocument uiDocument;
         [SerializeField] private StyleSheet skillTreeStyle;
         
@@ -49,8 +52,8 @@ namespace Game.Global
 
         private void SetupSkillTreeData()
         {
-            var rootSkill = GameSkillDataManager.Instance.Refs[GameSkillData.ROOT_SKILL_NAME];
-            var gameSkills = GameSkillDataManager.Instance.Refs.Values.ToList();
+            var rootSkill = skillDataManager.Refs[GameSkillData.ROOT_SKILL_NAME];
+            var gameSkills = skillDataManager.Refs.Values.ToList();
 
             SkillTree = new GameSkillTree(gameSkills, rootSkill);
             SkillTreeLayout = new GameSkillTreeRadialLayout(radiusStep, angleSpread, layoutRotation);

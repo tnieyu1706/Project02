@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Game.StrategyBuilding
 {
     [Serializable]
-    public class TileContextDisplay : SingletonBehavior<TileContextDisplay>
+    public class TileContextDisplay : Singleton<TileContextDisplay>
     {
         [SerializeField] private GameObject contextPrefab;
         [SerializeField] private Transform transformOffset;

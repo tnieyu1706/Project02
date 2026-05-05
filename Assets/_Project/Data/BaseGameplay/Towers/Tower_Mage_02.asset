@@ -12,14 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed25f66ba0a4ea9ba7a34c3f6e69c61, type: 3}
   m_Name: Tower_Mage_02
   m_EditorClassIdentifier: TowerDefense::_Project.Scripts.TowerDefense.Tower.TowerAttributePresetSo
-  subAssetName: StaticSpawn
-  deletingSubAsset: {fileID: 0}
   objectId: Mage_02
   libraryAsset: {fileID: 7108339969198208228, guid: 9b808f4152386f84cba26b16165f29e4, type: 3}
   interactStrategies:
   - {fileID: 657628919129985204}
-  strategyType: Game.BaseGameplay.Strategies.StaticTowerSpawnInteractStrategyInstaller,
-    Core.Gameplay
   configurators: []
   towerIcon: {fileID: 219353963032088567, guid: 2759d20ca5c2af843a62b7dc207a61d9, type: 3}
   towerPriceValue: 180
@@ -40,7 +36,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   installerId:
     value: 2bc979db-bf36-47c4-8a40-e7c282ae412f
-  trackingLayerMask: 0
+  trackingLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   interactRange: 0
   soldierPreset: {fileID: 11400000, guid: 19c6e2d121d6e5349a263cd61ba0c153, type: 2}
   maxSpawnQuantity: 2

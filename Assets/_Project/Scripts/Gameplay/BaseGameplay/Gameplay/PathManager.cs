@@ -6,16 +6,10 @@ using UnityEngine.Splines;
 
 namespace Game.BaseGameplay
 {
-    public class PathManager : SingletonBehavior<PathManager>
+    public class PathManager : Singleton<PathManager>
     {
         [SerializeField] private SerializableDictionary<string, SplineContainer> paths;
 
         public Dictionary<string, SplineContainer> Paths => paths.Dictionary;
-
-        protected override void Awake()
-        {
-            dontDestroyOnLoad = false;
-            base.Awake();
-        }
     }
 }

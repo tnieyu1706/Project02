@@ -1,14 +1,12 @@
-using System.Threading;
 using _Project.Test.SOAP;
-using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using TnieYuPackage.DictionaryUtilities;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 
 public class TestScript1 : MonoBehaviour
 {
+    
+    
     public TestSoData testSoData;
 
     public SerializableDictionary<string, int> values;

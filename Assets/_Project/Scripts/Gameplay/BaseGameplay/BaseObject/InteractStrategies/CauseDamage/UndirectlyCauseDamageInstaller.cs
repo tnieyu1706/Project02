@@ -70,7 +70,7 @@ namespace Game.BaseGameplay.Strategies
                 finally
                 {
                     // Sau khi bay xong -> Trả về pool và gây sát thương
-                    if (BaseGameplayController.Instance != null)
+                    if (BaseGameplayController.HasInstance)
                         ProjectilePool.Release(projectileObj);
                     ApplyDamage(target);
                 }

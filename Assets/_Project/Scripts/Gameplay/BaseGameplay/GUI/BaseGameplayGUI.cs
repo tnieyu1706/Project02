@@ -1,9 +1,9 @@
 using System;
 using _Project.Scripts.Gameplay.Global.GameController;
 using Gameplay.Global;
-using BackboneLogger;
 using Cysharp.Threading.Tasks;
 using EditorAttributes;
+using Reflex.Attributes;
 using TnieYuPackage.DesignPatterns;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,8 +11,10 @@ using Button = UnityEngine.UI.Button;
 
 namespace Game.BaseGameplay
 {
-    public class BaseGameplayGUI : SingletonBehavior<BaseGameplayGUI>
+    public class BaseGameplayGUI : Singleton<BaseGameplayGUI>
     {
+        [Inject] GameplayTransition transition;
+
         [SerializeField, Required] private Button playButton;
 
         [SerializeField, Required] private Text baseHealthText;
@@ -27,12 +29,6 @@ namespace Game.BaseGameplay
         private int preOpenMenuFrameRate;
 
         public event Action OnPlayButtonPressed;
-
-        protected override void Awake()
-        {
-            dontDestroyOnLoad = false;
-            base.Awake();
-        }
 
         private void OnDestroy()
         {
@@ -53,7 +49,7 @@ namespace Game.BaseGameplay
             BaseGameplayController.Instance.OnWaveStarted += HandleWaveStarting;
             BaseGameplayController.Instance.OnWaveEnded += HandleWaveCompleted;
 
-            BLogger.Log("[TdGameplayGUI] Register GUI Events", category: "Base");
+            Debug.Log($"[TdWaveController] OnEnable");
         }
 
         private void HandlePlayButtonClicked()
@@ -95,7 +91,7 @@ namespace Game.BaseGameplay
         {
             playButton.onClick?.RemoveListener(HandlePlayButtonClicked);
 
-            if (BaseGameplayController.Instance != null)
+            if (BaseGameplayController.HasInstance)
             {
                 BaseGameplayController.Instance.OnWaveStarted -= HandleWaveStarting;
                 BaseGameplayController.Instance.OnWaveEnded -= HandleWaveCompleted;
@@ -106,14 +102,14 @@ namespace Game.BaseGameplay
                 BaseGameplayController.Instance.maxWaveIndex.OnValueChanged -= HandleMaxWaveIndexChanged;
             }
 
-            BLogger.Log("[TdGameplayGUI] UnRegister GUI Events", category: "Base");
+            Debug.Log($"[TdWaveController] OnDisable");
         }
 
         #endregion
 
         public void HandleConfirmGameplayButtonClicked()
         {
-            GameplayTransition.LoadBuildingGameplay().Forget();
+            transition.LoadBuildingGameplay().Forget();
         }
 
         public void OpenWinPanel()
@@ -137,7 +133,7 @@ namespace Game.BaseGameplay
 
         public void OnMenuPanelClosed()
         {
-            if (GameTimeController.Instance != null)
+            if (GameTimeController.HasInstance)
             {
                 GameTimeController.SetTimeScale(preOpenMenuTimeScale);
                 GameTimeController.SetFrameRate(preOpenMenuFrameRate);
