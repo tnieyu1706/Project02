@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   installerId:
     value: 0d4a671f-6c6f-4a64-bdd0-da92dfa80676
+<<<<<<< HEAD
   trackingLayerMask:
     serializedVersion: 2
     m_Bits: 3072
   interactRange: 2.2
+=======
+  trackingLayerMask: 3072
+  interactRange: 2
+>>>>>>> main
   baseDamage: 4
   attackCooldown: 1
   projectileSpeed: 4

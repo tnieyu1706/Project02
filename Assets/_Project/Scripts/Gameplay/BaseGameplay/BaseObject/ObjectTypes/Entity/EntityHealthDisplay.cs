@@ -21,6 +21,11 @@ namespace Game.BaseGameplay
             healthBar.enabled = false;
         }
 
+        private void OnDisable()
+        {
+            healthBar.enabled = false;
+        }
+
         private void OnDestroy()
         {
             if (entityProperty is { Value: not null })

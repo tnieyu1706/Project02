@@ -28,8 +28,8 @@ namespace Game.BaseGameplay
         public event Action OnWaveStarted;
         public event Action OnWaveEnded;
 
-        public event Action OnBaseTakenDamage;
-
+        public event Action<int> OnBaseTakenDamage;
+    
         #endregion
 
         [SerializeField] private WaveSpawn spawnRead;
@@ -58,24 +58,24 @@ namespace Game.BaseGameplay
 
             OnWaveEnded?.Invoke();
         }
+        
+        public void CauseBaseDamage(int damage)
+        {
+            if (OnCauseBaseDamageValid != null && !OnCauseBaseDamageValid.Invoke()) return;
+
+            baseHealth.Value -= damage;
+            OnBaseTakenDamage?.Invoke(damage);
+            if (baseHealth.Value <= 0)
+            {
+                OnGameplayBaseDestroyed?.Invoke();
+            }
+        }
 
         #region EVENTS
 
         private void OnEnable()
         {
-            baseHealth.OnValueChanged += OnBaseHealthChanged;
             currentWaveIndex.OnValueChanged += OnCurrentWaveIndexChanged;
-        }
-
-        private void OnBaseHealthChanged(int changedValue)
-        {
-            if (OnCauseBaseDamageValid != null && !OnCauseBaseDamageValid()) return;
-            
-            OnBaseTakenDamage?.Invoke();
-            if (changedValue <= 0)
-            {
-                OnGameplayBaseDestroyed?.Invoke();
-            }
         }
 
         private void OnCurrentWaveIndexChanged(int changedValue)
@@ -88,7 +88,6 @@ namespace Game.BaseGameplay
 
         private void OnDisable()
         {
-            baseHealth.OnValueChanged -= OnBaseHealthChanged;
             currentWaveIndex.OnValueChanged -= OnCurrentWaveIndexChanged;
         }
 
