@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Game.Global
 {
+    [DefaultExecutionOrder(-190)]
     public class GamePropertiesRuntime : Singleton<GamePropertiesRuntime>
     {
         #region BuildingGameplay Properties

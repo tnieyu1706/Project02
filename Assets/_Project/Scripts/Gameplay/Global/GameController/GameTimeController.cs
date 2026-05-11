@@ -5,6 +5,7 @@ using UnityEngine;
 namespace _Project.Scripts.Gameplay.Global.GameController
 {
     //singleton for easy to read. when build pack to static class only
+    [DefaultExecutionOrder(-490)]
     public class GameTimeController : Singleton<GameTimeController>
     {
         [Header("Current Setting")] [SerializeField, ReadOnly]

@@ -12,6 +12,7 @@ using SerializeButton = EditorAttributes.ButtonAttribute;
 namespace Game.Global
 {
     [RequireComponent(typeof(UIDocument))]
+    [DefaultExecutionOrder(-100)]
     public class GameSkillTreeDisplayController : Singleton<GameSkillTreeDisplayController>, IDisplayGUI
     {
         [Inject] GameSkillDataManager skillDataManager;
