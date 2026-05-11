@@ -1,4 +1,4 @@
-using System;
+using Cysharp.Threading.Tasks;
 using KBCore.Refs;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,8 +16,9 @@ namespace Game.BaseGameplay
             entityProperty.Value.Hp.OnValueChanged += HandleEntityHealthChanged;
         }
 
-        private void OnEnable()
+        private async void OnEnable()
         {
+            await UniTask.DelayFrame(1);
             healthBar.enabled = false;
         }
 
@@ -32,8 +33,13 @@ namespace Game.BaseGameplay
         private void HandleEntityHealthChanged(float health)
         {
             var maxHp = entityProperty.Value.MaxHp;
+            if (health >= maxHp)
+            {
+                healthBar.enabled = false;
+                return;
+            }
+            
             healthBar.fillAmount = health / maxHp;
-
             if (!healthBar.enabled)
                 healthBar.enabled = true;
         }

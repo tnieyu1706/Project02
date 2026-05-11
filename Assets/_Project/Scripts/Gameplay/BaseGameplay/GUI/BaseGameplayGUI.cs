@@ -25,6 +25,7 @@ namespace Game.BaseGameplay
         [SerializeField, Required] private GameObject winPanel;
         [SerializeField, Required] private GameObject losePanel;
 
+        private bool hasTimeStop;
         private float preOpenMenuTimeScale;
         private int preOpenMenuFrameRate;
 
@@ -129,11 +130,12 @@ namespace Game.BaseGameplay
             preOpenMenuTimeScale = GameTimeController.TimeScale;
             preOpenMenuFrameRate = GameTimeController.TargetFrameRate;
             GameTimeController.SetGameStop();
+            hasTimeStop = true;
         }
 
         public void OnMenuPanelClosed()
         {
-            if (GameTimeController.HasInstance)
+            if (GameTimeController.HasInstance && hasTimeStop)
             {
                 GameTimeController.SetTimeScale(preOpenMenuTimeScale);
                 GameTimeController.SetFrameRate(preOpenMenuFrameRate);

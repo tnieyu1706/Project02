@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SoundData_BuildConstruction
   m_EditorClassIdentifier: 
   resource: {fileID: 8300000, guid: 52ea21df641d14040a7a2775edafe585, type: 3}
-  volume: 1
-  pitch: 1
+  volume: 0.8
+  pitch: 0.8
   loop: 0
