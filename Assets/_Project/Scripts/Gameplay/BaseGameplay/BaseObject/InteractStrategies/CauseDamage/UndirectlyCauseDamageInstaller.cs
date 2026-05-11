@@ -39,13 +39,12 @@ namespace Game.BaseGameplay.Strategies
 
         protected override async UniTask PerformAttackAction(IObjectInteractable target, CancellationToken token)
         {
+            Vector3 startPos = OwnerRuntime.CurrentPosition + ActualInstaller.projectileOffset;
+            Vector3 endPos = target.CurrentPosition; // Vị trí mục tiêu lúc bắt đầu bắn
+
             if (ActualInstaller.projectileSprite != null)
             {
                 var projectileObj = ProjectilePool.Get();
-
-                Vector3 startPos = OwnerRuntime.CurrentPosition + ActualInstaller.projectileOffset;
-                Vector3 endPos = target.CurrentPosition; // Vị trí mục tiêu lúc bắt đầu bắn
-
                 projectileObj.transform.position = startPos;
 
                 if (projectileObj.TryGetComponent(out SpriteRenderer projectileRenderer))
@@ -69,18 +68,39 @@ namespace Game.BaseGameplay.Strategies
                 }
                 finally
                 {
-                    // Sau khi bay xong -> Trả về pool và gây sát thương
+                    // Sau khi bay xong -> Trả về pool
                     if (BaseGameplayController.HasInstance)
                         ProjectilePool.Release(projectileObj);
-                    ApplyDamage(target);
+
+                    // [BẢO VỆ POOLING 2]: Trong lúc đạn đang bay, Enemy có thể đã chết và hồi sinh ở chỗ khác.
+                    // Kiểm tra vị trí hiện tại của Enemy so với điểm rơi của đạn (endPos).
+                    // Nếu Enemy cách xa điểm đạn rớt (ví dụ > 2 units) thì đó chắc chắn là Enemy "mới" đã được reset từ Pool.
+                    if (target != null && target.Hp.Value > 0)
+                    {
+                        float distFromImpact = Vector3.Distance(endPos, target.CurrentPosition);
+                        // Giả định enemy có thể né tránh di chuyển nhẹ, nhưng nếu > interactRange thì chắc chắn là teleport/respawn
+                        if (distFromImpact <= ActualInstaller.interactRange)
+                        {
+                            ApplyDamage(target);
+                        }
+                    }
                 }
             }
             else
             {
                 Debug.LogWarning($"[{GetType().Name}] Chưa có Projectile Sprite! Chạy logic mô phỏng thời gian bay...");
-                // Giả lập delay đánh xa nếu không có hình ảnh đạn
+
                 await UniTask.Delay((int)(1000f / ActualInstaller.projectileSpeed), cancellationToken: token);
-                ApplyDamage(target);
+
+                // Tương tự, giả lập cũng phải check lại khoảng cách phòng trường hợp bay/chờ xong thì enemy respawn
+                if (target != null && target.Hp.Value > 0)
+                {
+                    float dist = Vector3.Distance(OwnerRuntime.CurrentPosition, target.CurrentPosition);
+                    if (dist <= ActualInstaller.interactRange + 1f)
+                    {
+                        ApplyDamage(target);
+                    }
+                }
             }
         }
     }

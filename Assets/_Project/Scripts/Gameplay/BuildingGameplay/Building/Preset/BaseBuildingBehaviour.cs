@@ -101,7 +101,11 @@ namespace Game.StrategyBuilding
             while (RemainingBuildTime > 0)
             {
                 // Đếm ngược từng giây và tự động huỷ nếu nhận được token cancel
-                bool isCanceled = await UniTask.Delay(1000, delayType: DelayType.DeltaTime, cancellationToken: token)
+                bool isCanceled = await UniTask.Delay(
+                        1000,
+                        delayType: DelayType.DeltaTime,
+                        cancellationToken: token,
+                        cancelImmediately: true)
                     .SuppressCancellationThrow();
 
                 // Nếu Task bị huỷ (do công trình bị xoá), thoát luôn vòng lặp
