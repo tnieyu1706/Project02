@@ -43,6 +43,8 @@ namespace Game.StrategyBuilding
         /// </summary>
         protected int CalculateTotalCapacity()
         {
+            if (!IsActive) return 0;
+            
             float baseCapacity = ActualPreset.defaultCapacityValue +
                                  (ActualPreset.incrementCapacityValue * (CurrentUpgradeLevel - 1));
 

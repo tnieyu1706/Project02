@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Reflex.Attributes;
 using Reflex.Extensions;
+using SoundSystem.Core;
 
 namespace Game.StrategyBuilding
 {
@@ -81,6 +82,7 @@ namespace Game.StrategyBuilding
     {
         [Inject] BuildingPresetManager buildingPresetManager;
         [Inject] SbTileLayerDataManager tileLayerDataManager;
+        [Inject] private SfxManager sfxManager;
 
         private static readonly JsonSerializer PolymorphicSerializer = new JsonSerializer
         {
@@ -135,6 +137,12 @@ namespace Game.StrategyBuilding
             if (tileData.BuildingRuntime != null)
             {
                 Game.Global.GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value--;
+                
+                // THÊM: Phát âm thanh phá huỷ (chỉ phát nếu ô bị xoá là công trình)
+                if (buildingPresetManager?.destroySfx != null)
+                {
+                    sfxManager?.PlayVfx(buildingPresetManager.destroySfx).Forget();
+                }
             }
 
             GridMap.Remove(pos);
