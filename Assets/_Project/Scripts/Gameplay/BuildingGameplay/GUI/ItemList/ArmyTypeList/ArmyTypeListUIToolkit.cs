@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Cysharp.Threading.Tasks;
+using Game.Global;
 using Reflex.Attributes;
 using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.Utils;
@@ -15,6 +16,8 @@ namespace Game.BuildingGameplay
     public class ArmyTypeListUIToolkit : BaseItemListUIToolkit<ArmyTypePresetSo, ArmyDetailItem, ArmyTypeListUIToolkit>
     {
         [Inject] private ArmyTypePresetManager armyTypePresetManager;
+
+        private List<ArmyType> filteredArmyTypes = new List<ArmyType>();
 
         /// <summary>
         /// Task CompletionSource to get result when player select an army type preset.
@@ -144,12 +147,26 @@ namespace Game.BuildingGameplay
 
         public override void Show()
         {
-            base.Show();
-            if (SbGameplayController.HasInstance)
+            filteredArmyTypes.Clear();
+            filteredArmyTypes = GamePropertiesRuntime.Instance
+                .UnlockArmyTypeDict
+                .Where(kvp => kvp.Value)
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            foreach (var item in activeItems)
             {
-                SbGameplayController.OnResourceChanged += ValidateItems;
-                ValidateItems(); // Cập nhật trạng thái item ngay khi hiển thị lên màn hình
+                item.itemElement.style.display =
+                    filteredArmyTypes.Contains(item.itemData.armyType)
+                        ? DisplayStyle.Flex
+                        : DisplayStyle.None;
             }
+
+            base.Show();
+
+            if (!SbGameplayController.HasInstance) return;
+            SbGameplayController.OnResourceChanged += ValidateItems;
+            ValidateItems(); // Cập nhật trạng thái item ngay khi hiển thị lên màn hình
         }
 
         private void ValidateItems()

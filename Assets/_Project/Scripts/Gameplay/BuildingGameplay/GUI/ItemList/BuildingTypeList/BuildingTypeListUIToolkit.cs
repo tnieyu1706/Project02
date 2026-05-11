@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Game.Global;
 using Game.StrategyBuilding;
 using Reflex.Attributes;
 using TnieYuPackage.GlobalExtensions;
@@ -16,6 +17,8 @@ namespace Game.BuildingGameplay
         BuildingTypeListUIToolkit>
     {
         [Inject] BuildingPresetManager buildingPresetManager;
+
+        private List<BuildingType> filteredBuildingTypes = new List<BuildingType>();
 
         protected override void SetupTitle(Label title)
         {
@@ -81,12 +84,26 @@ namespace Game.BuildingGameplay
 
         public override void Show()
         {
-            base.Show();
-            if (SbGameplayController.HasInstance)
+            filteredBuildingTypes.Clear();
+            filteredBuildingTypes = GamePropertiesRuntime.Instance
+                .UnlockBuildingTypeDict
+                .Where(kvp => kvp.Value)
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            foreach (var item in activeItems)
             {
-                SbGameplayController.OnResourceChanged += ValidateItems;
-                ValidateItems(); // Kiểm tra ngay lập tức khi vừa mở giao diện
+                item.itemElement.style.display =
+                    filteredBuildingTypes.Contains(item.itemData.buildingType)
+                        ? DisplayStyle.Flex
+                        : DisplayStyle.None;
             }
+
+            base.Show();
+            
+            if (!SbGameplayController.HasInstance) return;
+            SbGameplayController.OnResourceChanged += ValidateItems;
+            ValidateItems(); // Kiểm tra ngay lập tức khi vừa mở giao diện
         }
 
         public override void Hide()
