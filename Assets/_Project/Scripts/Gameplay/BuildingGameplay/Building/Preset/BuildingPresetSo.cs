@@ -3,20 +3,18 @@ using Game.BuildingGameplay;
 using Reflex.Extensions;
 using SoundSystem.Core;
 using TnieYuPackage.DictionaryUtilities;
-using TnieYuPackage.DesignPatterns; // Yêu cầu cho ISaveLoadData
+using TnieYuPackage.DesignPatterns; 
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 namespace Game.StrategyBuilding
 {
-    public enum BuildingType
-    {
-    }
+    public enum BuildingType { }
 
     public enum BuildingCategory
     {
-        None, // not display in list.
+        None,
         WareHouse,
         Civilian,
         Military,
@@ -29,9 +27,11 @@ namespace Game.StrategyBuilding
     {
         [Header("Basic Info")] public string buildingId;
         public int defaultMaxVillagersCanUse = 1;
-
-        // CỜ XÁC ĐỊNH CÔNG TRÌNH CÓ DÙNG NÔNG DÂN KHÔNG
         public bool requireVillagers = true;
+
+        // THÊM: Thời gian chờ xây dựng (tính bằng giây). 0 = Xây xong ngay lập tức
+        [Header("Construction")]
+        public float buildWaitingTime = 5f; 
 
         public BuildingCategory buildingCategory;
         public SbTileLayer tileLayer;
@@ -39,7 +39,6 @@ namespace Game.StrategyBuilding
         public SerializableActionCost costBuilding;
 
         [Header("Effect")] public SoundData sfxData;
-
         [Header("UI")] public List<StyleSheet> styleSheets;
 
         [Header("InfluenceEffects")] [SerializeField]
@@ -62,7 +61,6 @@ namespace Game.StrategyBuilding
             container.InjectObject(behaviour);
             buildingRuntime.behaviour = behaviour;
 
-            // GỌI SETUP SAU KHI KHỞI TẠO XONG THAY VÌ ĐỂ TRONG CONSTRUCTOR
             behaviour.Setup();
             behaviour.RefreshBehaviour();
         }
@@ -80,8 +78,6 @@ namespace Game.StrategyBuilding
     {
         void ApplyEffect(IBuildingImpacted impacted);
         void RemoveEffect(IBuildingImpacted impacted);
-
-        // THÊM: Các thuộc tính để UI lấy dữ liệu hiển thị
         string EffectName { get; }
         Color EffectColor { get; }
         string GetEffectValue();
@@ -99,14 +95,21 @@ namespace Game.StrategyBuilding
         public int CurrentUpgradeLevel;
         public int UsedVillagers;
         public int MaxVillagersCanUse;
+        
+        // THÊM: Lưu trữ trạng thái xây dựng
+        public bool IsUnderConstruction;
+        public float RemainingBuildTime;
     }
 
     public interface IBuildingBehaviour : IBuildingUI, IBuildingImpacted, ISaveLoadData<BuildingBehaviourSaveData>
     {
         BuildingPresetSo Preset { get; }
         ActionCost UpgradeCostRuntime { get; }
+        
+        // THÊM: Để GridMap kiểm tra xem công trình đã hoạt động chưa
+        bool IsUnderConstruction { get; } 
 
-        void Setup(); // THÊM HÀM SETUP VÀO INTERFACE
+        void Setup(); 
         void RefreshBehaviour();
         void DestroyBehaviour();
     }

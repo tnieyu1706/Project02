@@ -1,11 +1,10 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
-using UnityEngine.Serialization;
 
 namespace SoundSystem.Core
 {
-    [DefaultExecutionOrder(-20)]
+    [DefaultExecutionOrder(-100)]
     public class SfxManager : MonoBehaviour
     {
         private const int WAIT_TIME_MILLISECONDS = 100;
@@ -41,7 +40,7 @@ namespace SoundSystem.Core
 
         private void OnGetAudioPrefab(AudioSource audioSource)
         {
-            audioSource.gameObject.SetActive(true);
+            audioSource?.gameObject.SetActive(true);
         }
 
         private void OnReleaseAudioPrefab(AudioSource audioSource)
@@ -55,25 +54,35 @@ namespace SoundSystem.Core
             DestroyImmediate(audioSource.gameObject);
         }
 
-        public async void PlayVfx(SoundData soundData)
+        public async UniTaskVoid PlayVfx(SoundData soundData)
         {
             var audioSource = Pool.Get();
-            // setup
+
             audioSource.resource = soundData.resource;
-            audioSource.volume = GetTotalVfxVolume(soundData.volume) + Random.Range(volumeVariant.x, volumeVariant.y);
-            audioSource.pitch = soundData.pitch + Random.Range(pitchVariant.x, pitchVariant.y);
-            // audioSource.time = Random.Range(0, soundData.audioClip.length);
+            audioSource.volume = GetTotalVfxVolume(soundData.volume);
+            audioSource.pitch = soundData.pitch;
             audioSource.loop = false;
 
             audioSource.Play();
 
-            while (audioSource.isPlaying && !destroyCancellationToken.IsCancellationRequested)
+            try
             {
-                await Task.Delay(WAIT_TIME_MILLISECONDS, cancellationToken: destroyCancellationToken);
+                await UniTask.WaitUntil(
+                    () => !audioSource.isPlaying,
+                    cancellationToken: this.GetCancellationTokenOnDestroy()
+                );
             }
-
-            audioSource.Stop(); // ensure stop before release
-            Pool.Release(audioSource);
+            catch
+            {
+                // scene unload => cancel
+            }
+            finally
+            {
+                if (audioSource != null && Pool != null)
+                {
+                    Pool.Release(audioSource);
+                }
+            }
         }
     }
 }

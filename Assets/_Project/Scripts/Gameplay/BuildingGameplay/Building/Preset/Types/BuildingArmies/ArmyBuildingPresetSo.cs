@@ -92,7 +92,7 @@ namespace Game.BuildingGameplay
             // play: sfx effect
             if (ActualPreset.sfxData != null)
             {
-                SfxManager.PlayVfx(ActualPreset.sfxData);
+                SfxManager.PlayVfx(ActualPreset.sfxData).Forget();
             }
         }
 

@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingId: WoodIncrease1
   defaultMaxVillagersCanUse: 2
   requireVillagers: 1
+  buildWaitingTime: 10
   buildingCategory: 4
   tileLayer: 4
   buildingTile: {fileID: 11400000, guid: ee0cb0d4671482d4ab34cc674aab1a8d, type: 2}
