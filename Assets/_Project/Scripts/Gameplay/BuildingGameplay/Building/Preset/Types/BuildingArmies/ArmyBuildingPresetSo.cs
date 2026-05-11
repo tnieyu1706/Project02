@@ -32,6 +32,9 @@ namespace Game.BuildingGameplay
         {
             get
             {
+                // BỔ SUNG: Kiểm tra xem công trình có đang trong trạng thái xây dựng (base.IsBusy) hay không
+                if (base.IsBusy) return true;
+
                 if (slotsContainer == null) return false;
                 foreach (var child in slotsContainer.Children())
                 {
@@ -40,12 +43,22 @@ namespace Game.BuildingGameplay
                         return true;
                     }
                 }
+
                 return false;
             }
         }
 
         // Ghi đè Tooltip
-        protected override string BusyReason => "Đang huấn luyện lính, vui lòng chờ hoàn thành trước khi thay đổi nông dân.";
+        protected override string BusyReason
+        {
+            get
+            {
+                // BỔ SUNG: Trả về lý do của Base (ví dụ: Đang xây dựng... 5s) nếu base đang bận
+                if (base.IsBusy) return base.BusyReason;
+
+                return "Đang huấn luyện lính, vui lòng chờ hoàn thành trước khi thay đổi nông dân.";
+            }
+        }
 
         public ArmyBuildingBehaviour(ArmyBuildingPresetSo preset, Vector2Int tilePosition) : base(preset, tilePosition)
         {
@@ -70,7 +83,7 @@ namespace Game.BuildingGameplay
         public override void DestroyBehaviour()
         {
             base.DestroyBehaviour(); // Quan trọng: Gọi base để xoá Persistent UI/Villagers
-            
+
             if (slotsContainer != null)
             {
                 foreach (var child in slotsContainer.Children())
@@ -86,7 +99,7 @@ namespace Game.BuildingGameplay
         protected override void HandleUpgrade()
         {
         }
-        
+
         public void SelfHandleActiveBuildingApplyResource()
         {
             // play: sfx effect
@@ -106,7 +119,7 @@ namespace Game.BuildingGameplay
             // --- LEFT PANEL: Army Information ---
             var leftPanel = container.CreateChild("army-info-panel");
             leftPanel.CreateChild(new Label("Army Camp Info"), "army-info-title");
-            
+
             rateLabel = leftPanel.CreateChild(new Label(GetPropertiesText(GetTotalRate())), "army-info-rate");
 
             // --- RIGHT PANEL: Spawn Slots ---
@@ -118,10 +131,10 @@ namespace Game.BuildingGameplay
             for (int i = 0; i < ActualPreset.maxSpawnSlot; i++)
             {
                 var slotItem = new ArmySlotItem(this);
-                
+
                 // Móc nối event OnSpawnStateChanged để gọi lại UpdateVillagersUIState ở Base Class
                 slotItem.OnSpawnStateChanged += UpdateVillagersUIState;
-                
+
                 slotsContainer.Add(slotItem);
             }
 

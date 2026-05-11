@@ -39,6 +39,9 @@ namespace Game.StrategyBuilding
         public bool IsUnderConstruction { get; protected set; }
         public float RemainingBuildTime { get; protected set; }
 
+        // THÊM: Thuộc tính chuẩn hóa để lớp con biết công trình có đang thực sự hoạt động cung cấp lợi ích hay không
+        public virtual bool IsActive => !IsUnderConstruction;
+
         protected VisualElement rootPanel;
         protected VisualElement behaviourLayoutContainer;
         protected VisualElement buildingLayoutContainer;
@@ -99,7 +102,7 @@ namespace Game.StrategyBuilding
             {
                 // Đếm ngược từng giây và tự động huỷ nếu nhận được token cancel
                 bool isCanceled = await UniTask.Delay(1000, delayType: DelayType.DeltaTime, cancellationToken: token)
-                    .SuppressCancellationThrow();   
+                    .SuppressCancellationThrow();
 
                 // Nếu Task bị huỷ (do công trình bị xoá), thoát luôn vòng lặp
                 if (isCanceled) return;

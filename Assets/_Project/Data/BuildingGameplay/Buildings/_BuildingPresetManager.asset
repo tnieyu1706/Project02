@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2323ba05a0594a90affe654fbbc2020b, type: 3}
   m_Name: _BuildingPresetManager
   m_EditorClassIdentifier: 
+  buildSfx: {fileID: 11400000, guid: 88509e890688a8f4486fda66490b5a9c, type: 2}
+  destroySfx: {fileID: 11400000, guid: 895b535491129a84db7c7cd89015ccf6, type: 2}
   presets:
   - {fileID: 11400000, guid: 094a0a17837492443b62e1631f33193d, type: 2}
   - {fileID: 11400000, guid: 82fb38faae0fa104dae3c1d6e98930e0, type: 2}
