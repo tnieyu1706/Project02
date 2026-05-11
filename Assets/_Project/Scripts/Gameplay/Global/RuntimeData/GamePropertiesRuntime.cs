@@ -24,9 +24,22 @@ namespace Game.Global
                 { ResourceType.Food, 1f }
             };
 
-        public Dictionary<BuildingType, bool> UnlockBuildingTypeDict { get; } = new Dictionary<BuildingType, bool>()
-        {
-        };
+        public Dictionary<ArmyType, bool> UnlockArmyTypeDict { get; } =
+            new Dictionary<ArmyType, bool>()
+            {
+                { ArmyType.Melee, true },
+                { ArmyType.Range, true },
+                { ArmyType.Strong, false },
+                { ArmyType.Quick, false }
+            };
+
+        public Dictionary<BuildingType, bool> UnlockBuildingTypeDict { get; } =
+            new Dictionary<BuildingType, bool>()
+            {
+                { BuildingType.Level1, true },
+                { BuildingType.Level2, true },
+                { BuildingType.Level3, false },
+            };
 
         [field: SerializeField]
         public ObservableValue<int> MaxBuildingNumber { get; set; } = new ObservableValue<int>(5);

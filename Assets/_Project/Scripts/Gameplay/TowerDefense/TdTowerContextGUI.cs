@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EditorAttributes;
 using Game.BaseGameplay;
+using Game.Global;
 using Reflex.Attributes;
 using TnieYuPackage.Utils;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace Game.TowerDefense
     public class TdTowerContextGUI : SingletonDisplayUI<TdTowerContextGUI>
     {
         public static TowerRuntime CurrentContext;
-        
+
         [Inject] TowerUpgradeTree towerUpgradeTree;
 
         [SerializeField] private Canvas canvas;
@@ -23,6 +24,9 @@ namespace Game.TowerDefense
         [SerializeField, Required] private Transform towerRangeDisplayTransform;
         [SerializeField] private int maxElements = 8;
         private List<TdTowerUpgradeElement> elements;
+
+        private List<TowerType> filteredTowerTypes = new();
+        private List<TowerLevel> filteredTowerLevels = new();
 
         protected override void Awake()
         {
@@ -83,6 +87,21 @@ namespace Game.TowerDefense
         public void Display(TowerRuntime towerRuntime)
         {
             Open();
+
+            filteredTowerTypes.Clear();
+            filteredTowerTypes = GamePropertiesRuntime.Instance
+                .UnlockTowerTypeDict
+                .Where(kvp => kvp.Value)
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            filteredTowerLevels.Clear();
+            filteredTowerLevels = GamePropertiesRuntime.Instance
+                .UnlockTowerLevelDict
+                .Where(kvp => kvp.Value)
+                .Select(kvp => kvp.Key)
+                .ToList();
+
             // current: only display first interact range.
             var firstInteract = towerRuntime.InteractStrategyList.FirstOrDefault();
             if (firstInteract != null)
@@ -105,8 +124,12 @@ namespace Game.TowerDefense
             //setup
             var nextUpgradeTowerPresets = towerUpgradeTree.Tree[currentTowerPreset.objectId].nextUpgradeTowers;
 
+            var validateNextTowerPresets = nextUpgradeTowerPresets
+                .Where(p => filteredTowerTypes.Contains(p.towerType) && filteredTowerLevels.Contains(p.towerLevel))
+                .ToList();
+
             //install: upgrade elements
-            foreach (var nextPreset in nextUpgradeTowerPresets)
+            foreach (var nextPreset in validateNextTowerPresets)
             {
                 var element = GetElement();
                 if (element == null) return;

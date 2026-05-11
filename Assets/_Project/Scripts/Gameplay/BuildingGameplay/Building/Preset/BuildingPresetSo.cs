@@ -10,7 +10,12 @@ using UnityEngine.UIElements;
 
 namespace Game.StrategyBuilding
 {
-    public enum BuildingType { }
+    public enum BuildingType
+    {
+        Level1,
+        Level2,
+        Level3
+    }
 
     public enum BuildingCategory
     {
@@ -33,6 +38,7 @@ namespace Game.StrategyBuilding
         [Header("Construction")]
         public float buildWaitingTime = 5f; 
 
+        public BuildingType buildingType = BuildingType.Level1;
         public BuildingCategory buildingCategory;
         public SbTileLayer tileLayer;
         public Tile buildingTile;
