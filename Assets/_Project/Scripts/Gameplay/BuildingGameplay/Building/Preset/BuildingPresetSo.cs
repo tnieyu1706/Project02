@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Game.BuildingGameplay;
+using Reflex.Extensions;
+using SoundSystem.Core;
 using TnieYuPackage.DictionaryUtilities;
 using TnieYuPackage.DesignPatterns; // Yêu cầu cho ISaveLoadData
 using UnityEngine;
@@ -36,6 +38,8 @@ namespace Game.StrategyBuilding
         public Tile buildingTile;
         public SerializableActionCost costBuilding;
 
+        [Header("Effect")] public SoundData sfxData;
+
         [Header("UI")] public List<StyleSheet> styleSheets;
 
         [Header("InfluenceEffects")] [SerializeField]
@@ -54,6 +58,8 @@ namespace Game.StrategyBuilding
         public void InitBehaviour(BuildingRuntime buildingRuntime, Vector2Int pos)
         {
             var behaviour = CreateBehaviour(pos);
+            var container = buildingRuntime.gameObject.GetClosestContainer();
+            container.InjectObject(behaviour);
             buildingRuntime.behaviour = behaviour;
 
             // GỌI SETUP SAU KHI KHỞI TẠO XONG THAY VÌ ĐỂ TRONG CONSTRUCTOR

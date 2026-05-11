@@ -86,6 +86,15 @@ namespace Game.BuildingGameplay
         protected override void HandleUpgrade()
         {
         }
+        
+        public void SelfHandleActiveBuildingApplyResource()
+        {
+            // play: sfx effect
+            if (ActualPreset.sfxData != null)
+            {
+                SfxManager.PlayVfx(ActualPreset.sfxData);
+            }
+        }
 
         // ==========================================
         // UI TOOLKIT LAYOUT OVERRIDE

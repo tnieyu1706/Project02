@@ -27,6 +27,7 @@ MonoBehaviour:
         value: 10
       - key: 2
         value: 5
+  sfxData: {fileID: 0}
   styleSheets:
   - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
   - {fileID: 7433441132597879392, guid: 20194e480b6448248a4a76a748564001, type: 3}

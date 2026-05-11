@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Global.Tooltip;
+using Cysharp.Threading.Tasks;
 using Game.BuildingGameplay;
-using TnieYuPackage.Utils;
+using Reflex.Attributes;
+using SoundSystem.Core;
 using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.UI;
+using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Cysharp.Threading.Tasks;
 
 namespace Game.StrategyBuilding
 {
@@ -16,6 +18,8 @@ namespace Game.StrategyBuilding
         where TPreset : BuildingPresetSo
     {
         public const float REFUND_RATIO = 0.8f; // Tỉ lệ hoàn trả tài nguyên khi phá hủy công trình
+
+        [Inject] protected SfxManager SfxManager;
 
         public TPreset ActualPreset { get; }
         public ActionCost UpgradeCostRuntime { get; private set; }
@@ -384,12 +388,20 @@ namespace Game.StrategyBuilding
         {
             if (ActualPreset.requireVillagers && UsedVillagers <= 0) return;
 
+            // display: text
             List<(string, Color)> displayTexts = GetResourcePopupTexts();
             if (displayTexts == null || displayTexts.Count == 0) return;
 
             Vector3 worldPos = GetWorldPosition() + Vector3.up * 0.5f;
 
             DisplayTextsSequentiallyAsync(displayTexts, worldPos).Forget();
+            
+            SubHandleActiveBuildingApplyResource();
+        }
+
+        protected virtual void SubHandleActiveBuildingApplyResource()
+        {
+            
         }
 
         private async UniTaskVoid DisplayTextsSequentiallyAsync(List<(string, Color)> texts, Vector3 worldPos)

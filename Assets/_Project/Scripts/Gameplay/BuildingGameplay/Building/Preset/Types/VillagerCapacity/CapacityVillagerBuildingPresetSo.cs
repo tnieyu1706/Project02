@@ -102,6 +102,16 @@ namespace Game.StrategyBuilding
             // nên ta có thể bỏ qua không popup.
             return popupTexts;
         }
+        
+        protected override void SubHandleActiveBuildingApplyResource()
+        {
+            base.SubHandleActiveBuildingApplyResource();
+            // play: sfx effect
+            if (ActualPreset.sfxData != null)
+            {
+                SfxManager.PlayVfx(ActualPreset.sfxData);
+            }
+        }
 
         protected override void BuildBehaviourLayoutUI(VisualElement container)
         {

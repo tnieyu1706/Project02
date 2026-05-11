@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace _Project.Scripts.Gameplay.Global.GameController
+namespace SoundSystem.Core
 {
     [CreateAssetMenu(fileName = "SoundData", menuName = "Game/Global/SoundData")]
     public class SoundData : ScriptableObject

@@ -1,20 +1,18 @@
-using EditorAttributes;
-using KBCore.Refs;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace _Project.Scripts.Gameplay.Global.GameController
+namespace SoundSystem.Template
 {
     [RequireComponent(typeof(AudioSource))]
     public class BGMPlayer : MonoBehaviour
     {
-        [SerializeField] AudioResource resource;
-        [SerializeField] bool isLooping;
-        [SerializeField] [Range(0f, 1f)] private float volume = 1f;
+        [SerializeField] protected AudioResource resource;
+        [SerializeField] protected bool isLooping;
+        [SerializeField] [Range(0f, 1f)] protected float volume = 1f;
 
         [SerializeField] private bool isPlayOnStart;
 
-        [SerializeField, Self] private AudioSource audioSource;
+        [SerializeField] protected AudioSource audioSource;
 
         void Awake()
         {
@@ -34,14 +32,13 @@ namespace _Project.Scripts.Gameplay.Global.GameController
             audioSource?.Stop();
         }
 
-        [Button]
-        public void Play()
+        public virtual void Play()
         {
             if (resource == null || audioSource == null) return;
 
             audioSource.resource = resource;
             audioSource.loop = isLooping;
-            audioSource.volume = GameSoundMaster.GetTotalVolume(volume);
+            audioSource.volume = volume;
 
             audioSource.Play();
         }

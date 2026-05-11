@@ -25,6 +25,7 @@ MonoBehaviour:
         value: 12
       - key: 1
         value: 8
+  sfxData: {fileID: 11400000, guid: e70ea5894a34012478f718339fd29644, type: 2}
   styleSheets:
   - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
   - {fileID: 7433441132597879392, guid: 380941c23fd447de98d46db3d292a33b, type: 3}

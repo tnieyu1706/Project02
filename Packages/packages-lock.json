@@ -49,7 +49,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "d38c27b309a40c51b21f253b8f08e23f656bdee8"
+      "hash": "bab4d270212c6b3496a2ca458fb9bcd3acdd3ec7"
     },
     "com.kybernetik.inspector-gadgets": {
       "version": "file:com.kybernetik.inspector-gadgets",

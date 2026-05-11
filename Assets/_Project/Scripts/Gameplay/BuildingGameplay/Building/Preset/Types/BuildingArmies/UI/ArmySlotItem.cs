@@ -128,6 +128,7 @@ namespace Game.BuildingGameplay
             DisposeToken();
             ResetItem();
             SbGameplayController.AddArmy(armyPresetTemp.armyType, 1);
+            behaviour.SelfHandleActiveBuildingApplyResource();
 
             // Hoàn tất, trigger event để kiểm tra mở lại nút Nông Dân
             OnSpawnStateChanged?.Invoke();
