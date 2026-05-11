@@ -33,6 +33,15 @@ Label {
     align-items: center;
 }
 
+.tooltip-spawn-amount-container {
+    flex-direction: row;
+    background-color: #a2a675;
+}
+
+.tooltip-spawn-amount-text {
+    
+}
+
 /* Cost Layout */
 .tooltip-cost-container {
     flex-direction: row;

@@ -49,7 +49,7 @@ namespace Game.BuildingGameplay
         public Dictionary<ResourceType, ObservableValue<float>> IncrementResources { get; } =
             new Dictionary<ResourceType, ObservableValue<float>>()
             {
-                { ResourceType.Coin, new ObservableValue<float>(1f) },
+                { ResourceType.Coin, new ObservableValue<float>(1.6f) },
                 { ResourceType.Wood, new ObservableValue<float>(0.6f) },
                 { ResourceType.Stone, new ObservableValue<float>(0.3f) },
                 { ResourceType.Food, new ObservableValue<float>(0.4f) },
