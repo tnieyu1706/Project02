@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingId: FoodCapacity1
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
+  buildWaitingTime: 15
   buildingCategory: 5
   tileLayer: 5
   buildingTile: {fileID: 11400000, guid: 87c8ffc0128540f4aa631a549f0b9d70, type: 2}

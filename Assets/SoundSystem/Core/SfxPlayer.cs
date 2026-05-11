@@ -8,7 +8,7 @@ namespace SoundSystem.Core
 
         public void PlaySound(SoundData soundData)
         {
-            sfxManager.PlayVfx(soundData);
+            sfxManager.PlayVfx(soundData).Forget();
         }
     }
 }

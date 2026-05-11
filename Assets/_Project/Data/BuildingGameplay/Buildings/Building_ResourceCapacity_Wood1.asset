@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingId: WoodCapcity1
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
+  buildWaitingTime: 18
   buildingCategory: 5
   tileLayer: 5
   buildingTile: {fileID: 11400000, guid: 447211a90c1cf364db3e1c60c8599775, type: 2}

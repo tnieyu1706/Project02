@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingId: SPIncrease1
   defaultMaxVillagersCanUse: 2
   requireVillagers: 1
+  buildWaitingTime: 30
   buildingCategory: 6
   tileLayer: 3
   buildingTile: {fileID: 11400000, guid: 2c3e3c81a02e997418a5269e8d98706e, type: 2}

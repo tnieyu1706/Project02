@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingId: StoneCapacity1
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
+  buildWaitingTime: 20
   buildingCategory: 5
   tileLayer: 5
   buildingTile: {fileID: 11400000, guid: a2ea3038ddeebbd4d80a823e5c10d9a2, type: 2}

@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingId: VillagerHouse1
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
+  buildWaitingTime: 8
   buildingCategory: 2
   tileLayer: 3
   buildingTile: {fileID: 11400000, guid: a865e6065ac0c4a4ab828efa44e6743f, type: 2}
