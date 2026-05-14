@@ -62,6 +62,7 @@ namespace Game.Global
 
         public override void HandleUI(Image uiImage)
         {
+            Debug.Log($"Applying AllowState UI for skill {SkillNode.Data.skillId}");
             uiImage.ClearClassList();
             uiImage.AddClass(GameSkillTreeNode.DEFAULT_CLASS_NAME);
             uiImage.AddClass("skill-allow-state");
@@ -86,6 +87,7 @@ namespace Game.Global
 
         public override void HandleUI(Image uiImage)
         {
+            Debug.Log($"Applying UnlockState UI for skill {SkillNode.Data.skillId}");
             uiImage.ClearClassList();
             uiImage.AddClass(GameSkillTreeNode.DEFAULT_CLASS_NAME);
             uiImage.AddClass("skill-unlock-state");
@@ -97,7 +99,7 @@ namespace Game.Global
     public class GameSkillTreeNode
     {
         public const string DEFAULT_CLASS_NAME = "skill-node";
-        
+
         public readonly GameSkillData Data;
         public BaseState NodeState { get; private set; }
         public readonly List<GameSkillTreeNode> Children;

@@ -12,6 +12,12 @@ namespace Game.BuildingGameplay
         // test
         private static readonly Vector2 MinMaxNextEventTime = new Vector2(300f, 500f);
 
+        private static readonly List<LevelType> LevelTypes = new List<LevelType>()
+        {
+            LevelType.Easy,
+            LevelType.Medium
+        };
+
         private static readonly Dictionary<ResourceType, Vector2> RandomizedAwards = new()
         {
             { ResourceType.Coin, new Vector2(20, 120f) },
@@ -38,8 +44,7 @@ namespace Game.BuildingGameplay
             // 1. Tính toán thời gian Raise
             var raisedTime = Random.Range(MinMaxNextEventTime.x, MinMaxNextEventTime.y) + currentTime;
 
-            // current: default Easy, DefenseEvent only
-            LevelType eventLevelType = LevelType.Easy;
+            LevelType eventLevelType = LevelTypes[Random.Range(0, LevelTypes.Count)];
             EventType eventType = EventType.Defense;
 
             var container = Container.RootContainer;

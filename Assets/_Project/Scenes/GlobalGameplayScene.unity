@@ -266,7 +266,7 @@ MonoBehaviour:
   <CurrentBuildingNumber>k__BackingField:
     value: 0
   <SkillPoints>k__BackingField:
-    value: 4
+    value: 14
 --- !u!4 &1299206334
 Transform:
   m_ObjectHideFlags: 0

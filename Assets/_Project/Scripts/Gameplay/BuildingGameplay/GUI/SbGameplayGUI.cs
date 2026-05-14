@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using Game.BaseGameplay;
 using Game.Global;
+using Gameplay.Global;
+using Reflex.Attributes;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.DictionaryUtilities;
 using UnityEngine;
@@ -14,7 +16,10 @@ namespace Game.BuildingGameplay
 {
     public class SbGameplayGUI : Singleton<SbGameplayGUI>
     {
-        [Header("Gameplay")] [SerializeField] private SerializableDictionary<ResourceType, Text> resourceNumberTexts;
+        [Inject] private GameplayTransition transition;
+
+        [Header("Gameplay")] [SerializeField] private Button returnMapBtn;
+        [SerializeField] private SerializableDictionary<ResourceType, Text> resourceNumberTexts;
         [SerializeField] private SerializableDictionary<LimitResourceType, Text> limitResourceNumberTexts;
         [SerializeField] private Text peopleNumberText;
         [SerializeField] private Text maxPeopleNumberText;
@@ -70,6 +75,13 @@ namespace Game.BuildingGameplay
             eventButton.onClick.AddListener(HandleEventButtonClicked);
             SbTimeController.Instance.OnEventStarted += HandleEventStarted;
             SbTimeController.Instance.currentTime.OnValueChanged += HandleTimerChangedValue;
+
+            returnMapBtn.onClick.AddListener(HandleReturnMapButtonClicked);
+        }
+
+        private void HandleReturnMapButtonClicked()
+        {
+            transition.LoadWorldMapGame().Forget();
         }
 
         private void RegistryGameplayProperties()
@@ -250,6 +262,8 @@ namespace Game.BuildingGameplay
 
         private void OnDisable()
         {
+            returnMapBtn.onClick.RemoveListener(HandleReturnMapButtonClicked);
+
             buildingListBtn.onClick.RemoveListener(HandleBuildingListButtonClicked);
             enemyBaseBtn.onClick.RemoveListener(HandleEnemyBaseButtonClicked);
             skillTreeBtn.onClick.RemoveListener(HandleSkillTreeButtonClicked);

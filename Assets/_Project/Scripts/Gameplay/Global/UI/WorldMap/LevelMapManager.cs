@@ -9,7 +9,7 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
 {
     public class LevelMapManager : Singleton<LevelMapManager>
     {
-        [SerializeField] private List<LevelMapComponent> levelMapComponents = new();    
+        [SerializeField] private List<LevelMapComponent> levelMapComponents = new();
 
         private Dictionary<Guid, LevelMapComponent> levelMapComponentsByGuidData;
 
@@ -31,6 +31,8 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
 
                     levelsData.Add(levelComponent.SaveData());
                 }
+
+                PlayerDataManager.Instance.Save();
             }
         }
     }
