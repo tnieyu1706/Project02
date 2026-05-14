@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 532d9e2b0a98429097168c7f05a12c53, type: 3}
+  m_Name: WaLevel02
+  m_EditorClassIdentifier: 
+  startMoney: 240
+  baseMaxHealth: 14
+  levelScene:
+    asset: {fileID: 102900000, guid: 64ab3d5f97d6ffb45b9c7e064c0f5df5, type: 3}
+    guid: 64ab3d5f97d6ffb45b9c7e064c0f5df5
+  waveRules:
+  - maxBaseDamageOutput: 8
+    maxEntityDeploymentCount: 26
+  - maxBaseDamageOutput: 6
+    maxEntityDeploymentCount: 20
+  - maxBaseDamageOutput: 6
+    maxEntityDeploymentCount: 30

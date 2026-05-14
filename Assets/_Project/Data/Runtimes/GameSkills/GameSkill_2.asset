@@ -14,17 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillId: Skill2
   skillName: Increase money resource
-  requiredSkillPoint: 1
-  skillIcon: {fileID: 0}
-  skillDescription: Increase money resource scale 5%.
+  requiredSkillPoint: 12
+  skillIcon: {fileID: -1370386883, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
+  skillDescription: Increase money resource scale 10%.
   skillInfluencer:
-    rid: 6075148189792469099
-  nextSkills: []
+    rid: 949501177755861094
+  nextSkills:
+  - {fileID: 11400000, guid: 65ff1921a402b3148ad95503236c47f2, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 6075148189792469099
+    - rid: 949501177755861094
       type: {class: ResourceScaleInfluencer, ns: Game.Global, asm: Core.Gameplay}
       data:
         resourceType: 0
-        addValue: 0.05
+        addValue: 0.1

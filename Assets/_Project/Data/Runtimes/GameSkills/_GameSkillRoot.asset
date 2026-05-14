@@ -15,12 +15,16 @@ MonoBehaviour:
   skillId: RootSkill
   skillName: Origin
   requiredSkillPoint: 0
-  skillIcon: {fileID: 0}
+  skillIcon: {fileID: -797599802, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
   skillDescription: Origin of power...
   skillInfluencer:
     rid: 6075148189792469098
   nextSkills:
   - {fileID: 11400000, guid: 5c9b5b21f2e5aad499290846d43827c1, type: 2}
+  - {fileID: 11400000, guid: d25cfd9cebebc094794749fc0eb77999, type: 2}
+  - {fileID: 11400000, guid: dedc1931d0dfb154f9c8485f5327061d, type: 2}
+  - {fileID: 11400000, guid: 8083c1a6a66c2684aa9cba41f370eb49, type: 2}
+  - {fileID: 11400000, guid: 20ce92b92c8467f4cbeda0c571c35014, type: 2}
   references:
     version: 2
     RefIds:

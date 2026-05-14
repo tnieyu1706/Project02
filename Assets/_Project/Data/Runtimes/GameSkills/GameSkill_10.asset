@@ -10,21 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc0552e4b95c4c67be229efa7c0608de, type: 3}
-  m_Name: GameSkill_5
+  m_Name: GameSkill_10
   m_EditorClassIdentifier: 
-  skillId: Skill5
-  skillName: Increase money resource
-  requiredSkillPoint: 14
-  skillIcon: {fileID: -1370386883, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
-  skillDescription: Increase money resource scale 10%.
+  skillId: Skill10
+  skillName: Unlock tower type
+  requiredSkillPoint: 30
+  skillIcon: {fileID: 624066935, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
+  skillDescription: Unlock tower magic type for TD gameplay.
   skillInfluencer:
-    rid: 6075148189792469099
+    rid: 949501177755861100
   nextSkills: []
   references:
     version: 2
     RefIds:
-    - rid: 6075148189792469099
-      type: {class: ResourceScaleInfluencer, ns: Game.Global, asm: Core.Gameplay}
+    - rid: 949501177755861100
+      type: {class: TowerUnlockInfluencer, ns: Game.Global, asm: Core.Gameplay}
       data:
-        resourceType: 0
-        addValue: 0.1
+        target: 0
+        towerType: 2
+        towerLevel: 0
