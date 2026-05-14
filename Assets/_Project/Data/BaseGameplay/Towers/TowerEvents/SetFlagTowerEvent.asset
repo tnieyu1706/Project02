@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: SetFlagTowerEvent
   m_EditorClassIdentifier: 
   eventIcon: {fileID: 21300000, guid: 2e37dd301da92244788762baa36843a2, type: 3}
+  commandSoundData: {fileID: 11400000, guid: 2c1f1772e71e2ab4daab495bcc268276, type: 2}

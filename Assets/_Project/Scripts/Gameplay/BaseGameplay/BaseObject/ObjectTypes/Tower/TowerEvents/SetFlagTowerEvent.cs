@@ -1,9 +1,12 @@
 using Game.BaseGameplay.Strategies;
 using Game.TowerDefense;
+using Reflex.Extensions;
+using SoundSystem.Core;
 using TnieYuPackage.Handlers;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.GlobalExtensions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.BaseGameplay.TowerEvents
 {
@@ -11,6 +14,8 @@ namespace Game.BaseGameplay.TowerEvents
     public class SetFlagTowerEvent : TowerEvent
     {
         private static TowerRuntime runtimeTemp;
+
+        [SerializeField] private SoundData commandSoundData;
 
         public override void OnCall(TowerRuntime towerRuntime)
         {
@@ -26,6 +31,17 @@ namespace Game.BaseGameplay.TowerEvents
         private bool OnLeftMouseClick()
         {
             ExecuteInputEventHandler();
+
+            // play sfx
+            // Refactor: need refactor if can be.
+            var container = SceneManager.GetActiveScene().GetSceneContainer();
+            if (container != null)
+            {
+                var sfxManager = container.Resolve<SfxManager>();
+                sfxManager.PlayVfx(commandSoundData).Forget();
+            }
+
+            // handler
             InputEventManager.Instance.UnRegistryKey(KeyCode.Mouse1);
             var screenPoint = Input.mousePosition.With(z: 0);
             Vector2 worldPos = Registry<Camera>.GetFirst().ScreenToWorldPoint(screenPoint);

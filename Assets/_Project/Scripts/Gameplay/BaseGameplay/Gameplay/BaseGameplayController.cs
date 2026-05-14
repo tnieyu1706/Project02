@@ -1,6 +1,8 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Reflex.Attributes;
+using SoundSystem.Core;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.Utils;
 using UnityEngine;
@@ -33,6 +35,8 @@ namespace Game.BaseGameplay
         #endregion
 
         [SerializeField] private WaveSpawn spawnRead;
+
+        [Inject, NonSerialized] public SfxManager SfxManagerInject;
 
         public void PlayWave(WaveSpawn waveSpawn)
         {
