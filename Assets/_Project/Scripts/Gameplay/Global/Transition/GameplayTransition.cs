@@ -72,6 +72,7 @@ namespace Gameplay.Global
         {
             var buildingGameplaySg = GetBuildingGameplaySgWithLevel(DataManager.CurrentBuildingLevel);
             await SceneLoader.Instance.Load(buildingGameplaySg);
+            
             if (SbGameplayController.HasInstance)
             {
                 SbGameplayController.Instance.SetupGameplay(DataManager.CurrentBuildingLevel);
