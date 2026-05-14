@@ -98,6 +98,16 @@ namespace Game.BaseGameplay
 
         #endregion
 
+        public void DestroyBase()
+        {
+            OnGameplayBaseDestroyed?.Invoke();
+        }
+
+        public void CloseWaves()
+        {
+            OnGameplayWaveClosed?.Invoke();
+        }
+
         public void Setup(BaseGameplayLevel baseLevel, int maxWaveIndexSource)
         {
             baseHealth.Value = baseLevel.baseMaxHealth;
