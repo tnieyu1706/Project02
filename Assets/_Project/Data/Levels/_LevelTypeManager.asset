@@ -18,3 +18,7 @@ MonoBehaviour:
       value:
         tdLevel: {fileID: 11400000, guid: e735833c6ced8844985edf686662d57d, type: 2}
         waLevel: {fileID: 11400000, guid: 6e5abefc52c165044b5b8bb3e8da5e4d, type: 2}
+    - key: 1
+      value:
+        tdLevel: {fileID: 11400000, guid: 801d9e90618512046b237e9e6c608b08, type: 2}
+        waLevel: {fileID: 11400000, guid: 97e4f5f1b446b5a49b1cb14ec9ca6c7f, type: 2}

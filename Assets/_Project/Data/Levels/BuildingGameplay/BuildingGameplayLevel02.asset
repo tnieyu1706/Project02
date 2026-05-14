@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b6b16eea1884f25af5430cffda4911e, type: 3}
+  m_Name: BuildingGameplayLevel02
+  m_EditorClassIdentifier: 
+  events:
+  - data:
+      eventName: Attack Enemy Base 1
+      isCompleted: 0
+      shouldChange: 0
+      eventType: 1
+      levelType: 0
+    icon: {fileID: 21300000, guid: 6bfada5ef4488b4468464e3894ca688a, type: 3}
+  - data:
+      eventName: Attack Enemy Base 2
+      isCompleted: 0
+      shouldChange: 0
+      eventType: 1
+      levelType: 1
+    icon: {fileID: 21300000, guid: de4732424caba704a87aa4da76bb5daa, type: 3}
+  - data:
+      eventName: Attack Enemy Base 3
+      isCompleted: 0
+      shouldChange: 0
+      eventType: 1
+      levelType: 1
+    icon: {fileID: 21300000, guid: 5051e15e8b6a2664296e685a58290535, type: 3}
+  sceneReference:
+    asset: {fileID: 102900000, guid: 634cb5773f3158849b571d7803d6a025, type: 3}
+    guid: 634cb5773f3158849b571d7803d6a025

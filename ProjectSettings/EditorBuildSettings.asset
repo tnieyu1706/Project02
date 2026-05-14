@@ -33,8 +33,14 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/BuildingGameplay/Levels/BuildingLevel01.unity
     guid: 894f7e30cf55c824ea6a9d5e02ea8a3c
   - enabled: 1
+    path: Assets/_Project/Scenes/BuildingGameplay/Levels/BuildingLevel02.unity
+    guid: 634cb5773f3158849b571d7803d6a025
+  - enabled: 1
     path: Assets/_Project/Scenes/BaseGameplay/Levels/BaseLevel01.unity
     guid: ff49758905358d54fb371d3f845dcda4
+  - enabled: 1
+    path: Assets/_Project/Scenes/BaseGameplay/Levels/BaseLevel02.unity
+    guid: 64ab3d5f97d6ffb45b9c7e064c0f5df5
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 904ec558761fff44ab20955fc73ff50c, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

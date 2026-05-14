@@ -10,21 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc0552e4b95c4c67be229efa7c0608de, type: 3}
-  m_Name: GameSkill_5
+  m_Name: GameSkill_13
   m_EditorClassIdentifier: 
-  skillId: Skill5
-  skillName: Increase money resource
-  requiredSkillPoint: 14
-  skillIcon: {fileID: -1370386883, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
-  skillDescription: Increase money resource scale 10%.
+  skillId: Skill13
+  skillName: Unlock army type
+  requiredSkillPoint: 15
+  skillIcon: {fileID: 417889715, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
+  skillDescription: Unlock strong army type
   skillInfluencer:
-    rid: 6075148189792469099
+    rid: 949501177755861104
   nextSkills: []
   references:
     version: 2
     RefIds:
-    - rid: 6075148189792469099
-      type: {class: ResourceScaleInfluencer, ns: Game.Global, asm: Core.Gameplay}
+    - rid: 949501177755861104
+      type: {class: ArmyTypeUnlockInfluencer, ns: Game.Global, asm: Core.Gameplay}
       data:
-        resourceType: 0
-        addValue: 0.1
+        armyType: 2

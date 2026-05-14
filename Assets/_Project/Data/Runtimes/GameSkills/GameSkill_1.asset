@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: GameSkill_1
   m_EditorClassIdentifier: 
   skillId: Skill1
-  skillName: Increase money resource
-  requiredSkillPoint: 1
-  skillIcon: {fileID: 0}
-  skillDescription: Increase money resource scale 5%.
+  skillName: Unlockbuilding type
+  requiredSkillPoint: 10
+  skillIcon: {fileID: 481544789, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
+  skillDescription: Unlock building type level 2 for Building Gameplay.
   skillInfluencer:
-    rid: 6075148189792469099
-  nextSkills: []
+    rid: 949501177755861093
+  nextSkills:
+  - {fileID: 11400000, guid: 60551272d685af046a9d214591859529, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 6075148189792469099
-      type: {class: ResourceScaleInfluencer, ns: Game.Global, asm: Core.Gameplay}
+    - rid: 949501177755861093
+      type: {class: BuildingUnlockInfluencer, ns: Game.Global, asm: Core.Gameplay}
       data:
-        resourceType: 0
-        addValue: 0.05
+        buildingType: 1

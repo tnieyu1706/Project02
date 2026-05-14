@@ -16,6 +16,7 @@ MonoBehaviour:
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
   buildWaitingTime: 0
+  buildingType: 0
   buildingCategory: 0
   tileLayer: 3
   buildingTile: {fileID: 11400000, guid: 7278c9d263a58744bac2ea684e5d3b9d, type: 2}
