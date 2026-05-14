@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using _Project.Scripts.Gameplay.Global.UI.WorldMap;
 using Cysharp.Threading.Tasks;
-using EditorAttributes;
 using Game.BaseGameplay;
 using Game.Global;
 using Game.StrategyBuilding;
@@ -29,6 +28,9 @@ namespace Game.BuildingGameplay
         public BuildingGameplayLevel currentLevel;
         private bool isCompleted;
         public ObservableValue<int> currentHealth;
+
+        public static event Action OnLoseGame;
+        public static event Action OnWinGame;
 
         [Header("Starting Settings")]
         [Tooltip("Gán Scriptable Object của Nhà Chính vào đây để tự động đặt ra khi bắt đầu game")]
@@ -145,20 +147,27 @@ namespace Game.BuildingGameplay
         private void OnEnable()
         {
             currentHealth.OnValueChanged += OnCurrentHealthChanged;
+            OnWinGame += HandleOnGameEndDefault;
+            OnLoseGame += HandleOnGameEndDefault;
         }
 
         private void OnCurrentHealthChanged(int changedValue)
         {
             if (changedValue > 0) return;
             // lose game
-            // temp: directly load main menu
-            RecordResult(GameplayTransition.DataManager.CurrentLevel);
-            transition.LoadWorldMapGame().Forget();
+            OnLoseGame?.Invoke();
+        }
+
+        private static void HandleOnGameEndDefault()
+        {
+            Instance.RecordResult(GameplayTransition.DataManager.CurrentLevel);
         }
 
         private void OnDisable()
         {
             currentHealth.OnValueChanged -= OnCurrentHealthChanged;
+            OnWinGame -= HandleOnGameEndDefault;
+            OnLoseGame -= HandleOnGameEndDefault;
         }
 
         public void CreateGameplay(BuildingGameplayLevel level)
@@ -203,9 +212,8 @@ namespace Game.BuildingGameplay
             }
 
             // all event is completed => win game
-            // temp: load directly main menu
-            Instance.RecordResult(GameplayTransition.DataManager.CurrentLevel);
-            Instance.transition.LoadWorldMapGame().Forget();
+
+            OnWinGame?.Invoke();
         }
 
         public static void ApplyResourceIncrement()
