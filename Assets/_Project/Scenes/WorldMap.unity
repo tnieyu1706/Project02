@@ -1211,6 +1211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelMapComponents:
   - {fileID: 218263012}
+  - {fileID: 951777792}
 --- !u!1 &1405693999
 GameObject:
   m_ObjectHideFlags: 0

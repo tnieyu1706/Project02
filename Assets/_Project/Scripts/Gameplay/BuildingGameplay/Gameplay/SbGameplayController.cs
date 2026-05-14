@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using _Project.Scripts.Gameplay.Global.UI.WorldMap;
 using Cysharp.Threading.Tasks;
+using EditorAttributes;
 using Game.BaseGameplay;
 using Game.Global;
 using Game.StrategyBuilding;
@@ -25,7 +26,7 @@ namespace Game.BuildingGameplay
 
         [Inject] private GameplayTransition transition;
 
-        public BuildingGameplayLevel currentLevel;
+        [ReadOnly] public BuildingGameplayLevel currentLevel;
         private bool isCompleted;
         public ObservableValue<int> currentHealth;
 
@@ -142,6 +143,12 @@ namespace Game.BuildingGameplay
         {
             base.Awake();
             VillagerData ??= new VillagerDataManager();
+
+            // TỰ ĐỘNG PULL DATA TỪ DATA MANAGER NGAY KHI VỪA KHỞI TẠO
+            if (GameplayTransition.DataManager != null && GameplayTransition.DataManager.CurrentBuildingLevel != null)
+            {
+                currentLevel = GameplayTransition.DataManager.CurrentBuildingLevel;
+            }
         }
 
         private void OnEnable()
@@ -175,7 +182,6 @@ namespace Game.BuildingGameplay
             currentHealth.Value = MAX_HEALTH;
 
             SbTimeController.Instance.Init();
-            SetupGameplay(level);
             SbGridMapRegister.Instance.RegisterEnvironmentMaps();
 
             // THÊM ĐOẠN NÀY ĐỂ ÉP NGƯỜI CHƠI XÂY NHÀ CHÍNH KHÔNG ĐƯỢC HUỶ
@@ -190,7 +196,7 @@ namespace Game.BuildingGameplay
             }
         }
 
-        public void SetupGameplay(BuildingGameplayLevel level)
+        public void SetLevel(BuildingGameplayLevel level)
         {
             currentLevel = level;
         }

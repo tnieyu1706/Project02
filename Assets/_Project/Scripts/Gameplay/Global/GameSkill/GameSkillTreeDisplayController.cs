@@ -89,7 +89,7 @@ namespace Game.Global
         private void HandleSkillNodeClicked(GameSkillTreeNode skillNode)
         {
             var skillData = skillNode.Data;
-            Debug.Log($"Clicked Skill: {skillData.skillName} ({skillData.skillId})");
+            // Debug.Log($"Clicked Skill: {skillData.skillName} ({skillData.skillId})");
 
             if (!skillNode.NodeState.CanInteract || !CheckSkillPointValid(skillData)) return;
 

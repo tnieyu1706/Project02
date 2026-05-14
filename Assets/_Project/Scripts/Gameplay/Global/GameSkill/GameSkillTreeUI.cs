@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Gameplay.Global.Tooltip;
 using TnieYuPackage.GlobalExtensions;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -86,16 +87,20 @@ namespace Game.Global
         {
             var element = new Image
             {
-                sprite = node.Data.skillIcon,
-                tooltip = $"{node.Data.skillName}\n{node.Data.skillDescription}"
+                sprite = node.Data.skillIcon
             };
-            
+
             node.NodeState.HandleUI(element);
-            
+
             // handle un-registry: if SkillTreeUI lifecycle dif with SkillTree
             node.NodeStateChanged += state => state.HandleUI(element);
 
+            // Đăng ký sự kiện Click cho Controller xử lý logic
             element.RegisterCallback<ClickEvent>(_ => OnNodeClicked?.Invoke(node));
+
+            // UI tự xử lý logic Tooltip nội bộ
+            element.RegisterCallback<PointerEnterEvent>(evt => ShowTooltip(node, evt.position));
+            element.RegisterCallback<PointerLeaveEvent>(evt => HideTooltip());
 
             float size = DEFAULT_NODE_SIZE;
 
@@ -114,6 +119,29 @@ namespace Game.Global
             element.style.top = position.y - (size / 2f);
 
             return element;
+        }
+
+        private void ShowTooltip(GameSkillTreeNode node, Vector2 position)
+        {
+            if (node == null || node.Data == null) return;
+
+            var data = node.Data;
+            string tooltipText = $"<b><size=110%>{data.skillName}</size></b>\n" +
+                                 $"<color=#088c70>Cost: {data.requiredSkillPoint} SP</color>\n\n" +
+                                 $"<i>{data.skillDescription}</i>";
+
+            if (TextTooltipController.HasInstance)
+            {
+                TextTooltipController.Instance.Display(tooltipText, position);
+            }
+        }
+
+        private void HideTooltip()
+        {
+            if (TextTooltipController.HasInstance)
+            {
+                TextTooltipController.Instance.Hide();
+            }
         }
 
         private void OnGenerateVisualContent(MeshGenerationContext mgc)

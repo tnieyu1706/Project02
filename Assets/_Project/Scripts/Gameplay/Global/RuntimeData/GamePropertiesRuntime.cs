@@ -37,7 +37,7 @@ namespace Game.Global
             new Dictionary<BuildingType, bool>()
             {
                 { BuildingType.Level1, true },
-                { BuildingType.Level2, true },
+                { BuildingType.Level2, false },
                 { BuildingType.Level3, false },
             };
 
@@ -91,7 +91,7 @@ namespace Game.Global
 
         #region Attack Properties
 
-        public int MaxEntityPerWave { get; set; } = 10;
+        public int MaxEntityPerWave { get; set; } = 0;
 
         public Dictionary<ArmyType, float> ArmyDamageScaleDict { get; } = new Dictionary<ArmyType, float>()
         {
@@ -127,6 +127,6 @@ namespace Game.Global
 
         #endregion
 
-        [field: SerializeField] public ObservableValue<int> SkillPoints { get; set; } = new ObservableValue<int>(4);
+        [field: SerializeField] public ObservableValue<int> SkillPoints { get; set; } = new ObservableValue<int>(14);
     }
 }

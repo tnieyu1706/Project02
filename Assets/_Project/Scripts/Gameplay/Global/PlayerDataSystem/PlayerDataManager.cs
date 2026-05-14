@@ -39,6 +39,14 @@ namespace _Project.Scripts.Gameplay.Global.PlayerDataSystem
             PlayerData = JsonConvert.DeserializeObject<PlayerData>(json);
         }
 
+        // Thêm hàm này để bắt đầu game mới
+        public void StartNewGameData()
+        {
+            Debug.Log($"[{nameof(PlayerDataManager)}] Starting New Game. Overwriting old data.");
+            InitData(); // Khởi tạo dữ liệu mặc định trống
+            Save(); // Lưu đè ngay xuống file để xóa dữ liệu cũ
+        }
+
         private void InitData()
         {
             PlayerData = new PlayerData();

@@ -13,7 +13,7 @@ namespace _Project.Scripts.Gameplay.Global.UI
     public class GameMenuGUI : MonoBehaviour
     {
         [Inject] private GameplayTransition transition;
-        
+
         [SerializeField] private CanvasGroup gameMenuCanvas;
         [SerializeField] private CanvasGroup settingsCanvas;
         [SerializeField, Required] private Button loadButton;
@@ -29,11 +29,14 @@ namespace _Project.Scripts.Gameplay.Global.UI
             sfxSlider.value = GameSettingsController.Instance.sfxVolume * sfxSlider.maxValue;
         }
 
+        // Sửa lại StartGame: Tạo data mới thay vì load data cũ
         public void StartGame()
         {
-            LoadWorldMap();
+            PlayerDataManager.Instance?.StartNewGameData(); // Khởi tạo và ghi đè file save cũ
+            transition.LoadWorldMapGame().Forget(); // Chuyển scene
         }
 
+        // ContinueGame giữ nguyên: Load data cũ
         public void ContinueGame()
         {
             if (!PlayerDataManager.IsDataFileExist()) return;
@@ -41,6 +44,7 @@ namespace _Project.Scripts.Gameplay.Global.UI
             LoadWorldMap();
         }
 
+        // Hàm này giờ chỉ dành cho ContinueGame
         private void LoadWorldMap()
         {
             PlayerDataManager.Instance?.Load();
