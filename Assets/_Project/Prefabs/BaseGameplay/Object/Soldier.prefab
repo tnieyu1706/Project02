@@ -165,6 +165,8 @@ MonoBehaviour:
   animator: {fileID: 3576546275602722645}
   spriteLibrary: {fileID: 458091463220210244}
   physicsTrigger: {fileID: 6080175687087615231}
+  getHitSoundData: {fileID: 11400000, guid: 2340d683a1dabf849ace79bbfe11ddb0, type: 2}
+  deathSoundData: {fileID: 11400000, guid: 230eeab6425decc4dbf5c8d09a887399, type: 2}
   <MaxHp>k__BackingField: 0
   <Hp>k__BackingField:
     value: 0
