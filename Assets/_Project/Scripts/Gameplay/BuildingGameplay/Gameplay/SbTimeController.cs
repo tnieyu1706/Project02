@@ -49,7 +49,7 @@ namespace Game.BuildingGameplay
         public void Init()
         {
             currentTime.Value = 0;
-            currentTime.Refresh();
+            currentTime.InvokeEvents();
             eventRaiseThTime = 1;
 
             GenerateNextEvent();
@@ -63,7 +63,7 @@ namespace Game.BuildingGameplay
         private void Setup(TimeControllerSaveData data)
         {
             currentTime.Value = data.currentTime;
-            currentTime.Refresh();
+            currentTime.InvokeEvents();
             eventRaiseThTime = data.eventRaiseThTime;
             nextRaisedEventTime = data.nextRaisedEventTime;
 

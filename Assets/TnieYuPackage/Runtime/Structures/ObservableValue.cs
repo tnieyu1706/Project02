@@ -25,7 +25,12 @@ namespace TnieYuPackage.Utils
 
         public event Action<T> OnValueChanged;
 
-        public void Refresh()
+        public void SetValueWithoutEvents(T newValue)
+        {
+            this.value = newValue;
+        }
+
+        public void InvokeEvents()
         {
             OnValueChanged?.Invoke(this.value);
         }
@@ -40,8 +45,9 @@ namespace TnieYuPackage.Utils
             {
                 return thisComparable.CompareTo(otherComparable);
             }
-            
-            throw new ArgumentException($"Cannot compare {nameof(ObservableValue<T>)} to an {nameof(ObservableValue<T>)}");
+
+            throw new ArgumentException(
+                $"Cannot compare {nameof(ObservableValue<T>)} to an {nameof(ObservableValue<T>)}");
         }
     }
 }

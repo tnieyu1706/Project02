@@ -1,8 +1,7 @@
-using _Project.Scripts.Gameplay.Global.SoundSystem;
-using Reflex.Attributes;
 using Reflex.Extensions;
 using SoundSystem.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Thay đổi theo namespace thực tế của Reflex nếu cần
 
@@ -29,9 +28,7 @@ namespace Game.BaseGameplay.Configurators
 
         private void OnInteract(IBaseObjectRuntime owner, IObjectInteractable target)
         {
-            if (owner is not MonoBehaviour ownerMonoBehaviour) return;
-
-            var container = ownerMonoBehaviour.gameObject.GetClosestContainer();
+            var container = SceneManager.GetActiveScene().GetSceneContainer();
             var sfxManager = container.Resolve<SfxManager>();
             sfxManager?.PlayVfx(interactSoundData).Forget();
         }
