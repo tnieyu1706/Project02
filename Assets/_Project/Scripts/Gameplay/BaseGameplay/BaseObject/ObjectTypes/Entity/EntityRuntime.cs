@@ -67,7 +67,7 @@ namespace Game.BaseGameplay
 
             // init baseValue
             MaxHp = preset.maxHp; //temp test.
-            Hp.Value = MaxHp;
+            Hp.SetValueWithoutEvents(MaxHp);
             Defense = BaseGameplayCalculator.Instance.CalculateArmyDefense(preset.armyType, preset.def);
         }
     }
