@@ -43,6 +43,8 @@ namespace Game.StrategyBuilding
         /// </summary>
         protected int CalculateTotalCapacity()
         {
+            if (!IsActive) return 0;
+            
             float baseCapacity = ActualPreset.defaultCapacityValue +
                                  (ActualPreset.incrementCapacityValue * (CurrentUpgradeLevel - 1));
 
@@ -101,6 +103,16 @@ namespace Game.StrategyBuilding
             // nhưng thường sức chứa là số tĩnh (tăng max) chứ không phải sản xuất mỗi giây (produce), 
             // nên ta có thể bỏ qua không popup.
             return popupTexts;
+        }
+        
+        protected override void SubHandleActiveBuildingApplyResource()
+        {
+            base.SubHandleActiveBuildingApplyResource();
+            // play: sfx effect
+            if (ActualPreset.sfxData != null)
+            {
+                SfxManager.PlayVfx(ActualPreset.sfxData);
+            }
         }
 
         protected override void BuildBehaviourLayoutUI(VisualElement container)

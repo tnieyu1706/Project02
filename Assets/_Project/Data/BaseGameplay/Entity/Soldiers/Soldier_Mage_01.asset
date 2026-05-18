@@ -17,7 +17,7 @@ MonoBehaviour:
   trackingLayerMask:
     serializedVersion: 2
     m_Bits: 3072
-  interactRange: 2.2
+  interactRange: 2.1
   baseDamage: 4
   attackCooldown: 1
   projectileSpeed: 4
@@ -50,6 +50,7 @@ MonoBehaviour:
   - {fileID: -2845334438865011553}
   configurators:
   - {fileID: 11400000, guid: 1a7a1d059b5ee2c4a9e062355d8d4a21, type: 2}
+  - {fileID: 11400000, guid: c01f0dbd30a08424eac031a047b2d7a3, type: 2}
   maxHp: 32
   def: 1.2
   armyType: 1

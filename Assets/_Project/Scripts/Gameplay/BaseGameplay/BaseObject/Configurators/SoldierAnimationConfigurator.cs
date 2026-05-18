@@ -23,7 +23,7 @@ namespace Game.BaseGameplay.Configurators
             if (runtime is IEntityRuntime entityRuntime)
             {
                 //play idle animation
-                entityRuntime.EntityAnimator.SetTrigger(BaseConstant.ENTITY_DIED_TRIGGER);
+                entityRuntime.EntityAnimator.SetTrigger(BaseConstant.ENTITY_IDLE_TRIGGER);
             }
         }
 

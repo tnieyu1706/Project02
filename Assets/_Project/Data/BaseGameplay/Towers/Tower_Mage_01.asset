@@ -19,7 +19,7 @@ MonoBehaviour:
   configurators: []
   towerIcon: {fileID: 219353963032088567, guid: 2759d20ca5c2af843a62b7dc207a61d9, type: 3}
   towerPriceValue: 90
-  towerType: 0
+  towerType: 2
   towerLevel: 1
   towerEvents: []
 --- !u!114 &657628919129985204

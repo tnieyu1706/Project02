@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Global.Tooltip;
+using Cysharp.Threading.Tasks;
 using Game.BuildingGameplay;
-using TnieYuPackage.Utils;
+using Reflex.Attributes;
+using SoundSystem.Core;
+using System.Threading; // THÊM THƯ VIỆN NÀY ĐỂ DÙNG CancellationTokenSource
 using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.UI;
+using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Cysharp.Threading.Tasks;
 
 namespace Game.StrategyBuilding
 {
@@ -15,7 +18,9 @@ namespace Game.StrategyBuilding
     public abstract class BaseBuildingBehaviour<TPreset> : IBuildingBehaviour<TPreset>
         where TPreset : BuildingPresetSo
     {
-        public const float REFUND_RATIO = 0.8f; // Tỉ lệ hoàn trả tài nguyên khi phá hủy công trình
+        public const float REFUND_RATIO = 0.8f;
+
+        [Inject] protected SfxManager SfxManager;
 
         public TPreset ActualPreset { get; }
         public ActionCost UpgradeCostRuntime { get; private set; }
@@ -25,6 +30,17 @@ namespace Game.StrategyBuilding
         public int MaxVillagersCanUse { get; set; } = 1;
 
         public Guid BehaviourId { get; } = Guid.NewGuid();
+        public Guid ConstructionTextId { get; } = Guid.NewGuid();
+
+        // THÊM: CancellationTokenSource để quản lý lifecycle của các UniTask
+        protected CancellationTokenSource behaviourCts = new CancellationTokenSource();
+
+        // THÊM: Các biến quản lý xây dựng
+        public bool IsUnderConstruction { get; protected set; }
+        public float RemainingBuildTime { get; protected set; }
+
+        // THÊM: Thuộc tính chuẩn hóa để lớp con biết công trình có đang thực sự hoạt động cung cấp lợi ích hay không
+        public virtual bool IsActive => !IsUnderConstruction;
 
         protected VisualElement rootPanel;
         protected VisualElement behaviourLayoutContainer;
@@ -37,14 +53,16 @@ namespace Game.StrategyBuilding
         protected Button btnAddVillager;
         protected Button btnRemoveVillager;
 
-        // THAY ĐỔI: Chuyển btnUpgrade lên đây để class con (MainBuildingBehaviour) có thể chỉnh sửa
         protected Button btnUpgrade;
 
         protected Dictionary<ResourceType, float> appliedConsumptions = new Dictionary<ResourceType, float>();
 
-        // THÊM: PROPERTY CHO PHÉP OVERRIDE TRẠNG THÁI "BẬN RỘN" (VÍ DỤ: ĐANG SPAWN LÍNH)
-        protected virtual bool IsBusy => false;
-        protected virtual string BusyReason => "Công trình đang hoạt động, không thể thay đổi nông dân.";
+        // THAY ĐỔI: Chặn thao tác nếu đang bận HOẶC đang xây dựng
+        protected virtual bool IsBusy => IsUnderConstruction;
+
+        protected virtual string BusyReason => IsUnderConstruction
+            ? $"Đang xây dựng... ({Mathf.CeilToInt(RemainingBuildTime)}s)"
+            : "Công trình đang hoạt động, không thể thay đổi nông dân.";
 
         public BaseBuildingBehaviour(TPreset preset, Vector2Int tilePosition)
         {
@@ -54,12 +72,78 @@ namespace Game.StrategyBuilding
 
             MaxVillagersCanUse = preset.defaultMaxVillagersCanUse;
 
+            // Khởi tạo trạng thái xây dựng
+            IsUnderConstruction = preset.buildWaitingTime > 0;
+            RemainingBuildTime = preset.buildWaitingTime;
+
             InfluenceRatio.OnValueChanged += HandleInfluenceRatioChanged;
             SbGameplayController.OnActiveBuildingApplyResource += HandleActiveBuildingApplyResource;
         }
 
         public virtual void Setup()
         {
+            if (IsUnderConstruction)
+            {
+                // Bắt đầu đếm ngược xây dựng, truyền CancellationToken vào
+                ConstructionRoutine(behaviourCts.Token).Forget();
+            }
+            else
+            {
+                // Nếu không cần xây, hoàn thành luôn
+                CompleteConstruction();
+            }
+        }
+
+        private async UniTaskVoid ConstructionRoutine(CancellationToken token)
+        {
+            UpdateConstructionPersistentText();
+
+            while (RemainingBuildTime > 0)
+            {
+                // Đếm ngược từng giây và tự động huỷ nếu nhận được token cancel
+                bool isCanceled = await UniTask.Delay(
+                        1000,
+                        delayType: DelayType.DeltaTime,
+                        cancellationToken: token,
+                        cancelImmediately: true)
+                    .SuppressCancellationThrow();
+
+                // Nếu Task bị huỷ (do công trình bị xoá), thoát luôn vòng lặp
+                if (isCanceled) return;
+
+                RemainingBuildTime -= 1f;
+
+                if (RemainingBuildTime > 0)
+                {
+                    UpdateConstructionPersistentText();
+                }
+
+                // Cập nhật UI để thấy thời gian giảm
+                if (rootPanel != null) UpdateBuildingLayoutUI();
+            }
+
+            ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+            CompleteConstruction();
+        }
+
+        protected virtual void UpdateConstructionPersistentText()
+        {
+            if (!IsUnderConstruction) return;
+
+            // Lấy vị trí trên đỉnh công trình
+            Vector3 textPos = GetWorldPosition() + Vector3.up * 0.5f;
+
+            // Hiển thị Persistent Text màu vàng cùng icon (nếu dùng font hỗ trợ Emoji/Kí tự)
+            ScreenTextDisplayController.Instance.SetPersistentText(ConstructionTextId,
+                $"⏳ {Mathf.CeilToInt(RemainingBuildTime)}s", textPos, Color.yellow);
+        }
+
+        private void CompleteConstruction()
+        {
+            IsUnderConstruction = false;
+            RemainingBuildTime = 0;
+
+            // Chạy logic Setup gốc (gán nông dân...)
             if (ActualPreset.requireVillagers)
             {
                 int available = SbGameplayController.Instance.VillagerData.RemainingVillagers;
@@ -73,6 +157,15 @@ namespace Game.StrategyBuilding
             }
 
             UpdateVillagerPersistentText();
+
+            // GỌI MAP SYSTEM TÍNH LẠI INFLUENCE KHI XÂY XONG
+            if (SbGridMapSystem.HasInstance)
+            {
+                SbGridMapSystem.Instance.UpdateInfluenceForTile(TilePosition);
+            }
+
+            RefreshBehaviour();
+            if (rootPanel != null) UpdateBuildingLayoutUI();
         }
 
         private void HandleInfluenceRatioChanged(float newRatio)
@@ -89,6 +182,10 @@ namespace Game.StrategyBuilding
 
         public virtual void DestroyBehaviour()
         {
+            // THÊM: Huỷ tất cả các UniTask đang chạy ngầm của Behaviour này
+            behaviourCts?.Cancel();
+            behaviourCts?.Dispose();
+
             SbGameplayController.OnActiveBuildingApplyResource -= HandleActiveBuildingApplyResource;
 
             if (UsedVillagers > 0)
@@ -98,10 +195,13 @@ namespace Game.StrategyBuilding
             }
 
             ScreenTextDisplayController.Instance.RemovePersistentText(BehaviourId);
+            ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
         }
 
         public void UpgradeBehaviour()
         {
+            if (IsUnderConstruction) return;
+
             SbGameplayController.ApplyCost(UpgradeCostRuntime);
 
             CurrentUpgradeLevel++;
@@ -120,7 +220,9 @@ namespace Game.StrategyBuilding
             {
                 CurrentUpgradeLevel = this.CurrentUpgradeLevel,
                 UsedVillagers = this.UsedVillagers,
-                MaxVillagersCanUse = this.MaxVillagersCanUse
+                MaxVillagersCanUse = this.MaxVillagersCanUse,
+                IsUnderConstruction = this.IsUnderConstruction,
+                RemainingBuildTime = this.RemainingBuildTime
             };
         }
 
@@ -135,8 +237,17 @@ namespace Game.StrategyBuilding
 
             this.CurrentUpgradeLevel = data.CurrentUpgradeLevel;
             this.UsedVillagers = data.UsedVillagers;
-
             this.MaxVillagersCanUse = Mathf.Max(data.MaxVillagersCanUse, ActualPreset.defaultMaxVillagersCanUse);
+
+            // Phục hồi trạng thái xây dựng
+            this.IsUnderConstruction = data.IsUnderConstruction;
+            this.RemainingBuildTime = data.RemainingBuildTime;
+
+            // Bổ sung: Tiếp tục đếm ngược nếu Load Game mà công trình vẫn đang xây
+            if (this.IsUnderConstruction)
+            {
+                ConstructionRoutine(behaviourCts.Token).Forget();
+            }
 
             UpgradeCostRuntime = ActualPreset.DefaultUpgradeCost;
             for (int i = 1; i < CurrentUpgradeLevel; i++)
@@ -145,9 +256,9 @@ namespace Game.StrategyBuilding
             }
 
             UpdateResourceConsumption();
-
             RefreshBehaviour();
-            UpdateBuildingLayoutUI();
+
+            if (rootPanel != null) UpdateBuildingLayoutUI();
         }
 
         public virtual void AttachUIToPanel(VisualElement root)
@@ -236,7 +347,6 @@ namespace Game.StrategyBuilding
 
             var btnDestroy = footerRow.CreateChild(new Button(HandleDestroyButtonClicked) { text = "Destroy" },
                 "btn-destroy");
-
             btnDestroy.RegisterCallback<MouseEnterEvent>(HandleDestroyButtonEnter);
             btnDestroy.RegisterCallback<MouseLeaveEvent>(HandleDestroyButtonLeave);
 
@@ -249,7 +359,6 @@ namespace Game.StrategyBuilding
 
             btnRemoveVillager = villagersContainer.CreateChild(new Button() { text = "-" }, "btn-villager-math");
             btnRemoveVillager.clicked += RemoveVillager;
-
             btnRemoveVillager.RegisterCallback<MouseEnterEvent>(HandleVillagerButtonEnter);
             btnRemoveVillager.RegisterCallback<MouseLeaveEvent>(HandleVillagerButtonLeave);
 
@@ -258,13 +367,11 @@ namespace Game.StrategyBuilding
 
             btnAddVillager = villagersContainer.CreateChild(new Button() { text = "+" }, "btn-villager-math");
             btnAddVillager.clicked += AddVillager;
-
             btnAddVillager.RegisterCallback<MouseEnterEvent>(HandleVillagerButtonEnter);
             btnAddVillager.RegisterCallback<MouseLeaveEvent>(HandleVillagerButtonLeave);
 
             var upgradeContainer = footerRow.CreateChild("upgrade-container");
 
-            // SỬ DỤNG BIẾN protected btnUpgrade ĐÃ KHAI BÁO
             btnUpgrade = upgradeContainer.CreateChild(new Button(HandleUpgradeButtonClicked) { text = "Upgrade" },
                 "btn-upgrade");
             btnUpgrade.RegisterCallback<MouseEnterEvent>(HandleMouseEnterUpgradeButton);
@@ -292,8 +399,7 @@ namespace Game.StrategyBuilding
         private void HandleDestroyButtonEnter(MouseEnterEvent evt)
         {
             ActionCost refundCost = ActualPreset.costBuilding.Data * REFUND_RATIO;
-            string tooltipText =
-                $"Refund ({Mathf.RoundToInt(REFUND_RATIO * 100)}%):\n{refundCost.GetTextVertical()}";
+            string tooltipText = $"Refund ({Mathf.RoundToInt(REFUND_RATIO * 100)}%):\n{refundCost.GetTextVertical()}";
             TextTooltipController.Instance.Display(tooltipText, evt.mousePosition + new Vector2(10, -10));
         }
 
@@ -361,7 +467,7 @@ namespace Game.StrategyBuilding
 
         protected virtual void UpdateVillagerPersistentText()
         {
-            if (!ActualPreset.requireVillagers)
+            if (!ActualPreset.requireVillagers || IsUnderConstruction) // Ẩn text nếu đang xây
             {
                 ScreenTextDisplayController.Instance.RemovePersistentText(BehaviourId);
                 return;
@@ -382,6 +488,7 @@ namespace Game.StrategyBuilding
 
         private void HandleActiveBuildingApplyResource()
         {
+            if (IsUnderConstruction) return; // Không sinh tài nguyên nếu đang xây
             if (ActualPreset.requireVillagers && UsedVillagers <= 0) return;
 
             List<(string, Color)> displayTexts = GetResourcePopupTexts();
@@ -389,18 +496,29 @@ namespace Game.StrategyBuilding
 
             Vector3 worldPos = GetWorldPosition() + Vector3.up * 0.5f;
 
-            DisplayTextsSequentiallyAsync(displayTexts, worldPos).Forget();
+            DisplayTextsSequentiallyAsync(displayTexts, worldPos, behaviourCts.Token).Forget();
+
+            SubHandleActiveBuildingApplyResource();
         }
 
-        private async UniTaskVoid DisplayTextsSequentiallyAsync(List<(string, Color)> texts, Vector3 worldPos)
+        protected virtual void SubHandleActiveBuildingApplyResource()
+        {
+        }
+
+        private async UniTaskVoid DisplayTextsSequentiallyAsync(List<(string, Color)> texts, Vector3 worldPos,
+            CancellationToken token)
         {
             for (int i = 0; i < texts.Count; i++)
             {
+                if (token.IsCancellationRequested) return;
+
                 ScreenTextDisplayController.Instance.DisplayText(texts[i].Item1, worldPos, texts[i].Item2);
 
                 if (i < texts.Count - 1)
                 {
-                    await UniTask.Delay(TimeSpan.FromMilliseconds(300));
+                    bool isCanceled = await UniTask.Delay(TimeSpan.FromMilliseconds(300), cancellationToken: token)
+                        .SuppressCancellationThrow();
+                    if (isCanceled) return;
                 }
             }
         }
@@ -428,6 +546,8 @@ namespace Game.StrategyBuilding
 
         protected virtual void UpdateResourceConsumption()
         {
+            if (IsUnderConstruction) return;
+
             var consumedCost = GetConsumedResourcesData();
             if (consumedCost == null) return;
 
@@ -474,12 +594,24 @@ namespace Game.StrategyBuilding
                 btnRemoveVillager.SetEnabled(UsedVillagers > 0 && !IsBusy);
             }
 
+            if (btnUpgrade != null)
+            {
+                btnUpgrade.SetEnabled(!IsBusy);
+            }
+
             UpdateVillagerPersistentText();
         }
 
         protected virtual void UpdateBuildingLayoutUI()
         {
-            if (levelLabel != null) levelLabel.text = $"Lv.{CurrentUpgradeLevel}";
+            if (levelLabel != null)
+            {
+                levelLabel.text = IsUnderConstruction
+                    ? $"Xây dựng: {Mathf.CeilToInt(RemainingBuildTime)}s"
+                    : $"Lv.{CurrentUpgradeLevel}";
+                levelLabel.style.color = IsUnderConstruction ? Color.yellow : Color.white;
+            }
+
             if (influenceRatioLabel != null)
                 influenceRatioLabel.text = $"{Mathf.RoundToInt(InfluenceRatio.Value * 100)}%";
 
@@ -488,18 +620,18 @@ namespace Game.StrategyBuilding
 
         private void HandleUpgradeButtonClicked()
         {
+            if (IsUnderConstruction) return;
             if (!SbGameplayController.ValidateCost(UpgradeCostRuntime)) return;
             UpgradeBehaviour();
         }
 
-        // THAY ĐỔI: Chuyển thành protected virtual để class con override
         protected virtual void HandleMouseEnterUpgradeButton(MouseEnterEvent evt)
         {
+            if (IsUnderConstruction) return;
             TextTooltipController.Instance.Display(UpgradeCostRuntime.GetTextVertical(),
                 evt.mousePosition + new Vector2(10, -10));
         }
 
-        // THAY ĐỔI: Chuyển thành protected virtual
         protected virtual void HandleMouseLeaveUpgradeButton(MouseLeaveEvent evt)
         {
             TextTooltipController.Instance.Hide();

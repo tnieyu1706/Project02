@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Global.GameController
 {
+    [DefaultExecutionOrder(-200)]
     public class GameSettingsController : Singleton<GameSettingsController>
     {
         private const string MASTER_VOLUME_KEY = "masterVolume";

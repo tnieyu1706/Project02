@@ -62,10 +62,18 @@ namespace Game.BaseGameplay.Strategies
 
         public override void Interact(IObjectInteractable interactable)
         {
-            // Được gọi từ BaseGameplayInteractSystem (nếu System đã check CanUse thì ở đây double check cho an toàn)
             if (!CanUse || interactable == null || interactable.Hp.Value <= 0) return;
 
-            Debug.Log("Interact Cause Damage Strategy");
+            // [BẢO VỆ POOLING 1]: System có thể truyền nhầm target cũ vừa lấy từ Pool ra.
+            // Phải double-check xem target hiện tại có đang nằm trong tầm đánh không.
+            // Thêm 0.5f làm buffer sai số nếu enemy di chuyển nhanh.
+            float distanceToTarget = Vector3.Distance(OwnerRuntime.CurrentPosition, interactable.CurrentPosition);
+            if (distanceToTarget > ActualInstaller.interactRange + 0.5f)
+            {
+                // Target ở quá xa (có thể là do mới spawn lại từ pool), từ chối đánh.
+                return;
+            }
+
             // Kích hoạt luồng đánh bằng UniTaskVoid để tách khỏi main thread update
             ExecuteAttackSequence(interactable, cts.Token).Forget();
         }
@@ -76,7 +84,7 @@ namespace Game.BaseGameplay.Strategies
         private async UniTaskVoid ExecuteAttackSequence(IObjectInteractable interactable, CancellationToken token)
         {
             CanUse = false;
-            
+
             OwnerRuntime.OnInteract?.Invoke(OwnerRuntime, interactable);
             // Thực hiện hành động của loại vũ khí (Cận chiến thì trừ máu ngay, đánh xa thì bắn đạn bay đi)
             PerformAttackAction(interactable, token).Forget();
@@ -105,7 +113,6 @@ namespace Game.BaseGameplay.Strategies
             }
 
             target.Hp.Value = Mathf.Max(0, target.Hp.Value - finalDamage);
-            Debug.Log($"[{GetType().Name}] Gây {finalDamage} sát thương. Máu: {target.Hp.Value}");
         }
     }
 }

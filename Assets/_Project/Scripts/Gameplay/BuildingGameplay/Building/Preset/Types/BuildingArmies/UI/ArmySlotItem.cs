@@ -42,6 +42,7 @@ namespace Game.BuildingGameplay
 
         private readonly VisualElement container;
         private readonly Image displayImage;
+        private readonly Label amountLabel; // THÊM MỚI: Label hiển thị số lượng
         private readonly ProgressBar progressBar;
         private readonly Button cancelButton;
         private readonly ArmyBuildingBehaviour behaviour;
@@ -62,7 +63,13 @@ namespace Game.BuildingGameplay
             this.AddClass("army-slot-wrapper");
             container = this.CreateChild("army-slot-container");
 
-            displayImage = container.CreateChild<Image>("army-slot-icon");
+            // THÊM MỚI: Tạo một wrapper để chứa Icon và Label số lượng (hỗ trợ position absolute)
+            var iconWrapper = container.CreateChild("army-slot-icon-wrapper");
+
+            displayImage = iconWrapper.CreateChild<Image>("army-slot-icon");
+
+            amountLabel = iconWrapper.CreateChild<Label>("army-slot-amount");
+            amountLabel.style.display = DisplayStyle.None; // Ẩn lúc ban đầu
 
             progressBar = container.CreateChild(new ProgressBar(), "army-slot-progress");
             progressBar.lowValue = 0;
@@ -81,6 +88,7 @@ namespace Game.BuildingGameplay
         private void ResetItem()
         {
             displayImage.sprite = null;
+            amountLabel.style.display = DisplayStyle.None; // Ẩn label số lượng
             progressBar.value = 0;
             cancelButton.style.display = DisplayStyle.None;
         }
@@ -102,6 +110,11 @@ namespace Game.BuildingGameplay
             }
 
             displayImage.sprite = armyPresetTemp.icon;
+
+            // THÊM MỚI: Hiển thị số lượng lính được sinh ra trong đợt này
+            amountLabel.text = armyPresetTemp.spawnAmount.ToString();
+            amountLabel.style.display = DisplayStyle.Flex;
+
             progressBar.value = 0;
             cancelButton.style.display = DisplayStyle.Flex;
 
@@ -127,7 +140,8 @@ namespace Game.BuildingGameplay
         {
             DisposeToken();
             ResetItem();
-            SbGameplayController.AddArmy(armyPresetTemp.armyType, 1);
+            SbGameplayController.AddArmy(armyPresetTemp.armyType, armyPresetTemp.spawnAmount);
+            behaviour.SelfHandleActiveBuildingApplyResource();
 
             // Hoàn tất, trigger event để kiểm tra mở lại nút Nông Dân
             OnSpawnStateChanged?.Invoke();

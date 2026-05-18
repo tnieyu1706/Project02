@@ -12,6 +12,7 @@ using SerializeButton = EditorAttributes.ButtonAttribute;
 namespace Game.Global
 {
     [RequireComponent(typeof(UIDocument))]
+    [DefaultExecutionOrder(-100)]
     public class GameSkillTreeDisplayController : Singleton<GameSkillTreeDisplayController>, IDisplayGUI
     {
         [Inject] GameSkillDataManager skillDataManager;
@@ -88,7 +89,7 @@ namespace Game.Global
         private void HandleSkillNodeClicked(GameSkillTreeNode skillNode)
         {
             var skillData = skillNode.Data;
-            Debug.Log($"Clicked Skill: {skillData.skillName} ({skillData.skillId})");
+            // Debug.Log($"Clicked Skill: {skillData.skillName} ({skillData.skillId})");
 
             if (!skillNode.NodeState.CanInteract || !CheckSkillPointValid(skillData)) return;
 

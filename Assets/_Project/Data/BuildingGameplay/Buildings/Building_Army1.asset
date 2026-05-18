@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingId: SpawnArmy1
   defaultMaxVillagersCanUse: 2
   requireVillagers: 1
+  buildWaitingTime: 40
   buildingCategory: 3
   tileLayer: 4
   buildingTile: {fileID: 11400000, guid: bd710749913bdc04ab2de1893f06b067, type: 2}
@@ -27,6 +28,7 @@ MonoBehaviour:
         value: 8
       - key: 0
         value: 60
+  sfxData: {fileID: 11400000, guid: 693dcd7b00d1d71479a36dc2c7dfd19c, type: 2}
   styleSheets:
   - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
   - {fileID: 7433441132597879392, guid: d07ffbb31c7e4f2683adc061bf5680e7, type: 3}

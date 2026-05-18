@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SoundData_CauseDamage
   m_EditorClassIdentifier: 
   resource: {fileID: 6418180475301049370, guid: 0922d1837247e9b49b08aa642c874168, type: 2}
-  volume: 0.559
+  volume: 0.4
   pitch: 1
   loop: 0

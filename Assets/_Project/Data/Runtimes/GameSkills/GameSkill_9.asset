@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0552e4b95c4c67be229efa7c0608de, type: 3}
+  m_Name: GameSkill_9
+  m_EditorClassIdentifier: 
+  skillId: Skill9
+  skillName: Increase refund tower money
+  requiredSkillPoint: 20
+  skillIcon: {fileID: -1292100103, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
+  skillDescription: Increase refund tower money scale 20%.
+  skillInfluencer:
+    rid: 949501177755861098
+  nextSkills:
+  - {fileID: 11400000, guid: 5353ffa6647d4474896ef5d306fd48e7, type: 2}
+  - {fileID: 11400000, guid: 5da97c3a1ce102a4db31fbbd5eb62964, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 949501177755861098
+      type: {class: GlobalStatInfluencer, ns: Game.Global, asm: Core.Gameplay}
+      data:
+        statType: 3
+        value: 0.2

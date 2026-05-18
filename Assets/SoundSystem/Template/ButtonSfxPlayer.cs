@@ -1,14 +1,14 @@
-using KBCore.Refs;
+using SoundSystem.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.Scripts.Gameplay.Global.GameController
+namespace SoundSystem.Template
 {
     [RequireComponent(typeof(Button))]
     public class ButtonSfxPlayer : SfxPlayer
     {
-        [SerializeField, Self] private Button button;
-        [SerializeField] private string sfxName;
+        [SerializeField] private Button button;
+        [SerializeField] private SoundData soundData;
 
         void Awake()
         {
@@ -22,7 +22,7 @@ namespace _Project.Scripts.Gameplay.Global.GameController
 
         private void PlaySfx()
         {
-            PlaySound(sfxName);
+            PlaySound(soundData);
         }
 
         private void OnDestroy()

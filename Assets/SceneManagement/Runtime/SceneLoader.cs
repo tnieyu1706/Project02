@@ -15,7 +15,7 @@ namespace SceneManagement
         }
     }
 
-    [DefaultExecutionOrder(-500)]
+    [DefaultExecutionOrder(-1000)]
     public class SceneLoader : Singleton<SceneLoader>
     {
         public SceneGroupManager manager;

@@ -28,9 +28,8 @@ namespace Game.BuildingGameplay
     [DefaultExecutionOrder(-12)]
     public class SbTimeController : Singleton<SbTimeController>, ISaveLoadData<TimeControllerSaveData>
     {
-        public const string PERSISTENCE_KEY = "SbTimeController";
         private const float TIME_UNIT = 5f;
-        private static float TotalTimeUnit => TIME_UNIT * Time.timeScale;
+        private static float TotalTimeUnit => TIME_UNIT / Time.timeScale;
 
         [Inject] private GameplayTransition transition;
 
@@ -50,7 +49,7 @@ namespace Game.BuildingGameplay
         public void Init()
         {
             currentTime.Value = 0;
-            currentTime.Refresh();
+            currentTime.InvokeEvents();
             eventRaiseThTime = 1;
 
             GenerateNextEvent();
@@ -64,7 +63,7 @@ namespace Game.BuildingGameplay
         private void Setup(TimeControllerSaveData data)
         {
             currentTime.Value = data.currentTime;
-            currentTime.Refresh();
+            currentTime.InvokeEvents();
             eventRaiseThTime = data.eventRaiseThTime;
             nextRaisedEventTime = data.nextRaisedEventTime;
 
@@ -135,7 +134,7 @@ namespace Game.BuildingGameplay
                     delayType: DelayType.DeltaTime
                 );
 
-                currentTime.Value += TotalTimeUnit;
+                currentTime.Value += TIME_UNIT;
 
                 // Kiểm tra xem đã đến lúc Raise Event chưa
                 if (CurrentEventConfig != null && currentTime.Value >= nextRaisedEventTime)

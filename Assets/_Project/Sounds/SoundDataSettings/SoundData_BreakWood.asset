@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SoundData_BreakWood
   m_EditorClassIdentifier: 
   resource: {fileID: 8300000, guid: 00320646bc45424479b1c70c1ad28156, type: 3}
-  volume: 1
+  volume: 0.6
   pitch: 1
   loop: 0

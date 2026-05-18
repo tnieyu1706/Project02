@@ -50,6 +50,7 @@ MonoBehaviour:
   - {fileID: -2018201915991539822}
   configurators:
   - {fileID: 11400000, guid: 8a72cf3a1abe97745a4d9c8eba1b28aa, type: 2}
+  - {fileID: 11400000, guid: c01f0dbd30a08424eac031a047b2d7a3, type: 2}
   maxHp: 16
   def: 1
   armyType: 1

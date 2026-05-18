@@ -9,7 +9,8 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Reflex.Attributes;
-using Reflex.Extensions; // Cần thêm namespace này
+using Reflex.Extensions;
+using SoundSystem.Core;
 
 namespace Game.StrategyBuilding
 {
@@ -20,9 +21,7 @@ namespace Game.StrategyBuilding
         Water,
         Building,
         Factory,
-
         Storage
-        //... Biome, Building, etc.
     }
 
     public static class SbTileLayerExtensions
@@ -83,9 +82,8 @@ namespace Game.StrategyBuilding
     {
         [Inject] BuildingPresetManager buildingPresetManager;
         [Inject] SbTileLayerDataManager tileLayerDataManager;
+        [Inject] private SfxManager sfxManager;
 
-        // Khai báo một Serializer đặc biệt hỗ trợ Đa Hình (Polymorphism)
-        // Nó sẽ tự động nhúng thêm thuộc tính "$type" vào chuỗi JSON để giữ lại class con.
         private static readonly JsonSerializer PolymorphicSerializer = new JsonSerializer
         {
             TypeNameHandling = TypeNameHandling.Objects,
@@ -112,6 +110,8 @@ namespace Game.StrategyBuilding
         public void WriteTile(Vector2Int pos, SbGridTileData data)
         {
             GridMap[pos] = data;
+
+            // Có thể mở rộng sau này: nếu đang xây dựng thì hiển thị Sprite đang xây (scaffolding)
             gridTilemap.SetTile((Vector3Int)pos,
                 data.BuildingRuntime != null
                     ? data.BuildingRuntime.currentPreset.buildingTile
@@ -134,16 +134,19 @@ namespace Game.StrategyBuilding
         {
             if (!GridMap.TryGetValue(pos, out var tileData)) return false;
 
-            // Giảm số lượng công trình khi bị xoá
             if (tileData.BuildingRuntime != null)
             {
                 Game.Global.GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value--;
+                
+                // THÊM: Phát âm thanh phá huỷ (chỉ phát nếu ô bị xoá là công trình)
+                if (buildingPresetManager?.destroySfx != null)
+                {
+                    sfxManager?.PlayVfx(buildingPresetManager.destroySfx).Forget();
+                }
             }
 
             GridMap.Remove(pos);
-
             HandleInfluenceOnDestroy(tileData);
-
             gridTilemap.SetTile((Vector3Int)pos, null);
 
             return true;
@@ -151,15 +154,30 @@ namespace Game.StrategyBuilding
 
         #region Influence Controller
 
+        // THÊM: Hàm này cho phép gọi công khai từ BaseBuildingBehaviour khi hoàn thành xây dựng
+        public void UpdateInfluenceForTile(Vector2Int pos)
+        {
+            if (GridMap.TryGetValue(pos, out var tileData))
+            {
+                HandleInfluenceOnCreate(tileData);
+            }
+        }
+
         private void HandleInfluenceOnCreate(SbGridTileData centerTile)
         {
             var centerBuilding = centerTile.BuildingRuntime?.behaviour;
+
+            // KIỂM TRA: Nếu công trình trung tâm ĐANG XÂY -> Không tính/phát Influence
+            if (centerBuilding != null && centerBuilding.IsUnderConstruction) return;
 
             foreach (var dir in Vector2IntUtils.Get8DirectionalVectors())
             {
                 if (!GridMap.TryGetValue(centerTile.TilePosition + dir, out var neighborTile)) continue;
 
                 var neighborBuilding = neighborTile.BuildingRuntime?.behaviour;
+
+                // KIỂM TRA: Nếu công trình kế bên ĐANG XÂY -> Bỏ qua
+                if (neighborBuilding != null && neighborBuilding.IsUnderConstruction) continue;
 
                 if (neighborBuilding != null &&
                     neighborBuilding.Preset.InfluenceEffects.TryGetValue(centerTile.TileLayer, out var neighborEffect))
@@ -241,12 +259,9 @@ namespace Game.StrategyBuilding
                 {
                     Position = tileData.TilePosition,
                     TileLayer = tileData.TileLayer,
-                    // Chỉ lưu Building ID nếu tile này là công trình (có BuildingRuntime)
                     BuildingId = tileData.BuildingRuntime != null
                         ? tileData.BuildingRuntime.currentPreset.buildingId
                         : string.Empty,
-
-                    // Lấy SaveData từ behaviour và convert thẳng sang JObject (sử dụng PolymorphicSerializer)
                     BehaviourData = tileData.BuildingRuntime != null && tileData.BuildingRuntime.behaviour != null
                         ? JObject.FromObject(tileData.BuildingRuntime.behaviour.SaveData(),
                             PolymorphicSerializer)
@@ -275,6 +290,18 @@ namespace Game.StrategyBuilding
                     if (preset != null)
                     {
                         buildingRuntime = SbSpawnBuildingSystem.SpawnBuildingDirectlyForLoad(dto.Position, preset);
+
+                        // QUAN TRỌNG: Gọi BindData cho Behaviour TRƯỚC khi ghi Map
+                        // Để khi WriteTile -> HandleInfluenceOnCreate có thể check đúng biến 'IsUnderConstruction'
+                        if (buildingRuntime.behaviour != null && dto.BehaviourData != null)
+                        {
+                            var behaviourData =
+                                dto.BehaviourData.ToObject<BuildingBehaviourSaveData>(PolymorphicSerializer);
+                            if (behaviourData != null)
+                            {
+                                buildingRuntime.behaviour.BindData(behaviourData);
+                            }
+                        }
                     }
                     else
                     {
@@ -283,19 +310,8 @@ namespace Game.StrategyBuilding
                     }
                 }
 
-                // Ghi vào Map (Tự động tính toán lại Influence)
+                // Ghi vào Map (Tự động tính toán lại Influence với trạng thái IsUnderConstruction đã chuẩn)
                 CreateAndWriteTile(dto.Position, dto.TileLayer, buildingRuntime);
-
-                // Sau khi đã add vào Map, tiến hành Bind data cho Behaviour
-                if (buildingRuntime != null && buildingRuntime.behaviour != null && dto.BehaviourData != null)
-                {
-                    // Truyền PolymorphicSerializer vào để nó đọc field "$type" và khởi tạo đúng instance của class con
-                    var behaviourData = dto.BehaviourData.ToObject<BuildingBehaviourSaveData>(PolymorphicSerializer);
-                    if (behaviourData != null)
-                    {
-                        buildingRuntime.behaviour.BindData(behaviourData);
-                    }
-                }
             }
         }
 
@@ -312,8 +328,6 @@ namespace Game.StrategyBuilding
             }
 
             GridMap.Clear();
-
-            // Reset số lượng công trình về 0 khi dọn dẹp map (chuẩn bị Load Map hoặc Restart)
             Game.Global.GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value = 0;
         }
 

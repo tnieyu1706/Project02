@@ -18,7 +18,8 @@
         "LitMotion",
         "LitMotion.Extensions",
         "LitMotion.Animation",
-        "Reflex"
+        "Reflex",
+        "SoundSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

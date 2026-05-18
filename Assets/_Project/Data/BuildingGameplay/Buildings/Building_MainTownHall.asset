@@ -15,12 +15,15 @@ MonoBehaviour:
   buildingId: MainTowerHall
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
+  buildWaitingTime: 0
+  buildingType: 0
   buildingCategory: 0
   tileLayer: 3
   buildingTile: {fileID: 11400000, guid: 7278c9d263a58744bac2ea684e5d3b9d, type: 2}
   costBuilding:
     resourceCosts:
       data: []
+  sfxData: {fileID: 0}
   styleSheets:
   - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
   - {fileID: 7433441132597879392, guid: cd636f167d384648b29621aad1aa4d2b, type: 3}

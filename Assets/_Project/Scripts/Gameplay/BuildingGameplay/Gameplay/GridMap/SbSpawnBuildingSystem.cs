@@ -3,6 +3,7 @@ using System.Linq;
 using _Project.Scripts.Gameplay.Global.GameController; // THÊM LINQ
 using Game.BuildingGameplay;
 using Reflex.Attributes;
+using SoundSystem.Core;
 using TnieYuPackage.Handlers;
 using TnieYuPackage.DesignPatterns;
 using TnieYuPackage.GlobalExtensions;
@@ -14,6 +15,8 @@ namespace Game.StrategyBuilding
     public class SbSpawnBuildingSystem : Singleton<SbSpawnBuildingSystem>
     {
         [Inject] private SbGridMapDataController gridMap;
+        [Inject] private BuildingPresetManager buildingPresetManager;
+        [Inject] private SfxManager sfxManager;
 
         [SerializeField] private GameObject buildingPrefab;
         private static BuildingPresetSo currentBuildingPreset;
@@ -193,6 +196,12 @@ namespace Game.StrategyBuilding
 
             SpawnBuilding(tilePos, currentBuildingPreset);
             SbGameplayController.ApplyCost(currentBuildingPreset.costBuilding.Data);
+            
+            // THÊM: Phát âm thanh khi người chơi đặt (xây dựng) công trình thành công
+            if (Instance.buildingPresetManager?.buildSfx != null)
+            {
+                Instance.sfxManager?.PlayVfx(Instance.buildingPresetManager.buildSfx).Forget();
+            }
 
             return true;
         }

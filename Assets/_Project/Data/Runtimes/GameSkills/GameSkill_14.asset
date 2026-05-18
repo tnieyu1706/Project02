@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0552e4b95c4c67be229efa7c0608de, type: 3}
+  m_Name: GameSkill_14
+  m_EditorClassIdentifier: 
+  skillId: Skill14
+  skillName: Unlock army type
+  requiredSkillPoint: 15
+  skillIcon: {fileID: -956451280, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
+  skillDescription: Unlock quick army type
+  skillInfluencer:
+    rid: 949501177755861104
+  nextSkills: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 949501177755861104
+      type: {class: ArmyTypeUnlockInfluencer, ns: Game.Global, asm: Core.Gameplay}
+      data:
+        armyType: 3

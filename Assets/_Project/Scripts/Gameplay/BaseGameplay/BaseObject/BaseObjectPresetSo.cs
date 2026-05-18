@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using EditorAttributes;
-using TnieYuPackage.CustomAttributes;
-using TnieYuPackage.DesignPatterns;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 

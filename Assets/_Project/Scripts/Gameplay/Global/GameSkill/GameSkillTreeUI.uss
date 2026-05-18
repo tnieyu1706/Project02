@@ -42,11 +42,10 @@
 .skill-node {
     position: absolute;
     border-width: 2px;
-    border-color: #ddf1fa;
     border-radius: 20%;
-    /*background-color: #1e293b;*/
-    transition-property: scale, background-color;
-    transition-duration: 0.2s;
+    /* Sử dụng opacity thay thế cho tint-color */
+    transition-property: scale, background-color, border-color, opacity;
+    transition-duration: 0.25s;
 }
 
 .skill-node:hover {
@@ -59,19 +58,33 @@
     background-color: #0ea5e9;
 }
 
+/* =======================================
+   TRẠNG THÁI CỦA SKILL
+======================================= */
+
+/* 1. Trạng thái KHÓA (Lock) - Mờ đục (40%), viền xám tối */
 .skill-lock-state {
-    /*-unity-background-image-tint-color: rgba(255, 255, 255, 0.2);*/
-    background-color: rgba(0, 0, 0, 1);
+    opacity: 0.4;
+    background-color: rgba(20, 20, 20, 0.8);
+    border-color: rgba(100, 100, 100, 0.3);
+    scale: 0.7;
 }
 
+/* 2. Trạng thái CHO PHÉP (Allow) - Sáng hơn (80%), viền Vàng để mời gọi click */
 .skill-allow-state {
-    /*-unity-background-image-tint-color: rgba(255, 255, 255, 0.6);*/
-    background-color: rgba(129, 129, 129, 1);
+    opacity: 0.7;
+    background-color: rgba(80, 80, 80, 0.8);
+    border-color: #facc15;
+    scale: 0.9;
 }
 
+/* 3. Trạng thái ĐÃ MỞ (Unlock) - Sáng rõ (100%), có nền xanh dương nhẹ chứng tỏ đã sỡ hữu */
 .skill-unlock-state {
-    /*-unity-background-image-tint-color: rgba(255, 255, 255, 1);*/
-    background-color: rgb(255, 255, 255);
+    opacity: 1;
+    background-color: rgba(14, 165, 233, 0.3);
+    border-color: #38bdf8;
+    
+    scale: 1.2;
 }
 
 /* Special style for the root skill node */

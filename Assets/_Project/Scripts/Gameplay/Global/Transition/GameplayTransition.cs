@@ -46,17 +46,17 @@ namespace Gameplay.Global
         public async UniTask CreateBuildingGameplay(BuildingGameplayLevel buildingLevelSource,
             LevelData levelData)
         {
-            var buildingGameplaySg = GetBuildingGameplaySgWithLevel(buildingLevelSource);
+            Debug.Log("Creating building gameplay");
+            DataManager.CurrentBuildingLevel = buildingLevelSource;
+            DataManager.CurrentLevel = levelData;
+            buildingLevelSource.Reset();
 
+            var buildingGameplaySg = GetBuildingGameplaySgWithLevel(buildingLevelSource);
             await SceneLoader.Instance.Load(buildingGameplaySg);
 
             if (SbGameplayController.HasInstance)
             {
-                Debug.Log("Creating building gameplay");
-                buildingLevelSource.Reset();
                 SbGameplayController.Instance.CreateGameplay(buildingLevelSource);
-                DataManager.CurrentBuildingLevel = buildingLevelSource;
-                DataManager.CurrentLevel = levelData;
             }
         }
 
@@ -72,9 +72,10 @@ namespace Gameplay.Global
         {
             var buildingGameplaySg = GetBuildingGameplaySgWithLevel(DataManager.CurrentBuildingLevel);
             await SceneLoader.Instance.Load(buildingGameplaySg);
+
             if (SbGameplayController.HasInstance)
             {
-                SbGameplayController.Instance.SetupGameplay(DataManager.CurrentBuildingLevel);
+                SbGameplayController.Instance.SetLevel(DataManager.CurrentBuildingLevel);
                 await SbGameplayController.Instance.LoadAll();
 
                 DataManager.ActiveEvent?.ApplyEventResult();

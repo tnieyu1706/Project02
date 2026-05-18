@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingId: CoinIncrease1
   defaultMaxVillagersCanUse: 2
   requireVillagers: 1
+  buildWaitingTime: 15
   buildingCategory: 4
   tileLayer: 4
   buildingTile: {fileID: 11400000, guid: 248301825e35e9c41b9e309609d0da7f, type: 2}
@@ -27,6 +28,7 @@ MonoBehaviour:
         value: 8
       - key: 2
         value: 6
+  sfxData: {fileID: 11400000, guid: 2b9815931e069664181d6ffd2f47df28, type: 2}
   styleSheets:
   - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
   - {fileID: 7433441132597879392, guid: 5ec69aafc765416e818a34e9057d3b54, type: 3}

@@ -41,6 +41,9 @@ namespace Game.StrategyBuilding
         /// </summary>
         private int CalculateTotalValue()
         {
+            // BỔ SUNG: Nếu công trình chưa hoạt động (đang xây dựng), sức chứa cung cấp sẽ là 0
+            if (!IsActive) return 0;
+
             float basePotential = ActualPreset.defaultValue + (ActualPreset.incrementValue * (CurrentUpgradeLevel - 1));
             // Bỏ đi "* UsedVillagers" vì công trình này không cần dân
             return Mathf.RoundToInt(basePotential * InfluenceRatio.Value);

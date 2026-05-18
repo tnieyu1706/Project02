@@ -15,10 +15,12 @@ namespace Game.BuildingGameplay
     [CreateAssetMenu(fileName = "ArmyTypePreset", menuName = "Game/StrategyBuilding/Building/ArmyType/ArmyTypePreset")]
     public class ArmyTypePresetSo : ScriptableObject
     {
-        public ArmyType armyType;
+        [Header("Basic Info")] public ArmyType armyType;
         public ArmyCategory armyCategory;
         public Sprite icon;
-        public float delaySpawn;
+
+        [Header("Spawn Info")] public float delaySpawn;
+        public int spawnAmount = 5;
         public SerializableActionCost cost;
     }
 }

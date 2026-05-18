@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SoundData_ClaimCoin
   m_EditorClassIdentifier: 
   resource: {fileID: 8300000, guid: 4f1589f4733456b42af7bcd60ee37bd3, type: 3}
-  volume: 1
+  volume: 0.55
   pitch: 1
   loop: 0

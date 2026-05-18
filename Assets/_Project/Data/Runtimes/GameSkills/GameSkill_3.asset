@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: GameSkill_3
   m_EditorClassIdentifier: 
   skillId: Skill3
-  skillName: Increase money resource
-  requiredSkillPoint: 1
-  skillIcon: {fileID: 0}
-  skillDescription: Increase money resource scale 5%.
+  skillName: Increase global resource
+  requiredSkillPoint: 10
+  skillIcon: {fileID: 1870456093, guid: be84f205c5f85d2478f88a7e0c94469f, type: 3}
+  skillDescription: Increase global (all) resource scale 5%.
   skillInfluencer:
-    rid: 6075148189792469099
+    rid: 949501177755861096
   nextSkills: []
   references:
     version: 2
     RefIds:
-    - rid: 6075148189792469099
-      type: {class: ResourceScaleInfluencer, ns: Game.Global, asm: Core.Gameplay}
+    - rid: 949501177755861096
+      type: {class: GlobalStatInfluencer, ns: Game.Global, asm: Core.Gameplay}
       data:
-        resourceType: 0
-        addValue: 0.05
+        statType: 5
+        value: 0.05

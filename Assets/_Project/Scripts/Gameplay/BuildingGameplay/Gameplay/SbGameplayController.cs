@@ -26,9 +26,12 @@ namespace Game.BuildingGameplay
 
         [Inject] private GameplayTransition transition;
 
-        public BuildingGameplayLevel currentLevel;
+        [ReadOnly] public BuildingGameplayLevel currentLevel;
         private bool isCompleted;
         public ObservableValue<int> currentHealth;
+
+        public static event Action OnLoseGame;
+        public static event Action OnWinGame;
 
         [Header("Starting Settings")]
         [Tooltip("Gán Scriptable Object của Nhà Chính vào đây để tự động đặt ra khi bắt đầu game")]
@@ -49,7 +52,7 @@ namespace Game.BuildingGameplay
         public Dictionary<ResourceType, ObservableValue<float>> IncrementResources { get; } =
             new Dictionary<ResourceType, ObservableValue<float>>()
             {
-                { ResourceType.Coin, new ObservableValue<float>(1f) },
+                { ResourceType.Coin, new ObservableValue<float>(1.6f) },
                 { ResourceType.Wood, new ObservableValue<float>(0.6f) },
                 { ResourceType.Stone, new ObservableValue<float>(0.3f) },
                 { ResourceType.Food, new ObservableValue<float>(0.4f) },
@@ -140,25 +143,38 @@ namespace Game.BuildingGameplay
         {
             base.Awake();
             VillagerData ??= new VillagerDataManager();
+
+            // TỰ ĐỘNG PULL DATA TỪ DATA MANAGER NGAY KHI VỪA KHỞI TẠO
+            if (GameplayTransition.DataManager != null && GameplayTransition.DataManager.CurrentBuildingLevel != null)
+            {
+                currentLevel = GameplayTransition.DataManager.CurrentBuildingLevel;
+            }
         }
 
         private void OnEnable()
         {
             currentHealth.OnValueChanged += OnCurrentHealthChanged;
+            OnWinGame += HandleOnGameEndDefault;
+            OnLoseGame += HandleOnGameEndDefault;
         }
 
         private void OnCurrentHealthChanged(int changedValue)
         {
             if (changedValue > 0) return;
             // lose game
-            // temp: directly load main menu
-            RecordResult(GameplayTransition.DataManager.CurrentLevel);
-            transition.LoadWorldMapGame().Forget();
+            OnLoseGame?.Invoke();
+        }
+
+        private static void HandleOnGameEndDefault()
+        {
+            Instance.RecordResult(GameplayTransition.DataManager.CurrentLevel);
         }
 
         private void OnDisable()
         {
             currentHealth.OnValueChanged -= OnCurrentHealthChanged;
+            OnWinGame -= HandleOnGameEndDefault;
+            OnLoseGame -= HandleOnGameEndDefault;
         }
 
         public void CreateGameplay(BuildingGameplayLevel level)
@@ -166,7 +182,6 @@ namespace Game.BuildingGameplay
             currentHealth.Value = MAX_HEALTH;
 
             SbTimeController.Instance.Init();
-            SetupGameplay(level);
             SbGridMapRegister.Instance.RegisterEnvironmentMaps();
 
             // THÊM ĐOẠN NÀY ĐỂ ÉP NGƯỜI CHƠI XÂY NHÀ CHÍNH KHÔNG ĐƯỢC HUỶ
@@ -181,7 +196,7 @@ namespace Game.BuildingGameplay
             }
         }
 
-        public void SetupGameplay(BuildingGameplayLevel level)
+        public void SetLevel(BuildingGameplayLevel level)
         {
             currentLevel = level;
         }
@@ -203,9 +218,8 @@ namespace Game.BuildingGameplay
             }
 
             // all event is completed => win game
-            // temp: load directly main menu
-            Instance.RecordResult(GameplayTransition.DataManager.CurrentLevel);
-            Instance.transition.LoadWorldMapGame().Forget();
+
+            OnWinGame?.Invoke();
         }
 
         public static void ApplyResourceIncrement()

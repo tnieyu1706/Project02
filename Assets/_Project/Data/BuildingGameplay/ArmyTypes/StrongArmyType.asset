@@ -15,11 +15,14 @@ MonoBehaviour:
   armyType: 2
   armyCategory: 0
   icon: {fileID: -1202183669, guid: d7a28412b83890d45a80ef8158f31dd5, type: 3}
-  delaySpawn: 10
+  delaySpawn: 30
+  spawnAmount: 3
   cost:
     resourceCosts:
       data:
       - key: 0
-        value: 18
+        value: 24
       - key: 3
-        value: 2
+        value: 10
+      - key: 2
+        value: 8

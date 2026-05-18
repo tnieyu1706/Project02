@@ -14,6 +14,7 @@ namespace Game.BuildingGameplay
         // Cache lại các Element để tối ưu hiệu suất giống như Building
         private VisualElement tooltipContent;
         private Label tooltipNameLabel;
+        private Label spawnAmountLabel;
         private Label tooltipCostLabel;
         private Label tooltipDescLabel;
 
@@ -55,6 +56,10 @@ namespace Game.BuildingGameplay
                 box.pickingMode = PickingMode.Ignore;
                 return box;
             }
+            
+            // 1.5. Spawn amount
+            var spawnAmount = CreateBorderedBox("tooltip-spawn-amount-container");
+            spawnAmountLabel = spawnAmount.CreateChild<Label>("tooltip-spawn-amount-text");
 
             // 2. Cost Layout
             var costContainer = CreateBorderedBox("tooltip-cost-container");
@@ -75,6 +80,8 @@ namespace Game.BuildingGameplay
             tooltipNameLabel.text = armyTypePreset.armyType.ToString();
 
             // Dùng GetTextHorizontal để dàn hàng ngang cho đẹp vì layout ta thiết kế dạng box
+            spawnAmountLabel.text = $"Spawn Amount: {armyTypePreset.spawnAmount}";
+            
             tooltipCostLabel.text = $"Cost: {armyTypePreset.cost.CloneData.GetTextHorizontal()}";
 
             tooltipDescLabel.text =

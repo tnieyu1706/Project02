@@ -1758,8 +1758,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentScene:
-    sceneAsset: {fileID: 0}
-    scenePath: 
+    sceneAsset: {fileID: 102900000, guid: 2ed26c0622bf4ee49972fcf34c08efc8, type: 3}
+    scenePath: Assets/_Project/Scenes/BaseGameplay/BaseGameplayScene.unity
 --- !u!4 &1334644135
 Transform:
   m_ObjectHideFlags: 0
