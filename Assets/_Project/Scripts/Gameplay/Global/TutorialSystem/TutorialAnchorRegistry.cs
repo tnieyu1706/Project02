@@ -2,34 +2,32 @@ using System.Collections.Generic;
 
 namespace Game.Global.TutorialSystem
 {
-    /// <summary>
-    /// Bộ máy tĩnh (Static) quản lý tất cả các Anchor đang Active trên màn hình.
-    /// </summary>
     public static class TutorialAnchorRegistry
     {
-        private static Dictionary<string, TutorialAnchor> anchors = new Dictionary<string, TutorialAnchor>();
+        // Chuyển Key từ chuỗi string sang tham chiếu trực tiếp ScriptableObject
+        private static Dictionary<TutorialStepData, TutorialAnchor> anchors = new Dictionary<TutorialStepData, TutorialAnchor>();
 
         public static void RegisterAnchor(TutorialAnchor anchor)
         {
-            if (string.IsNullOrEmpty(anchor.AnchorId)) return;
+            if (anchor.TargetStep == null) return;
 
-            if (!anchors.ContainsKey(anchor.AnchorId))
+            if (!anchors.ContainsKey(anchor.TargetStep))
             {
-                anchors.Add(anchor.AnchorId, anchor);
+                anchors.Add(anchor.TargetStep, anchor);
             }
         }
 
         public static void UnregisterAnchor(TutorialAnchor anchor)
         {
-            if (!string.IsNullOrEmpty(anchor.AnchorId) && anchors.ContainsKey(anchor.AnchorId))
+            if (anchor.TargetStep != null && anchors.ContainsKey(anchor.TargetStep))
             {
-                anchors.Remove(anchor.AnchorId);
+                anchors.Remove(anchor.TargetStep);
             }
         }
 
-        public static TutorialAnchor GetAnchor(string id)
+        public static TutorialAnchor GetAnchor(TutorialStepData step)
         {
-            if (anchors.TryGetValue(id, out TutorialAnchor anchor))
+            if (step != null && anchors.TryGetValue(step, out TutorialAnchor anchor))
             {
                 return anchor;
             }

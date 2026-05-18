@@ -8,8 +8,8 @@ namespace Game.Global.TutorialSystem
     [DisallowMultipleComponent]
     public class TutorialAnchor : MonoBehaviour
     {
-        [Tooltip("ID duy nhất để hệ thống tìm thấy điểm neo này (VD: Btn_Play, Inventory_Slot_1).")]
-        public string AnchorId;
+        [Tooltip("Kéo trực tiếp file TutorialStepData (Sub-asset) tương ứng vào đây thay vì gõ ID.")]
+        public TutorialStepData TargetStep;
 
         private void OnEnable()
         {
@@ -19,6 +19,17 @@ namespace Game.Global.TutorialSystem
         private void OnDisable()
         {
             TutorialAnchorRegistry.UnregisterAnchor(this);
+        }
+
+        /// <summary>
+        /// Gọi hàm này từ Event Trigger hoặc OnClick của Button để hoàn thành Step này.
+        /// </summary>
+        public void TriggerNextStep()
+        {
+            if (TargetStep != null)
+            {
+                TutorialManager.Instance.Next(TargetStep);
+            }
         }
     }
 }

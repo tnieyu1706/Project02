@@ -6,13 +6,12 @@ namespace Game.Global.TutorialSystem
     {
         public static TutorialManager Instance { get; private set; }
 
-        [Header("Configuration")] [SerializeField]
-        private TutorialUI tutorialUI;
-
+        [Header("Configuration")]
+        [SerializeField] private TutorialUI tutorialUI;
         [SerializeField] private string playerPrefsPrefix = "Tutorial_Complete_";
 
         private TutorialData currentTutorialSequence;
-        private int currentStepIndex = -1;
+        private TutorialStepData currentStepData;
         private bool isTutorialActive = false;
 
         private void Awake()
@@ -31,75 +30,70 @@ namespace Game.Global.TutorialSystem
         public void StartTutorial(TutorialData tutorialData, bool forceRestart = false)
         {
             if (tutorialData == null || tutorialData.Steps.Count == 0) return;
-
             if (!forceRestart && HasCompletedTutorial(tutorialData.TutorialId)) return;
 
             currentTutorialSequence = tutorialData;
-            currentStepIndex = 0;
-            isTutorialActive = true;
+            currentStepData = tutorialData.StartStep != null ? tutorialData.StartStep : tutorialData.Steps[0];
+                
+            if (currentStepData == null) return;
 
+            isTutorialActive = true;
             ShowCurrentStep();
         }
 
         public void Next()
         {
-            if (!isTutorialActive) return;
-            currentStepIndex++;
-            ShowCurrentStep();
+            if (!isTutorialActive || currentStepData == null) return;
+            AdvanceToNextStep();
         }
 
-        public void Next(string triggeredNextId)
+        /// <summary>
+        /// Hệ thống Tracker mới: Nhận vào trực tiếp ScriptableObject.
+        /// </summary>
+        public void Next(TutorialStepData triggeredStep)
         {
-            if (!isTutorialActive || currentTutorialSequence == null ||
-                currentStepIndex >= currentTutorialSequence.Steps.Count)
-                return;
+             if (!isTutorialActive || currentTutorialSequence == null || currentStepData == null) return;
 
-            TutorialStepData currentStep = currentTutorialSequence.Steps[currentStepIndex];
+             // Kiểm tra xem sự kiện gửi lên có đúng với Step đang chờ hiện tại hay không
+             if (currentStepData != triggeredStep) return;
 
-            if (!string.IsNullOrEmpty(currentStep.ExpectedNextId) && currentStep.ExpectedNextId != triggeredNextId)
-            {
-                return;
-            }
-
-            currentStepIndex++;
-            ShowCurrentStep();
+             AdvanceToNextStep();
         }
 
-        private void ShowCurrentStep()
+        private void AdvanceToNextStep()
         {
-            if (currentTutorialSequence == null) return;
-
-            if (currentStepIndex >= currentTutorialSequence.Steps.Count)
+            if (currentStepData.NextStep == null)
             {
                 CompleteTutorial();
                 return;
             }
 
-            TutorialStepData stepData = currentTutorialSequence.Steps[currentStepIndex];
+            currentStepData = currentStepData.NextStep;
+            ShowCurrentStep();
+        }
+
+        private void ShowCurrentStep()
+        {
+            if (currentTutorialSequence == null || currentStepData == null) return;
+
             Vector3 targetPosition = Vector3.zero;
 
-            // Nếu Step yêu cầu hiển thị Hint, ta đi tìm tọa độ Vector3 của Anchor đó
-            if ((stepData.DisplayType == TutorialDisplayType.Hint ||
-                 stepData.DisplayType == TutorialDisplayType.TextHint)
-                && !string.IsNullOrEmpty(stepData.AnchorId))
+            if (currentStepData.DisplayType == TutorialDisplayType.Hint || currentStepData.DisplayType == TutorialDisplayType.TextHint)
             {
-                TutorialAnchor targetAnchor = TutorialAnchorRegistry.GetAnchor(stepData.AnchorId);
-
+                // Dùng chính currentStepData để tìm Anchor
+                TutorialAnchor targetAnchor = TutorialAnchorRegistry.GetAnchor(currentStepData);
+                
                 if (targetAnchor != null)
                 {
                     targetPosition = targetAnchor.transform.position;
                 }
                 else
                 {
-                    Debug.LogWarning($"[Tutorial] Không tìm thấy Anchor có ID: {stepData.AnchorId} trên Scene.");
+                    Debug.LogWarning($"[Tutorial] Không tìm thấy Anchor nào chứa targetStep {currentStepData.name} trên Scene.");
                 }
             }
 
-            if (tutorialUI != null)
-            {
-                // Truyền cả dữ liệu và tọa độ Vector3 cho UI
-                tutorialUI.ShowStep(stepData, targetPosition);
-            }
+            if (tutorialUI != null) tutorialUI.ShowStep(currentStepData, targetPosition);
         }
 
         private void CompleteTutorial()
@@ -109,7 +103,6 @@ namespace Game.Global.TutorialSystem
                 PlayerPrefs.SetInt(playerPrefsPrefix + currentTutorialSequence.TutorialId, 1);
                 PlayerPrefs.Save();
             }
-
             EndTutorial();
         }
 
@@ -117,7 +110,7 @@ namespace Game.Global.TutorialSystem
         {
             isTutorialActive = false;
             currentTutorialSequence = null;
-            currentStepIndex = -1;
+            currentStepData = null;
             if (tutorialUI != null) tutorialUI.Hide();
         }
 
