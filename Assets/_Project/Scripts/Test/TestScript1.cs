@@ -1,6 +1,7 @@
 using _Project.Test.SOAP;
 using EditorAttributes;
 using TnieYuPackage.DictionaryUtilities;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class TestScript1 : MonoBehaviour
@@ -11,12 +12,9 @@ public class TestScript1 : MonoBehaviour
 
     public SerializableDictionary<string, int> values;
 
-    private void Update()
+    public void TestFunc()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DoSomething(100, "Hello World");
-        }
+        
     }
 
     [Button]
