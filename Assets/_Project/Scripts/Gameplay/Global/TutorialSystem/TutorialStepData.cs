@@ -21,9 +21,6 @@ namespace Game.Global.TutorialSystem
 
         public TutorialDisplayType DisplayType;
 
-        [Tooltip("Tham chiếu trực tiếp đến Step tiếp theo.")]
-        public TutorialStepData NextStep;
-
         [HideInInspector] public Vector2 NodePosition; // Dùng cho GraphView lưu tọa độ UI
     }
 }

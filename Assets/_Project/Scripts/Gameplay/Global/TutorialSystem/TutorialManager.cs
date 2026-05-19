@@ -1,25 +1,34 @@
+using System;
 using UnityEngine;
 
 namespace Game.Global.TutorialSystem
 {
+    /// <summary>
+    /// Manages the runtime state and progression of tutorials. Decoupled from UI via events.
+    /// </summary>
+    [DefaultExecutionOrder(-50)]
     public class TutorialManager : MonoBehaviour
     {
+        /// <summary>Singleton instance of the TutorialManager.</summary>
         public static TutorialManager Instance { get; private set; }
 
-        [Header("Configuration")]
-        [SerializeField] private TutorialUI tutorialUI;
-        [SerializeField] private string playerPrefsPrefix = "Tutorial_Complete_";
+        /// <summary>Event dispatched when a new tutorial step starts. Passes the step data and the target anchor transform (if any).</summary>
+        public event Action<TutorialStepData, Transform> OnStepStarted;
+        
+        /// <summary>Event dispatched when the active tutorial ends or is completed.</summary>
+        public event Action OnTutorialEnded;
 
-        private TutorialData currentTutorialSequence;
-        private TutorialStepData currentStepData;
-        private bool isTutorialActive = false;
+        private const string PLAYER_PREFS_PREFIX = "Tutorial_Complete_";
+
+        private TutorialData _currentTutorialSequence;
+        private int _currentIndex = -1;
+        private bool _isTutorialActive = false;
 
         private void Awake()
         {
             if (Instance == null)
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -27,101 +36,108 @@ namespace Game.Global.TutorialSystem
             }
         }
 
+        /// <summary>Starts a tutorial sequence from the beginning.</summary>
         public void StartTutorial(TutorialData tutorialData, bool forceRestart = false)
         {
-            if (tutorialData == null || tutorialData.Steps.Count == 0) return;
-            if (!forceRestart && HasCompletedTutorial(tutorialData.TutorialId)) return;
+            if (tutorialData == null || tutorialData.Steps.Count == 0)
+            {
+                Debug.LogWarning("[Tutorial] Cannot start tutorial: Data is null or contains no steps.");
+                return;
+            }
 
-            currentTutorialSequence = tutorialData;
-            currentStepData = tutorialData.StartStep != null ? tutorialData.StartStep : tutorialData.Steps[0];
-                
-            if (currentStepData == null) return;
+            if (!forceRestart && HasCompletedTutorial(tutorialData.TutorialId))
+            {
+                Debug.Log($"[Tutorial] Tutorial '{tutorialData.TutorialId}' already completed. Skipping.");
+                return;
+            }
 
-            isTutorialActive = true;
+            _currentTutorialSequence = tutorialData;
+            _currentIndex = 0;
+            _isTutorialActive = true;
+            
+            Debug.Log($"[Tutorial] Starting tutorial: {tutorialData.TutorialId}");
             ShowCurrentStep();
         }
 
-        public void Next()
-        {
-            if (!isTutorialActive || currentStepData == null) return;
-            AdvanceToNextStep();
-        }
-
-        /// <summary>
-        /// Hệ thống Tracker mới: Nhận vào trực tiếp ScriptableObject.
-        /// </summary>
+        /// <summary>Advances to the next step if the triggered step matches the current expected step.</summary>
         public void Next(TutorialStepData triggeredStep)
         {
-             if (!isTutorialActive || currentTutorialSequence == null || currentStepData == null) return;
+             if (!_isTutorialActive || _currentTutorialSequence == null) return;
+             if (_currentIndex < 0 || _currentIndex >= _currentTutorialSequence.Steps.Count) return;
 
-             // Kiểm tra xem sự kiện gửi lên có đúng với Step đang chờ hiện tại hay không
-             if (currentStepData != triggeredStep) return;
+             // VIBRA NOTE: Validate that the trigger comes from the anchor associated with the current step.
+             if (_currentTutorialSequence.Steps[_currentIndex] != triggeredStep) return;
 
              AdvanceToNextStep();
         }
 
-        private void AdvanceToNextStep()
+        public void AdvanceToNextStep()
         {
-            if (currentStepData.NextStep == null)
+            _currentIndex++;
+            
+            if (_currentIndex >= _currentTutorialSequence.Steps.Count)
             {
                 CompleteTutorial();
                 return;
             }
 
-            currentStepData = currentStepData.NextStep;
             ShowCurrentStep();
         }
 
         private void ShowCurrentStep()
         {
-            if (currentTutorialSequence == null || currentStepData == null) return;
+            if (_currentTutorialSequence == null || _currentIndex < 0 || _currentIndex >= _currentTutorialSequence.Steps.Count) return;
 
-            Vector3 targetPosition = Vector3.zero;
+            TutorialStepData stepData = _currentTutorialSequence.Steps[_currentIndex];
+            Transform targetAnchorTransform = null;
 
-            if (currentStepData.DisplayType == TutorialDisplayType.Hint || currentStepData.DisplayType == TutorialDisplayType.TextHint)
+            if (stepData.DisplayType == TutorialDisplayType.Hint || stepData.DisplayType == TutorialDisplayType.TextHint)
             {
-                // Dùng chính currentStepData để tìm Anchor
-                TutorialAnchor targetAnchor = TutorialAnchorRegistry.GetAnchor(currentStepData);
-                
+                TutorialAnchor targetAnchor = TutorialAnchorRegistry.GetAnchor(stepData);
                 if (targetAnchor != null)
                 {
-                    targetPosition = targetAnchor.transform.position;
+                    targetAnchorTransform = targetAnchor.transform;
                 }
                 else
                 {
-                    Debug.LogWarning($"[Tutorial] Không tìm thấy Anchor nào chứa targetStep {currentStepData.name} trên Scene.");
+                    Debug.LogWarning($"[Tutorial] Anchor not found for step {stepData.name}.");
                 }
             }
 
-            if (tutorialUI != null) tutorialUI.ShowStep(currentStepData, targetPosition);
+            // VIBRA NOTE: Broadcast the step update. View (UI) will catch this and handle rendering.
+            OnStepStarted?.Invoke(stepData, targetAnchorTransform);
         }
 
         private void CompleteTutorial()
         {
-            if (currentTutorialSequence != null)
+            if (_currentTutorialSequence != null)
             {
-                PlayerPrefs.SetInt(playerPrefsPrefix + currentTutorialSequence.TutorialId, 1);
+                PlayerPrefs.SetInt(PLAYER_PREFS_PREFIX + _currentTutorialSequence.TutorialId, 1);
                 PlayerPrefs.Save();
             }
             EndTutorial();
         }
 
+        /// <summary>Forcefully ends the current tutorial and hides UI.</summary>
         public void EndTutorial()
         {
-            isTutorialActive = false;
-            currentTutorialSequence = null;
-            currentStepData = null;
-            if (tutorialUI != null) tutorialUI.Hide();
+            _isTutorialActive = false;
+            _currentTutorialSequence = null;
+            _currentIndex = -1;
+            
+            OnTutorialEnded?.Invoke();
         }
 
+        /// <summary>Checks if a tutorial has been marked as completed in PlayerPrefs.</summary>
         public bool HasCompletedTutorial(string tutorialId)
         {
-            return PlayerPrefs.GetInt(playerPrefsPrefix + tutorialId, 0) == 1;
+            return PlayerPrefs.GetInt(PLAYER_PREFS_PREFIX + tutorialId, 0) == 1;
         }
 
+        /// <summary>Clears completion status for a specific tutorial.</summary>
         public void ResetTutorialProgress(string tutorialId)
         {
-            PlayerPrefs.DeleteKey(playerPrefsPrefix + tutorialId);
+            PlayerPrefs.DeleteKey(PLAYER_PREFS_PREFIX + tutorialId);
             PlayerPrefs.Save();
         }
     }

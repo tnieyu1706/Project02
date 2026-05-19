@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Message: Hello This is Step1
   DisplayType: 0
-  NextStep: {fileID: 1229921541484916125}
-  NodePosition: {x: 81.6, y: 106.4}
+  NodePosition: {x: -32, y: -196}
 --- !u!114 &-2576680264674948569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30,8 +29,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Message: Nihao wo de Step3
   DisplayType: 0
-  NextStep: {fileID: 0}
-  NodePosition: {x: 632, y: 106.4}
+  NodePosition: {x: 586.4, y: -68.8}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,11 +43,10 @@ MonoBehaviour:
   m_Name: Test_Tutorial_1
   m_EditorClassIdentifier: 
   TutorialId: Tutorial1
-  StartStep: {fileID: -4306333182968999776}
   Steps:
-  - {fileID: -2576680264674948569}
-  - {fileID: 1229921541484916125}
   - {fileID: -4306333182968999776}
+  - {fileID: 1229921541484916125}
+  - {fileID: -2576680264674948569}
 --- !u!114 &1229921541484916125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +60,5 @@ MonoBehaviour:
   m_Name: Step_1ccd3
   m_EditorClassIdentifier: 
   Message: Xin chao day la Step2
-  DisplayType: 0
-  NextStep: {fileID: -2576680264674948569}
-  NodePosition: {x: 351.2, y: 106.4}
+  DisplayType: 2
+  NodePosition: {x: 264, y: -145.59999}

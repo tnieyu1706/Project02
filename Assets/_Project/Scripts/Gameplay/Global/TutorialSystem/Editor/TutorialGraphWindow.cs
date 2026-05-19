@@ -108,35 +108,55 @@ namespace Game.Global.TutorialSystem.Editor
             if (currentData == null) return;
 
             var allNodes = graphView.nodes.ToList().Cast<TutorialStepNode>().ToList();
-            currentData.Steps.Clear();
-
+            
+            // 1. Tìm node bắt đầu (không có kết nối input)
             var startNode = allNodes.FirstOrDefault(n => !n.InputPort.connections.Any());
-            currentData.StartStep =
-                startNode != null ? startNode.StepData : (allNodes.Count > 0 ? allNodes[0].StepData : null);
+            
+            // Nếu không tìm thấy node không có input nhưng có node trong graph, lấy node đầu tiên được tạo
+            if (startNode == null && allNodes.Count > 0) startNode = allNodes[0];
 
-            foreach (var node in allNodes)
+            List<TutorialStepData> orderedSteps = new List<TutorialStepData>();
+            HashSet<TutorialStepNode> visited = new HashSet<TutorialStepNode>();
+            
+            TutorialStepNode currentNode = startNode;
+
+            // 2. Duyệt đồ thị theo dạng chuỗi tuyến tính
+            while (currentNode != null && !visited.Contains(currentNode))
             {
-                node.StepData.NodePosition = node.GetPosition().position;
-                node.StepData.NextStep = null;
+                visited.Add(currentNode);
+                currentNode.StepData.NodePosition = currentNode.GetPosition().position;
+                currentNode.StepData.name = currentNode.title;
+                
+                orderedSteps.Add(currentNode.StepData);
+                EditorUtility.SetDirty(currentNode.StepData);
 
-                if (node.OutputPort.connections.Any())
+                // Lấy node tiếp theo qua kết nối Output
+                if (currentNode.OutputPort.connections.Any())
                 {
-                    var targetNode = node.OutputPort.connections.First().input.node as TutorialStepNode;
-                    if (targetNode != null)
-                    {
-                        node.StepData.NextStep = targetNode.StepData;
-                    }
+                    currentNode = currentNode.OutputPort.connections.First().input.node as TutorialStepNode;
                 }
-
-                // Cập nhật tên của file SO theo title của node
-                node.StepData.name = node.title;
-                EditorUtility.SetDirty(node.StepData);
-                currentData.Steps.Add(node.StepData);
+                else
+                {
+                    currentNode = null;
+                }
             }
 
+            // 3. Xử lý các node mồ côi (không nằm trong chuỗi chính)
+            foreach (var node in allNodes)
+            {
+                if (!visited.Contains(node))
+                {
+                    node.StepData.NodePosition = node.GetPosition().position;
+                    node.StepData.name = node.title;
+                    orderedSteps.Add(node.StepData);
+                    EditorUtility.SetDirty(node.StepData);
+                }
+            }
+
+            currentData.Steps = orderedSteps;
             EditorUtility.SetDirty(currentData);
             AssetDatabase.SaveAssets();
-            Debug.Log("[TutorialGraph] Đã lưu liên kết Sub-asset thành công!");
+            Debug.Log($"[TutorialGraph] Đã lưu {orderedSteps.Count} bước theo thứ tự tuyến tính.");
         }
 
         private void LoadData()
@@ -146,28 +166,22 @@ namespace Game.Global.TutorialSystem.Editor
             graphView.DeleteElements(graphView.nodes.ToList());
             graphView.DeleteElements(graphView.edges.ToList());
 
-            Dictionary<TutorialStepData, TutorialStepNode> nodeDict =
-                new Dictionary<TutorialStepData, TutorialStepNode>();
+            TutorialStepNode lastNode = null;
 
             foreach (var step in currentData.Steps)
             {
-                if (step != null)
-                {
-                    var node = graphView.CreateStepNode(step, step.NodePosition);
-                    nodeDict[step] = node;
-                }
-            }
+                if (step == null) continue;
 
-            foreach (var step in currentData.Steps)
-            {
-                if (step != null && step.NextStep != null && nodeDict.ContainsKey(step) &&
-                    nodeDict.ContainsKey(step.NextStep))
+                var currentNode = graphView.CreateStepNode(step, step.NodePosition);
+                
+                // Tự động kết nối nếu có bước trước đó (tái lập chuỗi tuyến tính)
+                if (lastNode != null)
                 {
-                    var sourceNode = nodeDict[step];
-                    var targetNode = nodeDict[step.NextStep];
-                    var edge = sourceNode.OutputPort.ConnectTo(targetNode.InputPort);
+                    var edge = lastNode.OutputPort.ConnectTo(currentNode.InputPort);
                     graphView.AddElement(edge);
                 }
+
+                lastNode = currentNode;
             }
         }
     }
@@ -218,7 +232,8 @@ namespace Game.Global.TutorialSystem.Editor
             StepData = data;
             title = data.name;
 
-            InputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
+            // VIBRA NOTE: Capacity.Single để đảm bảo luồng tutorial là tuyến tính (Sequential)
+            InputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
             InputPort.portName = "Input";
             inputContainer.Add(InputPort);
 

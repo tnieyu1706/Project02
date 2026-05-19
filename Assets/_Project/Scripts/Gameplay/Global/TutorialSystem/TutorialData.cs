@@ -11,9 +11,6 @@ namespace Game.Global.TutorialSystem
     {
         public string TutorialId;
         
-        [Tooltip("Tham chiếu trực tiếp đến Step đầu tiên.")]
-        public TutorialStepData StartStep;
-
         [Tooltip("Danh sách các sub-asset step hiện có.")]
         public List<TutorialStepData> Steps = new List<TutorialStepData>();
     }
