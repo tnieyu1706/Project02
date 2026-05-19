@@ -4,6 +4,7 @@
 To provide a data-driven, graph-based tutorial system that cleanly separates tutorial sequence definition (data), execution logic, and visual rendering (UI/Spatial). It allows for creating complex tutorial flows without hardcoding scene dependencies.
 
 ## Core Components
+- **`ITutorialManager`** (`Interface`): Defines the contract for tutorial lifecycle and progression management.
 - **`TutorialData`** (`ScriptableObject`): Container holding a sequential list of tutorial steps (`TutorialId`, `Steps`).
 - **`TutorialStepData`** (`ScriptableObject`): Represents a single step, containing the message and `TutorialDisplayType`.
 - **`TutorialManager`** (`Singleton MonoBehaviour`): Owns the runtime state and `currentIndex`. Coordinates transitions and broadcasts state via events (`OnStepStarted`, `OnTutorialEnded`).
@@ -28,8 +29,8 @@ The system follows an event-driven MVC pattern:
 - TutorialManager is a Singleton but its lifecycle is managed by the Scene/Bootstrapper (no `DontDestroyOnLoad`).
 - TutorialManager must NOT reference TutorialUI.
 - PlayerPrefs key must use a constant prefix (`Tutorial_Complete_`).
-- Hint position MUST be converted using `Registry<Camera>.GetFirst().WorldToScreenPoint()`.
-- Hint must update dynamically in `Update()` to track moving anchors in Screen Space.
+- TutorialStepData assets use persistent random IDs (`Step_XXXX`) to protect external references.
+- Graph Editor uses visual prefixes (e.g., `[0]`, `[1]`) for sequence order without renaming assets.
 - Tutorial progression MUST be index-based sequentially, not linked-list.
 
 ## Extension Points

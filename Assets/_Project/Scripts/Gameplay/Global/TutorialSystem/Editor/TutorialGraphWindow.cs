@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -42,7 +43,7 @@ namespace Game.Global.TutorialSystem.Editor
         {
             if (change.elementsToRemove != null && currentData != null)
             {
-                bool renamed = false;
+                bool nodesRemoved = false;
                 foreach (var elem in change.elementsToRemove)
                 {
                     if (elem is TutorialStepNode node && node.StepData != null)
@@ -50,15 +51,15 @@ namespace Game.Global.TutorialSystem.Editor
                         currentData.Steps.Remove(node.StepData);
                         AssetDatabase.RemoveObjectFromAsset(node.StepData);
                         DestroyImmediate(node.StepData, true);
-                        renamed = true;
+                        nodesRemoved = true;
                     }
                 }
 
-                if (renamed)
+                if (nodesRemoved)
                 {
-                    UpdateNodeNames();
+                    UpdateNodeVisuals();
                 }
-                
+
                 AssetDatabase.SaveAssets();
             }
 
@@ -95,31 +96,35 @@ namespace Game.Global.TutorialSystem.Editor
         {
             if (currentData == null)
             {
-                EditorUtility.DisplayDialog("Lỗi", "Vui lòng chọn một TutorialData trước khi tạo Node!", "OK");
+                EditorUtility.DisplayDialog("Error", "Please select TutorialData before creating a node!", "OK");
                 return null;
             }
 
-            // Tự động tạo Sub-asset nhúng vào TutorialData
-            TutorialStepData newStep = ScriptableObject.CreateInstance<TutorialStepData>();
-            newStep.name = "New Step";
+            // VIBRA NOTE: Use a persistent random ID for the asset name to prevent reference loss on re-ordering.
+            string randomId = Guid.NewGuid().ToString().Substring(0, 4);
+            TutorialStepData newStep = CreateInstance<TutorialStepData>();
+            newStep.name = $"Step_{randomId}";
 
             AssetDatabase.AddObjectToAsset(newStep, currentData);
             currentData.Steps.Add(newStep);
             AssetDatabase.SaveAssets();
 
             var node = graphView.CreateStepNode(newStep, position);
-            UpdateNodeNames();
+            UpdateNodeVisuals();
             return node;
         }
 
-        private void UpdateNodeNames()
+        /// <summary>
+        /// Updates node titles to show their current sequence index without renaming the underlying assets.
+        /// </summary>
+        private void UpdateNodeVisuals()
         {
             if (currentData == null) return;
 
             var allNodes = graphView.nodes.ToList().Cast<TutorialStepNode>().ToList();
             if (allNodes.Count == 0) return;
 
-            // VIBRA NOTE: Reuse traversal logic to determine sequential order for naming
+            // Traversal to find order
             var startNode = allNodes.FirstOrDefault(n => !n.InputPort.connections.Any());
             if (startNode == null) startNode = allNodes[0];
 
@@ -144,18 +149,10 @@ namespace Game.Global.TutorialSystem.Editor
                 if (!visited.Contains(node)) orderedNodes.Add(node);
             }
 
-            // Apply names: <DataName>_<Index>
+            // Update titles visually: [#Index] AssetName
             for (int i = 0; i < orderedNodes.Count; i++)
             {
-                string newName = $"{currentData.name}_{i}";
-                orderedNodes[i].title = newName;
-                orderedNodes[i].StepData.name = newName;
-                
-                // Update the text field in the node UI if it exists
-                var textField = orderedNodes[i].mainContainer.Q<TextField>();
-                if (textField != null) textField.SetValueWithoutNotify(newName);
-                
-                EditorUtility.SetDirty(orderedNodes[i].StepData);
+                orderedNodes[i].title = $"[{i}] {orderedNodes[i].StepData.name}";
             }
         }
 
@@ -163,7 +160,7 @@ namespace Game.Global.TutorialSystem.Editor
         {
             if (currentData == null) return;
 
-            UpdateNodeNames(); // Ensure names are correct before saving
+            UpdateNodeVisuals();
 
             var allNodes = graphView.nodes.ToList().Cast<TutorialStepNode>().ToList();
             var startNode = allNodes.FirstOrDefault(n => !n.InputPort.connections.Any());
@@ -200,7 +197,8 @@ namespace Game.Global.TutorialSystem.Editor
             currentData.Steps = orderedSteps;
             EditorUtility.SetDirty(currentData);
             AssetDatabase.SaveAssets();
-            Debug.Log($"[TutorialGraph] Đã lưu {orderedSteps.Count} bước theo thứ tự tuyến tính.");
+            Debug.Log(
+                $"[TutorialGraph] Saved {orderedSteps.Count} steps in linear sequence. Asset IDs remained persistent.");
         }
 
         private void LoadData()
@@ -210,22 +208,31 @@ namespace Game.Global.TutorialSystem.Editor
             graphView.DeleteElements(graphView.nodes.ToList());
             graphView.DeleteElements(graphView.edges.ToList());
 
-            TutorialStepNode lastNode = null;
+            Dictionary<TutorialStepData, TutorialStepNode> stepToNode =
+                new Dictionary<TutorialStepData, TutorialStepNode>();
 
+            // 1. Create all nodes
             foreach (var step in currentData.Steps)
             {
                 if (step == null) continue;
+                var node = graphView.CreateStepNode(step, step.NodePosition);
+                stepToNode[step] = node;
+            }
 
-                var currentNode = graphView.CreateStepNode(step, step.NodePosition);
-                if (lastNode != null)
+            // 2. Re-connect edges based on the saved sequence list
+            for (int i = 0; i < currentData.Steps.Count - 1; i++)
+            {
+                var currentStep = currentData.Steps[i];
+                var nextStep = currentData.Steps[i + 1];
+
+                if (stepToNode.ContainsKey(currentStep) && stepToNode.ContainsKey(nextStep))
                 {
-                    var edge = lastNode.OutputPort.ConnectTo(currentNode.InputPort);
+                    var edge = stepToNode[currentStep].OutputPort.ConnectTo(stepToNode[nextStep].InputPort);
                     graphView.AddElement(edge);
                 }
-                lastNode = currentNode;
             }
-            
-            UpdateNodeNames();
+
+            UpdateNodeVisuals();
         }
     }
 
@@ -262,11 +269,11 @@ namespace Game.Global.TutorialSystem.Editor
         {
             var node = new TutorialStepNode(stepData);
             node.SetPosition(new Rect(position, new Vector2(250, 200)));
-            
+
             // Setup custom edge listener for drag-to-create
             var connectorListener = new TutorialEdgeConnectorListener(this, _window);
             node.OutputPort.AddManipulator(new EdgeConnector<Edge>(connectorListener));
-            
+
             AddElement(node);
             return node;
         }
@@ -291,7 +298,7 @@ namespace Game.Global.TutorialSystem.Editor
 
             // Calculate local position in GraphView
             Vector2 graphPosition = _graphView.contentViewContainer.WorldToLocal(position);
-            
+
             // 1. Create new node
             var newNode = _window.CreateNewNode(graphPosition);
             if (newNode == null) return;
@@ -318,7 +325,7 @@ namespace Game.Global.TutorialSystem.Editor
             StepData = data;
             title = data.name;
 
-            // VIBRA NOTE: Capacity.Single để đảm bảo luồng tutorial là tuyến tính (Sequential)
+            // VIBRA NOTE: Capacity.Single to ensure linear flow
             InputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
             InputPort.portName = "Input";
             inputContainer.Add(InputPort);
@@ -327,12 +334,14 @@ namespace Game.Global.TutorialSystem.Editor
             OutputPort.portName = "Next Step";
             outputContainer.Add(OutputPort);
 
-            // Giao diện dữ liệu của Node
-            var idField = new TextField("Step Name") { value = StepData.name };
+            // Node Data UI
+            var idField = new TextField("Asset ID") { value = StepData.name };
             idField.RegisterValueChangedCallback(evt =>
             {
-                title = evt.newValue;
+                // VIBRA NOTE: Manual rename of the asset ID still allowed, but cautioned. 
+                // The visual sequence prefix will be restored by the next UpdateNodeVisuals call.
                 StepData.name = evt.newValue;
+                title = evt.newValue;
                 EditorUtility.SetDirty(StepData);
             });
             mainContainer.Add(idField);
@@ -359,4 +368,5 @@ namespace Game.Global.TutorialSystem.Editor
         }
     }
 }
+
 #endif

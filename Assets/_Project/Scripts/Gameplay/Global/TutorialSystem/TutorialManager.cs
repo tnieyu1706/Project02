@@ -4,17 +4,41 @@ using UnityEngine;
 namespace Game.Global.TutorialSystem
 {
     /// <summary>
+    /// Contract for managing tutorial sequences and their progression.
+    /// </summary>
+    public interface ITutorialManager
+    {
+        /// <summary>Starts a tutorial sequence from the beginning.</summary>
+        void StartTutorial(TutorialData tutorialData, bool forceRestart = false);
+
+        /// <summary>Advances to the next step if the triggered step matches the current expected step.</summary>
+        void Next(TutorialStepData triggeredStep);
+
+        /// <summary>Manually advances to the next step in the sequence.</summary>
+        void AdvanceToNextStep();
+
+        /// <summary>Forcefully ends the current tutorial sequence.</summary>
+        void EndTutorial();
+
+        /// <summary>Checks if a specific tutorial has been marked as completed.</summary>
+        bool HasCompletedTutorial(string tutorialId);
+
+        /// <summary>Resets the completion status of a specific tutorial.</summary>
+        void ResetTutorialProgress(string tutorialId);
+    }
+
+    /// <summary>
     /// Manages the runtime state and progression of tutorials. Decoupled from UI via events.
     /// </summary>
     [DefaultExecutionOrder(-50)]
-    public class TutorialManager : MonoBehaviour
+    public class TutorialManager : MonoBehaviour, ITutorialManager
     {
         /// <summary>Singleton instance of the TutorialManager.</summary>
         public static TutorialManager Instance { get; private set; }
 
-        /// <summary>Event dispatched when a new tutorial step starts. Passes the step data and the target anchor transform (if any).</summary>
+        /// <summary>Event dispatched when a new tutorial step starts. Passes step data and target anchor transform.</summary>
         public event Action<TutorialStepData, Transform> OnStepStarted;
-        
+
         /// <summary>Event dispatched when the active tutorial ends or is completed.</summary>
         public event Action OnTutorialEnded;
 
@@ -54,7 +78,7 @@ namespace Game.Global.TutorialSystem
             _currentTutorialSequence = tutorialData;
             _currentIndex = 0;
             _isTutorialActive = true;
-            
+
             Debug.Log($"[Tutorial] Starting tutorial: {tutorialData.TutorialId}");
             ShowCurrentStep();
         }
@@ -62,19 +86,19 @@ namespace Game.Global.TutorialSystem
         /// <summary>Advances to the next step if the triggered step matches the current expected step.</summary>
         public void Next(TutorialStepData triggeredStep)
         {
-             if (!_isTutorialActive || _currentTutorialSequence == null) return;
-             if (_currentIndex < 0 || _currentIndex >= _currentTutorialSequence.Steps.Count) return;
+            if (!_isTutorialActive || _currentTutorialSequence == null) return;
+            if (_currentIndex < 0 || _currentIndex >= _currentTutorialSequence.Steps.Count) return;
 
-             // VIBRA NOTE: Validate that the trigger comes from the anchor associated with the current step.
-             if (_currentTutorialSequence.Steps[_currentIndex] != triggeredStep) return;
+            if (_currentTutorialSequence.Steps[_currentIndex] != triggeredStep) return;
 
-             AdvanceToNextStep();
+            AdvanceToNextStep();
         }
 
+        /// <summary>Increments the sequence index and updates the tutorial state.</summary>
         public void AdvanceToNextStep()
         {
             _currentIndex++;
-            
+
             if (_currentIndex >= _currentTutorialSequence.Steps.Count)
             {
                 CompleteTutorial();
@@ -104,7 +128,6 @@ namespace Game.Global.TutorialSystem
                 }
             }
 
-            // VIBRA NOTE: Broadcast the step update. View (UI) will catch this and handle rendering.
             OnStepStarted?.Invoke(stepData, targetAnchorTransform);
         }
 
@@ -124,7 +147,7 @@ namespace Game.Global.TutorialSystem
             _isTutorialActive = false;
             _currentTutorialSequence = null;
             _currentIndex = -1;
-            
+
             OnTutorialEnded?.Invoke();
         }
 
@@ -134,7 +157,7 @@ namespace Game.Global.TutorialSystem
             return PlayerPrefs.GetInt(PLAYER_PREFS_PREFIX + tutorialId, 0) == 1;
         }
 
-        /// <summary>Clears completion status for a specific tutorial.</summary>
+        /// <summary>Clears completion status for a specific tutorial in PlayerPrefs.</summary>
         public void ResetTutorialProgress(string tutorialId)
         {
             PlayerPrefs.DeleteKey(PLAYER_PREFS_PREFIX + tutorialId);

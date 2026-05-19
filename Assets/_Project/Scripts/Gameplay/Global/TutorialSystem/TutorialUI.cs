@@ -9,14 +9,13 @@ namespace Game.Global.TutorialSystem
     /// </summary>
     public class TutorialUI : MonoBehaviour
     {
-        [Header("Static UI References")] [SerializeField]
-        private GameObject messagePanel;
-
+        [Header("Static UI References")]
+        [SerializeField] private GameObject messagePanel;
         [SerializeField] private Text messageText;
         [SerializeField] private Button messageButton;
 
-        [Header("Dynamic UI References")] [SerializeField]
-        private RectTransform hintRectTransform;
+        [Header("Dynamic UI References")]
+        [SerializeField] private RectTransform hintRectTransform;
 
         private TutorialStepData _currentStep;
         private Transform _targetAnchor;
@@ -33,13 +32,12 @@ namespace Game.Global.TutorialSystem
 
         private void OnEnable()
         {
-            // VIBRA NOTE: Decoupled via events.
             if (TutorialManager.Instance != null)
             {
                 TutorialManager.Instance.OnStepStarted += HandleStepStarted;
                 TutorialManager.Instance.OnTutorialEnded += Hide;
             }
-            
+
             Debug.Log("[TutorialSystem] Tutorial UI enabled and subscribed to TutorialManager events.");
         }
 
@@ -54,7 +52,6 @@ namespace Game.Global.TutorialSystem
 
         private void Update()
         {
-            // VIBRA NOTE: Update hint position every frame to follow potential moving anchors in Screen Space.
             if (_targetAnchor != null && hintRectTransform != null && hintRectTransform.gameObject.activeSelf)
             {
                 UpdateHintPosition();
@@ -63,7 +60,6 @@ namespace Game.Global.TutorialSystem
 
         private void OnMessageClicked()
         {
-            // VIBRA NOTE: If the step is Text-only (no anchor/hint), clicking the message advances the tutorial.
             if (_currentStep != null && _currentStep.DisplayType == TutorialDisplayType.Text)
             {
                 TutorialManager.Instance.Next(_currentStep);
@@ -97,12 +93,10 @@ namespace Game.Global.TutorialSystem
         {
             if (_targetAnchor == null) return;
 
-            // VIBRA NOTE: Fetching camera via Registry<Camera> as requested.
             if (_cachedCamera == null)
             {
                 _cachedCamera = Registry<Camera>.GetFirst();
 
-                // Fallback to Main Camera if registry is empty
                 if (_cachedCamera == null) _cachedCamera = Camera.main;
             }
 
@@ -110,14 +104,12 @@ namespace Game.Global.TutorialSystem
 
             Vector3 screenPos = _cachedCamera.WorldToScreenPoint(_targetAnchor.position);
 
-            // If the anchor is behind the camera, hide the hint
             if (screenPos.z < 0)
             {
                 hintRectTransform.gameObject.SetActive(false);
                 return;
             }
 
-            // Ensure hint is active if it was hidden by being behind camera
             if (!hintRectTransform.gameObject.activeSelf) hintRectTransform.gameObject.SetActive(true);
 
             hintRectTransform.position = screenPos;
