@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -30,7 +31,7 @@ namespace Game.Global.TutorialSystem.Editor
 
         private void ConstructGraphView()
         {
-            graphView = new TutorialGraphView { name = "Tutorial Graph" };
+            graphView = new TutorialGraphView(this) { name = "Tutorial Graph" };
             graphView.StretchToParentSize();
             rootVisualElement.Add(graphView);
 
@@ -42,6 +43,7 @@ namespace Game.Global.TutorialSystem.Editor
         {
             if (change.elementsToRemove != null && currentData != null)
             {
+                bool nodesRemoved = false;
                 foreach (var elem in change.elementsToRemove)
                 {
                     if (elem is TutorialStepNode node && node.StepData != null)
@@ -49,7 +51,13 @@ namespace Game.Global.TutorialSystem.Editor
                         currentData.Steps.Remove(node.StepData);
                         AssetDatabase.RemoveObjectFromAsset(node.StepData);
                         DestroyImmediate(node.StepData, true);
+                        nodesRemoved = true;
                     }
+                }
+
+                if (nodesRemoved)
+                {
+                    UpdateNodeVisuals();
                 }
 
                 AssetDatabase.SaveAssets();
@@ -75,7 +83,7 @@ namespace Game.Global.TutorialSystem.Editor
             toolbar.Add(dataSelectorField);
 
             var saveBtn = new Button(SaveData) { text = "Save Data" };
-            var addNodeBtn = new Button(CreateNewNode) { text = "Add Node" };
+            var addNodeBtn = new Button(() => CreateNewNode(Vector2.zero)) { text = "Add Node" };
 
             toolbar.Add(saveBtn);
             toolbar.Add(new ToolbarSpacer());
@@ -84,59 +92,113 @@ namespace Game.Global.TutorialSystem.Editor
             rootVisualElement.Add(toolbar);
         }
 
-        private void CreateNewNode()
+        public TutorialStepNode CreateNewNode(Vector2 position)
         {
             if (currentData == null)
             {
-                EditorUtility.DisplayDialog("Lỗi", "Vui lòng chọn một TutorialData trước khi tạo Node!", "OK");
-                return;
+                EditorUtility.DisplayDialog("Error", "Please select TutorialData before creating a node!", "OK");
+                return null;
             }
 
-            // Tự động tạo Sub-asset nhúng vào TutorialData
-            TutorialStepData newStep = ScriptableObject.CreateInstance<TutorialStepData>();
-            newStep.name = "Step_" + System.Guid.NewGuid().ToString().Substring(0, 5);
+            // VIBRA NOTE: Use a persistent random ID for the asset name to prevent reference loss on re-ordering.
+            string randomId = Guid.NewGuid().ToString().Substring(0, 4);
+            TutorialStepData newStep = CreateInstance<TutorialStepData>();
+            newStep.name = $"Step_{randomId}";
 
             AssetDatabase.AddObjectToAsset(newStep, currentData);
             currentData.Steps.Add(newStep);
             AssetDatabase.SaveAssets();
 
-            graphView.CreateStepNode(newStep, Vector2.zero);
+            var node = graphView.CreateStepNode(newStep, position);
+            UpdateNodeVisuals();
+            return node;
+        }
+
+        /// <summary>
+        /// Updates node titles to show their current sequence index without renaming the underlying assets.
+        /// </summary>
+        private void UpdateNodeVisuals()
+        {
+            if (currentData == null) return;
+
+            var allNodes = graphView.nodes.ToList().Cast<TutorialStepNode>().ToList();
+            if (allNodes.Count == 0) return;
+
+            // Traversal to find order
+            var startNode = allNodes.FirstOrDefault(n => !n.InputPort.connections.Any());
+            if (startNode == null) startNode = allNodes[0];
+
+            List<TutorialStepNode> orderedNodes = new List<TutorialStepNode>();
+            HashSet<TutorialStepNode> visited = new HashSet<TutorialStepNode>();
+            TutorialStepNode currentNode = startNode;
+
+            while (currentNode != null && !visited.Contains(currentNode))
+            {
+                visited.Add(currentNode);
+                orderedNodes.Add(currentNode);
+                if (currentNode.OutputPort.connections.Any())
+                {
+                    currentNode = currentNode.OutputPort.connections.First().input.node as TutorialStepNode;
+                }
+                else currentNode = null;
+            }
+
+            // Add remaining nodes (orphans)
+            foreach (var node in allNodes)
+            {
+                if (!visited.Contains(node)) orderedNodes.Add(node);
+            }
+
+            // Update titles visually: [#Index] AssetName
+            for (int i = 0; i < orderedNodes.Count; i++)
+            {
+                orderedNodes[i].title = $"[{i}] {orderedNodes[i].StepData.name}";
+            }
         }
 
         private void SaveData()
         {
             if (currentData == null) return;
 
-            var allNodes = graphView.nodes.ToList().Cast<TutorialStepNode>().ToList();
-            currentData.Steps.Clear();
+            UpdateNodeVisuals();
 
+            var allNodes = graphView.nodes.ToList().Cast<TutorialStepNode>().ToList();
             var startNode = allNodes.FirstOrDefault(n => !n.InputPort.connections.Any());
-            currentData.StartStep =
-                startNode != null ? startNode.StepData : (allNodes.Count > 0 ? allNodes[0].StepData : null);
+            if (startNode == null && allNodes.Count > 0) startNode = allNodes[0];
+
+            List<TutorialStepData> orderedSteps = new List<TutorialStepData>();
+            HashSet<TutorialStepNode> visited = new HashSet<TutorialStepNode>();
+            TutorialStepNode currentNode = startNode;
+
+            while (currentNode != null && !visited.Contains(currentNode))
+            {
+                visited.Add(currentNode);
+                currentNode.StepData.NodePosition = currentNode.GetPosition().position;
+                orderedSteps.Add(currentNode.StepData);
+                EditorUtility.SetDirty(currentNode.StepData);
+
+                if (currentNode.OutputPort.connections.Any())
+                {
+                    currentNode = currentNode.OutputPort.connections.First().input.node as TutorialStepNode;
+                }
+                else currentNode = null;
+            }
 
             foreach (var node in allNodes)
             {
-                node.StepData.NodePosition = node.GetPosition().position;
-                node.StepData.NextStep = null;
-
-                if (node.OutputPort.connections.Any())
+                if (!visited.Contains(node))
                 {
-                    var targetNode = node.OutputPort.connections.First().input.node as TutorialStepNode;
-                    if (targetNode != null)
-                    {
-                        node.StepData.NextStep = targetNode.StepData;
-                    }
+                    node.StepData.NodePosition = node.GetPosition().position;
+                    orderedSteps.Add(node.StepData);
+                    EditorUtility.SetDirty(node.StepData);
                 }
-
-                // Cập nhật tên của file SO theo title của node
-                node.StepData.name = node.title;
-                EditorUtility.SetDirty(node.StepData);
-                currentData.Steps.Add(node.StepData);
             }
 
+            currentData.Steps = orderedSteps;
             EditorUtility.SetDirty(currentData);
             AssetDatabase.SaveAssets();
-            Debug.Log("[TutorialGraph] Đã lưu liên kết Sub-asset thành công!");
+            Debug.Log(
+                $"[TutorialGraph] Saved {orderedSteps.Count} steps in linear sequence. Asset IDs remained persistent.");
         }
 
         private void LoadData()
@@ -146,36 +208,41 @@ namespace Game.Global.TutorialSystem.Editor
             graphView.DeleteElements(graphView.nodes.ToList());
             graphView.DeleteElements(graphView.edges.ToList());
 
-            Dictionary<TutorialStepData, TutorialStepNode> nodeDict =
+            Dictionary<TutorialStepData, TutorialStepNode> stepToNode =
                 new Dictionary<TutorialStepData, TutorialStepNode>();
 
+            // 1. Create all nodes
             foreach (var step in currentData.Steps)
             {
-                if (step != null)
-                {
-                    var node = graphView.CreateStepNode(step, step.NodePosition);
-                    nodeDict[step] = node;
-                }
+                if (step == null) continue;
+                var node = graphView.CreateStepNode(step, step.NodePosition);
+                stepToNode[step] = node;
             }
 
-            foreach (var step in currentData.Steps)
+            // 2. Re-connect edges based on the saved sequence list
+            for (int i = 0; i < currentData.Steps.Count - 1; i++)
             {
-                if (step != null && step.NextStep != null && nodeDict.ContainsKey(step) &&
-                    nodeDict.ContainsKey(step.NextStep))
+                var currentStep = currentData.Steps[i];
+                var nextStep = currentData.Steps[i + 1];
+
+                if (stepToNode.ContainsKey(currentStep) && stepToNode.ContainsKey(nextStep))
                 {
-                    var sourceNode = nodeDict[step];
-                    var targetNode = nodeDict[step.NextStep];
-                    var edge = sourceNode.OutputPort.ConnectTo(targetNode.InputPort);
+                    var edge = stepToNode[currentStep].OutputPort.ConnectTo(stepToNode[nextStep].InputPort);
                     graphView.AddElement(edge);
                 }
             }
+
+            UpdateNodeVisuals();
         }
     }
 
     public class TutorialGraphView : GraphView
     {
-        public TutorialGraphView()
+        private TutorialGraphWindow _window;
+
+        public TutorialGraphView(TutorialGraphWindow window)
         {
+            _window = window;
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
@@ -202,8 +269,48 @@ namespace Game.Global.TutorialSystem.Editor
         {
             var node = new TutorialStepNode(stepData);
             node.SetPosition(new Rect(position, new Vector2(250, 200)));
+
+            // Setup custom edge listener for drag-to-create
+            var connectorListener = new TutorialEdgeConnectorListener(this, _window);
+            node.OutputPort.AddManipulator(new EdgeConnector<Edge>(connectorListener));
+
             AddElement(node);
             return node;
+        }
+    }
+
+    public class TutorialEdgeConnectorListener : IEdgeConnectorListener
+    {
+        private GraphView _graphView;
+        private TutorialGraphWindow _window;
+
+        public TutorialEdgeConnectorListener(GraphView gv, TutorialGraphWindow window)
+        {
+            _graphView = gv;
+            _window = window;
+        }
+
+        public void OnDropOutsidePort(Edge edge, Vector2 position)
+        {
+            // VIBRA NOTE: This is triggered when an edge is dragged from a port and dropped in empty space.
+            var outputNode = edge.output.node as TutorialStepNode;
+            if (outputNode == null) return;
+
+            // Calculate local position in GraphView
+            Vector2 graphPosition = _graphView.contentViewContainer.WorldToLocal(position);
+
+            // 1. Create new node
+            var newNode = _window.CreateNewNode(graphPosition);
+            if (newNode == null) return;
+
+            // 2. Automatically connect the ports
+            var newEdge = edge.output.ConnectTo(newNode.InputPort);
+            _graphView.AddElement(newEdge);
+        }
+
+        public void OnDrop(GraphView graphView, Edge edge)
+        {
+            // Standard drop behavior (already handled by GraphView natively)
         }
     }
 
@@ -218,7 +325,8 @@ namespace Game.Global.TutorialSystem.Editor
             StepData = data;
             title = data.name;
 
-            InputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
+            // VIBRA NOTE: Capacity.Single to ensure linear flow
+            InputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
             InputPort.portName = "Input";
             inputContainer.Add(InputPort);
 
@@ -226,12 +334,14 @@ namespace Game.Global.TutorialSystem.Editor
             OutputPort.portName = "Next Step";
             outputContainer.Add(OutputPort);
 
-            // Giao diện dữ liệu của Node
-            var idField = new TextField("Step Name") { value = StepData.name };
+            // Node Data UI
+            var idField = new TextField("Asset ID") { value = StepData.name };
             idField.RegisterValueChangedCallback(evt =>
             {
-                title = evt.newValue;
+                // VIBRA NOTE: Manual rename of the asset ID still allowed, but cautioned. 
+                // The visual sequence prefix will be restored by the next UpdateNodeVisuals call.
                 StepData.name = evt.newValue;
+                title = evt.newValue;
                 EditorUtility.SetDirty(StepData);
             });
             mainContainer.Add(idField);
@@ -258,4 +368,5 @@ namespace Game.Global.TutorialSystem.Editor
         }
     }
 }
+
 #endif

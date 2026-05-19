@@ -3,27 +3,32 @@ using UnityEngine;
 namespace Game.Global.TutorialSystem
 {
     /// <summary>
-    /// Enum defining the types of tutorial displays available.
+    /// Defines the visual presentation modes for a tutorial step.
     /// </summary>
     public enum TutorialDisplayType
     {
-        Text, // Just show text instructions
-        Hint, // Show a visual hint (like an arrow or highlight) pointing to an anchor
-        TextHint // Combine both Text and Hint
+        /// <summary>Only displays a text message to the user.</summary>
+        Text,
+
+        /// <summary>Displays a visual hint (e.g., arrow, highlight) at an anchor position.</summary>
+        Hint,
+
+        /// <summary>Displays both a text message and a visual spatial hint.</summary>
+        TextHint
     }
 
     /// <summary>
-    /// Data structure representing a single step in the tutorial.
+    /// Represents a single step in a tutorial sequence, containing its message and display configuration.
     /// </summary>
     public class TutorialStepData : ScriptableObject
     {
+        /// <summary>The instruction message displayed to the player.</summary>
         [TextArea(3, 5)] public string Message;
 
+        /// <summary>The display mode used to render this step.</summary>
         public TutorialDisplayType DisplayType;
 
-        [Tooltip("Tham chiếu trực tiếp đến Step tiếp theo.")]
-        public TutorialStepData NextStep;
-
-        [HideInInspector] public Vector2 NodePosition; // Dùng cho GraphView lưu tọa độ UI
+        /// <summary>The visual position of the node within the editor graph window.</summary>
+        [HideInInspector] public Vector2 NodePosition;
     }
 }

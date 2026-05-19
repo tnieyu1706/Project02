@@ -3,12 +3,13 @@ using UnityEngine;
 namespace Game.Global.TutorialSystem
 {
     /// <summary>
-    /// Gắn script này vào các UI Element (hoặc GameObject) mà bạn muốn vòng sáng chỉ vào.
+    /// Identifies a spatial point or UI element in the scene used as a hint anchor for tutorial steps.
     /// </summary>
     [DisallowMultipleComponent]
     public class TutorialAnchor : MonoBehaviour
     {
-        [Tooltip("Kéo trực tiếp file TutorialStepData (Sub-asset) tương ứng vào đây thay vì gõ ID.")]
+        /// <summary>The tutorial step associated with this anchor.</summary>
+        [Tooltip("The tutorial step that this anchor points to.")]
         public TutorialStepData TargetStep;
 
         private void OnEnable()
@@ -22,7 +23,7 @@ namespace Game.Global.TutorialSystem
         }
 
         /// <summary>
-        /// Gọi hàm này từ Event Trigger hoặc OnClick của Button để hoàn thành Step này.
+        /// Triggers the next step in the tutorial sequence if the current step matches this anchor's target.
         /// </summary>
         public void TriggerNextStep()
         {
