@@ -10,7 +10,7 @@ To provide a data-driven, graph-based tutorial system that cleanly separates tut
 - **`TutorialUI`** (`MonoBehaviour`): Frontend View. Subscribes to manager events. Renders text, handles World-to-Screen conversion for hints, and advances text-only steps via message panel click.
 - **`TutorialAnchor`** (`MonoBehaviour`): Attached to GameObjects. Holds a reference to its corresponding `TutorialStepData` and triggers the Manager.
 - **`TutorialAnchorRegistry`** (`static class`): Mapping `TutorialStepData` to the active `TutorialAnchor`.
-- **`TutorialGraphWindow`** (`EditorWindow`): Visual editor for `TutorialData`. Manages sequential list reconstruction via graph traversal.
+- **`TutorialGraphWindow`** (`EditorWindow`): Visual editor for `TutorialData`. Manages sequential list reconstruction, automatic node naming (`<DataName>_<Index>`), and drag-to-create node UX.
 
 ## Runtime Flow Summary
 The system follows an event-driven MVC pattern:

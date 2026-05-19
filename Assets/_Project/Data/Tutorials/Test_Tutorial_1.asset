@@ -1,5 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7783590710909105498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Test_Tutorial_1_3
+  m_EditorClassIdentifier: 
+  Message: xin chao ngay moi tot lanh
+  DisplayType: 0
+  NodePosition: {x: 699.2, y: -68.8}
 --- !u!114 &-4306333182968999776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10,11 +25,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
-  m_Name: Step_96a80
+  m_Name: Test_Tutorial_1_0
   m_EditorClassIdentifier: 
   Message: Hello This is Step1
   DisplayType: 0
-  NodePosition: {x: -32, y: -196}
+  NodePosition: {x: -292, y: -269.6}
 --- !u!114 &-2576680264674948569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25,11 +40,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
-  m_Name: Step_11142
+  m_Name: Test_Tutorial_1_2
   m_EditorClassIdentifier: 
   Message: Nihao wo de Step3
   DisplayType: 0
-  NodePosition: {x: 586.4, y: -68.8}
+  NodePosition: {x: 359.2, y: -68.8}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,6 +62,7 @@ MonoBehaviour:
   - {fileID: -4306333182968999776}
   - {fileID: 1229921541484916125}
   - {fileID: -2576680264674948569}
+  - {fileID: -7783590710909105498}
 --- !u!114 &1229921541484916125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,8 +73,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
-  m_Name: Step_1ccd3
+  m_Name: Test_Tutorial_1_1
   m_EditorClassIdentifier: 
   Message: Xin chao day la Step2
   DisplayType: 2
-  NodePosition: {x: 264, y: -145.59999}
+  NodePosition: {x: -16.8, y: -68.8}

@@ -1,12 +1,12 @@
-## [Turn 4] — Tutorial Interaction Refinement (Click-to-Continue)
+# [Turn 5] — TutorialGraph Editor UX Enhancements
 
 **Files changed:**
-- `Assets/_Project/Scripts/Gameplay/Global/TutorialSystem/TutorialUI.cs` — modified: added `messageButton` reference and click logic to advance text-only steps.
+- `Assets/_Project/Scripts/Gameplay/Global/TutorialSystem/Editor/TutorialGraphWindow.cs` — modified: implemented `UpdateNodeNames` for sequential naming (`<DataName>_<Index>`), and `TutorialEdgeConnectorListener` for drag-to-create node functionality.
 
 **Docs updated:**
-- `.vibe/ARCHITECTURE.md` — updated `TutorialUI` responsibilities.
-- `.vibe/CHANGE.md` — updated with turn 4 changes.
-- `.vibe/HISTORY.md` — appended turn 4 history.
+- `.vibe/ARCHITECTURE.md` — updated responsibilities for `TutorialGraphWindow`.
+- `.vibe/CHANGE.md` — updated with turn 5 changes.
+- `.vibe/HISTORY.md` — appended turn 5 history.
 
 **Flagged:**
 - None
