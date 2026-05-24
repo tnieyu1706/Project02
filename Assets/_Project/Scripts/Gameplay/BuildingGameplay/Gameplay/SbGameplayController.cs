@@ -73,8 +73,8 @@ namespace Game.BuildingGameplay
             { ArmyType.Quick, new ObservableValue<int>(0) }
         };
 
-        public static event Action OnResourceChanged;
-        public static event Action OnActiveBuildingApplyResource;
+        public event Action OnResourceChanged;
+        public event Action OnActiveBuildingApplyResource;
 
         #endregion
 
@@ -230,8 +230,8 @@ namespace Game.BuildingGameplay
             }
 
             Instance.VillagerData.AddVillagers(1);
-            OnResourceChanged?.Invoke();
-            OnActiveBuildingApplyResource?.Invoke();
+            Instance.OnResourceChanged?.Invoke();
+            Instance.OnActiveBuildingApplyResource?.Invoke();
         }
 
         private static float CalculateResourceAmount(ResourceType resourceType, float amount)
@@ -257,7 +257,7 @@ namespace Game.BuildingGameplay
         public static void AddResourceAndRefresh(ResourceType resourceType, float value)
         {
             AddResource(resourceType, value);
-            OnResourceChanged?.Invoke();
+            Instance.OnResourceChanged?.Invoke();
         }
 
         public static ObservableValue<int> GetObservableArmy(ArmyType armyType) => Instance.ArmyStorage[armyType];
@@ -289,7 +289,7 @@ namespace Game.BuildingGameplay
                 Instance.ResourceStorage[resourceCost.Key].Value -= resourceCost.Value;
             }
 
-            OnResourceChanged?.Invoke();
+            Instance.OnResourceChanged?.Invoke();
         }
 
         public static void RefundCost(ActionCost cost)
@@ -299,7 +299,7 @@ namespace Game.BuildingGameplay
                 Instance.ResourceStorage[resourceCost.Key].Value += resourceCost.Value;
             }
 
-            OnResourceChanged?.Invoke();
+            Instance.OnResourceChanged?.Invoke();
         }
 
         public static void RevalidateResourceLimits()
@@ -324,7 +324,7 @@ namespace Game.BuildingGameplay
 
             if (isChanged)
             {
-                OnResourceChanged?.Invoke();
+                Instance.OnResourceChanged?.Invoke();
             }
         }
 
@@ -385,6 +385,8 @@ namespace Game.BuildingGameplay
 
         public async UniTask LoadAll()
         {
+            Debug.Log($"[LoadAll] Attempting to load data from: {currentLevel.TempFilePath}");
+
             if (!File.Exists(currentLevel.TempFilePath))
             {
                 Debug.LogError($"Temp file not found at path: {currentLevel.TempFilePath}");

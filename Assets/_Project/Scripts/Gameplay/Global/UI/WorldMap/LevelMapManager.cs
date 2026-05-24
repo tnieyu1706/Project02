@@ -15,25 +15,24 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
 
         private void OnEnable()
         {
-            if (PlayerDataManager.HasInstance)
+            if (!PlayerDataManager.HasInstance) return;
+
+            var levelsData = PlayerDataManager.Instance.PlayerData.Levels;
+            var dict = levelsData.ToDictionary(data => data.id, data => data);
+
+            // synchronize level map components with player data
+            foreach (var levelComponent in levelMapComponents)
             {
-                var levelsData = PlayerDataManager.Instance.PlayerData.Levels;
-                var dict = levelsData.ToDictionary(data => data.id, data => data);
-
-                // synchronize level map components with player data
-                foreach (var levelComponent in levelMapComponents)
+                if (dict.TryGetValue(levelComponent.ID, out var levelData))
                 {
-                    if (dict.TryGetValue(levelComponent.ID, out var levelData))
-                    {
-                        levelComponent.BindData(levelData);
-                        continue;
-                    }
-
-                    levelsData.Add(levelComponent.SaveData());
+                    levelComponent.BindData(levelData);
+                    continue;
                 }
 
-                PlayerDataManager.Instance.Save();
+                levelsData.Add(levelComponent.SaveData());
             }
+
+            PlayerDataManager.Instance.Save();
         }
     }
 }

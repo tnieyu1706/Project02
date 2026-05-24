@@ -136,7 +136,7 @@ namespace Game.BuildingGameplay
 
             if (SbGameplayController.HasInstance)
             {
-                SbGameplayController.OnResourceChanged -= ValidateItems;
+                SbGameplayController.Instance.OnResourceChanged -= ValidateItems;
             }
 
             if (ResultTcs == null) return;
@@ -165,7 +165,7 @@ namespace Game.BuildingGameplay
             base.Show();
 
             if (!SbGameplayController.HasInstance) return;
-            SbGameplayController.OnResourceChanged += ValidateItems;
+            SbGameplayController.Instance.OnResourceChanged += ValidateItems;
             ValidateItems(); // Cập nhật trạng thái item ngay khi hiển thị lên màn hình
         }
 

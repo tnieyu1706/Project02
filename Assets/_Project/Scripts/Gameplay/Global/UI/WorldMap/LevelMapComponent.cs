@@ -87,5 +87,11 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
         {
             return levelData;
         }
+
+        [Button]
+        private void ResetDataId()
+        {
+            levelData.id = Guid.NewGuid();
+        }
     }
 }

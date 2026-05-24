@@ -77,7 +77,7 @@ namespace Game.StrategyBuilding
             RemainingBuildTime = preset.buildWaitingTime;
 
             InfluenceRatio.OnValueChanged += HandleInfluenceRatioChanged;
-            SbGameplayController.OnActiveBuildingApplyResource += HandleActiveBuildingApplyResource;
+            SbGameplayController.Instance.OnActiveBuildingApplyResource += HandleActiveBuildingApplyResource;
         }
 
         public virtual void Setup()
@@ -186,7 +186,7 @@ namespace Game.StrategyBuilding
             behaviourCts?.Cancel();
             behaviourCts?.Dispose();
 
-            SbGameplayController.OnActiveBuildingApplyResource -= HandleActiveBuildingApplyResource;
+            SbGameplayController.Instance.OnActiveBuildingApplyResource -= HandleActiveBuildingApplyResource;
 
             if (UsedVillagers > 0)
             {

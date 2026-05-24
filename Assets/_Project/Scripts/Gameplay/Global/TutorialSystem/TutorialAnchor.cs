@@ -32,5 +32,10 @@ namespace Game.Global.TutorialSystem
                 TutorialManager.Instance.Next(TargetStep);
             }
         }
+        
+        public void StopTutorialImmediately()
+        {
+            TutorialManager.Instance.EndTutorial();
+        }
     }
 }
