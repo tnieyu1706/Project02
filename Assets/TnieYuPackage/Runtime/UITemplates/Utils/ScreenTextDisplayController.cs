@@ -35,6 +35,7 @@ namespace TnieYuPackage.UI
         [Range(0, 24)] [SerializeField] private int persistentTextFontSize = 18;
 
         private ObjectPool<Text> _textPool;
+        private LinkedList<Text> _activeTexts = new LinkedList<Text>();
         private Dictionary<Guid, Text> _persistentTexts = new Dictionary<Guid, Text>();
 
         protected override void InitializeSingleton()
@@ -65,6 +66,17 @@ namespace TnieYuPackage.UI
 
         #endregion
 
+        void OnDisable()
+        {
+            foreach (var text in _activeTexts)
+            {
+                if (text != null && text.gameObject.activeSelf)
+                {
+                    _textPool.Release(text);
+                }
+            }
+        }
+
         public void DisplayText(string content, Vector3 worldPos, Color? textColor = null)
         {
             Text textComponent = _textPool.Get();
@@ -72,6 +84,8 @@ namespace TnieYuPackage.UI
             textComponent.text = content;
             textComponent.color = textColor ?? Color.white;
             textComponent.transform.position = worldPos;
+
+            _activeTexts.AddLast(textComponent);
 
             ReleaseTextAsync(textComponent, displayDuration, this.GetCancellationTokenOnDestroy()).Forget();
         }
@@ -108,9 +122,10 @@ namespace TnieYuPackage.UI
             }
 
             // Thu hồi object
-            if (textComponent != null && textComponent.gameObject.activeSelf)
+            if (textComponent != null && textComponent.gameObject.activeSelf && _textPool != null)
             {
                 _textPool.Release(textComponent);
+                _activeTexts.Remove(textComponent);
             }
         }
 

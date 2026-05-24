@@ -3,35 +3,12 @@ using UnityEngine;
 
 namespace Game.Global.TutorialSystem
 {
-    /// <summary>
-    /// Contract for managing tutorial sequences and their progression.
-    /// </summary>
-    public interface ITutorialManager
-    {
-        /// <summary>Starts a tutorial sequence from the beginning.</summary>
-        void StartTutorial(TutorialData tutorialData, bool forceRestart = false);
-
-        /// <summary>Advances to the next step if the triggered step matches the current expected step.</summary>
-        void Next(TutorialStepData triggeredStep);
-
-        /// <summary>Manually advances to the next step in the sequence.</summary>
-        void AdvanceToNextStep();
-
-        /// <summary>Forcefully ends the current tutorial sequence.</summary>
-        void EndTutorial();
-
-        /// <summary>Checks if a specific tutorial has been marked as completed.</summary>
-        bool HasCompletedTutorial(string tutorialId);
-
-        /// <summary>Resets the completion status of a specific tutorial.</summary>
-        void ResetTutorialProgress(string tutorialId);
-    }
 
     /// <summary>
     /// Manages the runtime state and progression of tutorials. Decoupled from UI via events.
     /// </summary>
     [DefaultExecutionOrder(-50)]
-    public class TutorialManager : MonoBehaviour, ITutorialManager
+    public class TutorialManager : MonoBehaviour
     {
         /// <summary>Singleton instance of the TutorialManager.</summary>
         public static TutorialManager Instance { get; private set; }
@@ -101,7 +78,7 @@ namespace Game.Global.TutorialSystem
 
             if (_currentIndex >= _currentTutorialSequence.Steps.Count)
             {
-                CompleteTutorial();
+                EndTutorial();
                 return;
             }
 
@@ -131,19 +108,15 @@ namespace Game.Global.TutorialSystem
             OnStepStarted?.Invoke(stepData, targetAnchorTransform);
         }
 
-        private void CompleteTutorial()
-        {
-            if (_currentTutorialSequence != null)
-            {
-                PlayerPrefs.SetInt(PLAYER_PREFS_PREFIX + _currentTutorialSequence.TutorialId, 1);
-                PlayerPrefs.Save();
-            }
-            EndTutorial();
-        }
-
         /// <summary>Forcefully ends the current tutorial and hides UI.</summary>
         public void EndTutorial()
         {
+            if (_currentTutorialSequence != null)
+            {
+                PlayerPrefs.SetInt(GetSavePath(_currentTutorialSequence.TutorialId), 1);
+                PlayerPrefs.Save();
+            }
+            
             _isTutorialActive = false;
             _currentTutorialSequence = null;
             _currentIndex = -1;
@@ -154,13 +127,18 @@ namespace Game.Global.TutorialSystem
         /// <summary>Checks if a tutorial has been marked as completed in PlayerPrefs.</summary>
         public bool HasCompletedTutorial(string tutorialId)
         {
-            return PlayerPrefs.GetInt(PLAYER_PREFS_PREFIX + tutorialId, 0) == 1;
+            return PlayerPrefs.GetInt(GetSavePath(tutorialId), 0) == 1;
+        }
+
+        private static string GetSavePath(string tutorialId)
+        {
+            return PLAYER_PREFS_PREFIX + tutorialId;
         }
 
         /// <summary>Clears completion status for a specific tutorial in PlayerPrefs.</summary>
         public void ResetTutorialProgress(string tutorialId)
         {
-            PlayerPrefs.DeleteKey(PLAYER_PREFS_PREFIX + tutorialId);
+            PlayerPrefs.DeleteKey(GetSavePath(tutorialId));
             PlayerPrefs.Save();
         }
     }

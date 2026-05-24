@@ -35,14 +35,14 @@ namespace Game.StrategyBuilding
         {
             base.Setup();
             // Đăng ký lắng nghe mỗi khi hệ thống chạy ApplyResourceIncrement
-            SbGameplayController.OnActiveBuildingApplyResource += HandleProduceSkillPoints;
+            SbGameplayController.Instance.OnActiveBuildingApplyResource += HandleProduceSkillPoints;
         }
 
         public override void DestroyBehaviour()
         {
             base.DestroyBehaviour();
             // Hủy đăng ký lắng nghe để tránh lỗi Memory Leak khi phá nhà
-            SbGameplayController.OnActiveBuildingApplyResource -= HandleProduceSkillPoints;
+            SbGameplayController.Instance.OnActiveBuildingApplyResource -= HandleProduceSkillPoints;
         }
 
         /// <summary>

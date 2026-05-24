@@ -380,6 +380,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 218263015}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.TutorialAnchor, Core.Gameplay
+        m_MethodName: StopTutorialImmediately
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &218263015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1044,7 +1056,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelData:
     id:
-      value: a0acf2af-2f1a-44d0-8265-28694c9c3ba7
+      value: 7d19d1eb-ba90-40c8-8bd8-bb730b29e2c9
     isUnlocked: 1
     score: 0
   level: {fileID: 11400000, guid: 78d9f45fab5d368428e2016237409dcb, type: 2}
@@ -1268,7 +1280,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tutorialData: {fileID: 11400000, guid: 429411f2996a27f45af5b5c2cedf6ff1, type: 2}
-  _forceRestart: 1
+  _forceRestart: 0
+  tutorialStartDelay: 0.5
 --- !u!4 &1188890098
 Transform:
   m_ObjectHideFlags: 0
