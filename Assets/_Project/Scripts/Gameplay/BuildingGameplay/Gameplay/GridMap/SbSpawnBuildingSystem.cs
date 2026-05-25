@@ -109,7 +109,18 @@ namespace Game.StrategyBuilding
 
             if (preTilePos == currentTilePos) return;
 
-            isTileValid = SbGridMapSystem.Instance.ValidForCreate(currentTilePos);
+            // 1. KIỂM TRA MẶC ĐỊNH (Ô rỗng, không bị block)
+            bool isBaseValid = SbGridMapSystem.Instance.ValidForCreate(currentTilePos);
+
+            // 2. KIỂM TRA LÂN CẬN CÓ CÔNG TRÌNH CŨ (Bỏ qua nếu là Nhà Chính)
+            bool isAdjacencyValid = true;
+            if (!(currentBuildingPreset is MainBuildingPresetSo))
+            {
+                isAdjacencyValid = SbGridMapSystem.Instance.HasAdjacentBuilding(currentTilePos);
+            }
+
+            // Gộp điều kiện
+            isTileValid = isBaseValid && isAdjacencyValid;
 
             // display blueprint.
 
@@ -166,8 +177,17 @@ namespace Game.StrategyBuilding
             var worldPos = GetScreenWorldPos();
             var tilePos = (Vector2Int)SbGridMapSystem.Instance.gridTilemap.WorldToCell(worldPos);
 
-            // THAY ĐỔI: Nếu đặt SAI vị trí, không được thoát chế độ Blueprint mà phải cho người chơi đặt lại
-            if (!SbGridMapSystem.Instance.ValidForCreate(tilePos))
+            // KIỂM TRA LẠI ĐIỀU KIỆN KHI CLICK (để chắc chắn người chơi không spam)
+            bool isBaseValid = SbGridMapSystem.Instance.ValidForCreate(tilePos);
+            bool isAdjacencyValid = true;
+
+            if (!(currentBuildingPreset is MainBuildingPresetSo))
+            {
+                isAdjacencyValid = SbGridMapSystem.Instance.HasAdjacentBuilding(tilePos);
+            }
+
+            // THAY ĐỔI: Nếu đặt SAI vị trí (bị chặn hoặc không nối liền) thì từ chối đặt
+            if (!isBaseValid || !isAdjacencyValid)
             {
                 return false;
             }
@@ -196,7 +216,7 @@ namespace Game.StrategyBuilding
 
             SpawnBuilding(tilePos, currentBuildingPreset);
             SbGameplayController.ApplyCost(currentBuildingPreset.costBuilding.Data);
-            
+
             // THÊM: Phát âm thanh khi người chơi đặt (xây dựng) công trình thành công
             if (Instance.buildingPresetManager?.buildSfx != null)
             {

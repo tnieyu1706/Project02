@@ -21,6 +21,7 @@ namespace Game.BuildingGameplay
         [Header("Gameplay")] [SerializeField] private Button returnMapBtn;
         [SerializeField] private SerializableDictionary<ResourceType, Text> resourceNumberTexts;
         [SerializeField] private SerializableDictionary<LimitResourceType, Text> limitResourceNumberTexts;
+        [SerializeField] private SerializableDictionary<ResourceType, Text> incrementResourceNumberTexts;
         [SerializeField] private Text peopleNumberText;
         [SerializeField] private Text maxPeopleNumberText;
         [SerializeField] private Slider healthSlider;
@@ -56,6 +57,7 @@ namespace Game.BuildingGameplay
         private Dictionary<LimitResourceType, Text> LimitResourceNumberTexts => limitResourceNumberTexts.Dictionary;
 
         private Dictionary<ResourceType, Action<float>> ResourceNumberEvents { get; } = new();
+        private Dictionary<ResourceType, Action<float>> IncrementResourceNumberEvents { get; } = new();
         private Dictionary<LimitResourceType, Action<int>> LimitResourceNumberEvents { get; } = new();
 
         #region EVENTS
@@ -98,6 +100,18 @@ namespace Game.BuildingGameplay
 
                 // Cập nhật Text UI lần đầu tiên ngay lúc đăng ký
                 resourceNumberKvp.Value.text = observableResource.Value.ToString("F1");
+            }
+
+            foreach (var increResourceKvp in incrementResourceNumberTexts.Dictionary)
+            {
+                Action<float> onResourceDataChanged =
+                    changeValue => increResourceKvp.Value.text = changeValue.ToString("F1");
+
+                var increObservable = SbGameplayController.Instance.IncrementResources[increResourceKvp.Key];
+                increObservable.OnValueChanged += onResourceDataChanged;
+                IncrementResourceNumberEvents[increResourceKvp.Key] = onResourceDataChanged;
+
+                increResourceKvp.Value.text = increObservable.Value.ToString("F1");
             }
 
             // 2. Đăng ký và hiển thị Limit Resource
@@ -143,6 +157,12 @@ namespace Game.BuildingGameplay
             {
                 SbGameplayController.GetObservableResource(resourceEventKvp.Key).OnValueChanged -=
                     resourceEventKvp.Value;
+            }
+
+            foreach (var increEventKvp in IncrementResourceNumberEvents)
+            {
+                SbGameplayController.Instance.IncrementResources[increEventKvp.Key].OnValueChanged -=
+                    increEventKvp.Value;
             }
 
             foreach (var limitResourceEventKvp in LimitResourceNumberEvents)
