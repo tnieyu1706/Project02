@@ -167,7 +167,12 @@ namespace Game.BuildingGameplay
 
         private static void HandleOnGameEndDefault()
         {
-            Instance.RecordResult(GameplayTransition.DataManager.CurrentLevel);
+            // BÁO CÁO KẾT QUẢ CHO SYSTEM KHÁC.
+            // GameplayController không còn quan tâm LevelData là gì, cập nhật điểm ra sao. (Đúng chuẩn SRP)
+            if (GameplayTransition.DataManager != null)
+            {
+                GameplayTransition.DataManager.SubmitLevelResult(Instance.currentHealth.Value);
+            }
         }
 
         private void OnDisable()
@@ -199,12 +204,6 @@ namespace Game.BuildingGameplay
         public void SetLevel(BuildingGameplayLevel level)
         {
             currentLevel = level;
-        }
-
-        public void RecordResult(LevelData levelData)
-        {
-            levelData.score = currentHealth.Value;
-            // set unlocked for nest levels
         }
 
         #region SUPPORTS

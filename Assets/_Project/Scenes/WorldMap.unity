@@ -1057,7 +1057,7 @@ MonoBehaviour:
   levelData:
     id:
       value: 7d19d1eb-ba90-40c8-8bd8-bb730b29e2c9
-    isUnlocked: 1
+    isUnlocked: 0
     score: 0
   level: {fileID: 11400000, guid: 78d9f45fab5d368428e2016237409dcb, type: 2}
   canvasGroup: {fileID: 951777789}
