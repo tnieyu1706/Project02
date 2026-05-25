@@ -102,7 +102,7 @@ namespace Game.StrategyBuilding
             {
                 // Đếm ngược từng giây và tự động huỷ nếu nhận được token cancel
                 bool isCanceled = await UniTask.Delay(
-                        1000,
+                        CalculateTimeWaiting(),
                         delayType: DelayType.DeltaTime,
                         cancellationToken: token,
                         cancelImmediately: true)
@@ -124,6 +124,11 @@ namespace Game.StrategyBuilding
 
             ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
             CompleteConstruction();
+        }
+
+        private static TimeSpan CalculateTimeWaiting()
+        {
+            return TimeSpan.FromSeconds(Time.timeScale * 1);
         }
 
         protected virtual void UpdateConstructionPersistentText()

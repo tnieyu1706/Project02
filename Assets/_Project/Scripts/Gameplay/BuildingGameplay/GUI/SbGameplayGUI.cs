@@ -18,7 +18,9 @@ namespace Game.BuildingGameplay
     {
         [Inject] private GameplayTransition transition;
 
-        [Header("Gameplay")] [SerializeField] private Button returnMapBtn;
+        [Header("Gameplay")] [SerializeField] private Color positiveColor = Color.green;
+        [SerializeField] private Color negativeColor = Color.red;
+        [SerializeField] private Button returnMapBtn;
         [SerializeField] private SerializableDictionary<ResourceType, Text> resourceNumberTexts;
         [SerializeField] private SerializableDictionary<LimitResourceType, Text> limitResourceNumberTexts;
         [SerializeField] private SerializableDictionary<ResourceType, Text> incrementResourceNumberTexts;
@@ -105,7 +107,12 @@ namespace Game.BuildingGameplay
             foreach (var increResourceKvp in incrementResourceNumberTexts.Dictionary)
             {
                 Action<float> onResourceDataChanged =
-                    changeValue => increResourceKvp.Value.text = changeValue.ToString("F1");
+                    changedValue =>
+                    {
+                        bool isPositive = changedValue >= 0;
+                        increResourceKvp.Value.text = isPositive ? $"+{changedValue:F1}" : $"{changedValue:F1}";
+                        increResourceKvp.Value.color = isPositive ? positiveColor : negativeColor;
+                    };
 
                 var increObservable = SbGameplayController.Instance.IncrementResources[increResourceKvp.Key];
                 increObservable.OnValueChanged += onResourceDataChanged;
@@ -118,7 +125,7 @@ namespace Game.BuildingGameplay
             foreach (var limitResourceNumberKvp in LimitResourceNumberTexts)
             {
                 Action<int> onLimitResourceDataChanged =
-                    changedValue => limitResourceNumberKvp.Value.text = changedValue.ToString();
+                    changedValue => limitResourceNumberKvp.Value.text = changedValue.ToString("F1");
 
                 var observableLimitResource =
                     SbGameplayController.Instance.LimitResourceStorage[limitResourceNumberKvp.Key];
