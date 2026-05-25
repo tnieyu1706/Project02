@@ -31,9 +31,9 @@ namespace Gameplay.Global
 
         public void LoadMainMenu()
         {
-            gameplayTransition.LoadMainMenuGame().Forget();
+            gameplayTransition.LoadMainMenuGame(applyDelay: false).Forget();
         }
-        
+
         /// <summary>
         /// Nơi duy nhất xử lý nghiệp vụ Data (Cập nhật điểm, ra lệnh lưu).
         /// Gameplay module (như SbGameplayController) chỉ việc gọi hàm này để báo cáo kết quả.
@@ -46,9 +46,9 @@ namespace Gameplay.Global
             if (finalScore > CurrentLevel.score)
             {
                 CurrentLevel.score = finalScore;
-                
+
                 Debug.Log($"[TransitionData] Kỷ lục mới: {finalScore} điểm. Tiến hành lưu PlayerData.");
-                
+
                 // Lưu thẳng xuống file để đảm bảo không mất dữ liệu
                 if (PlayerDataManager.HasInstance)
                 {

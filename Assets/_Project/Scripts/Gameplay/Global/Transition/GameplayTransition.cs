@@ -19,6 +19,9 @@ namespace Gameplay.Global
         [SerializeField] private SceneGroup mainMenuSceneGroup;
         [SerializeField] private SceneGroup worldMapSceneGroup;
 
+        [Header("Story Gameplay")] [SerializeField]
+        private SceneGroup storySceneGroup; // THÊM: Group Scene dành cho phần Introduce
+
         [Header("Building Gameplay")] [SerializeField]
         private SceneGroup buildingGameplaySceneGroup;
 
@@ -31,11 +34,17 @@ namespace Gameplay.Global
         [Header("WaveAttack Gameplay")] [SerializeField]
         private SceneData waveAttackSceneData;
 
+        // THÊM: Gọi hàm này khi bắt đầu New Game để Load Scene cốt truyện
+        public async UniTask LoadStoryGame(bool applyDelay = true)
+        {
+            await SceneLoader.Instance.Load(storySceneGroup, applyDelay);
+        }
+
         #region Building Gameplay Transition
 
-        public async UniTask LoadMainMenuGame()
+        public async UniTask LoadMainMenuGame(bool applyDelay = true)
         {
-            await SceneLoader.Instance.Load(mainMenuSceneGroup);
+            await SceneLoader.Instance.Load(mainMenuSceneGroup, applyDelay);
         }
 
         public async UniTask LoadWorldMapGame()

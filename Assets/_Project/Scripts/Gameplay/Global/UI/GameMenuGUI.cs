@@ -2,7 +2,6 @@ using _Project.Scripts.Gameplay.Global.GameController;
 using _Project.Scripts.Gameplay.Global.PlayerDataSystem;
 using Cysharp.Threading.Tasks;
 using EditorAttributes;
-using Game.BaseGameplay;
 using Gameplay.Global;
 using Reflex.Attributes;
 using UnityEngine;
@@ -29,14 +28,13 @@ namespace _Project.Scripts.Gameplay.Global.UI
             sfxSlider.value = GameSettingsController.Instance.sfxVolume * sfxSlider.maxValue;
         }
 
-        // Sửa lại StartGame: Tạo data mới thay vì load data cũ
         public void StartGame()
         {
-            PlayerDataManager.Instance?.StartNewGameData(); // Khởi tạo và ghi đè file save cũ
-            transition.LoadWorldMapGame().Forget(); // Chuyển scene
+            PlayerDataManager.Instance?.StartNewGameData(); 
+            // THAY ĐỔI: Chuyển sang scene Story khi bắt đầu New Game thay vì đi thẳng tới World Map
+            transition.LoadStoryGame(applyDelay: false).Forget(); 
         }
 
-        // ContinueGame giữ nguyên: Load data cũ
         public void ContinueGame()
         {
             if (!PlayerDataManager.IsDataFileExist()) return;
@@ -44,10 +42,10 @@ namespace _Project.Scripts.Gameplay.Global.UI
             LoadWorldMap();
         }
 
-        // Hàm này giờ chỉ dành cho ContinueGame
         private void LoadWorldMap()
         {
             PlayerDataManager.Instance?.Load();
+            // Continue thì đi thẳng vào World Map
             transition.LoadWorldMapGame().Forget();
         }
 
