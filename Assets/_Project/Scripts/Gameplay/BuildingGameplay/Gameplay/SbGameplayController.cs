@@ -37,6 +37,9 @@ namespace Game.BuildingGameplay
         [Tooltip("Gán Scriptable Object của Nhà Chính vào đây để tự động đặt ra khi bắt đầu game")]
         public MainBuildingPresetSo startMainBuildingPreset;
 
+        public event Action OnPreMainBuildingSpawn;
+        public event Action OnPostMainBuildingSpawn;
+
         #region PROPERTIES
 
         public VillagerDataManager VillagerData = new();
@@ -182,7 +185,7 @@ namespace Game.BuildingGameplay
             OnLoseGame -= HandleOnGameEndDefault;
         }
 
-        public void CreateGameplay(BuildingGameplayLevel level)
+        public async void CreateGameplay(BuildingGameplayLevel level)
         {
             currentHealth.Value = MAX_HEALTH;
 
@@ -192,7 +195,9 @@ namespace Game.BuildingGameplay
             // THÊM ĐOẠN NÀY ĐỂ ÉP NGƯỜI CHƠI XÂY NHÀ CHÍNH KHÔNG ĐƯỢC HUỶ
             if (startMainBuildingPreset != null)
             {
-                SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false, timeStop: true);
+                OnPreMainBuildingSpawn?.Invoke();
+                await SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false, timeStop: true);
+                OnPostMainBuildingSpawn?.Invoke();
             }
 
             foreach (var eventData in currentLevel.events)

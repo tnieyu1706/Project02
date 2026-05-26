@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Scripts.Gameplay.Global.GameController; // THÊM LINQ
+using _Project.Scripts.Gameplay.Global.GameController;
+using Cysharp.Threading.Tasks; // THÊM LINQ
 using Game.BuildingGameplay;
 using Reflex.Attributes;
 using SoundSystem.Core;
@@ -25,8 +27,10 @@ namespace Game.StrategyBuilding
         private static bool currentCanCancel = true;
         private static bool currentTimeStop = false;
 
+        private static UniTaskCompletionSource buildingSpawnTcs;
+
         // THÊM THAM SỐ canCancel (Mặc định = true như cũ)
-        public static void StartBuilding(BuildingPresetSo preset, bool canCancel = true, bool timeStop = false)
+        public static UniTask StartBuilding(BuildingPresetSo preset, bool canCancel = true, bool timeStop = false)
         {
             // KIỂM TRA ĐỘC QUYỀN NHÀ CHÍNH: Tránh trường hợp người chơi bấm trong Menu
             if (preset is MainBuildingPresetSo)
@@ -37,9 +41,16 @@ namespace Game.StrategyBuilding
                 if (hasMainBuilding)
                 {
                     Debug.Log($"[TdWaveConverter] Đã tồn tại Nhà Chính trên bản đồ. Không thể đặt thêm.");
-                    return; // Chặn không cho spawn blueprint
+                    return UniTask.CompletedTask; // Chặn không cho spawn blueprint
                 }
             }
+
+            if (buildingSpawnTcs != null)
+            {
+                buildingSpawnTcs.TrySetCanceled();
+            }
+
+            buildingSpawnTcs = new UniTaskCompletionSource();
 
             currentBuildingPreset = preset;
             currentCanCancel = canCancel;
@@ -62,6 +73,8 @@ namespace Game.StrategyBuilding
             {
                 InputEventManager.Instance.RegistryOnce(KeyCode.Mouse1, CancelBuildingItemEvent);
             }
+
+            return buildingSpawnTcs.Task.AttachExternalCancellation(instance.GetCancellationTokenOnDestroy());
         }
 
         private static Vector2Int preTilePos;
@@ -189,6 +202,8 @@ namespace Game.StrategyBuilding
             // THAY ĐỔI: Nếu đặt SAI vị trí (bị chặn hoặc không nối liền) thì từ chối đặt
             if (!isBaseValid || !isAdjacencyValid)
             {
+                // Handle spawn failed
+                buildingSpawnTcs.TrySetCanceled();
                 return false;
             }
 
@@ -199,6 +214,9 @@ namespace Game.StrategyBuilding
             }
 
             ExecuteAttachedHandler(); // Xoá blueprint, trả quyền điều khiển map
+
+            // Handle spawn completed
+            buildingSpawnTcs?.TrySetResult();
 
             // Kiểm tra giới hạn số lượng (trừ MainBuilding vì MainBuilding được xử lý độc quyền ở trên rồi)
             if (!(currentBuildingPreset is MainBuildingPresetSo))
@@ -243,9 +261,15 @@ namespace Game.StrategyBuilding
 
         private static bool CancelBuildingItemEvent()
         {
+            buildingSpawnTcs?.TrySetCanceled();
             InputEventManager.Instance.UnRegistryKey(KeyCode.Mouse0);
             ExecuteAttachedHandler();
             return true;
+        }
+
+        private void OnDestroy()
+        {
+            buildingSpawnTcs?.TrySetCanceled();
         }
     }
 }

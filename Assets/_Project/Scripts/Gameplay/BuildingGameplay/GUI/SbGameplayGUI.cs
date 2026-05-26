@@ -20,13 +20,13 @@ namespace Game.BuildingGameplay
 
         [Header("Gameplay")] [SerializeField] private Color positiveColor = Color.green;
         [SerializeField] private Color negativeColor = Color.red;
-        [SerializeField] private Button returnMapBtn;
         [SerializeField] private SerializableDictionary<ResourceType, Text> resourceNumberTexts;
         [SerializeField] private SerializableDictionary<LimitResourceType, Text> limitResourceNumberTexts;
         [SerializeField] private SerializableDictionary<ResourceType, Text> incrementResourceNumberTexts;
         [SerializeField] private Text peopleNumberText;
         [SerializeField] private Text maxPeopleNumberText;
         [SerializeField] private Slider healthSlider;
+        [SerializeField] private Button returnMapBtn;
 
         [Header("Global Properties UI")] [SerializeField]
         private Text skillPointText;
@@ -81,6 +81,12 @@ namespace Game.BuildingGameplay
             SbTimeController.Instance.currentTime.OnValueChanged += HandleTimerChangedValue;
 
             returnMapBtn.onClick.AddListener(HandleReturnMapButtonClicked);
+
+            if (SbGameplayController.HasInstance)
+            {
+                SbGameplayController.Instance.OnPreMainBuildingSpawn += TurnOffFeatureButtons;
+                SbGameplayController.Instance.OnPostMainBuildingSpawn += TurnOnFeatureButtons;
+            }
         }
 
         private void HandleReturnMapButtonClicked()
@@ -308,7 +314,34 @@ namespace Game.BuildingGameplay
                 SbGameplayController.Instance.currentHealth.OnValueChanged -= HandleHealthSliderChanged;
                 UnRegistryGameplayProperties();
                 UnRegistryArmyStorageHandlers();
+
+                SbGameplayController.Instance.OnPreMainBuildingSpawn -= TurnOffFeatureButtons;
+                SbGameplayController.Instance.OnPostMainBuildingSpawn -= TurnOnFeatureButtons;
             }
+        }
+
+        #endregion
+
+        #region UI HANDLERS
+
+        public void TurnOffFeatureButtons()
+        {
+            buildingListBtn.gameObject.SetActive(false);
+            enemyBaseBtn.gameObject.SetActive(false);
+            skillTreeBtn.gameObject.SetActive(false);
+            gamePropertyBtn.gameObject.SetActive(false);
+            eventButton.gameObject.SetActive(false);
+            returnMapBtn.gameObject.SetActive(false);
+        }
+
+        public void TurnOnFeatureButtons()
+        {
+            buildingListBtn.gameObject.SetActive(true);
+            enemyBaseBtn.gameObject.SetActive(true);
+            skillTreeBtn.gameObject.SetActive(true);
+            gamePropertyBtn.gameObject.SetActive(true);
+            eventButton.gameObject.SetActive(true);
+            returnMapBtn.gameObject.SetActive(true);
         }
 
         #endregion
