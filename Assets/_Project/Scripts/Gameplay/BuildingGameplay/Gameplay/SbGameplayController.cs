@@ -195,9 +195,20 @@ namespace Game.BuildingGameplay
             // THÊM ĐOẠN NÀY ĐỂ ÉP NGƯỜI CHƠI XÂY NHÀ CHÍNH KHÔNG ĐƯỢC HUỶ
             if (startMainBuildingPreset != null)
             {
-                OnPreMainBuildingSpawn?.Invoke();
-                await SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false, timeStop: true);
-                OnPostMainBuildingSpawn?.Invoke();
+                try
+                {
+                    OnPreMainBuildingSpawn?.Invoke();
+                    await SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false,
+                        timeStop: true);
+                }
+                catch (OperationCanceledException canceledException)
+                {
+                    // handle if error occur.
+                }
+                finally
+                {
+                    OnPostMainBuildingSpawn?.Invoke();
+                }
             }
 
             foreach (var eventData in currentLevel.events)
