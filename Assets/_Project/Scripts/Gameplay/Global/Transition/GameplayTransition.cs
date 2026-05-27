@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Gameplay.Global.GameController;
 using _Project.Scripts.Gameplay.Global.UI.WorldMap;
 using Cysharp.Threading.Tasks;
 using Eflatun.SceneReference;
@@ -50,6 +51,9 @@ namespace Gameplay.Global
         public async UniTask LoadWorldMapGame()
         {
             await SceneLoader.Instance.Load(worldMapSceneGroup);
+
+            //TODO: Ensure timescale reset to default
+            GameTimeController.SetTimeScaleToDefault();
         }
 
         public async UniTask CreateBuildingGameplay(BuildingGameplayLevel buildingLevelSource,

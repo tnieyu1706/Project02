@@ -201,7 +201,7 @@ namespace Game.BuildingGameplay
                     await SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false,
                         timeStop: true);
                 }
-                catch (OperationCanceledException canceledException)
+                catch (OperationCanceledException)
                 {
                     // handle if error occur.
                 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Gameplay.Global.GameController;
 using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using Game.BaseGameplay;
@@ -55,6 +56,10 @@ namespace Game.BuildingGameplay
 
         [Header("Reading")] [ReadOnly] public EnemyBaseEventDisplayUIToolkit enemyBaseEventDisplay;
 
+        [Header("Options")] [SerializeField] private Button gameSpeedButton;
+        [SerializeField] private Text gameSpeedText;
+        [SerializeField] private int maxTimeScale = 3;
+
         private Dictionary<ResourceType, Text> ResourceNumberTexts => resourceNumberTexts.Dictionary;
         private Dictionary<LimitResourceType, Text> LimitResourceNumberTexts => limitResourceNumberTexts.Dictionary;
 
@@ -68,6 +73,11 @@ namespace Game.BuildingGameplay
         {
             RegistryGameplayProperties();
             SbGameplayController.Instance.currentHealth.OnValueChanged += HandleHealthSliderChanged;
+
+            {
+                gameSpeedButton.onClick.AddListener(HandleGameSpeedChangeWithStatic);
+                SetTimeScaleWithUI(Mathf.FloorToInt(GameTimeController.TimeScale));
+            }
 
             RegistryArmyStorageHandlers();
 
@@ -87,6 +97,21 @@ namespace Game.BuildingGameplay
                 SbGameplayController.Instance.OnPreMainBuildingSpawn += TurnOffFeatureButtons;
                 SbGameplayController.Instance.OnPostMainBuildingSpawn += TurnOnFeatureButtons;
             }
+        }
+
+        private void HandleGameSpeedChangeWithStatic()
+        {
+            int curTimeScale = Mathf.FloorToInt(GameTimeController.TimeScale);
+            // TODO: Get next time scale from current and maxTimeScale setup
+            var nextTimeScale = (curTimeScale % maxTimeScale) + 1;
+
+            SetTimeScaleWithUI(nextTimeScale);
+        }
+
+        private void SetTimeScaleWithUI(int nextTimeScale)
+        {
+            GameTimeController.SetTimeScale(nextTimeScale);
+            gameSpeedText.text = nextTimeScale.ToString();
         }
 
         private void HandleReturnMapButtonClicked()
@@ -295,6 +320,8 @@ namespace Game.BuildingGameplay
 
         private void OnDisable()
         {
+            gameSpeedButton.onClick.RemoveListener(HandleGameSpeedChangeWithStatic);
+            
             returnMapBtn.onClick.RemoveListener(HandleReturnMapButtonClicked);
 
             buildingListBtn.onClick.RemoveListener(HandleBuildingListButtonClicked);

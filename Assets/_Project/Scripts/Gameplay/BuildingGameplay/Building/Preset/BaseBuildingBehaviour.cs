@@ -102,7 +102,7 @@ namespace Game.StrategyBuilding
             {
                 // Đếm ngược từng giây và tự động huỷ nếu nhận được token cancel
                 bool isCanceled = await UniTask.Delay(
-                        CalculateTimeWaiting(),
+                        1000,
                         delayType: DelayType.DeltaTime,
                         cancellationToken: token,
                         cancelImmediately: true)
@@ -111,7 +111,7 @@ namespace Game.StrategyBuilding
                 // Nếu Task bị huỷ (do công trình bị xoá), thoát luôn vòng lặp
                 if (isCanceled) return;
 
-                RemainingBuildTime -= 1f;
+                RemainingBuildTime -= 1;
 
                 if (RemainingBuildTime > 0)
                 {
@@ -126,9 +126,9 @@ namespace Game.StrategyBuilding
             CompleteConstruction();
         }
 
-        private static TimeSpan CalculateTimeWaiting()
+        private static float CalculateTimeWaiting(float delay)
         {
-            return TimeSpan.FromSeconds(Time.timeScale * 1);
+            return Time.timeScale * delay;
         }
 
         protected virtual void UpdateConstructionPersistentText()
