@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Building_MainTownHall
   m_EditorClassIdentifier: 
   buildingId: MainTowerHall
+  description: Main building for all buildings.
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
   buildWaitingTime: 0

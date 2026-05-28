@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Building_ResourceIncrease_Stone1
   m_EditorClassIdentifier: 
   buildingId: StoneIncrease1
+  description: Use for increase stone per time.
   defaultMaxVillagersCanUse: 2
   requireVillagers: 1
   buildWaitingTime: 20
+  buildingType: 0
   buildingCategory: 4
   tileLayer: 4
   buildingTile: {fileID: 11400000, guid: 4a051d6a3ca664440b6274fe19d881ed, type: 2}

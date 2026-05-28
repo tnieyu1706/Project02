@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Building_ResourceCapacity_Food1
   m_EditorClassIdentifier: 
   buildingId: FoodCapacity1
+  description: Use for increase food capacity.
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
   buildWaitingTime: 15
+  buildingType: 0
   buildingCategory: 5
   tileLayer: 5
   buildingTile: {fileID: 11400000, guid: 87c8ffc0128540f4aa631a549f0b9d70, type: 2}

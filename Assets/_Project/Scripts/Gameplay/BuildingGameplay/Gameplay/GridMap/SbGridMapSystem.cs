@@ -94,7 +94,30 @@ namespace Game.StrategyBuilding
         public Dictionary<Vector2Int, SbGridTileData> GridMap { get; } = new();
         public List<Vector2Int> BlockMap { get; } = new();
 
+        // CÁC SỰ KIỆN EDP ĐỂ GIAO TIẾP VỚI CÁC HỆ THỐNG KHÁC (UI, Display, v.v...)
+        public static event System.Action<Vector2Int, SbGridTileData> OnTileCreated;
+        public static event System.Action<Vector2Int, SbGridTileData> OnTileDestroyed;
+        public static event System.Action OnMapCleared;
+
         public bool ValidForCreate(Vector2Int pos) => !BlockMap.Contains(pos) && !GridMap.ContainsKey(pos);
+
+        // Hàm kiểm tra xem 8 ô xung quanh có công trình nào đã xây chưa
+        public bool HasAdjacentBuilding(Vector2Int pos)
+        {
+            foreach (var dir in Vector2IntUtils.Get8DirectionalVectors())
+            {
+                if (GridMap.TryGetValue(pos + dir, out var neighborTile))
+                {
+                    // Chỉ tính các ô có BuildingRuntime (là công trình, không phải môi trường)
+                    if (neighborTile.BuildingRuntime != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
         public SbGridTileData CreateAndWriteTile(Vector2Int pos, SbTileLayer layer, BuildingRuntime building = null)
         {
@@ -123,6 +146,9 @@ namespace Game.StrategyBuilding
             }
 
             HandleInfluenceOnCreate(data);
+
+            // Bắn sự kiện ra ngoài khi một ô được ghi xong
+            OnTileCreated?.Invoke(pos, data);
         }
 
         public SbGridTileData ReadTile(Vector2Int pos)
@@ -137,8 +163,8 @@ namespace Game.StrategyBuilding
             if (tileData.BuildingRuntime != null)
             {
                 Game.Global.GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value--;
-                
-                // THÊM: Phát âm thanh phá huỷ (chỉ phát nếu ô bị xoá là công trình)
+
+                // Phát âm thanh phá huỷ (chỉ phát nếu ô bị xoá là công trình)
                 if (buildingPresetManager?.destroySfx != null)
                 {
                     sfxManager?.PlayVfx(buildingPresetManager.destroySfx).Forget();
@@ -149,12 +175,15 @@ namespace Game.StrategyBuilding
             HandleInfluenceOnDestroy(tileData);
             gridTilemap.SetTile((Vector3Int)pos, null);
 
+            // Bắn sự kiện ra ngoài khi một ô bị xoá
+            OnTileDestroyed?.Invoke(pos, tileData);
+
             return true;
         }
 
         #region Influence Controller
 
-        // THÊM: Hàm này cho phép gọi công khai từ BaseBuildingBehaviour khi hoàn thành xây dựng
+        // Hàm này cho phép gọi công khai từ BaseBuildingBehaviour khi hoàn thành xây dựng
         public void UpdateInfluenceForTile(Vector2Int pos)
         {
             if (GridMap.TryGetValue(pos, out var tileData))
@@ -329,6 +358,9 @@ namespace Game.StrategyBuilding
 
             GridMap.Clear();
             Game.Global.GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value = 0;
+
+            // Bắn sự kiện ra ngoài khi map bị clear
+            OnMapCleared?.Invoke();
         }
 
         #endregion

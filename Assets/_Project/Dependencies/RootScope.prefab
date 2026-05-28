@@ -101,3 +101,7 @@ MonoBehaviour:
     Contracts:
     - Game.StrategyBuilding.SbGridMapDataController, Core.Gameplay, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  - Target: {fileID: 11400000, guid: 33a9ff3538f42714f97d28442a179872, type: 2}
+    Contracts:
+    - _Project.Scripts.Gameplay.Global.UI.WorldMap.LevelMapTreeSo, Core.Gameplay,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

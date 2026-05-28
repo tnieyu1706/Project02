@@ -31,6 +31,7 @@ namespace Game.StrategyBuilding
     public abstract class BuildingPresetSo : ScriptableObject
     {
         [Header("Basic Info")] public string buildingId;
+        [TextArea(2, 5)] public string description;
         public int defaultMaxVillagersCanUse = 1;
         public bool requireVillagers = true;
 

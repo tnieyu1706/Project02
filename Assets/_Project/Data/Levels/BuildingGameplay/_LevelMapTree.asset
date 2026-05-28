@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2016585217644070287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07902d3b83947da96e2aca01db92ecd, type: 3}
+  m_Name: Node 1
+  m_EditorClassIdentifier: 
+  guid: ea68dff4-ace9-4514-a23b-f74860365885
+  position: {x: -4.0000076, y: 152.00002}
+  nodeName: Node 1
+  level: {fileID: 11400000, guid: 39d7ad50ddf0676489aeb964350a6065, type: 2}
+  children:
+  - {fileID: 177500073905241425}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 432fe4b37b9f4dabb15931f50ca7f38e, type: 3}
+  m_Name: _LevelMapTree
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -2016585217644070287}
+  - {fileID: 177500073905241425}
+--- !u!114 &177500073905241425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07902d3b83947da96e2aca01db92ecd, type: 3}
+  m_Name: Node 2
+  m_EditorClassIdentifier: 
+  guid: b2599154-5383-4c08-9d88-d5dc065d9ae6
+  position: {x: 487.99997, y: 126.40002}
+  nodeName: Node 2
+  level: {fileID: 11400000, guid: 78d9f45fab5d368428e2016237409dcb, type: 2}
+  children: []

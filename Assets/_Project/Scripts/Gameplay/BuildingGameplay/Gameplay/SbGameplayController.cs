@@ -37,6 +37,9 @@ namespace Game.BuildingGameplay
         [Tooltip("Gán Scriptable Object của Nhà Chính vào đây để tự động đặt ra khi bắt đầu game")]
         public MainBuildingPresetSo startMainBuildingPreset;
 
+        public event Action OnPreMainBuildingSpawn;
+        public event Action OnPostMainBuildingSpawn;
+
         #region PROPERTIES
 
         public VillagerDataManager VillagerData = new();
@@ -167,7 +170,12 @@ namespace Game.BuildingGameplay
 
         private static void HandleOnGameEndDefault()
         {
-            Instance.RecordResult(GameplayTransition.DataManager.CurrentLevel);
+            // BÁO CÁO KẾT QUẢ CHO SYSTEM KHÁC.
+            // GameplayController không còn quan tâm LevelData là gì, cập nhật điểm ra sao. (Đúng chuẩn SRP)
+            if (GameplayTransition.DataManager != null)
+            {
+                GameplayTransition.DataManager.SubmitLevelResult(Instance.currentHealth.Value);
+            }
         }
 
         private void OnDisable()
@@ -177,7 +185,7 @@ namespace Game.BuildingGameplay
             OnLoseGame -= HandleOnGameEndDefault;
         }
 
-        public void CreateGameplay(BuildingGameplayLevel level)
+        public async void CreateGameplay(BuildingGameplayLevel level)
         {
             currentHealth.Value = MAX_HEALTH;
 
@@ -187,7 +195,20 @@ namespace Game.BuildingGameplay
             // THÊM ĐOẠN NÀY ĐỂ ÉP NGƯỜI CHƠI XÂY NHÀ CHÍNH KHÔNG ĐƯỢC HUỶ
             if (startMainBuildingPreset != null)
             {
-                SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false, timeStop: true);
+                try
+                {
+                    OnPreMainBuildingSpawn?.Invoke();
+                    await SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false,
+                        timeStop: true);
+                }
+                catch (OperationCanceledException)
+                {
+                    // handle if error occur.
+                }
+                finally
+                {
+                    OnPostMainBuildingSpawn?.Invoke();
+                }
             }
 
             foreach (var eventData in currentLevel.events)
@@ -199,12 +220,6 @@ namespace Game.BuildingGameplay
         public void SetLevel(BuildingGameplayLevel level)
         {
             currentLevel = level;
-        }
-
-        public void RecordResult(LevelData levelData)
-        {
-            levelData.score = currentHealth.Value;
-            // set unlocked for nest levels
         }
 
         #region SUPPORTS

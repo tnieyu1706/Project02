@@ -117,7 +117,7 @@ namespace Game.StrategyBuilding
 
         protected override void BuildBehaviourLayoutUI(VisualElement container)
         {
-            var title = new Label("Cung cấp chỗ ở");
+            var title = new Label("Villager House");
             title.AddToClassList("behaviour-title");
 
             var capacityRow = new VisualElement();
@@ -127,11 +127,11 @@ namespace Game.StrategyBuilding
             iconPlaceholder.AddToClassList("resource-icon-placeholder");
             // TODO: Gán icon Dân làng thực tế: iconPlaceholder.style.backgroundImage = ...
 
-            var nameLabel = new Label("Sức chứa");
+            var nameLabel = new Label("Capacity");
             nameLabel.AddToClassList("resource-name");
 
             // Giá trị khởi tạo
-            capacityValueLabel = new Label($"+{CalculateTotalCapacity()} Người");
+            capacityValueLabel = new Label($"+{CalculateTotalCapacity()} People");
             capacityValueLabel.AddToClassList("resource-value");
 
             capacityRow.Add(iconPlaceholder);
@@ -146,7 +146,7 @@ namespace Game.StrategyBuilding
         {
             if (capacityValueLabel != null)
             {
-                capacityValueLabel.text = $"+{currentTotal} Người";
+                capacityValueLabel.text = $"+{currentTotal} People";
             }
         }
     }

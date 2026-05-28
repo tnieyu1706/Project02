@@ -109,7 +109,7 @@ namespace Game.StrategyBuilding
 
         protected override void BuildBehaviourLayoutUI(VisualElement container)
         {
-            var title = new Label("Sản xuất Điểm Kỹ Năng");
+            var title = new Label("Produce SP Increase");
             title.AddToClassList("behaviour-title");
 
             var row = new VisualElement();
@@ -119,10 +119,10 @@ namespace Game.StrategyBuilding
             iconPlaceholder.AddToClassList("resource-icon-placeholder");
             // TODO: Gán ảnh icon Skill Point vào đây
 
-            var nameLabel = new Label("Skill Point");
+            var nameLabel = new Label("SP");
             nameLabel.AddToClassList("resource-name");
 
-            skillPointValueLabel = new Label($"+{CalculateSkillPointsToProduce()} / chu kỳ");
+            skillPointValueLabel = new Label($"+{CalculateSkillPointsToProduce()} / cycle");
             skillPointValueLabel.AddToClassList("resource-value");
 
             row.Add(iconPlaceholder);
@@ -137,7 +137,7 @@ namespace Game.StrategyBuilding
         {
             if (skillPointValueLabel != null)
             {
-                skillPointValueLabel.text = $"+{currentTotal} / chu kỳ";
+                skillPointValueLabel.text = $"+{currentTotal} / cycle";
             }
         }
     }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ac918fa632e4ee0828d5dbc43a40798, type: 3}
+  m_Name: IntroStoryData
+  m_EditorClassIdentifier: 
+  pages:
+  - image: {fileID: 21300000, guid: d2ed3815340bbe84687429f0f2effb17, type: 3}
+    contentText: Page 1 content
+    duration: 5
+  - image: {fileID: 21300000, guid: f05e924f8c737474fb41aff9cf5c9b1c, type: 3}
+    contentText: Page 2 content
+    duration: 10

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Gameplay.Global.GameController;
 using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using Game.BaseGameplay;
@@ -18,12 +19,15 @@ namespace Game.BuildingGameplay
     {
         [Inject] private GameplayTransition transition;
 
-        [Header("Gameplay")] [SerializeField] private Button returnMapBtn;
+        [Header("Gameplay")] [SerializeField] private Color positiveColor = Color.green;
+        [SerializeField] private Color negativeColor = Color.red;
         [SerializeField] private SerializableDictionary<ResourceType, Text> resourceNumberTexts;
         [SerializeField] private SerializableDictionary<LimitResourceType, Text> limitResourceNumberTexts;
+        [SerializeField] private SerializableDictionary<ResourceType, Text> incrementResourceNumberTexts;
         [SerializeField] private Text peopleNumberText;
         [SerializeField] private Text maxPeopleNumberText;
         [SerializeField] private Slider healthSlider;
+        [SerializeField] private Button returnMapBtn;
 
         [Header("Global Properties UI")] [SerializeField]
         private Text skillPointText;
@@ -52,10 +56,15 @@ namespace Game.BuildingGameplay
 
         [Header("Reading")] [ReadOnly] public EnemyBaseEventDisplayUIToolkit enemyBaseEventDisplay;
 
+        [Header("Options")] [SerializeField] private Button gameSpeedButton;
+        [SerializeField] private Text gameSpeedText;
+        [SerializeField] private int maxTimeScale = 3;
+
         private Dictionary<ResourceType, Text> ResourceNumberTexts => resourceNumberTexts.Dictionary;
         private Dictionary<LimitResourceType, Text> LimitResourceNumberTexts => limitResourceNumberTexts.Dictionary;
 
         private Dictionary<ResourceType, Action<float>> ResourceNumberEvents { get; } = new();
+        private Dictionary<ResourceType, Action<float>> IncrementResourceNumberEvents { get; } = new();
         private Dictionary<LimitResourceType, Action<int>> LimitResourceNumberEvents { get; } = new();
 
         #region EVENTS
@@ -64,6 +73,11 @@ namespace Game.BuildingGameplay
         {
             RegistryGameplayProperties();
             SbGameplayController.Instance.currentHealth.OnValueChanged += HandleHealthSliderChanged;
+
+            {
+                gameSpeedButton.onClick.AddListener(HandleGameSpeedChangeWithStatic);
+                SetTimeScaleWithUI(Mathf.FloorToInt(GameTimeController.TimeScale));
+            }
 
             RegistryArmyStorageHandlers();
 
@@ -77,6 +91,27 @@ namespace Game.BuildingGameplay
             SbTimeController.Instance.currentTime.OnValueChanged += HandleTimerChangedValue;
 
             returnMapBtn.onClick.AddListener(HandleReturnMapButtonClicked);
+
+            if (SbGameplayController.HasInstance)
+            {
+                SbGameplayController.Instance.OnPreMainBuildingSpawn += TurnOffFeatureButtons;
+                SbGameplayController.Instance.OnPostMainBuildingSpawn += TurnOnFeatureButtons;
+            }
+        }
+
+        private void HandleGameSpeedChangeWithStatic()
+        {
+            int curTimeScale = Mathf.FloorToInt(GameTimeController.TimeScale);
+            // TODO: Get next time scale from current and maxTimeScale setup
+            var nextTimeScale = (curTimeScale % maxTimeScale) + 1;
+
+            SetTimeScaleWithUI(nextTimeScale);
+        }
+
+        private void SetTimeScaleWithUI(int nextTimeScale)
+        {
+            GameTimeController.SetTimeScale(nextTimeScale);
+            gameSpeedText.text = nextTimeScale.ToString();
         }
 
         private void HandleReturnMapButtonClicked()
@@ -100,11 +135,28 @@ namespace Game.BuildingGameplay
                 resourceNumberKvp.Value.text = observableResource.Value.ToString("F1");
             }
 
+            foreach (var increResourceKvp in incrementResourceNumberTexts.Dictionary)
+            {
+                Action<float> onResourceDataChanged =
+                    changedValue =>
+                    {
+                        bool isPositive = changedValue >= 0;
+                        increResourceKvp.Value.text = isPositive ? $"+{changedValue:F1}" : $"{changedValue:F1}";
+                        increResourceKvp.Value.color = isPositive ? positiveColor : negativeColor;
+                    };
+
+                var increObservable = SbGameplayController.Instance.IncrementResources[increResourceKvp.Key];
+                increObservable.OnValueChanged += onResourceDataChanged;
+                IncrementResourceNumberEvents[increResourceKvp.Key] = onResourceDataChanged;
+
+                increResourceKvp.Value.text = increObservable.Value.ToString("F1");
+            }
+
             // 2. Đăng ký và hiển thị Limit Resource
             foreach (var limitResourceNumberKvp in LimitResourceNumberTexts)
             {
                 Action<int> onLimitResourceDataChanged =
-                    changedValue => limitResourceNumberKvp.Value.text = changedValue.ToString();
+                    changedValue => limitResourceNumberKvp.Value.text = changedValue.ToString("F1");
 
                 var observableLimitResource =
                     SbGameplayController.Instance.LimitResourceStorage[limitResourceNumberKvp.Key];
@@ -143,6 +195,12 @@ namespace Game.BuildingGameplay
             {
                 SbGameplayController.GetObservableResource(resourceEventKvp.Key).OnValueChanged -=
                     resourceEventKvp.Value;
+            }
+
+            foreach (var increEventKvp in IncrementResourceNumberEvents)
+            {
+                SbGameplayController.Instance.IncrementResources[increEventKvp.Key].OnValueChanged -=
+                    increEventKvp.Value;
             }
 
             foreach (var limitResourceEventKvp in LimitResourceNumberEvents)
@@ -262,6 +320,8 @@ namespace Game.BuildingGameplay
 
         private void OnDisable()
         {
+            gameSpeedButton.onClick.RemoveListener(HandleGameSpeedChangeWithStatic);
+            
             returnMapBtn.onClick.RemoveListener(HandleReturnMapButtonClicked);
 
             buildingListBtn.onClick.RemoveListener(HandleBuildingListButtonClicked);
@@ -281,7 +341,34 @@ namespace Game.BuildingGameplay
                 SbGameplayController.Instance.currentHealth.OnValueChanged -= HandleHealthSliderChanged;
                 UnRegistryGameplayProperties();
                 UnRegistryArmyStorageHandlers();
+
+                SbGameplayController.Instance.OnPreMainBuildingSpawn -= TurnOffFeatureButtons;
+                SbGameplayController.Instance.OnPostMainBuildingSpawn -= TurnOnFeatureButtons;
             }
+        }
+
+        #endregion
+
+        #region UI HANDLERS
+
+        public void TurnOffFeatureButtons()
+        {
+            buildingListBtn.gameObject.SetActive(false);
+            enemyBaseBtn.gameObject.SetActive(false);
+            skillTreeBtn.gameObject.SetActive(false);
+            gamePropertyBtn.gameObject.SetActive(false);
+            eventButton.gameObject.SetActive(false);
+            returnMapBtn.gameObject.SetActive(false);
+        }
+
+        public void TurnOnFeatureButtons()
+        {
+            buildingListBtn.gameObject.SetActive(true);
+            enemyBaseBtn.gameObject.SetActive(true);
+            skillTreeBtn.gameObject.SetActive(true);
+            gamePropertyBtn.gameObject.SetActive(true);
+            eventButton.gameObject.SetActive(true);
+            returnMapBtn.gameObject.SetActive(true);
         }
 
         #endregion

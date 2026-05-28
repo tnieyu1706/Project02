@@ -13,7 +13,7 @@ namespace Game.BaseGameplay.Strategies
         public float spawnCooldown = 5f;
     }
 
-    public abstract class TowerSpawnInteractStrategy<TInstaller> : BaseObjectInteractStrategy<TInstaller>
+    public abstract class TowerSpawnInteractStrategy<TInstaller> : BaseObjectInteractStrategy<TInstaller>, IStrategyInfoProvider
         where TInstaller : TowerSpawnInteractStrategyInstaller
     {
         // Dùng mảng để giữ "Slot" của đội hình, tránh lính spawn sau đè lên slot lính đang sống
@@ -21,6 +21,12 @@ namespace Game.BaseGameplay.Strategies
 
         public TowerSpawnInteractStrategy(TInstaller installer) : base(installer)
         {
+        }
+        
+        public void AppendStrategyInfo(System.Collections.Generic.Dictionary<BaseObjPropertyType, string> infoMap)
+        {
+            // Tháp Barrack sẽ tự động đẩy thông số Sức chứa lính lên UI
+            infoMap.TryAdd(BaseObjPropertyType.Capacity, ActualInstaller.maxSpawnQuantity.ToString());
         }
 
         public override void OnInitBehaviour(IBaseObjectRuntime runtime)

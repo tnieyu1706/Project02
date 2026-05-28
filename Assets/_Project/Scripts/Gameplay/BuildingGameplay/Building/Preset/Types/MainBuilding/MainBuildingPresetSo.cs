@@ -139,7 +139,7 @@ namespace Game.StrategyBuilding
 
         protected override void BuildBehaviourLayoutUI(VisualElement container)
         {
-            var title = new Label("Trung Tâm Điều Hành");
+            var title = new Label("Operations Center");
             title.AddToClassList("behaviour-title");
 
             var row = new VisualElement();
@@ -149,7 +149,7 @@ namespace Game.StrategyBuilding
             iconPlaceholder.AddToClassList("resource-icon-placeholder");
             // TODO: Gán ảnh icon đại diện cho "Giới hạn công trình"
 
-            var nameLabel = new Label("Giới hạn xây dựng");
+            var nameLabel = new Label("Max constructions");
             nameLabel.AddToClassList("resource-name");
 
             limitValueLabel = new Label();
@@ -171,7 +171,7 @@ namespace Game.StrategyBuilding
         {
             if (limitValueLabel != null)
             {
-                limitValueLabel.text = $"{maxLimit} Công trình";
+                limitValueLabel.text = $"{maxLimit} Constructions";
             }
         }
     }
