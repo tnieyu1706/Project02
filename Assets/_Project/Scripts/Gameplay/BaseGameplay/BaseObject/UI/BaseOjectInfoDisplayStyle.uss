@@ -1,0 +1,59 @@
+/* Panel chính: Nằm dưới cùng, căn giữa, vươn dài theo chiều ngang */
+.info-display-panel {
+    position: absolute;
+    bottom: 40px;
+    align-self: center; /* Căn giữa theo chiều ngang màn hình */
+    width: 60%; /* Chiều ngang rộng (bạn có thể thay đổi tỷ lệ này) */
+    min-width: 400px;
+    max-width: 800px;
+    background-color: rgba(20, 25, 35, 0.9); /* Màu nền tối có độ mờ */
+    border-radius: 16px;
+    padding: 16px 24px;
+    flex-direction: column;
+    align-items: center;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Label Tên Object */
+.info-object-name {
+    font-size: 26px;
+    -unity-font-style: bold;
+    color: rgb(255, 220, 100); /* Màu vàng nổi bật */
+    margin-bottom: 12px;
+}
+
+/* Container bọc dàn Icon */
+.info-items-container {
+    flex-direction: row;
+    flex-wrap: wrap; /* Cho phép rớt dòng nếu có quá nhiều thông số */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Từng Item riêng lẻ (Icon + Text) */
+.info-item-container {
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền đen mờ nhẹ làm nổi bật Item */
+    padding: 8px 16px;
+    margin: 6px;
+    border-radius: 12px;
+}
+
+/* Hình Icon */
+.info-item-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+    /* Scale ảnh sao cho không bị méo */
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Chữ hiển thị thông số */
+.info-item-value {
+    font-size: 20px;
+    color: rgb(240, 240, 240);
+    -unity-font-style: bold;
+}

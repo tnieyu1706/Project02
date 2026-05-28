@@ -145,7 +145,7 @@ namespace Game.TowerDefense
                         CurrentContext.Setup(nextPreset);
 
                         Hide();
-                        BlurBackground.CloseManual();
+                        BlurBackground.CloseAll();
                     }
                 );
             }

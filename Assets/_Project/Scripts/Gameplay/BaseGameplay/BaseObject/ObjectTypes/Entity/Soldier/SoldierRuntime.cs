@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Cysharp.Threading.Tasks;
 using TnieYuPackage.Handlers;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 namespace Game.BaseGameplay
 {
     [RequireComponent(typeof(Animator))]
-    public class SoldierRuntime : EntityRuntime<SoldierPresetSo>
+    public class SoldierRuntime : EntityRuntime<SoldierPresetSo>, IBaseObjectInfoProvider
     {
         // Thêm Event để Strategy có thể lắng nghe
         public event Action<SoldierRuntime> OnSoldierDeadEvent;
@@ -31,5 +32,36 @@ namespace Game.BaseGameplay
         {
             SetPreset(soldierPreset);
         }
+
+        #region IBaseObjectInfoProvider Implementation
+
+        public string GetObjectName()
+        {
+            return currentPreset != null ? currentPreset.objectId : "Soldier";
+        }
+
+        public System.Collections.Generic.Dictionary<BaseObjPropertyType, string> GetObjectInfo()
+        {
+            var info = new System.Collections.Generic.Dictionary<BaseObjPropertyType, string>();
+
+            if (currentPreset == null) return info;
+
+            info.Add(BaseObjPropertyType.Type, currentPreset.armyType.ToString());
+            info.Add(BaseObjPropertyType.Health, $"{Hp.Value}/{currentPreset.maxHp}");
+            info.Add(BaseObjPropertyType.Defense, currentPreset.def.ToString(CultureInfo.InvariantCulture));
+
+            // Lấy thêm Attack, AttackSpeed từ Behaviour/Strategy
+            foreach (var strategy in InteractStrategyList)
+            {
+                if (strategy is IStrategyInfoProvider strategyInfo)
+                {
+                    strategyInfo.AppendStrategyInfo(info);
+                }
+            }
+
+            return info;
+        }
+
+        #endregion
     }
 }
