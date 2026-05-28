@@ -1,10 +1,12 @@
+using Reflex.Attributes;
+using SoundSystem.Core;
 using UnityEngine;
 
-namespace SoundSystem.Core
+namespace _Project.Scripts.Gameplay.Global.SoundSystem
 {
     public class SfxPlayer : MonoBehaviour
     {
-        [SerializeField] protected SfxManager sfxManager;
+        [Inject] protected SfxManager sfxManager;
 
         public void PlaySound(SoundData soundData)
         {

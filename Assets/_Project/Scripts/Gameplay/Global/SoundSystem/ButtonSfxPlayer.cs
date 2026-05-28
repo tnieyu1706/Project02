@@ -2,17 +2,17 @@ using SoundSystem.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SoundSystem.Template
+namespace _Project.Scripts.Gameplay.Global.SoundSystem
 {
     [RequireComponent(typeof(Button))]
     public class ButtonSfxPlayer : SfxPlayer
     {
-        [SerializeField] private Button button;
         [SerializeField] private SoundData soundData;
+        private Button button;
 
         void Awake()
         {
-            button ??= GetComponent<Button>();
+            button = GetComponent<Button>();
         }
 
         void Start()
