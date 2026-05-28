@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Building_SPIncrease1
   m_EditorClassIdentifier: 
   buildingId: SPIncrease1
+  description: Use for increase SP per time.
   defaultMaxVillagersCanUse: 2
   requireVillagers: 1
   buildWaitingTime: 30

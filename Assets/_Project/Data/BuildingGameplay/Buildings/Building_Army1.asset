@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Building_Army1
   m_EditorClassIdentifier: 
   buildingId: SpawnArmy1
+  description: Use for spawn army.
   defaultMaxVillagersCanUse: 2
   requireVillagers: 1
   buildWaitingTime: 40
+  buildingType: 0
   buildingCategory: 3
   tileLayer: 4
   buildingTile: {fileID: 11400000, guid: bd710749913bdc04ab2de1893f06b067, type: 2}

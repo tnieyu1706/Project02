@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Building_ResourceCapacity_Stone1
   m_EditorClassIdentifier: 
   buildingId: StoneCapacity1
+  description: Use for increase stone capacity.
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
   buildWaitingTime: 20
+  buildingType: 0
   buildingCategory: 5
   tileLayer: 5
   buildingTile: {fileID: 11400000, guid: a2ea3038ddeebbd4d80a823e5c10d9a2, type: 2}

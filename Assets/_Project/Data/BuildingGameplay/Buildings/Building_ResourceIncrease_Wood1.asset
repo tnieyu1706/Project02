@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Building_ResourceIncrease_Wood1
   m_EditorClassIdentifier: 
   buildingId: WoodIncrease1
+  description: Use for increase wood per time.
   defaultMaxVillagersCanUse: 2
   requireVillagers: 1
   buildWaitingTime: 10
+  buildingType: 0
   buildingCategory: 4
   tileLayer: 4
   buildingTile: {fileID: 11400000, guid: ee0cb0d4671482d4ab34cc674aab1a8d, type: 2}

@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Building_ResourceIncrease_Coin1
   m_EditorClassIdentifier: 
   buildingId: CoinIncrease1
+  description: Use for increase coin per time.
   defaultMaxVillagersCanUse: 2
   requireVillagers: 1
   buildWaitingTime: 15
+  buildingType: 0
   buildingCategory: 4
   tileLayer: 4
   buildingTile: {fileID: 11400000, guid: 248301825e35e9c41b9e309609d0da7f, type: 2}

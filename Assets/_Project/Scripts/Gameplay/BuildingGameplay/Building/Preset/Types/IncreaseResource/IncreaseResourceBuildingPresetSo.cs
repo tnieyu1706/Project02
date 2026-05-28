@@ -116,7 +116,7 @@ namespace Game.StrategyBuilding
 
         protected override void BuildBehaviourLayoutUI(VisualElement container)
         {
-            var title = new Label("Sản xuất Tài nguyên");
+            var title = new Label("Produce Resource Increment");
             title.AddToClassList("behaviour-title");
             title.AddToClassList("title-increase");
 
@@ -131,7 +131,7 @@ namespace Game.StrategyBuilding
             nameLabel.AddToClassList("resource-name");
 
             // Giá trị khởi tạo lúc xây (sẽ là 0 vì UsedVillager ban đầu = 0)
-            resourceValueLabel = new Label($"+{CalculateTotalValue():F1} / s");
+            resourceValueLabel = new Label($"+{CalculateTotalValue():F1} / cycle");
             resourceValueLabel.AddToClassList("resource-value");
 
             resourceRow.Add(iconPlaceholder);
@@ -146,7 +146,7 @@ namespace Game.StrategyBuilding
         {
             if (resourceValueLabel != null)
             {
-                resourceValueLabel.text = $"+{currentTotal:F1} / s";
+                resourceValueLabel.text = $"+{currentTotal:F1} / cycle";
             }
 
             // Cập nhật cả cái label Usage icon nhỏ ở layout base nếu bạn móc được tham chiếu

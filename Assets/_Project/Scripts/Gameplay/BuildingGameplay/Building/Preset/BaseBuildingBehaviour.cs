@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 using Game.BuildingGameplay;
 using Reflex.Attributes;
 using SoundSystem.Core;
-using System.Threading; // THÊM THƯ VIỆN NÀY ĐỂ DÙNG CancellationTokenSource
+using System.Threading;
 using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.UI;
 using TnieYuPackage.Utils;
@@ -32,14 +32,11 @@ namespace Game.StrategyBuilding
         public Guid BehaviourId { get; } = Guid.NewGuid();
         public Guid ConstructionTextId { get; } = Guid.NewGuid();
 
-        // THÊM: CancellationTokenSource để quản lý lifecycle của các UniTask
         protected CancellationTokenSource behaviourCts = new CancellationTokenSource();
 
-        // THÊM: Các biến quản lý xây dựng
         public bool IsUnderConstruction { get; protected set; }
         public float RemainingBuildTime { get; protected set; }
 
-        // THÊM: Thuộc tính chuẩn hóa để lớp con biết công trình có đang thực sự hoạt động cung cấp lợi ích hay không
         public virtual bool IsActive => !IsUnderConstruction;
 
         protected VisualElement rootPanel;
@@ -57,7 +54,6 @@ namespace Game.StrategyBuilding
 
         protected Dictionary<ResourceType, float> appliedConsumptions = new Dictionary<ResourceType, float>();
 
-        // THAY ĐỔI: Chặn thao tác nếu đang bận HOẶC đang xây dựng
         protected virtual bool IsBusy => IsUnderConstruction;
 
         protected virtual string BusyReason => IsUnderConstruction
@@ -72,7 +68,6 @@ namespace Game.StrategyBuilding
 
             MaxVillagersCanUse = preset.defaultMaxVillagersCanUse;
 
-            // Khởi tạo trạng thái xây dựng
             IsUnderConstruction = preset.buildWaitingTime > 0;
             RemainingBuildTime = preset.buildWaitingTime;
 
@@ -84,12 +79,10 @@ namespace Game.StrategyBuilding
         {
             if (IsUnderConstruction)
             {
-                // Bắt đầu đếm ngược xây dựng, truyền CancellationToken vào
                 ConstructionRoutine(behaviourCts.Token).Forget();
             }
             else
             {
-                // Nếu không cần xây, hoàn thành luôn
                 CompleteConstruction();
             }
         }
@@ -100,7 +93,6 @@ namespace Game.StrategyBuilding
 
             while (RemainingBuildTime > 0)
             {
-                // Đếm ngược từng giây và tự động huỷ nếu nhận được token cancel
                 bool isCanceled = await UniTask.Delay(
                         1000,
                         delayType: DelayType.DeltaTime,
@@ -108,7 +100,6 @@ namespace Game.StrategyBuilding
                         cancelImmediately: true)
                     .SuppressCancellationThrow();
 
-                // Nếu Task bị huỷ (do công trình bị xoá), thoát luôn vòng lặp
                 if (isCanceled) return;
 
                 RemainingBuildTime -= 1;
@@ -118,7 +109,6 @@ namespace Game.StrategyBuilding
                     UpdateConstructionPersistentText();
                 }
 
-                // Cập nhật UI để thấy thời gian giảm
                 if (rootPanel != null) UpdateBuildingLayoutUI();
             }
 
@@ -135,10 +125,8 @@ namespace Game.StrategyBuilding
         {
             if (!IsUnderConstruction) return;
 
-            // Lấy vị trí trên đỉnh công trình
             Vector3 textPos = GetWorldPosition() + Vector3.up * 0.5f;
 
-            // Hiển thị Persistent Text màu vàng cùng icon (nếu dùng font hỗ trợ Emoji/Kí tự)
             ScreenTextDisplayController.Instance.SetPersistentText(ConstructionTextId,
                 $"⏳ {Mathf.CeilToInt(RemainingBuildTime)}s", textPos, Color.yellow);
         }
@@ -148,7 +136,6 @@ namespace Game.StrategyBuilding
             IsUnderConstruction = false;
             RemainingBuildTime = 0;
 
-            // Chạy logic Setup gốc (gán nông dân...)
             if (ActualPreset.requireVillagers)
             {
                 int available = SbGameplayController.Instance.VillagerData.RemainingVillagers;
@@ -163,7 +150,6 @@ namespace Game.StrategyBuilding
 
             UpdateVillagerPersistentText();
 
-            // GỌI MAP SYSTEM TÍNH LẠI INFLUENCE KHI XÂY XONG
             if (SbGridMapSystem.HasInstance)
             {
                 SbGridMapSystem.Instance.UpdateInfluenceForTile(TilePosition);
@@ -187,7 +173,6 @@ namespace Game.StrategyBuilding
 
         public virtual void DestroyBehaviour()
         {
-            // THÊM: Huỷ tất cả các UniTask đang chạy ngầm của Behaviour này
             behaviourCts?.Cancel();
             behaviourCts?.Dispose();
 
@@ -244,11 +229,9 @@ namespace Game.StrategyBuilding
             this.UsedVillagers = data.UsedVillagers;
             this.MaxVillagersCanUse = Mathf.Max(data.MaxVillagersCanUse, ActualPreset.defaultMaxVillagersCanUse);
 
-            // Phục hồi trạng thái xây dựng
             this.IsUnderConstruction = data.IsUnderConstruction;
             this.RemainingBuildTime = data.RemainingBuildTime;
 
-            // Bổ sung: Tiếp tục đếm ngược nếu Load Game mà công trình vẫn đang xây
             if (this.IsUnderConstruction)
             {
                 ConstructionRoutine(behaviourCts.Token).Forget();
@@ -333,6 +316,13 @@ namespace Game.StrategyBuilding
         {
             var mainContentRow = container.CreateChild("building-main-content-row");
             var imgElement = mainContentRow.CreateChild("building-image");
+
+            // CẬP NHẬT: Load icon trực tiếp từ buildingTile của Preset
+            if (ActualPreset.buildingTile != null && ActualPreset.buildingTile.sprite != null)
+            {
+                imgElement.style.backgroundImage = new StyleBackground(ActualPreset.buildingTile.sprite);
+            }
+
             var infoCol = mainContentRow.CreateChild("building-info-col");
             var headerRow = infoCol.CreateChild("building-header-row");
             var titleContainer = headerRow.CreateChild("building-title-container");
@@ -346,7 +336,11 @@ namespace Game.StrategyBuilding
                 ratioContainer.CreateChild(new Label($"{Mathf.RoundToInt(InfluenceRatio.Value * 100)}%"),
                     "ratio-value");
 
-            infoCol.CreateChild(new Label("Building description..."), "building-desc");
+            // CẬP NHẬT: Load description từ Preset (có fallback nếu rỗng)
+            string displayDescription = string.IsNullOrEmpty(ActualPreset.description)
+                ? "No description available..."
+                : ActualPreset.description;
+            infoCol.CreateChild(new Label(displayDescription), "building-desc");
 
             var footerRow = container.CreateChild("building-footer-row");
 
@@ -472,7 +466,7 @@ namespace Game.StrategyBuilding
 
         protected virtual void UpdateVillagerPersistentText()
         {
-            if (!ActualPreset.requireVillagers || IsUnderConstruction) // Ẩn text nếu đang xây
+            if (!ActualPreset.requireVillagers || IsUnderConstruction)
             {
                 ScreenTextDisplayController.Instance.RemovePersistentText(BehaviourId);
                 return;
@@ -493,7 +487,7 @@ namespace Game.StrategyBuilding
 
         private void HandleActiveBuildingApplyResource()
         {
-            if (IsUnderConstruction) return; // Không sinh tài nguyên nếu đang xây
+            if (IsUnderConstruction) return;
             if (ActualPreset.requireVillagers && UsedVillagers <= 0) return;
 
             List<(string, Color)> displayTexts = GetResourcePopupTexts();
