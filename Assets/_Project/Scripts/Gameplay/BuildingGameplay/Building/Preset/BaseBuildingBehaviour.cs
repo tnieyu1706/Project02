@@ -100,7 +100,15 @@ namespace Game.StrategyBuilding
                         cancelImmediately: true)
                     .SuppressCancellationThrow();
 
-                if (isCanceled) return;
+                if (isCanceled)
+                {
+                    if (ScreenTextDisplayController.HasInstance)
+                    {
+                        ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+                    }
+
+                    return;
+                }
 
                 RemainingBuildTime -= 1;
 
@@ -112,7 +120,11 @@ namespace Game.StrategyBuilding
                 if (rootPanel != null) UpdateBuildingLayoutUI();
             }
 
-            ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+            if (ScreenTextDisplayController.HasInstance)
+            {
+                ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+            }
+
             CompleteConstruction();
         }
 
@@ -127,8 +139,11 @@ namespace Game.StrategyBuilding
 
             Vector3 textPos = GetWorldPosition() + Vector3.up * 0.5f;
 
-            ScreenTextDisplayController.Instance.SetPersistentText(ConstructionTextId,
-                $"⏳ {Mathf.CeilToInt(RemainingBuildTime)}s", textPos, Color.yellow);
+            if (ScreenTextDisplayController.HasInstance)
+            {
+                ScreenTextDisplayController.Instance.SetPersistentText(ConstructionTextId,
+                    $"⏳ {Mathf.CeilToInt(RemainingBuildTime)}s", textPos, Color.yellow);
+            }
         }
 
         private void CompleteConstruction()
@@ -173,10 +188,22 @@ namespace Game.StrategyBuilding
 
         public virtual void DestroyBehaviour()
         {
-            behaviourCts?.Cancel();
-            behaviourCts?.Dispose();
+            // ĐÃ SỬA: Safe-Dispose CancellationTokenSource để tránh lỗi ObjectDisposedException nếu bị gọi 2 lần (do System gọi, hoặc Unity OnDestroy gọi)
+            if (behaviourCts != null)
+            {
+                if (!behaviourCts.IsCancellationRequested)
+                {
+                    behaviourCts.Cancel();
+                }
 
-            SbGameplayController.Instance.OnActiveBuildingApplyResource -= HandleActiveBuildingApplyResource;
+                behaviourCts.Dispose();
+                behaviourCts = null;
+            }
+
+            if (SbGameplayController.HasInstance)
+            {
+                SbGameplayController.Instance.OnActiveBuildingApplyResource -= HandleActiveBuildingApplyResource;
+            }
 
             if (UsedVillagers > 0)
             {
@@ -184,8 +211,11 @@ namespace Game.StrategyBuilding
                 UpdateResourceConsumption();
             }
 
-            ScreenTextDisplayController.Instance.RemovePersistentText(BehaviourId);
-            ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+            if (ScreenTextDisplayController.HasInstance)
+            {
+                ScreenTextDisplayController.Instance.RemovePersistentText(BehaviourId);
+                ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+            }
         }
 
         public void UpgradeBehaviour()
@@ -317,7 +347,6 @@ namespace Game.StrategyBuilding
             var mainContentRow = container.CreateChild("building-main-content-row");
             var imgElement = mainContentRow.CreateChild("building-image");
 
-            // CẬP NHẬT: Load icon trực tiếp từ buildingTile của Preset
             if (ActualPreset.buildingTile != null && ActualPreset.buildingTile.sprite != null)
             {
                 imgElement.style.backgroundImage = new StyleBackground(ActualPreset.buildingTile.sprite);
@@ -336,7 +365,6 @@ namespace Game.StrategyBuilding
                 ratioContainer.CreateChild(new Label($"{Mathf.RoundToInt(InfluenceRatio.Value * 100)}%"),
                     "ratio-value");
 
-            // CẬP NHẬT: Load description từ Preset (có fallback nếu rỗng)
             string displayDescription = string.IsNullOrEmpty(ActualPreset.description)
                 ? "No description available..."
                 : ActualPreset.description;

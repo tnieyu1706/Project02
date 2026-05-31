@@ -227,6 +227,7 @@ GameObject:
   - component: {fileID: 218263013}
   - component: {fileID: 218263014}
   - component: {fileID: 218263015}
+  - component: {fileID: 218263016}
   m_Layer: 5
   m_Name: Level1
   m_TagString: Untagged
@@ -380,9 +381,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 218263015}
-        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.TutorialAnchor, Core.Gameplay
-        m_MethodName: StopTutorialImmediately
+      - m_Target: {fileID: 218263016}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.Test.TutorialStopper,
+          Core.Gameplay
+        m_MethodName: StopTutorialWithSave
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -405,6 +407,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetStep: {fileID: -7783590710909105498, guid: 429411f2996a27f45af5b5c2cedf6ff1, type: 2}
+--- !u!114 &218263016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218263008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf35c19c36d43bcbe94d97f838b3c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &250679337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,6 +1484,7 @@ GameObject:
   - component: {fileID: 1503476893}
   - component: {fileID: 1503476892}
   - component: {fileID: 1503476895}
+  - component: {fileID: 1503476896}
   m_Layer: 5
   m_Name: ReturnBtn
   m_TagString: Untagged
@@ -1540,7 +1555,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1503476893}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1503476896}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.Test.TutorialStopper,
+          Core.Gameplay
+        m_MethodName: StopTutorialImmediately
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1503476893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1592,6 +1620,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bindKey: 27
+--- !u!114 &1503476896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503476890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf35c19c36d43bcbe94d97f838b3c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1542649277
 GameObject:
   m_ObjectHideFlags: 0

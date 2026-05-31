@@ -563,7 +563,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.6, y: -11.3}
+  m_AnchoredPosition: {x: -10.599998, y: -11.299999}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &99210214
@@ -651,7 +651,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.2, y: -11.9}
+  m_AnchoredPosition: {x: -11.200001, y: -11.9}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &168900912
@@ -1394,7 +1394,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.9, y: -11.9}
+  m_AnchoredPosition: {x: -11.900002, y: -11.9}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &378743942
@@ -1774,6 +1774,7 @@ GameObject:
   - component: {fileID: 504010308}
   - component: {fileID: 504010310}
   - component: {fileID: 504010311}
+  - component: {fileID: 504010312}
   m_Layer: 5
   m_Name: GoMapBtn
   m_TagString: Untagged
@@ -1881,7 +1882,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 504010308}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 504010312}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.Test.TutorialStopper,
+          Core.Gameplay
+        m_MethodName: StopTutorialImmediately
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &504010311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1895,6 +1909,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bindKey: 27
+--- !u!114 &504010312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504010306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf35c19c36d43bcbe94d97f838b3c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &504222212
 GameObject:
   m_ObjectHideFlags: 0
@@ -2585,7 +2611,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.6, y: -12.5}
+  m_AnchoredPosition: {x: -10.599998, y: -12.5}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &682692417
@@ -5825,7 +5851,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 110, y: -170.00002}
+  m_AnchoredPosition: {x: 110, y: -170}
   m_SizeDelta: {x: -260, y: -339.99997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1538570887
@@ -8959,7 +8985,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 24096299245237864}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7920915397089334758}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.TutorialAnchor, Core.Gameplay
+        m_MethodName: TriggerNextStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &2278160685867099298
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9192,6 +9230,7 @@ GameObject:
   - component: {fileID: 9167527656190236144}
   - component: {fileID: 9167527656190236143}
   - component: {fileID: 9167527656190236145}
+  - component: {fileID: 9167527656190236146}
   m_Layer: 5
   m_Name: EventPanel
   m_TagString: Untagged
@@ -9547,7 +9586,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4049301701281262183}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8724219975313927122}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.TutorialAnchor, Core.Gameplay
+        m_MethodName: TriggerNextStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4779400771103158351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10185,7 +10236,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8262328808362756223}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8262328808362756226}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.TutorialAnchor, Core.Gameplay
+        m_MethodName: TriggerNextStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &7087442595158366020
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10355,7 +10418,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5910674908205344446}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9167527656190236145}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.TutorialAnchor, Core.Gameplay
+        m_MethodName: TriggerNextStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9167527656190236146}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.Test.TutorialStopper,
+          Core.Gameplay
+        m_MethodName: StopTutorialWithSave
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7510647329771450664
 GameObject:
   m_ObjectHideFlags: 0
@@ -10817,8 +10905,8 @@ Canvas:
   m_GameObject: {fileID: 6186331025566056033}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1268478306}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -10829,7 +10917,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 7
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!222 &9167527656190236142
 CanvasRenderer:
@@ -10878,6 +10966,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetStep: {fileID: -3971609577427774476, guid: 53e112fc80322fd4bab93682345a882e, type: 2}
+--- !u!114 &9167527656190236146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2941840930713907992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf35c19c36d43bcbe94d97f838b3c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9222348532595809769
 GameObject:
   m_ObjectHideFlags: 0

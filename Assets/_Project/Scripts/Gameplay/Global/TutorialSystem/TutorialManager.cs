@@ -108,6 +108,15 @@ namespace Game.Global.TutorialSystem
             OnStepStarted?.Invoke(stepData, targetAnchorTransform);
         }
 
+        public void StopTutorial()
+        {
+            _isTutorialActive = false;
+            _currentTutorialSequence = null;
+            _currentIndex = -1;
+
+            OnTutorialEnded?.Invoke();
+        }
+
         /// <summary>Forcefully ends the current tutorial and hides UI.</summary>
         public void EndTutorial()
         {
@@ -117,11 +126,7 @@ namespace Game.Global.TutorialSystem
                 PlayerPrefs.Save();
             }
             
-            _isTutorialActive = false;
-            _currentTutorialSequence = null;
-            _currentIndex = -1;
-
-            OnTutorialEnded?.Invoke();
+            StopTutorial();
         }
 
         /// <summary>Checks if a tutorial has been marked as completed in PlayerPrefs.</summary>

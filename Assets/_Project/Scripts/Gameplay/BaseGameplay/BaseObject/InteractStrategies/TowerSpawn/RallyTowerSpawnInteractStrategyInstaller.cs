@@ -134,24 +134,22 @@ namespace Game.BaseGameplay.Strategies
             float duration = distance / ActualInstaller.moveSpeed;
 
             soldier.EntityAnimator.SetTrigger(BaseConstant.ENTITY_MOVE_TRIGGER);
-            try
-            {
-                soldier.SetFaceDir(dirVector.normalized);
-                // Sử dụng LitMotion để Tween vị trí với UniTask + Cancellation
-                await LMotion.Create(soldier.transform.position, targetPosition, duration)
-                    .BindToPosition(soldier.transform)
-                    .ToUniTask(cancellationToken: moveCts.Token);
 
-                // TODO: Gọi hàm báo cho Soldier biết đã đến nơi (Ví dụ: Set trạng thái sang Idle/Attack)
-            }
-            catch (System.OperationCanceledException)
+            soldier.SetFaceDir(dirVector.normalized);
+            // Sử dụng LitMotion để Tween vị trí với UniTask + Cancellation
+            bool isCancel = await LMotion.Create(soldier.transform.position, targetPosition, duration)
+                .BindToPosition(soldier.transform)
+                .ToUniTask(cancellationToken: moveCts.Token)
+                .SuppressCancellationThrow();
+
+            if (isCancel)
             {
-                // Bỏ qua lỗi an toàn khi Strategy bị destroy và task bị hủy
+                return;
             }
-            finally
-            {
-                soldier.EntityAnimator.SetTrigger(BaseConstant.ENTITY_IDLE_TRIGGER);
-            }
+
+            // TODO: Gọi hàm báo cho Soldier biết đã đến nơi (Ví dụ: Set trạng thái sang Idle/Attack)
+
+            soldier.EntityAnimator.SetTrigger(BaseConstant.ENTITY_IDLE_TRIGGER);
         }
     }
 }

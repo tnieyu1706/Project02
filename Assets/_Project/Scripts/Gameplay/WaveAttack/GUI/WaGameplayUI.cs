@@ -18,10 +18,12 @@ namespace Game.WaveAttack
         [SerializeField] private Text currentBaseDamageCausingText;
         [SerializeField] private Text currentEntityDeployedText;
 
+        [SerializeField] private ArmyStorageSoapDataSo globalArmyStorageSoap;
+
         private readonly Dictionary<ArmyType, Action<int>> armyNumberEvents = new();
 
-        private static Dictionary<ArmyType, ObservableValue<int>> GlobalStorageSource =>
-            WaGameplayController.Instance.GlobalStorage;
+        private Dictionary<ArmyType, ObservableValue<int>> GlobalStorageSource =>
+            globalArmyStorageSoap.data.Value.Dictionary;
 
         #region Events
 
@@ -83,10 +85,10 @@ namespace Game.WaveAttack
 
         private void OnDisable()
         {
+            UnRegistryGlobalArmyNumberEvents();
+
             if (WaGameplayController.HasInstance)
             {
-                UnRegistryGlobalArmyNumberEvents();
-
                 WaGameplayController.Instance.maxBaseDamageOutput.OnValueChanged -=
                     HandleMaxBaseDamageOutputChangedValue;
                 WaGameplayController.Instance.maxEntityDeploymentCount.OnValueChanged -=

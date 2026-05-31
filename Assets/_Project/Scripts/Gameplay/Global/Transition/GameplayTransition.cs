@@ -21,7 +21,7 @@ namespace Gameplay.Global
         [SerializeField] private SceneGroup worldMapSceneGroup;
 
         [Header("Story Gameplay")] [SerializeField]
-        private SceneGroup storySceneGroup; // THÊM: Group Scene dành cho phần Introduce
+        private SceneGroup storySceneGroup;
 
         [Header("Building Gameplay")] [SerializeField]
         private SceneGroup buildingGameplaySceneGroup;
@@ -35,29 +35,47 @@ namespace Gameplay.Global
         [Header("WaveAttack Gameplay")] [SerializeField]
         private SceneData waveAttackSceneData;
 
-        // THÊM: Gọi hàm này khi bắt đầu New Game để Load Scene cốt truyện
         public async UniTask LoadStoryGame(bool applyDelay = true)
         {
             await SceneLoader.Instance.Load(storySceneGroup, applyDelay);
         }
 
+        #region Helper: Cleanup Current Gameplay
+
+        // THÊM: Helper dọn dẹp để đảm bảo không bị rò rỉ logic trước khi chuyển Scene
+        private void CleanUpCurrentGameplay(bool forceSave = false)
+        {
+            if (SbGameplayController.HasInstance)
+            {
+                if (forceSave)
+                {
+                    SbGameplayController.Instance.SaveAll();
+                }
+
+                SbGameplayController.Instance.CleanUpGameplay();
+            }
+        }
+
+        #endregion
+
         #region Building Gameplay Transition
 
         public async UniTask LoadMainMenuGame(bool applyDelay = true)
         {
+            CleanUpCurrentGameplay(forceSave: true); // Save và dọn dẹp
             await SceneLoader.Instance.Load(mainMenuSceneGroup, applyDelay);
         }
 
         public async UniTask LoadWorldMapGame()
         {
+            CleanUpCurrentGameplay(forceSave: true); // Save và dọn dẹp
             await SceneLoader.Instance.Load(worldMapSceneGroup);
 
             //TODO: Ensure timescale reset to default
             GameTimeController.SetTimeScaleToDefault();
         }
 
-        public async UniTask CreateBuildingGameplay(BuildingGameplayLevel buildingLevelSource,
-            LevelData levelData)
+        public async UniTask CreateBuildingGameplay(BuildingGameplayLevel buildingLevelSource, LevelData levelData)
         {
             Debug.Log("Creating building gameplay");
             DataManager.CurrentBuildingLevel = buildingLevelSource;
@@ -127,13 +145,9 @@ namespace Gameplay.Global
             gameLevel.SetupGameplay();
         }
 
-        private static void PreLoadBaseGameplay(EventData eventData)
+        private void PreLoadBaseGameplay(EventData eventData)
         {
-            if (SbGameplayController.HasInstance)
-            {
-                SbGameplayController.Instance.SaveAll();
-            }
-
+            CleanUpCurrentGameplay(forceSave: true); // ĐÃ SỬA: Thay vì chỉ Save, giờ gọi cả Save và Cleanup
             DataManager.ActiveEvent = eventData;
         }
 

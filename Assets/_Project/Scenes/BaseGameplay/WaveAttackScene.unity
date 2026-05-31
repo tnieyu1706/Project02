@@ -2643,6 +2643,7 @@ MonoBehaviour:
   maxEntityDeploymentCountRuleText: {fileID: 717299739}
   currentBaseDamageCausingText: {fileID: 744435295}
   currentEntityDeployedText: {fileID: 531324041}
+  globalArmyStorageSoap: {fileID: 11400000, guid: 167c6964d2fda6a4d8d6136ff5dd0ecb, type: 2}
 --- !u!114 &1818178900
 MonoBehaviour:
   m_ObjectHideFlags: 0

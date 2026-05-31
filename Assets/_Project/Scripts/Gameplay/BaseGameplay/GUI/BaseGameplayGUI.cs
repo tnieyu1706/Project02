@@ -134,24 +134,27 @@ namespace Game.BaseGameplay
 
         #endregion
 
-        public void HandleConfirmGameplayButtonClicked()
+        public async void HandleConfirmGameplayButtonClicked()
         {
+            await UniTask.NextFrame(cancellationToken: this.GetCancellationTokenOnDestroy());
             transition.LoadBuildingGameplay().Forget();
         }
 
         public async void OpenWinPanel()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(delayEndPanelDisplaySeconds));
-            
+
             winPanel.SetActive(true);
+
             OnMenuPanelOpened();
         }
 
         public async void OpenLosePanel()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(delayEndPanelDisplaySeconds));
-            
+
             losePanel.SetActive(true);
+
             OnMenuPanelOpened();
         }
 

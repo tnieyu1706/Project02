@@ -95,10 +95,7 @@ namespace Game.BuildingGameplay
                 var next = Mathf.Clamp(CurrentVillagers.Value + amount, 0, MaxVillagers.Value);
                 if (next != CurrentVillagers.Value)
                 {
-                    // using building decrease food instead of depending on current villager exists.
-                    // var preVillagers = CurrentVillagers.Value;
                     CurrentVillagers.Value = next;
-                    // Instance.ResourceStorage[ResourceType.Food].Value -= (next - preVillagers) * RATIO_VILLAGER_FOOD;
                 }
 
                 return next - CurrentVillagers.Value;
@@ -109,7 +106,6 @@ namespace Game.BuildingGameplay
                 var canUse = Mathf.Clamp(amount, 0, RemainingVillagers);
                 if (canUse > 0)
                     UsedVillagers.Value += canUse;
-
                 return canUse;
             }
 
@@ -118,7 +114,6 @@ namespace Game.BuildingGameplay
                 var canRefund = Mathf.Clamp(amount, 0, UsedVillagers.Value);
                 if (canRefund > 0)
                     UsedVillagers.Value -= canRefund;
-
                 return canRefund;
             }
 
@@ -135,7 +130,6 @@ namespace Game.BuildingGameplay
             public void BindData(JObject data)
             {
                 if (data == null) return;
-
                 if (data.TryGetValue("Max", out var max)) MaxVillagers.Value = max.Value<int>();
                 if (data.TryGetValue("Current", out var current)) CurrentVillagers.Value = current.Value<int>();
                 if (data.TryGetValue("Used", out var used)) UsedVillagers.Value = used.Value<int>();
@@ -147,7 +141,6 @@ namespace Game.BuildingGameplay
             base.Awake();
             VillagerData ??= new VillagerDataManager();
 
-            // TỰ ĐỘNG PULL DATA TỪ DATA MANAGER NGAY KHI VỪA KHỞI TẠO
             if (GameplayTransition.DataManager != null && GameplayTransition.DataManager.CurrentBuildingLevel != null)
             {
                 currentLevel = GameplayTransition.DataManager.CurrentBuildingLevel;
@@ -164,14 +157,11 @@ namespace Game.BuildingGameplay
         private void OnCurrentHealthChanged(int changedValue)
         {
             if (changedValue > 0) return;
-            // lose game
             OnLoseGame?.Invoke();
         }
 
         private static void HandleOnGameEndDefault()
         {
-            // BÁO CÁO KẾT QUẢ CHO SYSTEM KHÁC.
-            // GameplayController không còn quan tâm LevelData là gì, cập nhật điểm ra sao. (Đúng chuẩn SRP)
             if (GameplayTransition.DataManager != null)
             {
                 GameplayTransition.DataManager.SubmitLevelResult(Instance.currentHealth.Value);
@@ -192,7 +182,6 @@ namespace Game.BuildingGameplay
             SbTimeController.Instance.Init();
             SbGridMapRegister.Instance.RegisterEnvironmentMaps();
 
-            // THÊM ĐOẠN NÀY ĐỂ ÉP NGƯỜI CHƠI XÂY NHÀ CHÍNH KHÔNG ĐƯỢC HUỶ
             if (startMainBuildingPreset != null)
             {
                 try
@@ -203,7 +192,6 @@ namespace Game.BuildingGameplay
                 }
                 catch (OperationCanceledException)
                 {
-                    // handle if error occur.
                 }
                 finally
                 {
@@ -224,15 +212,23 @@ namespace Game.BuildingGameplay
 
         #region SUPPORTS
 
+        // THÊM: Xử lý dọn dẹp Lifecycle triệt để
+        public void CleanUpGameplay()
+        {
+            Debug.Log("[SbGameplayController] Tiến hành CleanUp Gameplay trước khi thoát...");
+            if (SbGridMapSystem.HasInstance)
+            {
+                SbGridMapSystem.Instance.ClearMap();
+            }
+            // Clear các event listener cục bộ nếu cần thiết ở đây để tránh leak
+        }
+
         public static void RefreshEvents()
         {
-            //check all events state
             foreach (var eventData in Instance.currentLevel.events)
             {
                 if (!eventData.data.isCompleted) return;
             }
-
-            // all event is completed => win game
 
             OnWinGame?.Invoke();
         }
