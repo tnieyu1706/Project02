@@ -9,61 +9,58 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12727216d05441a4a7ce044b23cec577, type: 3}
-  m_Name: Building_MainTownHall
+  m_Script: {fileID: 11500000, guid: 7d7b173bb33748ee8c1e2295ac5fa33e, type: 3}
+  m_Name: Building_Station
   m_EditorClassIdentifier: 
-  buildingId: MainTowerHall
-  description: Main building for all buildings.
+  buildingId: StationExpansion
+  description: Station building for expand area flood for buildings.
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
   allowDestroy: 0
-  buildWaitingTime: 0
+  buildWaitingTime: 30
   buildingType: 0
-  buildingCategory: 0
+  buildingCategory: 2
   tileLayer: 3
-  buildingTile: {fileID: 11400000, guid: 7278c9d263a58744bac2ea684e5d3b9d, type: 2}
+  buildingTile: {fileID: 11400000, guid: 6ce57b9182a53094eb1470d48f0d8841, type: 2}
   costBuilding:
     resourceCosts:
-      data: []
+      data:
+      - key: 0
+        value: 80
+      - key: 1
+        value: 35
+      - key: 2
+        value: 30
+      - key: 3
+        value: 25
   sfxData: {fileID: 0}
   styleSheets:
   - {fileID: 7433441132597879392, guid: c9b8656b715a496ca8ef3bc2daa73c58, type: 3}
-  - {fileID: 7433441132597879392, guid: cd636f167d384648b29621aad1aa4d2b, type: 3}
+  - {fileID: 7433441132597879392, guid: c3ad0a6510ef4f14ab3a39dc02389371, type: 3}
   influenceEffects:
     data: []
   defaultUpgradeCost:
     resourceCosts:
       data:
       - key: 0
-        value: 100
+        value: 60
       - key: 1
-        value: 40
-      - key: 2
         value: 20
-      - key: 3
-        value: 30
+      - key: 2
+        value: 15
   incrementUpgradeCost:
     resourceCosts:
       data:
       - key: 0
-        value: 50
+        value: 30
       - key: 1
-        value: 25
+        value: 10
       - key: 2
-        value: 16
-      - key: 3
-        value: 12
+        value: 8
   consumedResources:
     data: []
-  levelConfigs:
-  - additionalBuildingLimit: 8
-    unlockBuildingTypes: 
-  - additionalBuildingLimit: 14
-    unlockBuildingTypes: 
-  - additionalBuildingLimit: 20
-    unlockBuildingTypes: 
-  - additionalBuildingLimit: 25
-    unlockBuildingTypes: 
+  defaultAdditionalLimit: 3
+  incrementAdditionalLimit: 2
   references:
     version: 2
     RefIds: []

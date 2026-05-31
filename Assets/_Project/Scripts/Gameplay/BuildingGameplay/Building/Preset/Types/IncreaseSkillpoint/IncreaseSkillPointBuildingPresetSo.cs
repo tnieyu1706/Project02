@@ -62,7 +62,8 @@ namespace Game.StrategyBuilding
             if (pointsToProduce > 0)
             {
                 // Cộng trực tiếp vào ObservableValue của GamePropertiesRuntime
-                GamePropertiesRuntime.Instance.SkillPoints.Value += pointsToProduce;
+                if (GamePropertiesRuntime.HasInstance)
+                    GamePropertiesRuntime.Instance.SkillPoints.Value += pointsToProduce;
             }
         }
 
@@ -96,7 +97,7 @@ namespace Game.StrategyBuilding
 
             return popupTexts;
         }
-        
+
         protected override void SubHandleActiveBuildingApplyResource()
         {
             base.SubHandleActiveBuildingApplyResource();

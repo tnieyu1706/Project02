@@ -42,7 +42,7 @@ namespace Game.Global
             };
 
         [field: SerializeField]
-        public ObservableValue<int> MaxBuildingNumber { get; set; } = new ObservableValue<int>(5);
+        public ObservableValue<int> MaxBuildingNumber { get; set; } = new ObservableValue<int>(0);
 
         [field: SerializeField]
         public ObservableValue<int> CurrentBuildingNumber { get; set; } = new ObservableValue<int>(0);

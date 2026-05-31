@@ -34,6 +34,9 @@ namespace Game.StrategyBuilding
         [TextArea(2, 5)] public string description;
         public int defaultMaxVillagersCanUse = 1;
         public bool requireVillagers = true;
+        
+        // THÊM MỚI: Cờ cho phép người chơi có thể tự phá hủy công trình này không
+        public bool allowDestroy = true; 
 
         // THÊM: Thời gian chờ xây dựng (tính bằng giây). 0 = Xây xong ngay lập tức
         [Header("Construction")]
@@ -115,6 +118,10 @@ namespace Game.StrategyBuilding
         
         // THÊM: Để GridMap kiểm tra xem công trình đã hoạt động chưa
         bool IsUnderConstruction { get; } 
+        
+        // THÊM: Để hệ thống biết công trình có dân không và ép rút dân
+        int UsedVillagers { get; }
+        bool ForceRemoveOneVillager();
 
         void Setup(); 
         void RefreshBehaviour();

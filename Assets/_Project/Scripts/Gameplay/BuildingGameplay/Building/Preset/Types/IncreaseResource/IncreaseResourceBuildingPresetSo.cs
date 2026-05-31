@@ -74,7 +74,8 @@ namespace Game.StrategyBuilding
         {
             base.DestroyBehaviour(); // Đừng quên gọi base.DestroyBehaviour để xử lí tiêu hao nhé
             var totalValue = CalculateTotalValue();
-            SbGameplayController.Instance.IncrementResources[ResourceType].Value -= totalValue;
+            if (SbGameplayController.HasInstance)
+                SbGameplayController.Instance.IncrementResources[ResourceType].Value -= totalValue;
         }
 
         protected override void HandleUpgrade()

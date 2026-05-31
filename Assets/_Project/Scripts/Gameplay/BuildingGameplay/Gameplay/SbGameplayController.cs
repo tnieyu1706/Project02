@@ -122,17 +122,20 @@ namespace Game.BuildingGameplay
                 return new JObject
                 {
                     ["Max"] = MaxVillagers.Value,
-                    ["Current"] = CurrentVillagers.Value,
-                    ["Used"] = UsedVillagers.Value
+                    ["Current"] = CurrentVillagers.Value
+                    // ĐÃ SỬA: Không lưu UsedVillagers nữa, vì biến này sẽ được các Building tự đăng ký khi Load
                 };
             }
 
             public void BindData(JObject data)
             {
                 if (data == null) return;
+
+                // Đảm bảo Reset Used về 0 trước khi load (đề phòng)
+                UsedVillagers.Value = 0;
+
                 if (data.TryGetValue("Max", out var max)) MaxVillagers.Value = max.Value<int>();
                 if (data.TryGetValue("Current", out var current)) CurrentVillagers.Value = current.Value<int>();
-                if (data.TryGetValue("Used", out var used)) UsedVillagers.Value = used.Value<int>();
             }
         }
 
@@ -240,9 +243,62 @@ namespace Game.BuildingGameplay
                 AddResource(increment.Key, CalculateResourceAmount(increment.Key, increment.Value.Value));
             }
 
-            Instance.VillagerData.AddVillagers(1);
+            // ĐÃ SỬA: Logic kiểm tra Food (Thức ăn) để tăng hoặc giảm dân làng (Nạn đói)
+            float currentFood = Instance.ResourceStorage[ResourceType.Food].Value;
+            if (currentFood > 0)
+            {
+                Instance.VillagerData.AddVillagers(1);
+            }
+            else
+            {
+                HandleStarvation();
+            }
+
             Instance.OnResourceChanged?.Invoke();
             Instance.OnActiveBuildingApplyResource?.Invoke();
+        }
+
+        // THÊM: Logic xử lý Nạn đói (Giảm dân làng, rút ngẫu nhiên từ công trình nếu cần)
+        private static void HandleStarvation()
+        {
+            var villagerData = Instance.VillagerData;
+            if (villagerData.CurrentVillagers.Value <= 0) return; // Không còn ai để giảm
+
+            // 1. Nếu có dân làng rảnh rỗi (idle), chỉ việc trừ đi 1 dân làng rảnh
+            if (villagerData.RemainingVillagers > 0)
+            {
+                villagerData.AddVillagers(-1);
+                return;
+            }
+
+            // 2. Nếu tất cả dân làng đều đang làm việc trong công trình, bắt buộc phải ép rút 1 người ra
+            if (SbGridMapSystem.HasInstance)
+            {
+                // Tìm TẤT CẢ các công trình ĐANG CHỨA dân làng 
+                // (Điều này tự động gom các loại nhà như IncreaseResource... vì chúng có UsedVillagers > 0)
+                var workingBuildings = SbGridMapSystem.Instance.GridMap.Values
+                    .Where(t => t.BuildingRuntime != null && t.BuildingRuntime.behaviour != null)
+                    .Select(t => t.BuildingRuntime.behaviour)
+                    .Where(b => b.UsedVillagers > 0)
+                    .ToList();
+
+                if (workingBuildings.Count > 0)
+                {
+                    // Chọn ngẫu nhiên 1 công trình
+                    var randomBuilding = workingBuildings[UnityEngine.Random.Range(0, workingBuildings.Count)];
+
+                    // Ép rút 1 dân làng ra (lúc này dân làng đó sẽ chuyển sang trạng thái rảnh)
+                    bool removed = randomBuilding.ForceRemoveOneVillager();
+
+                    if (removed)
+                    {
+                        // Sau khi rút ra thành công (đã hoàn trả về nhàn rỗi), ta trừ nó đi khỏi tổng
+                        villagerData.AddVillagers(-1);
+                        Debug.Log(
+                            $"[Nạn đói] Food <= 0. Một dân làng đã chết khi đang làm việc tại {randomBuilding.Preset.buildingId}.");
+                    }
+                }
+            }
         }
 
         private static float CalculateResourceAmount(ResourceType resourceType, float amount)
@@ -418,19 +474,9 @@ namespace Game.BuildingGameplay
 
             await UniTask.CompletedTask;
 
-            if (jObject.TryGetValue("gridMapSaveData", out JToken gridMapToken))
-            {
-                var gridMapData =
-                    JsonConvert.DeserializeObject<GridMapSaveData>(gridMapToken.ToString(), GameJsonSettings.Create());
-                SbGridMapSystem.Instance.BindData(gridMapData);
-            }
-
-            if (jObject.TryGetValue("timeControllerData", out JToken timeControllerToken))
-            {
-                var timeData = JsonConvert.DeserializeObject<TimeControllerSaveData>(timeControllerToken.ToString(),
-                    GameJsonSettings.Create());
-                SbTimeController.Instance.BindData(timeData);
-            }
+            // SỬA LỖI ĐẶC BIỆT QUAN TRỌNG: 
+            // Đưa việc Load VillagerData và ResourceStorage LÊN TRƯỚC GridMap.
+            // Để khi GridMap dựng công trình, quỹ dân và tài nguyên đã sẵn sàng để công trình đăng ký lấy!
 
             if (jObject.TryGetValue("VillagerData", out JToken villagerToken) && villagerToken is JObject vObj)
             {
@@ -452,6 +498,21 @@ namespace Game.BuildingGameplay
                 {
                     ArmyStorage[Enum.Parse<ArmyType>(army.Name)].Value = army.Value.Value<int>();
                 }
+            }
+
+            // Gắn GridMap SAU CÙNG
+            if (jObject.TryGetValue("gridMapSaveData", out JToken gridMapToken))
+            {
+                var gridMapData =
+                    JsonConvert.DeserializeObject<GridMapSaveData>(gridMapToken.ToString(), GameJsonSettings.Create());
+                SbGridMapSystem.Instance.BindData(gridMapData);
+            }
+
+            if (jObject.TryGetValue("timeControllerData", out JToken timeControllerToken))
+            {
+                var timeData = JsonConvert.DeserializeObject<TimeControllerSaveData>(timeControllerToken.ToString(),
+                    GameJsonSettings.Create());
+                SbTimeController.Instance.BindData(timeData);
             }
         }
 

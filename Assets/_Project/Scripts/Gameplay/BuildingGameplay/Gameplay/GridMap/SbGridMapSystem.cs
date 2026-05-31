@@ -6,6 +6,7 @@ using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using Game.Global;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Reflex.Attributes;
@@ -347,7 +348,8 @@ namespace Game.StrategyBuilding
             }
 
             GridMap.Clear();
-            Game.Global.GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value = 0;
+            if (GamePropertiesRuntime.HasInstance)
+                GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value = 0;
 
             OnMapCleared?.Invoke();
         }
