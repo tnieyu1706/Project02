@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using TnieYuPackage.DesignPatterns;
+using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,26 +11,18 @@ namespace Game.Global.TutorialSystem
     /// </summary>
     public class TutorialUI : MonoBehaviour
     {
-        [Header("Static UI References")]
-        [SerializeField] private GameObject messagePanel;
+        [Header("Static UI References")] [SerializeField]
+        private GameObject messagePanel;
+
         [SerializeField] private Text messageText;
         [SerializeField] private Button messageButton;
-
-        [Header("Dynamic UI References")]
-        [SerializeField] private RectTransform hintRectTransform;
+        
+        [Header("Dynamic UI References")] [SerializeField]
+        private RectTransform hintRectTransform;
 
         private TutorialStepData _currentStep;
         private Transform _targetAnchor;
         private Camera _cachedCamera;
-
-        private void Awake()
-        {
-            if (messageButton != null)
-            {
-                messageButton.onClick.AddListener(OnMessageClicked);
-            }
-            Hide();
-        }
 
         private void OnEnable()
         {
@@ -37,6 +31,13 @@ namespace Game.Global.TutorialSystem
                 TutorialManager.Instance.OnStepStarted += HandleStepStarted;
                 TutorialManager.Instance.OnTutorialEnded += Hide;
             }
+
+            if (messageButton != null)
+            {
+                messageButton.onClick.AddListener(OnMessageClicked);
+            }
+
+            Hide();
 
             Debug.Log("[TutorialSystem] Tutorial UI enabled and subscribed to TutorialManager events.");
         }
@@ -47,6 +48,11 @@ namespace Game.Global.TutorialSystem
             {
                 TutorialManager.Instance.OnStepStarted -= HandleStepStarted;
                 TutorialManager.Instance.OnTutorialEnded -= Hide;
+            }
+
+            if (messageButton != null)
+            {
+                messageButton.onClick.RemoveAllListeners();
             }
         }
 
@@ -60,7 +66,8 @@ namespace Game.Global.TutorialSystem
 
         private void OnMessageClicked()
         {
-            if (_currentStep != null && _currentStep.DisplayType == TutorialDisplayType.Text)
+            // if (_currentStep != null && _currentStep.DisplayType == TutorialDisplayType.Text)
+            if (_currentStep != null)
             {
                 TutorialManager.Instance.Next(_currentStep);
             }

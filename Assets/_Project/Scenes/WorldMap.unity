@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87165c63235c4d4aba21b85b17e74892, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetStep: {fileID: 1229921541484916125, guid: 429411f2996a27f45af5b5c2cedf6ff1, type: 2}
+  TargetStep: {fileID: -7783590710909105498, guid: 429411f2996a27f45af5b5c2cedf6ff1, type: 2}
 --- !u!1 &250679337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,7 +1261,7 @@ GameObject:
   - component: {fileID: 1188890098}
   - component: {fileID: 1188890097}
   m_Layer: 0
-  m_Name: Test
+  m_Name: TutorialRegister
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1281,7 +1281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tutorialData: {fileID: 11400000, guid: 429411f2996a27f45af5b5c2cedf6ff1, type: 2}
   _forceRestart: 0
-  tutorialStartDelay: 0.5
+  tutorialStartDelay: 1
 --- !u!4 &1188890098
 Transform:
   m_ObjectHideFlags: 0

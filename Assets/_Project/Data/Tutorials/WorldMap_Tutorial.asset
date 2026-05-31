@@ -10,26 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
-  m_Name: Test_Tutorial_1_2
+  m_Name: WorldMap_Tutorial_Step_2
   m_EditorClassIdentifier: 
-  Message: xin chao ngay moi tot lanh
-  DisplayType: 0
-  NodePosition: {x: -700, y: -68.8}
---- !u!114 &-4306333182968999776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
-  m_Name: Test_Tutorial_1_3
-  m_EditorClassIdentifier: 
-  Message: Hello This is Step1
-  DisplayType: 0
-  NodePosition: {x: -330.4, y: -68.8}
+  Message: '
+
+    Choose a dungeon area directly on the map and begin your invasion.'
+  DisplayType: 2
+  NodePosition: {x: 128, y: 136.8}
 --- !u!114 &-2576680264674948569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40,11 +27,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
-  m_Name: Test_Tutorial_1_1
+  m_Name: WorldMap_Tutorial_Step_1
   m_EditorClassIdentifier: 
-  Message: Nihao wo de Step3
+  Message: This is a world map; the nearest area to you right now is the cave. Claim
+    it to begin your construction project.
   DisplayType: 0
-  NodePosition: {x: 359.2, y: -68.8}
+  NodePosition: {x: -612, y: 436}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55,14 +43,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d3d01e822064f84a76e7826b6f78723, type: 3}
-  m_Name: Test_Tutorial_1
+  m_Name: WorldMap_Tutorial
   m_EditorClassIdentifier: 
-  TutorialId: Tutorial1
+  TutorialId: Worldmap_Tutorial
   Steps:
-  - {fileID: -7783590710909105498}
-  - {fileID: -4306333182968999776}
   - {fileID: 1229921541484916125}
   - {fileID: -2576680264674948569}
+  - {fileID: -7783590710909105498}
 --- !u!114 &1229921541484916125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,8 +60,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
-  m_Name: Test_Tutorial_1_0
+  m_Name: WorldMap_Tutorial_Step_0
   m_EditorClassIdentifier: 
-  Message: Xin chao day la Step2
-  DisplayType: 2
-  NodePosition: {x: -16.8, y: -68.8}
+  Message: The world is about to face a great catastrophe; you must stand up and
+    reorganize the regions to fight against it together.
+  DisplayType: 0
+  NodePosition: {x: -1387.2, y: 176}

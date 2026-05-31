@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3269888894269434261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_8a6d
+  m_EditorClassIdentifier: 
+  Message: Your main objective is to deplete the base's health by the specified number
+    of attack waves.
+  DisplayType: 0
+  NodePosition: {x: 3.2, y: -200.79999}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3d01e822064f84a76e7826b6f78723, type: 3}
+  m_Name: WAGameplay_Tutorial
+  m_EditorClassIdentifier: 
+  TutorialId: 
+  Steps:
+  - {fileID: -3269888894269434261}
+  - {fileID: 593733652017676448}
+  - {fileID: 8812280265507400940}
+--- !u!114 &593733652017676448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_3eef
+  m_EditorClassIdentifier: 
+  Message: To do that, you have to build your army in each wave, with some limitations
+    imposed by the Wave Rule.
+  DisplayType: 0
+  NodePosition: {x: 6.4, y: -31.2}
+--- !u!114 &8812280265507400940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_fa3b
+  m_EditorClassIdentifier: 
+  Message: You win if the enemy base is destroyed, or lose if you fail to destroy
+    the enemy base before your turn ends.
+  DisplayType: 0
+  NodePosition: {x: 5.6, y: 135.20001}

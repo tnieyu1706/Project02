@@ -13,9 +13,27 @@ MonoBehaviour:
   m_Name: IntroStoryData
   m_EditorClassIdentifier: 
   pages:
-  - image: {fileID: 21300000, guid: d2ed3815340bbe84687429f0f2effb17, type: 3}
-    contentText: Page 1 content
-    duration: 5
-  - image: {fileID: 21300000, guid: f05e924f8c737474fb41aff9cf5c9b1c, type: 3}
-    contentText: Page 2 content
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: The world stands on the brink of destruction.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: Endless waves of monsters are emerging from the Dark Lands.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: At a council of lords, I proposed uniting all regions to fight the
+      coming threat.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: My proposal was rejected, as the lords were divided by distrust
+      and selfish ambitions.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: Realizing that our division would lead to extinction, I chose a
+      different path.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: I will conquer and unite every region under a single banner.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: Only a united kingdom can survive the darkness that is approaching.
     duration: 10

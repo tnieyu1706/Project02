@@ -18,7 +18,7 @@ namespace Game.StorySystem
         [Header("Buttons")] [SerializeField] private Button backgroundClickButton;
         [SerializeField] private Button skipStoryButton;
 
-        private void Start()
+        private void OnEnable()
         {
             // Subscribe Event từ Backend (Controller)
             if (StoryController.HasInstance)
@@ -64,7 +64,7 @@ namespace Game.StorySystem
             StoryController.Instance?.SkipEntireStory();
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             // Unsubscribe
             if (StoryController.HasInstance)
