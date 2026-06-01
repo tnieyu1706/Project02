@@ -15,6 +15,7 @@ namespace Game.StrategyBuilding
         [SerializeField, Child] protected BuildingInteractable interactable;
 
         private Vector2Int tilePosTemp;
+        private bool isDestroyed = false; // THÊM: Đảm bảo không bị gọi hủy 2 lần
 
         protected void OnEnable()
         {
@@ -39,7 +40,13 @@ namespace Game.StrategyBuilding
 
         public void DestroyBuilding()
         {
-            currentPreset.DestroyBehaviour(this);
+            if (isDestroyed) return;
+            isDestroyed = true;
+
+            if (currentPreset != null && behaviour != null)
+            {
+                currentPreset.DestroyBehaviour(this);
+            }
         }
 
         private void SetPreset(BuildingPresetSo preset)
@@ -54,6 +61,14 @@ namespace Game.StrategyBuilding
 
             //post-setup
             currentPreset.InitBehaviour(this, tilePosTemp);
+        }
+
+        // THÊM: Phương án dự phòng cực kỳ quan trọng (Fail-safe)
+        // Nếu Unity Destroy GameObject này khi Unload Scene (mà GridMap chưa kịp làm), 
+        // thì script C# thuần vẫn sẽ được báo hiệu để tự kết thúc các async event.
+        protected void OnDestroy()
+        {
+            DestroyBuilding();
         }
     }
 }

@@ -16,6 +16,7 @@ MonoBehaviour:
   description: Main building for all buildings.
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
+  allowDestroy: 0
   buildWaitingTime: 0
   buildingType: 0
   buildingCategory: 0
@@ -55,13 +56,13 @@ MonoBehaviour:
   consumedResources:
     data: []
   levelConfigs:
-  - maxBuildingLimit: 6
+  - additionalBuildingLimit: 8
     unlockBuildingTypes: 
-  - maxBuildingLimit: 12
+  - additionalBuildingLimit: 14
     unlockBuildingTypes: 
-  - maxBuildingLimit: 18
+  - additionalBuildingLimit: 20
     unlockBuildingTypes: 
-  - maxBuildingLimit: 24
+  - additionalBuildingLimit: 25
     unlockBuildingTypes: 
   references:
     version: 2

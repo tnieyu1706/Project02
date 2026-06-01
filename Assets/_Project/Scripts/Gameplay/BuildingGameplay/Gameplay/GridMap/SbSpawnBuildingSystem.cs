@@ -127,7 +127,7 @@ namespace Game.StrategyBuilding
 
             // 2. KIỂM TRA LÂN CẬN CÓ CÔNG TRÌNH CŨ (Bỏ qua nếu là Nhà Chính)
             bool isAdjacencyValid = true;
-            if (!(currentBuildingPreset is MainBuildingPresetSo))
+            if (!(currentBuildingPreset is MainBuildingPresetSo or StationBuildingPresetSo))
             {
                 isAdjacencyValid = SbGridMapSystem.Instance.HasAdjacentBuilding(currentTilePos);
             }
@@ -194,7 +194,7 @@ namespace Game.StrategyBuilding
             bool isBaseValid = SbGridMapSystem.Instance.ValidForCreate(tilePos);
             bool isAdjacencyValid = true;
 
-            if (!(currentBuildingPreset is MainBuildingPresetSo))
+            if (!(currentBuildingPreset is MainBuildingPresetSo or StationBuildingPresetSo))
             {
                 isAdjacencyValid = SbGridMapSystem.Instance.HasAdjacentBuilding(tilePos);
             }

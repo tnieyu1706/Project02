@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using Game.Global;
 using TnieYuPackage.DesignPatterns;
-using TnieYuPackage.DictionaryUtilities;
-using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,93 +7,23 @@ namespace Game.WaveAttack
 {
     public class WaGameplayUI : Singleton<WaGameplayUI>
     {
-        [SerializeField] private SerializableDictionary<ArmyType, Text> armyNumberTexts;
-
-        [SerializeField] private Text maxBaseDamageOutputRuleText;
-        [SerializeField] private Text maxEntityDeploymentCountRuleText;
-        [SerializeField] private Text currentBaseDamageCausingText;
-        [SerializeField] private Text currentEntityDeployedText;
-
-        private readonly Dictionary<ArmyType, Action<int>> armyNumberEvents = new();
-
-        private static Dictionary<ArmyType, ObservableValue<int>> GlobalStorageSource =>
-            WaGameplayController.Instance.GlobalStorage;
-
-        #region Events
+        [SerializeField] private Button waPanelBtn;
 
         private void OnEnable()
         {
-            RegisterGlobalArmyNumberEvents();
-
-            WaGameplayController.Instance.maxBaseDamageOutput.OnValueChanged += HandleMaxBaseDamageOutputChangedValue;
-            WaGameplayController.Instance.maxEntityDeploymentCount.OnValueChanged +=
-                HandleMaxEntityDeploymentCountChangedValue;
-            WaGameplayController.Instance.currentBaseDamageOutput.OnValueChanged +=
-                HandleCurrentBaseDamageCausingChangedValue;
-            WaGameplayController.Instance.currentEntityDeploymentCount.OnValueChanged +=
-                HandleCurrentEntityDeployedChangedValue;
+            waPanelBtn.onClick.AddListener(HandleWaPanelBtnClicked);
         }
 
-        private void HandleMaxBaseDamageOutputChangedValue(int changedValue)
+        private void HandleWaPanelBtnClicked()
         {
-            maxBaseDamageOutputRuleText.text = changedValue.ToString();
-        }
+            if (!WaGameplayPanelUIToolkit.HasInstance) return;
 
-        private void HandleMaxEntityDeploymentCountChangedValue(int changedValue)
-        {
-            maxEntityDeploymentCountRuleText.text = changedValue.ToString();
-        }
-
-        private void HandleCurrentBaseDamageCausingChangedValue(int changedValue)
-        {
-            currentBaseDamageCausingText.text = changedValue.ToString();
-        }
-
-        private void HandleCurrentEntityDeployedChangedValue(int changedValue)
-        {
-            currentEntityDeployedText.text = changedValue.ToString();
-        }
-
-        private void RegisterGlobalArmyNumberEvents()
-        {
-            foreach (var armyKvp in armyNumberTexts.Dictionary)
-            {
-                Action<int> onValueChanged = changedValue => armyKvp.Value.text = changedValue.ToString();
-                var armyObserver = GlobalStorageSource[armyKvp.Key];
-                armyObserver.OnValueChanged += onValueChanged;
-
-                armyKvp.Value.text = armyObserver.Value.ToString();
-                armyNumberEvents[armyKvp.Key] = onValueChanged;
-            }
-        }
-
-        private void UnRegistryGlobalArmyNumberEvents()
-        {
-            foreach (var armyEvent in armyNumberEvents)
-            {
-                GlobalStorageSource[armyEvent.Key].OnValueChanged -= armyEvent.Value;
-            }
-
-            armyNumberEvents.Clear();
+            WaGameplayPanelUIToolkit.Instance.ShowPanel();
         }
 
         private void OnDisable()
         {
-            if (WaGameplayController.HasInstance)
-            {
-                UnRegistryGlobalArmyNumberEvents();
-
-                WaGameplayController.Instance.maxBaseDamageOutput.OnValueChanged -=
-                    HandleMaxBaseDamageOutputChangedValue;
-                WaGameplayController.Instance.maxEntityDeploymentCount.OnValueChanged -=
-                    HandleMaxEntityDeploymentCountChangedValue;
-                WaGameplayController.Instance.currentBaseDamageOutput.OnValueChanged -=
-                    HandleCurrentBaseDamageCausingChangedValue;
-                WaGameplayController.Instance.currentEntityDeploymentCount.OnValueChanged -=
-                    HandleCurrentEntityDeployedChangedValue;
-            }
+            waPanelBtn.onClick.RemoveAllListeners();
         }
-
-        #endregion
     }
 }

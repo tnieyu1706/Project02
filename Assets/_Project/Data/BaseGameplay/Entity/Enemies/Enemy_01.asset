@@ -19,7 +19,7 @@ MonoBehaviour:
   configurators:
   - {fileID: 11400000, guid: 8a72cf3a1abe97745a4d9c8eba1b28aa, type: 2}
   - {fileID: 11400000, guid: b162e860585e44c44820b0151eeed2ff, type: 2}
-  maxHp: 12
+  maxHp: 16
   def: 0.8
   armyType: 0
   entityLayer: Td Ground Enemy
@@ -44,5 +44,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   interactRange: 0.3
-  baseDamage: 2
+  baseDamage: 3
   attackCooldown: 0.8

@@ -44,7 +44,7 @@ namespace Game.StrategyBuilding
         protected int CalculateTotalCapacity()
         {
             if (!IsActive) return 0;
-            
+
             float baseCapacity = ActualPreset.defaultCapacityValue +
                                  (ActualPreset.incrementCapacityValue * (CurrentUpgradeLevel - 1));
 
@@ -79,7 +79,8 @@ namespace Game.StrategyBuilding
             // Trừ đi lượng sức chứa mà nhà này đang cung cấp
             if (PreAddedCapacity > 0)
             {
-                SbGameplayController.Instance.VillagerData.MaxVillagers.Value -= PreAddedCapacity;
+                if (SbGameplayController.HasInstance)
+                    SbGameplayController.Instance.VillagerData.MaxVillagers.Value -= PreAddedCapacity;
                 PreAddedCapacity = 0;
             }
         }
@@ -104,7 +105,7 @@ namespace Game.StrategyBuilding
             // nên ta có thể bỏ qua không popup.
             return popupTexts;
         }
-        
+
         protected override void SubHandleActiveBuildingApplyResource()
         {
             base.SubHandleActiveBuildingApplyResource();

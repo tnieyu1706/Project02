@@ -100,7 +100,15 @@ namespace Game.StrategyBuilding
                         cancelImmediately: true)
                     .SuppressCancellationThrow();
 
-                if (isCanceled) return;
+                if (isCanceled)
+                {
+                    if (ScreenTextDisplayController.HasInstance)
+                    {
+                        ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+                    }
+
+                    return;
+                }
 
                 RemainingBuildTime -= 1;
 
@@ -112,7 +120,11 @@ namespace Game.StrategyBuilding
                 if (rootPanel != null) UpdateBuildingLayoutUI();
             }
 
-            ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+            if (ScreenTextDisplayController.HasInstance)
+            {
+                ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+            }
+
             CompleteConstruction();
         }
 
@@ -127,8 +139,11 @@ namespace Game.StrategyBuilding
 
             Vector3 textPos = GetWorldPosition() + Vector3.up * 0.5f;
 
-            ScreenTextDisplayController.Instance.SetPersistentText(ConstructionTextId,
-                $"⏳ {Mathf.CeilToInt(RemainingBuildTime)}s", textPos, Color.yellow);
+            if (ScreenTextDisplayController.HasInstance)
+            {
+                ScreenTextDisplayController.Instance.SetPersistentText(ConstructionTextId,
+                    $"⏳ {Mathf.CeilToInt(RemainingBuildTime)}s", textPos, Color.yellow);
+            }
         }
 
         private void CompleteConstruction()
@@ -173,10 +188,22 @@ namespace Game.StrategyBuilding
 
         public virtual void DestroyBehaviour()
         {
-            behaviourCts?.Cancel();
-            behaviourCts?.Dispose();
+            // ĐÃ SỬA: Safe-Dispose CancellationTokenSource để tránh lỗi ObjectDisposedException nếu bị gọi 2 lần (do System gọi, hoặc Unity OnDestroy gọi)
+            if (behaviourCts != null)
+            {
+                if (!behaviourCts.IsCancellationRequested)
+                {
+                    behaviourCts.Cancel();
+                }
 
-            SbGameplayController.Instance.OnActiveBuildingApplyResource -= HandleActiveBuildingApplyResource;
+                behaviourCts.Dispose();
+                behaviourCts = null;
+            }
+
+            if (SbGameplayController.HasInstance)
+            {
+                SbGameplayController.Instance.OnActiveBuildingApplyResource -= HandleActiveBuildingApplyResource;
+            }
 
             if (UsedVillagers > 0)
             {
@@ -184,8 +211,11 @@ namespace Game.StrategyBuilding
                 UpdateResourceConsumption();
             }
 
-            ScreenTextDisplayController.Instance.RemovePersistentText(BehaviourId);
-            ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+            if (ScreenTextDisplayController.HasInstance)
+            {
+                ScreenTextDisplayController.Instance.RemovePersistentText(BehaviourId);
+                ScreenTextDisplayController.Instance.RemovePersistentText(ConstructionTextId);
+            }
         }
 
         public void UpgradeBehaviour()
@@ -218,19 +248,40 @@ namespace Game.StrategyBuilding
 
         public virtual void BindData(BuildingBehaviourSaveData data)
         {
+            // 0. SỬA LỖI NGHIÊM TRỌNG: Hủy ngay tiến trình xây dựng "ma" (Ghost Routine) 
+            // do hàm Setup() tự động kích hoạt trước khi BindData được gọi.
+            if (behaviourCts != null)
+            {
+                if (!behaviourCts.IsCancellationRequested)
+                {
+                    behaviourCts.Cancel();
+                }
+
+                behaviourCts.Dispose();
+            }
+
+            behaviourCts = new CancellationTokenSource(); // Khởi tạo lại Token mới, sạch sẽ hoàn toàn
+
+            // 1. Nhả số dân hiện tại ra (do hàm Setup() có thể đã lỡ tự động gán lúc vừa khởi tạo)
             if (this.UsedVillagers > 0)
             {
                 SbGameplayController.Instance.VillagerData.RefundVillagers(this.UsedVillagers);
                 this.UsedVillagers = 0;
-                UpdateResourceConsumption();
             }
 
             this.CurrentUpgradeLevel = data.CurrentUpgradeLevel;
-            this.UsedVillagers = data.UsedVillagers;
             this.MaxVillagersCanUse = Mathf.Max(data.MaxVillagersCanUse, ActualPreset.defaultMaxVillagersCanUse);
 
             this.IsUnderConstruction = data.IsUnderConstruction;
             this.RemainingBuildTime = data.RemainingBuildTime;
+
+            // 2. SỬA LỖI: Phải đăng ký kéo dân từ Global Manager thay vì chỉ gán biến cục bộ
+            if (data.UsedVillagers > 0)
+            {
+                // Lúc này VillagerData đã được Load trước đó, nên chắc chắn có đủ dân để rút!
+                int actualReceived = SbGameplayController.Instance.VillagerData.UseVillagers(data.UsedVillagers);
+                this.UsedVillagers = actualReceived;
+            }
 
             if (this.IsUnderConstruction)
             {
@@ -317,7 +368,6 @@ namespace Game.StrategyBuilding
             var mainContentRow = container.CreateChild("building-main-content-row");
             var imgElement = mainContentRow.CreateChild("building-image");
 
-            // CẬP NHẬT: Load icon trực tiếp từ buildingTile của Preset
             if (ActualPreset.buildingTile != null && ActualPreset.buildingTile.sprite != null)
             {
                 imgElement.style.backgroundImage = new StyleBackground(ActualPreset.buildingTile.sprite);
@@ -336,7 +386,6 @@ namespace Game.StrategyBuilding
                 ratioContainer.CreateChild(new Label($"{Mathf.RoundToInt(InfluenceRatio.Value * 100)}%"),
                     "ratio-value");
 
-            // CẬP NHẬT: Load description từ Preset (có fallback nếu rỗng)
             string displayDescription = string.IsNullOrEmpty(ActualPreset.description)
                 ? "No description available..."
                 : ActualPreset.description;
@@ -344,10 +393,14 @@ namespace Game.StrategyBuilding
 
             var footerRow = container.CreateChild("building-footer-row");
 
-            var btnDestroy = footerRow.CreateChild(new Button(HandleDestroyButtonClicked) { text = "Destroy" },
-                "btn-destroy");
-            btnDestroy.RegisterCallback<MouseEnterEvent>(HandleDestroyButtonEnter);
-            btnDestroy.RegisterCallback<MouseLeaveEvent>(HandleDestroyButtonLeave);
+            // THÊM CỜ KIỂM TRA: Chỉ cho phép hiện nút Destroy nếu công trình đó cho phép phá hủy
+            if (ActualPreset.allowDestroy)
+            {
+                var btnDestroy = footerRow.CreateChild(new Button(HandleDestroyButtonClicked) { text = "Destroy" },
+                    "btn-destroy");
+                btnDestroy.RegisterCallback<MouseEnterEvent>(HandleDestroyButtonEnter);
+                btnDestroy.RegisterCallback<MouseLeaveEvent>(HandleDestroyButtonLeave);
+            }
 
             var villagersContainer = footerRow.CreateChild("villagers-control-container");
 
@@ -439,6 +492,27 @@ namespace Game.StrategyBuilding
                     UpdateBuildingLayoutUI();
                 }
             }
+        }
+
+        // THÊM: Hàm public để hệ thống (như Nạn đói) có thể ép rút dân làng ra khỏi công trình
+        public bool ForceRemoveOneVillager()
+        {
+            if (!ActualPreset.requireVillagers || IsBusy || UsedVillagers <= 0) return false;
+
+            int actualRefunded = SbGameplayController.Instance.VillagerData.RefundVillagers(1);
+            if (actualRefunded > 0)
+            {
+                UsedVillagers -= actualRefunded;
+                UpdateResourceConsumption();
+
+                // Gọi RefreshBehaviour sẽ tự động kích hoạt logic tính toán lại của 
+                // IncreaseResourceBuildingBehaviour hoặc IncreaseSkillPointBuildingBehaviour
+                RefreshBehaviour();
+                UpdateBuildingLayoutUI();
+                return true;
+            }
+
+            return false;
         }
 
         private void HandleVillagerButtonEnter(MouseEnterEvent evt)
@@ -565,7 +639,8 @@ namespace Game.StrategyBuilding
 
                 if (diff != 0)
                 {
-                    SbGameplayController.Instance.IncrementResources[type].Value -= diff;
+                    if (SbGameplayController.HasInstance)
+                        SbGameplayController.Instance.IncrementResources[type].Value -= diff;
                     appliedConsumptions[type] = targetConsumption;
                 }
             }
