@@ -26,6 +26,7 @@ namespace Game.BuildingGameplay
         [SerializeField] private SerializableDictionary<ResourceType, Text> incrementResourceNumberTexts;
         [SerializeField] private Text peopleNumberText;
         [SerializeField] private Text maxPeopleNumberText;
+        [SerializeField] private Text usedPeopleNumberText;
         [SerializeField] private Slider healthSlider;
         [SerializeField] private Button returnMapBtn;
 
@@ -170,10 +171,12 @@ namespace Game.BuildingGameplay
             // 3. Đăng ký Villagers
             SbGameplayController.Instance.VillagerData.CurrentVillagers.OnValueChanged += OnCurrentVillagerDataChanged;
             SbGameplayController.Instance.VillagerData.MaxVillagers.OnValueChanged += OnMaxVillagerDataChanged;
+            SbGameplayController.Instance.VillagerData.UsedVillagers.OnValueChanged += OnUsedVillagerDataChanged;
 
             // Cập nhật UI Dân làng lần đầu tiên
             OnCurrentVillagerDataChanged(SbGameplayController.Instance.VillagerData.CurrentVillagers.Value);
             OnMaxVillagerDataChanged(SbGameplayController.Instance.VillagerData.MaxVillagers.Value);
+            OnUsedVillagerDataChanged(SbGameplayController.Instance.VillagerData.UsedVillagers.Value);
 
             // 4. Đăng ký Global Properties (Skill Points, Building Numbers)
             if (GamePropertiesRuntime.HasInstance)
@@ -211,6 +214,7 @@ namespace Game.BuildingGameplay
 
             SbGameplayController.Instance.VillagerData.CurrentVillagers.OnValueChanged -= OnCurrentVillagerDataChanged;
             SbGameplayController.Instance.VillagerData.MaxVillagers.OnValueChanged -= OnMaxVillagerDataChanged;
+            SbGameplayController.Instance.VillagerData.UsedVillagers.OnValueChanged -= OnUsedVillagerDataChanged;
 
             if (GamePropertiesRuntime.HasInstance)
             {
@@ -301,6 +305,11 @@ namespace Game.BuildingGameplay
         private void OnMaxVillagerDataChanged(int changedMaxPeopleNumber)
         {
             maxPeopleNumberText.text = $"{changedMaxPeopleNumber}";
+        }
+        
+        private void OnUsedVillagerDataChanged(int usedVillager)
+        {
+            usedPeopleNumberText.text = $"{usedVillager}";
         }
 
         private void OnSkillPointChanged(int value)

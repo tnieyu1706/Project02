@@ -84,19 +84,19 @@ namespace Game.StrategyBuilding
         // OVERRIDE BEHAVIOUR UI
         // ====================================================================
 
-        protected override List<(string, Color)> GetResourcePopupTexts()
-        {
-            List<(string, Color)> popupTexts = base.GetResourcePopupTexts() ?? new();
-
-            int produceValue = CalculateAdditionalLimit();
-            if (produceValue > 0)
-            {
-                // Cho hiển thị màu Xanh Lục cho số slot được cộng thêm
-                popupTexts.Add(($"+{produceValue} Slots", Color.green));
-            }
-
-            return popupTexts;
-        }
+        // protected override List<(string, Color)> GetResourcePopupTexts()
+        // {
+        //     List<(string, Color)> popupTexts = base.GetResourcePopupTexts() ?? new();
+        //
+        //     int produceValue = CalculateAdditionalLimit();
+        //     if (produceValue > 0)
+        //     {
+        //         // Cho hiển thị màu Xanh Lục cho số slot được cộng thêm
+        //         popupTexts.Add(($"+{produceValue} Slots", Color.green));
+        //     }
+        //
+        //     return popupTexts;
+        // }
 
         // protected override void SubHandleActiveBuildingApplyResource()
         // {

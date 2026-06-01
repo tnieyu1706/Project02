@@ -51,7 +51,7 @@ namespace Game.WaveAttack
             BaseGameplayGUI.Instance.OnPlayButtonPressed += PlayGame;
         }
 
-        private bool ValidateCausingBaseDamage() => currentBaseDamageOutput.Value <= maxBaseDamageOutput.Value;
+        private bool ValidateCausingBaseDamage() => currentBaseDamageOutput.Value < maxBaseDamageOutput.Value;
 
         private void HandlePerBaseTakenDamage()
         {
@@ -137,6 +137,8 @@ namespace Game.WaveAttack
             int towerCount)
         {
             Instance.currentLevel = waLevel;
+            Instance.currentBaseDamageOutput.Value = 0;
+            Instance.currentEntityDeploymentCount.Value = 0;
 
             Instance.ResetStorage(Instance.WaveStorage);
 

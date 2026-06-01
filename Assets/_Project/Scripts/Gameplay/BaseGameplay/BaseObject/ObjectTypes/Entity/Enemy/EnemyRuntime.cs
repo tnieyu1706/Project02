@@ -80,7 +80,8 @@ namespace Game.BaseGameplay
 
         private void OnEntityMoveEnd()
         {
-            BaseGameplayController.Instance.baseHealth.Value -= currentPreset.baseCausingDmg;
+            // BaseGameplayController.Instance.baseHealth.Value -= currentPreset.baseCausingDmg;
+            BaseGameplayController.Instance.CauseBaseDamage(currentPreset.baseCausingDmg);
             BaseGameplayPrefabSpawnManager.Instance.PoolTrackers[PrefabType.BaseEnemy].Release(gameObject);
         }
 

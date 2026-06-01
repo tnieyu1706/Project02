@@ -121,7 +121,7 @@ namespace Game.BuildingGameplay
             {
                 return new JObject
                 {
-                    ["Max"] = MaxVillagers.Value,
+                    // ["Max"] = MaxVillagers.Value,
                     ["Current"] = CurrentVillagers.Value
                 };
             }
@@ -130,7 +130,7 @@ namespace Game.BuildingGameplay
             {
                 if (data == null) return;
                 UsedVillagers.Value = 0;
-                if (data.TryGetValue("Max", out var max)) MaxVillagers.Value = max.Value<int>();
+                // if (data.TryGetValue("Max", out var max)) MaxVillagers.Value = max.Value<int>();
                 if (data.TryGetValue("Current", out var current)) CurrentVillagers.Value = current.Value<int>();
             }
         }

@@ -32,8 +32,6 @@ namespace Game.BaseGameplay
 
         public event Action OnBaseTakenDamage;
 
-        private int _previousHealth = -1; // Thêm biến để track máu trước đó
-
         #endregion
 
         [SerializeField] private WaveSpawn spawnRead;
@@ -56,7 +54,7 @@ namespace Game.BaseGameplay
             await UniTask.WhenAny(
                 BaseGameplayPrefabSpawnManager.Instance.PoolTrackers[PrefabType.BaseEnemy]
                     .Waiting(),
-                UniTask.Delay(TimeSpan.FromSeconds(30), cancellationToken: token)
+                UniTask.Delay(TimeSpan.FromSeconds(90), cancellationToken: token)
             );
 
             Debug.Log($"[TdWaveController] End wave {currentWaveIndex.Value}...");
@@ -67,6 +65,14 @@ namespace Game.BaseGameplay
 
         #region EVENTS
 
+        public void CauseBaseDamage(int damageAmount)
+        {
+            if (OnCauseBaseDamageValid != null && !OnCauseBaseDamageValid()) return;
+
+            OnBaseTakenDamage?.Invoke();
+            baseHealth.Value -= damageAmount;
+        }
+
         private void OnEnable()
         {
             baseHealth.OnValueChanged += OnBaseHealthChanged;
@@ -75,18 +81,6 @@ namespace Game.BaseGameplay
 
         private void OnBaseHealthChanged(int changedValue)
         {
-            // Kiểm tra xem có thực sự là bị mất máu (nhận sát thương) không
-            bool isTakingDamage = _previousHealth != -1 && changedValue < _previousHealth;
-            _previousHealth = changedValue; // Cập nhật lại cache
-
-            if (isTakingDamage)
-            {
-                if (OnCauseBaseDamageValid != null && !OnCauseBaseDamageValid()) return;
-
-                OnBaseTakenDamage?.Invoke();
-            }
-
-            // Vẫn giữ nguyên logic kiểm tra thua game
             if (changedValue <= 0)
             {
                 OnGameplayBaseDestroyed?.Invoke();
@@ -121,7 +115,7 @@ namespace Game.BaseGameplay
 
         public void Setup(BaseGameplayLevel baseLevel, int maxWaveIndexSource)
         {
-            _previousHealth = -1; // Reset flag khi khởi tạo Level mới
+            // baseHealth.SetValueWithoutEvents(baseLevel.baseMaxHealth);
             baseHealth.Value = baseLevel.baseMaxHealth;
             money.Value = baseLevel.startMoney;
             maxWaveIndex.Value = maxWaveIndexSource;
