@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Global.GameController;
 using _Project.Scripts.Gameplay.Global.UI.WorldMap;
 using Cysharp.Threading.Tasks;
@@ -42,7 +43,6 @@ namespace Gameplay.Global
 
         #region Helper: Cleanup Current Gameplay
 
-        // THÊM: Helper dọn dẹp để đảm bảo không bị rò rỉ logic trước khi chuyển Scene
         private void CleanUpCurrentGameplay(bool forceSave = false)
         {
             if (SbGameplayController.HasInstance)
@@ -62,22 +62,19 @@ namespace Gameplay.Global
 
         public async UniTask LoadMainMenuGame(bool applyDelay = true)
         {
-            CleanUpCurrentGameplay(forceSave: true); // Save và dọn dẹp
+            CleanUpCurrentGameplay(forceSave: true);
             await SceneLoader.Instance.Load(mainMenuSceneGroup, applyDelay);
         }
 
         public async UniTask LoadWorldMapGame()
         {
-            CleanUpCurrentGameplay(forceSave: true); // Save và dọn dẹp
+            CleanUpCurrentGameplay(forceSave: true);
             await SceneLoader.Instance.Load(worldMapSceneGroup);
-
-            //TODO: Ensure timescale reset to default
             GameTimeController.SetTimeScaleToDefault();
         }
 
         public async UniTask CreateBuildingGameplay(BuildingGameplayLevel buildingLevelSource, LevelData levelData)
         {
-            Debug.Log("Creating building gameplay");
             DataManager.CurrentBuildingLevel = buildingLevelSource;
             DataManager.CurrentLevel = levelData;
             buildingLevelSource.Reset();
@@ -117,9 +114,9 @@ namespace Gameplay.Global
 
         #region Base Gameplay Transition
 
-        public async UniTask LoadBaseGameplayWithEvent(EventData eventData)
+        // THÊM: Truyền Dictionary<ArmyType, int> để nhận số lượng quân lính được custom
+        public async UniTask LoadBaseGameplayWithEvent(EventData eventData, Dictionary<ArmyType, int> selectedArmy = null)
         {
-            //setup
             var gameLevel = LevelTypeManager.Instance.GetGameplayLevelBy(eventData);
             var loadingSceneGroup = GetBaseGameplayAndLevelSceneGroup(gameLevel);
 
@@ -130,15 +127,15 @@ namespace Gameplay.Global
                     eventData.shouldChange = true;
                     break;
                 case EventType.Attack:
-                    //only get ArmyStorageUsing when Attack event 
-                    DataManager.MilitaryTemp = SbGameplayController.Instance.GetArmyStorageAsUsing();
+                    // THAY ĐỔI: Nếu selectedArmy được truyền vào (từ UI Chọn Quân), ta dùng nó. 
+                    // Nếu không (hoặc null), dùng Fallback lấy tất cả từ Storage (cho an toàn)
+                    DataManager.MilitaryTemp = selectedArmy ?? SbGameplayController.Instance.GetArmyStorageAsUsing();
                     loadingSceneGroup.scenes.Add(waveAttackSceneData);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(eventData.eventType));
             }
 
-            //handle loading...
             PreLoadBaseGameplay(eventData);
             await SceneLoader.Instance.Load(loadingSceneGroup);
 
@@ -147,7 +144,7 @@ namespace Gameplay.Global
 
         private void PreLoadBaseGameplay(EventData eventData)
         {
-            CleanUpCurrentGameplay(forceSave: true); // ĐÃ SỬA: Thay vì chỉ Save, giờ gọi cả Save và Cleanup
+            CleanUpCurrentGameplay(forceSave: true);
             DataManager.ActiveEvent = eventData;
         }
 

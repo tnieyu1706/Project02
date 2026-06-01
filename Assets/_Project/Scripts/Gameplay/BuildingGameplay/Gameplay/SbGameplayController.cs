@@ -123,17 +123,13 @@ namespace Game.BuildingGameplay
                 {
                     ["Max"] = MaxVillagers.Value,
                     ["Current"] = CurrentVillagers.Value
-                    // ĐÃ SỬA: Không lưu UsedVillagers nữa, vì biến này sẽ được các Building tự đăng ký khi Load
                 };
             }
 
             public void BindData(JObject data)
             {
                 if (data == null) return;
-
-                // Đảm bảo Reset Used về 0 trước khi load (đề phòng)
                 UsedVillagers.Value = 0;
-
                 if (data.TryGetValue("Max", out var max)) MaxVillagers.Value = max.Value<int>();
                 if (data.TryGetValue("Current", out var current)) CurrentVillagers.Value = current.Value<int>();
             }
@@ -215,15 +211,12 @@ namespace Game.BuildingGameplay
 
         #region SUPPORTS
 
-        // THÊM: Xử lý dọn dẹp Lifecycle triệt để
         public void CleanUpGameplay()
         {
-            Debug.Log("[SbGameplayController] Tiến hành CleanUp Gameplay trước khi thoát...");
             if (SbGridMapSystem.HasInstance)
             {
                 SbGridMapSystem.Instance.ClearMap();
             }
-            // Clear các event listener cục bộ nếu cần thiết ở đây để tránh leak
         }
 
         public static void RefreshEvents()
@@ -232,7 +225,6 @@ namespace Game.BuildingGameplay
             {
                 if (!eventData.data.isCompleted) return;
             }
-
             OnWinGame?.Invoke();
         }
 
@@ -243,7 +235,6 @@ namespace Game.BuildingGameplay
                 AddResource(increment.Key, CalculateResourceAmount(increment.Key, increment.Value.Value));
             }
 
-            // ĐÃ SỬA: Logic kiểm tra Food (Thức ăn) để tăng hoặc giảm dân làng (Nạn đói)
             float currentFood = Instance.ResourceStorage[ResourceType.Food].Value;
             if (currentFood > 0)
             {
@@ -258,24 +249,19 @@ namespace Game.BuildingGameplay
             Instance.OnActiveBuildingApplyResource?.Invoke();
         }
 
-        // THÊM: Logic xử lý Nạn đói (Giảm dân làng, rút ngẫu nhiên từ công trình nếu cần)
         private static void HandleStarvation()
         {
             var villagerData = Instance.VillagerData;
-            if (villagerData.CurrentVillagers.Value <= 0) return; // Không còn ai để giảm
+            if (villagerData.CurrentVillagers.Value <= 0) return;
 
-            // 1. Nếu có dân làng rảnh rỗi (idle), chỉ việc trừ đi 1 dân làng rảnh
             if (villagerData.RemainingVillagers > 0)
             {
                 villagerData.AddVillagers(-1);
                 return;
             }
 
-            // 2. Nếu tất cả dân làng đều đang làm việc trong công trình, bắt buộc phải ép rút 1 người ra
             if (SbGridMapSystem.HasInstance)
             {
-                // Tìm TẤT CẢ các công trình ĐANG CHỨA dân làng 
-                // (Điều này tự động gom các loại nhà như IncreaseResource... vì chúng có UsedVillagers > 0)
                 var workingBuildings = SbGridMapSystem.Instance.GridMap.Values
                     .Where(t => t.BuildingRuntime != null && t.BuildingRuntime.behaviour != null)
                     .Select(t => t.BuildingRuntime.behaviour)
@@ -284,18 +270,12 @@ namespace Game.BuildingGameplay
 
                 if (workingBuildings.Count > 0)
                 {
-                    // Chọn ngẫu nhiên 1 công trình
                     var randomBuilding = workingBuildings[UnityEngine.Random.Range(0, workingBuildings.Count)];
-
-                    // Ép rút 1 dân làng ra (lúc này dân làng đó sẽ chuyển sang trạng thái rảnh)
                     bool removed = randomBuilding.ForceRemoveOneVillager();
 
                     if (removed)
                     {
-                        // Sau khi rút ra thành công (đã hoàn trả về nhàn rỗi), ta trừ nó đi khỏi tổng
                         villagerData.AddVillagers(-1);
-                        Debug.Log(
-                            $"[Nạn đói] Food <= 0. Một dân làng đã chết khi đang làm việc tại {randomBuilding.Preset.buildingId}.");
                     }
                 }
             }
@@ -345,7 +325,6 @@ namespace Game.BuildingGameplay
             {
                 if (Instance.ResourceStorage[resourceCost.Key].Value < resourceCost.Value) return false;
             }
-
             return true;
         }
 
@@ -355,7 +334,6 @@ namespace Game.BuildingGameplay
             {
                 Instance.ResourceStorage[resourceCost.Key].Value -= resourceCost.Value;
             }
-
             Instance.OnResourceChanged?.Invoke();
         }
 
@@ -365,7 +343,6 @@ namespace Game.BuildingGameplay
             {
                 Instance.ResourceStorage[resourceCost.Key].Value += resourceCost.Value;
             }
-
             Instance.OnResourceChanged?.Invoke();
         }
 
@@ -395,6 +372,7 @@ namespace Game.BuildingGameplay
             }
         }
 
+        // Lấy tất cả quân đi (Legacy)
         public Dictionary<ArmyType, int> GetArmyStorageAsUsing()
         {
             var result = Instance.ArmyStorage.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Value);
@@ -402,7 +380,24 @@ namespace Game.BuildingGameplay
             {
                 observableArmy.Value = 0;
             }
+            return result;
+        }
 
+        // THÊM MỚI: Chỉ lấy số lượng quân lính được người chơi chọn từ UI
+        public Dictionary<ArmyType, int> TakeArmyForAttack(Dictionary<ArmyType, int> selectedArmies)
+        {
+            var result = new Dictionary<ArmyType, int>();
+            foreach (var kvp in selectedArmies)
+            {
+                var type = kvp.Key;
+                var amountToTake = Mathf.Min(kvp.Value, Instance.ArmyStorage[type].Value);
+                
+                Instance.ArmyStorage[type].Value -= amountToTake; // Trừ số quân mang đi
+                result[type] = amountToTake;
+            }
+
+            // Những quân lính không được chọn vẫn giữ nguyên giá trị trong ArmyStorage 
+            // và sẽ tự động được Serialize ở hàm SaveAll()
             return result;
         }
 
@@ -434,7 +429,6 @@ namespace Game.BuildingGameplay
             {
                 resourceStorageJObject[resource.Key.ToString()] = resource.Value.Value;
             }
-
             data["ResourceStorage"] = resourceStorageJObject;
 
             JObject armyStorageJObject = new JObject();
@@ -442,7 +436,6 @@ namespace Game.BuildingGameplay
             {
                 armyStorageJObject[army.Key.ToString()] = army.Value.Value;
             }
-
             data["ArmyStorage"] = armyStorageJObject;
 
             if (!File.Exists(currentLevel.TempFilePath)) return;
@@ -452,13 +445,7 @@ namespace Game.BuildingGameplay
 
         public async UniTask LoadAll()
         {
-            Debug.Log($"[LoadAll] Attempting to load data from: {currentLevel.TempFilePath}");
-
-            if (!File.Exists(currentLevel.TempFilePath))
-            {
-                Debug.LogError($"Temp file not found at path: {currentLevel.TempFilePath}");
-                return;
-            }
+            if (!File.Exists(currentLevel.TempFilePath)) return;
 
             string json = await File.ReadAllTextAsync(currentLevel.TempFilePath);
             JObject jObject = JObject.Parse(json);
@@ -474,17 +461,12 @@ namespace Game.BuildingGameplay
 
             await UniTask.CompletedTask;
 
-            // SỬA LỖI ĐẶC BIỆT QUAN TRỌNG: 
-            // Đưa việc Load VillagerData và ResourceStorage LÊN TRƯỚC GridMap.
-            // Để khi GridMap dựng công trình, quỹ dân và tài nguyên đã sẵn sàng để công trình đăng ký lấy!
-
             if (jObject.TryGetValue("VillagerData", out JToken villagerToken) && villagerToken is JObject vObj)
             {
                 VillagerData.BindData(vObj);
             }
 
-            if (jObject.TryGetValue("ResourceStorage", out JToken resourceToken) &&
-                resourceToken is JObject resourceObj)
+            if (jObject.TryGetValue("ResourceStorage", out JToken resourceToken) && resourceToken is JObject resourceObj)
             {
                 foreach (var resource in resourceObj.Properties())
                 {
@@ -500,7 +482,6 @@ namespace Game.BuildingGameplay
                 }
             }
 
-            // Gắn GridMap SAU CÙNG
             if (jObject.TryGetValue("gridMapSaveData", out JToken gridMapToken))
             {
                 var gridMapData =

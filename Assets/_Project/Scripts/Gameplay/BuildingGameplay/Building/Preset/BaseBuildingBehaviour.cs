@@ -639,7 +639,8 @@ namespace Game.StrategyBuilding
 
                 if (diff != 0)
                 {
-                    SbGameplayController.Instance.IncrementResources[type].Value -= diff;
+                    if (SbGameplayController.HasInstance)
+                        SbGameplayController.Instance.IncrementResources[type].Value -= diff;
                     appliedConsumptions[type] = targetConsumption;
                 }
             }
