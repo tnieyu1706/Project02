@@ -1275,7 +1275,7 @@ GameObject:
   - component: {fileID: 1188890098}
   - component: {fileID: 1188890097}
   m_Layer: 0
-  m_Name: TutorialRegister
+  m_Name: TutorialStarter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1665,6 +1665,8 @@ MonoBehaviour:
   blurBackgroundId: Main
   uiDocument: {fileID: 1542649279}
   styleSheet: {fileID: 7433441132597879392, guid: f41f3b30efe84967a92563c1cc3d08e4, type: 3}
+  panelBackgroundSprite: {fileID: 21300000, guid: 0b3dcfd7ea81d964b81f1ab60d1d8a05, type: 3}
+  tripleStarSprite: {fileID: 21300000, guid: 07c0ac7a98e91044b8c861082ee999d9, type: 3}
 --- !u!114 &1542649279
 MonoBehaviour:
   m_ObjectHideFlags: 0

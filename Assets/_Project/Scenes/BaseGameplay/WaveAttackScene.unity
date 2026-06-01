@@ -131,6 +131,8 @@ GameObject:
   - component: {fileID: 242730089}
   - component: {fileID: 242730088}
   - component: {fileID: 242730087}
+  - component: {fileID: 242730092}
+  - component: {fileID: 242730091}
   m_Layer: 5
   m_Name: WaPanelButton
   m_TagString: Untagged
@@ -181,7 +183,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 242730088}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 242730092}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.TutorialAnchor, Core.Gameplay
+        m_MethodName: TriggerNextStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &242730088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +254,32 @@ RectTransform:
   m_AnchoredPosition: {x: -250, y: 30}
   m_SizeDelta: {x: 120, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &242730091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242730086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e60458937f499c9d880f21a3e1cc5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bindKey: 98
+--- !u!114 &242730092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242730086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87165c63235c4d4aba21b85b17e74892, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetStep: {fileID: 593733652017676448, guid: 3591a06282fe50e4998cbf4119c2691e, type: 2}
 --- !u!1 &468697633
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,7 +385,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: b40d82255c6ef9041bc8d2abda55c69a, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 5656ce57c7d01e84ca27fba4348a5198, type: 3}
-  m_SortingOrder: 12
+  m_SortingOrder: 8
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080

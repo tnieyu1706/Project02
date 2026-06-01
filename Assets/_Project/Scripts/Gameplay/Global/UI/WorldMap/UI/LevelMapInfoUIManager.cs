@@ -13,24 +13,35 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
 {
     /// <summary>
     /// Singleton quản lý việc hiển thị UI Toolkit cho Popup thông tin Level
-    /// Tự động khởi tạo giao diện bằng code UI Toolkit.
+    /// Đã được tùy chỉnh để sử dụng Sprite cho Panel và Slider sao (0-3).
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
     public class LevelMapInfoUIManager : SingletonDisplayUI<LevelMapInfoUIManager>
     {
         [Inject] GameplayTransition transition;
-        
+
         [SerializeField, Self] private UIDocument uiDocument;
-        [SerializeField] private StyleSheet styleSheet; // Gắn tệp LevelMapInfoStyle.uss vào đây ở Inspector
+        [SerializeField] private StyleSheet styleSheet;
+
+        [Header("UI Sprites & Assets")]
+        [Tooltip("Kéo thả Assets/_Project/Sprites/GUI/panel_2.png vào đây")]
+        [SerializeField]
+        private Sprite panelBackgroundSprite;
+
+        [Tooltip("Kéo thả Assets/_Project/Sprites/GUI/triple_star.png vào đây")] [SerializeField]
+        private Sprite tripleStarSprite;
 
         private VisualElement _root;
-        
+
         // Các thành phần UI được build bằng code
         private VisualElement _popupContainer;
         private Label _titleLabel;
-        private Label _scoreLabel;
         private Label _statusLabel;
         private Button _playButton;
+
+        // Các thành phần cho Star Slider
+        private VisualElement _starMask; // Khung dùng để che/cắt hình ảnh sao
+        private VisualElement _starImage; // Chứa sprite 3 sao
 
         // Lưu trữ data hiện tại đang được chọn
         private LevelData _currentLevelData;
@@ -61,11 +72,8 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
         private void InitializeUI()
         {
             _root.Clear();
-            
-            // Đặt PickingMode của root thành Ignore để không chặn sự kiện click xuống BlurBackground (UGUI) bên dưới
             _root.pickingMode = PickingMode.Ignore;
 
-            // Nhúng StyleSheet vào Root
             if (styleSheet != null)
             {
                 _root.styleSheets.Add(styleSheet);
@@ -80,13 +88,40 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
             var mainPanel = new VisualElement();
             mainPanel.AddToClassList("main-panel");
 
+            // Áp dụng Sprite cho Panel nền
+            if (panelBackgroundSprite != null)
+            {
+                mainPanel.style.backgroundImage = new StyleBackground(panelBackgroundSprite);
+                mainPanel.style.backgroundColor = new StyleColor(Color.clear); // Tắt màu nền mặc định
+                mainPanel.style.borderTopWidth = 0; // Tắt viền nếu xài sprite
+                mainPanel.style.borderBottomWidth = 0;
+                mainPanel.style.borderLeftWidth = 0;
+                mainPanel.style.borderRightWidth = 0;
+            }
+
             // 3. Tiêu đề (Title Label)
             _titleLabel = new Label();
             _titleLabel.AddToClassList("title-label");
 
-            // 4. Thông tin điểm số (Score Label)
-            _scoreLabel = new Label();
-            _scoreLabel.AddToClassList("score-label");
+            // 4. Hệ thống Star Slider (Thay thế cho Score Label)
+            var starSliderContainer = new VisualElement();
+            starSliderContainer.AddToClassList("star-slider-container");
+
+            _starMask = new VisualElement();
+            _starMask.AddToClassList("star-slider-mask");
+
+            _starImage = new VisualElement();
+            _starImage.AddToClassList("star-image");
+
+            // Áp dụng Sprite 3 sao
+            if (tripleStarSprite != null)
+            {
+                _starImage.style.backgroundImage = new StyleBackground(tripleStarSprite);
+            }
+
+            // Lắp ráp hệ thống Sao
+            _starMask.Add(_starImage);
+            starSliderContainer.Add(_starMask);
 
             // 5. Trạng thái mở khóa (Status Label)
             _statusLabel = new Label();
@@ -99,10 +134,10 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
 
             // Lắp ráp hệ thống Hierarchy UI
             mainPanel.Add(_titleLabel);
-            mainPanel.Add(_scoreLabel);
+            mainPanel.Add(starSliderContainer);
             mainPanel.Add(_statusLabel);
             mainPanel.Add(_playButton);
-            
+
             _popupContainer.Add(mainPanel);
             _root.Add(_popupContainer);
         }
@@ -115,14 +150,21 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
             _currentLevelData = data;
             _currentLevelInfo = level;
 
-            // Cập nhật thông tin UI
+            // Cập nhật Tiêu đề
             _titleLabel.text = level != null ? level.name : "Unknown Level";
-            _scoreLabel.text = $"High Score: {data.score}";
-            
-            _statusLabel.text = data.isUnlocked ? "Status: Unlocked" : "Status: Locked";
-            _statusLabel.style.color = data.isUnlocked ? new StyleColor(Color.green) : new StyleColor(Color.red);
 
-            // Chỉ cho phép bấm Play nếu level đã được unlock
+            // Cập nhật Star Slider (Int constraint từ 0 -> 3)
+            int starCount = Mathf.Clamp(data.score, 0, 3);
+            float fillPercentage = (starCount / 3f) * 100f;
+            _starMask.style.width = Length.Percent(fillPercentage); // Tính % chiều rộng để lộ sao tương ứng
+
+            // Cập nhật Trạng thái
+            _statusLabel.text = data.isUnlocked ? "Unlocked" : "Locked";
+            _statusLabel.style.color = data.isUnlocked
+                ? new StyleColor(new Color(0.2f, 0.8f, 0.2f))
+                : new StyleColor(new Color(0.8f, 0.2f, 0.2f));
+
+            // Nút Play
             _playButton.SetEnabled(data.isUnlocked);
 
             Show();
@@ -132,7 +174,7 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
         public void Show()
         {
             _root.style.display = DisplayStyle.Flex;
-            BlurBackground.Show(); // Kích hoạt hiệu ứng Background được cung cấp từ SingletonDisplayUI
+            BlurBackground.Show();
         }
 
         [Button]
@@ -144,26 +186,18 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
             }
         }
 
-        /// <summary>
-        /// Xử lý khi người chơi bấm nút Play
-        /// </summary>
         private void OnPlayClicked()
         {
             if (_currentLevelData == null || _currentLevelInfo == null) return;
 
-            // Ẩn UI trước khi chuyển scene
             Hide();
-            BlurBackground.CloseManual(); // Tắt luôn màn hình mờ khi bắt đầu Transition
-
-            // Gọi logic transition load màn
+            BlurBackground.CloseManual();
             transition.CreateBuildingGameplay(_currentLevelInfo, _currentLevelData).Forget();
         }
 
         protected override void OnDestroy()
         {
-            base.OnDestroy(); // Cực kỳ quan trọng để un-register BlurBackground 
-
-            // Xóa đăng ký sự kiện để tránh memory leak
+            base.OnDestroy();
             if (_playButton != null) _playButton.clicked -= OnPlayClicked;
         }
     }

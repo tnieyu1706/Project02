@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3d01e822064f84a76e7826b6f78723, type: 3}
   m_Name: BuildingGameplay_Tutorial
   m_EditorClassIdentifier: 
-  TutorialId: 
+  TutorialId: Building_Tutorial
   Steps:
   - {fileID: -6729475965749893446}
   - {fileID: 5363968507497193253}

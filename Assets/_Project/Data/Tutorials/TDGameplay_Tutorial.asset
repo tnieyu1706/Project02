@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
   m_Name: Step_b65a
   m_EditorClassIdentifier: 
-  Message: To do that, you must build towers to defend against enemies reaching the
-    end of your base.
+  Message: To do that, you must build towers from tower places to defend against
+    enemies reaching the end of your base.
   DisplayType: 0
   NodePosition: {x: 0, y: 163.20001}
 --- !u!114 &11400000
@@ -28,7 +28,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3d01e822064f84a76e7826b6f78723, type: 3}
   m_Name: TDGameplay_Tutorial
   m_EditorClassIdentifier: 
-  TutorialId: 
+  TutorialId: TDGameplay_Tutorial
   Steps:
   - {fileID: 5393896576373216687}
   - {fileID: -3529420295445636645}

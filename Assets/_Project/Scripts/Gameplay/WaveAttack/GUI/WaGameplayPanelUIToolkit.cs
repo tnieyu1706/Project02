@@ -56,8 +56,8 @@ namespace Game.WaveAttack
 
             var rootContainer = new VisualElement();
             rootContainer.AddToClassList("root-container");
-            root.Add(rootContainer);
             rootContainer.pickingMode = PickingMode.Ignore;
+            root.Add(rootContainer);
 
             var panelContainer = new VisualElement();
             panelContainer.AddToClassList("panel-container");
@@ -115,8 +115,6 @@ namespace Game.WaveAttack
             // Add panels to container
             panelContainer.Add(leftPanel);
             panelContainer.Add(rightPanel);
-
-            rootContainer.pickingMode = PickingMode.Position;
         }
 
         private VisualElement CreateArmyRow(ArmyType armyType)
