@@ -37,6 +37,9 @@ namespace Game.BuildingGameplay
         [Tooltip("Gán Scriptable Object của Nhà Chính vào đây để tự động đặt ra khi bắt đầu game")]
         public MainBuildingPresetSo startMainBuildingPreset;
 
+        public event Action OnPreMainBuildingSpawn;
+        public event Action OnPostMainBuildingSpawn;
+
         #region PROPERTIES
 
         public VillagerDataManager VillagerData = new();
@@ -73,8 +76,8 @@ namespace Game.BuildingGameplay
             { ArmyType.Quick, new ObservableValue<int>(0) }
         };
 
-        public static event Action OnResourceChanged;
-        public static event Action OnActiveBuildingApplyResource;
+        public event Action OnResourceChanged;
+        public event Action OnActiveBuildingApplyResource;
 
         #endregion
 
@@ -92,10 +95,7 @@ namespace Game.BuildingGameplay
                 var next = Mathf.Clamp(CurrentVillagers.Value + amount, 0, MaxVillagers.Value);
                 if (next != CurrentVillagers.Value)
                 {
-                    // using building decrease food instead of depending on current villager exists.
-                    // var preVillagers = CurrentVillagers.Value;
                     CurrentVillagers.Value = next;
-                    // Instance.ResourceStorage[ResourceType.Food].Value -= (next - preVillagers) * RATIO_VILLAGER_FOOD;
                 }
 
                 return next - CurrentVillagers.Value;
@@ -106,7 +106,6 @@ namespace Game.BuildingGameplay
                 var canUse = Mathf.Clamp(amount, 0, RemainingVillagers);
                 if (canUse > 0)
                     UsedVillagers.Value += canUse;
-
                 return canUse;
             }
 
@@ -115,7 +114,6 @@ namespace Game.BuildingGameplay
                 var canRefund = Mathf.Clamp(amount, 0, UsedVillagers.Value);
                 if (canRefund > 0)
                     UsedVillagers.Value -= canRefund;
-
                 return canRefund;
             }
 
@@ -123,19 +121,17 @@ namespace Game.BuildingGameplay
             {
                 return new JObject
                 {
-                    ["Max"] = MaxVillagers.Value,
-                    ["Current"] = CurrentVillagers.Value,
-                    ["Used"] = UsedVillagers.Value
+                    // ["Max"] = MaxVillagers.Value,
+                    ["Current"] = CurrentVillagers.Value
                 };
             }
 
             public void BindData(JObject data)
             {
                 if (data == null) return;
-
-                if (data.TryGetValue("Max", out var max)) MaxVillagers.Value = max.Value<int>();
+                UsedVillagers.Value = 0;
+                // if (data.TryGetValue("Max", out var max)) MaxVillagers.Value = max.Value<int>();
                 if (data.TryGetValue("Current", out var current)) CurrentVillagers.Value = current.Value<int>();
-                if (data.TryGetValue("Used", out var used)) UsedVillagers.Value = used.Value<int>();
             }
         }
 
@@ -144,7 +140,6 @@ namespace Game.BuildingGameplay
             base.Awake();
             VillagerData ??= new VillagerDataManager();
 
-            // TỰ ĐỘNG PULL DATA TỪ DATA MANAGER NGAY KHI VỪA KHỞI TẠO
             if (GameplayTransition.DataManager != null && GameplayTransition.DataManager.CurrentBuildingLevel != null)
             {
                 currentLevel = GameplayTransition.DataManager.CurrentBuildingLevel;
@@ -161,13 +156,15 @@ namespace Game.BuildingGameplay
         private void OnCurrentHealthChanged(int changedValue)
         {
             if (changedValue > 0) return;
-            // lose game
             OnLoseGame?.Invoke();
         }
 
         private static void HandleOnGameEndDefault()
         {
-            Instance.RecordResult(GameplayTransition.DataManager.CurrentLevel);
+            if (GameplayTransition.DataManager != null)
+            {
+                GameplayTransition.DataManager.SubmitLevelResult(Instance.currentHealth.Value);
+            }
         }
 
         private void OnDisable()
@@ -177,17 +174,28 @@ namespace Game.BuildingGameplay
             OnLoseGame -= HandleOnGameEndDefault;
         }
 
-        public void CreateGameplay(BuildingGameplayLevel level)
+        public async void CreateGameplay(BuildingGameplayLevel level)
         {
             currentHealth.Value = MAX_HEALTH;
 
             SbTimeController.Instance.Init();
             SbGridMapRegister.Instance.RegisterEnvironmentMaps();
 
-            // THÊM ĐOẠN NÀY ĐỂ ÉP NGƯỜI CHƠI XÂY NHÀ CHÍNH KHÔNG ĐƯỢC HUỶ
             if (startMainBuildingPreset != null)
             {
-                SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false, timeStop: true);
+                try
+                {
+                    OnPreMainBuildingSpawn?.Invoke();
+                    await SbSpawnBuildingSystem.StartBuilding(startMainBuildingPreset, canCancel: false,
+                        timeStop: true);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+                finally
+                {
+                    OnPostMainBuildingSpawn?.Invoke();
+                }
             }
 
             foreach (var eventData in currentLevel.events)
@@ -201,24 +209,22 @@ namespace Game.BuildingGameplay
             currentLevel = level;
         }
 
-        public void RecordResult(LevelData levelData)
-        {
-            levelData.score = currentHealth.Value;
-            // set unlocked for nest levels
-        }
-
         #region SUPPORTS
+
+        public void CleanUpGameplay()
+        {
+            if (SbGridMapSystem.HasInstance)
+            {
+                SbGridMapSystem.Instance.ClearMap();
+            }
+        }
 
         public static void RefreshEvents()
         {
-            //check all events state
             foreach (var eventData in Instance.currentLevel.events)
             {
                 if (!eventData.data.isCompleted) return;
             }
-
-            // all event is completed => win game
-
             OnWinGame?.Invoke();
         }
 
@@ -229,9 +235,50 @@ namespace Game.BuildingGameplay
                 AddResource(increment.Key, CalculateResourceAmount(increment.Key, increment.Value.Value));
             }
 
-            Instance.VillagerData.AddVillagers(1);
-            OnResourceChanged?.Invoke();
-            OnActiveBuildingApplyResource?.Invoke();
+            float currentFood = Instance.ResourceStorage[ResourceType.Food].Value;
+            if (currentFood > 0)
+            {
+                Instance.VillagerData.AddVillagers(1);
+            }
+            else
+            {
+                HandleStarvation();
+            }
+
+            Instance.OnResourceChanged?.Invoke();
+            Instance.OnActiveBuildingApplyResource?.Invoke();
+        }
+
+        private static void HandleStarvation()
+        {
+            var villagerData = Instance.VillagerData;
+            if (villagerData.CurrentVillagers.Value <= 0) return;
+
+            if (villagerData.RemainingVillagers > 0)
+            {
+                villagerData.AddVillagers(-1);
+                return;
+            }
+
+            if (SbGridMapSystem.HasInstance)
+            {
+                var workingBuildings = SbGridMapSystem.Instance.GridMap.Values
+                    .Where(t => t.BuildingRuntime != null && t.BuildingRuntime.behaviour != null)
+                    .Select(t => t.BuildingRuntime.behaviour)
+                    .Where(b => b.UsedVillagers > 0)
+                    .ToList();
+
+                if (workingBuildings.Count > 0)
+                {
+                    var randomBuilding = workingBuildings[UnityEngine.Random.Range(0, workingBuildings.Count)];
+                    bool removed = randomBuilding.ForceRemoveOneVillager();
+
+                    if (removed)
+                    {
+                        villagerData.AddVillagers(-1);
+                    }
+                }
+            }
         }
 
         private static float CalculateResourceAmount(ResourceType resourceType, float amount)
@@ -257,7 +304,7 @@ namespace Game.BuildingGameplay
         public static void AddResourceAndRefresh(ResourceType resourceType, float value)
         {
             AddResource(resourceType, value);
-            OnResourceChanged?.Invoke();
+            Instance.OnResourceChanged?.Invoke();
         }
 
         public static ObservableValue<int> GetObservableArmy(ArmyType armyType) => Instance.ArmyStorage[armyType];
@@ -278,7 +325,6 @@ namespace Game.BuildingGameplay
             {
                 if (Instance.ResourceStorage[resourceCost.Key].Value < resourceCost.Value) return false;
             }
-
             return true;
         }
 
@@ -288,8 +334,7 @@ namespace Game.BuildingGameplay
             {
                 Instance.ResourceStorage[resourceCost.Key].Value -= resourceCost.Value;
             }
-
-            OnResourceChanged?.Invoke();
+            Instance.OnResourceChanged?.Invoke();
         }
 
         public static void RefundCost(ActionCost cost)
@@ -298,8 +343,7 @@ namespace Game.BuildingGameplay
             {
                 Instance.ResourceStorage[resourceCost.Key].Value += resourceCost.Value;
             }
-
-            OnResourceChanged?.Invoke();
+            Instance.OnResourceChanged?.Invoke();
         }
 
         public static void RevalidateResourceLimits()
@@ -324,10 +368,11 @@ namespace Game.BuildingGameplay
 
             if (isChanged)
             {
-                OnResourceChanged?.Invoke();
+                Instance.OnResourceChanged?.Invoke();
             }
         }
 
+        // Lấy tất cả quân đi (Legacy)
         public Dictionary<ArmyType, int> GetArmyStorageAsUsing()
         {
             var result = Instance.ArmyStorage.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Value);
@@ -335,7 +380,24 @@ namespace Game.BuildingGameplay
             {
                 observableArmy.Value = 0;
             }
+            return result;
+        }
 
+        // THÊM MỚI: Chỉ lấy số lượng quân lính được người chơi chọn từ UI
+        public Dictionary<ArmyType, int> TakeArmyForAttack(Dictionary<ArmyType, int> selectedArmies)
+        {
+            var result = new Dictionary<ArmyType, int>();
+            foreach (var kvp in selectedArmies)
+            {
+                var type = kvp.Key;
+                var amountToTake = Mathf.Min(kvp.Value, Instance.ArmyStorage[type].Value);
+                
+                Instance.ArmyStorage[type].Value -= amountToTake; // Trừ số quân mang đi
+                result[type] = amountToTake;
+            }
+
+            // Những quân lính không được chọn vẫn giữ nguyên giá trị trong ArmyStorage 
+            // và sẽ tự động được Serialize ở hàm SaveAll()
             return result;
         }
 
@@ -367,7 +429,6 @@ namespace Game.BuildingGameplay
             {
                 resourceStorageJObject[resource.Key.ToString()] = resource.Value.Value;
             }
-
             data["ResourceStorage"] = resourceStorageJObject;
 
             JObject armyStorageJObject = new JObject();
@@ -375,7 +436,6 @@ namespace Game.BuildingGameplay
             {
                 armyStorageJObject[army.Key.ToString()] = army.Value.Value;
             }
-
             data["ArmyStorage"] = armyStorageJObject;
 
             if (!File.Exists(currentLevel.TempFilePath)) return;
@@ -385,11 +445,7 @@ namespace Game.BuildingGameplay
 
         public async UniTask LoadAll()
         {
-            if (!File.Exists(currentLevel.TempFilePath))
-            {
-                Debug.LogError($"Temp file not found at path: {currentLevel.TempFilePath}");
-                return;
-            }
+            if (!File.Exists(currentLevel.TempFilePath)) return;
 
             string json = await File.ReadAllTextAsync(currentLevel.TempFilePath);
             JObject jObject = JObject.Parse(json);
@@ -405,27 +461,12 @@ namespace Game.BuildingGameplay
 
             await UniTask.CompletedTask;
 
-            if (jObject.TryGetValue("gridMapSaveData", out JToken gridMapToken))
-            {
-                var gridMapData =
-                    JsonConvert.DeserializeObject<GridMapSaveData>(gridMapToken.ToString(), GameJsonSettings.Create());
-                SbGridMapSystem.Instance.BindData(gridMapData);
-            }
-
-            if (jObject.TryGetValue("timeControllerData", out JToken timeControllerToken))
-            {
-                var timeData = JsonConvert.DeserializeObject<TimeControllerSaveData>(timeControllerToken.ToString(),
-                    GameJsonSettings.Create());
-                SbTimeController.Instance.BindData(timeData);
-            }
-
             if (jObject.TryGetValue("VillagerData", out JToken villagerToken) && villagerToken is JObject vObj)
             {
                 VillagerData.BindData(vObj);
             }
 
-            if (jObject.TryGetValue("ResourceStorage", out JToken resourceToken) &&
-                resourceToken is JObject resourceObj)
+            if (jObject.TryGetValue("ResourceStorage", out JToken resourceToken) && resourceToken is JObject resourceObj)
             {
                 foreach (var resource in resourceObj.Properties())
                 {
@@ -439,6 +480,20 @@ namespace Game.BuildingGameplay
                 {
                     ArmyStorage[Enum.Parse<ArmyType>(army.Name)].Value = army.Value.Value<int>();
                 }
+            }
+
+            if (jObject.TryGetValue("gridMapSaveData", out JToken gridMapToken))
+            {
+                var gridMapData =
+                    JsonConvert.DeserializeObject<GridMapSaveData>(gridMapToken.ToString(), GameJsonSettings.Create());
+                SbGridMapSystem.Instance.BindData(gridMapData);
+            }
+
+            if (jObject.TryGetValue("timeControllerData", out JToken timeControllerToken))
+            {
+                var timeData = JsonConvert.DeserializeObject<TimeControllerSaveData>(timeControllerToken.ToString(),
+                    GameJsonSettings.Create());
+                SbTimeController.Instance.BindData(timeData);
             }
         }
 

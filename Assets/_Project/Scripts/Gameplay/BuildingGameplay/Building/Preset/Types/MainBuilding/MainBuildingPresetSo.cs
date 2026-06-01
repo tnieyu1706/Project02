@@ -13,13 +13,11 @@ namespace Game.StrategyBuilding
     [Serializable]
     public class MainBuildingLevelConfig
     {
-        [Tooltip("Số lượng công trình tối đa trên bản đồ ở cấp độ này")]
-        public int maxBuildingLimit = 10;
-        
+        [Tooltip("Số lượng công trình MỞ RỘNG THÊM trên bản đồ ở cấp độ này")]
+        public int additionalBuildingLimit = 10;
+
         [Tooltip("Các loại công trình sẽ được mở khoá khi đạt cấp độ này")]
         public List<BuildingType> unlockBuildingTypes = new List<BuildingType>();
-
-        // Bạn hoàn toàn có thể thêm các thông số như tăng % sản xuất, % HP ở đây trong tương lai.
     }
 
     [CreateAssetMenu(fileName = "Building_MainTownHall",
@@ -40,67 +38,69 @@ namespace Game.StrategyBuilding
     public class MainBuildingBehaviour : BaseBuildingBehaviour<MainBuildingPresetSo>
     {
         private Label limitValueLabel;
+        private int preAddedLimit = 0; // Biến nhớ để tính Delta
 
         public MainBuildingBehaviour(MainBuildingPresetSo preset, Vector2Int pos) : base(preset, pos)
         {
-            // Mặc định nhà chính không cần dân làng (bạn có thể bỏ tick requireVillagers trong Inspector)
         }
 
         public override void Setup()
         {
             base.Setup();
-            // Cập nhật các chỉ số ở Runtime ngay khi vừa Load Game hoặc Xây mới
             ApplyLevelConfig();
         }
 
         public override void RefreshBehaviour()
         {
-            // Do nhà chính mang tính thụ động, ta có thể gọi lại ApplyLevelConfig để đảm bảo an toàn data
             ApplyLevelConfig();
         }
 
         protected override void HandleUpgrade()
         {
-            // Base class đã tăng CurrentUpgradeLevel.
-            // Ở đây ta gọi ApplyLevelConfig để cập nhật RuntimeProperties (Mở khoá nhà, tăng Max Building)
             ApplyLevelConfig();
         }
 
         public override void DestroyBehaviour()
         {
             base.DestroyBehaviour();
-            
-            // Giả sử phá Nhà Chính, reset giới hạn công trình về mốc mặc định (vd: 5)
-            // Tuy nhiên với game xây dựng thường người chơi không thể phá Town Hall.
-            GamePropertiesRuntime.Instance.MaxBuildingNumber.Value = 5;
+
+            // Nếu nhà chính bị phá, thu hồi lại số slot đã cộng thêm
+            if (preAddedLimit > 0)
+            {
+                if (GamePropertiesRuntime.HasInstance)
+                    GamePropertiesRuntime.Instance.MaxBuildingNumber.Value -= preAddedLimit;
+                preAddedLimit = 0;
+            }
         }
 
-        /// <summary>
-        /// Logic đọc cấu hình theo Level hiện tại và ghi đè vào GamePropertiesRuntime
-        /// </summary>
         private void ApplyLevelConfig()
         {
             if (ActualPreset.levelConfigs == null || ActualPreset.levelConfigs.Count == 0) return;
 
-            // Đảm bảo không truy cập mảng vượt quá giới hạn nếu Level cao hơn mảng cấu hình
             int index = Mathf.Clamp(CurrentUpgradeLevel - 1, 0, ActualPreset.levelConfigs.Count - 1);
             var currentConfig = ActualPreset.levelConfigs[index];
 
-            // 1. Cập nhật Giới hạn công trình toàn bản đồ
-            GamePropertiesRuntime.Instance.MaxBuildingNumber.Value = currentConfig.maxBuildingLimit;
+            // ĐÃ SỬA: Nếu đang xây thì chưa cung cấp thêm Limit
+            int newLimit = IsUnderConstruction ? 0 : currentConfig.additionalBuildingLimit;
+            int delta = newLimit - preAddedLimit;
 
-            // 2. Mở khoá các loại công trình
-            if (currentConfig.unlockBuildingTypes != null)
+            if (delta != 0)
+            {
+                if (GamePropertiesRuntime.HasInstance)
+                    GamePropertiesRuntime.Instance.MaxBuildingNumber.Value += delta;
+                preAddedLimit = newLimit;
+            }
+
+            // ĐÃ SỬA: Đang xây thì chưa mở khóa công trình
+            if (!IsUnderConstruction && currentConfig.unlockBuildingTypes != null)
             {
                 foreach (var buildingType in currentConfig.unlockBuildingTypes)
                 {
-                    // Lật flag trong dictionary thành true
                     GamePropertiesRuntime.Instance.UnlockBuildingTypeDict[buildingType] = true;
                 }
             }
 
-            // 3. Cập nhật UI nếu panel đang mở
-            UpdateLimitValueLabel(currentConfig.maxBuildingLimit);
+            UpdateLimitValueLabel(newLimit);
         }
 
         // ====================================================================
@@ -109,14 +109,13 @@ namespace Game.StrategyBuilding
 
         protected override void UpdateBuildingLayoutUI()
         {
-            base.UpdateBuildingLayoutUI(); // Gọi base để cập nhật level text
+            base.UpdateBuildingLayoutUI();
 
             bool isMaxLevel = CurrentUpgradeLevel >= ActualPreset.levelConfigs.Count;
 
-            // Vô hiệu hoá nút Upgrade nếu đã đạt max cấp độ của mảng levelConfigs
             if (btnUpgrade != null)
             {
-                btnUpgrade.SetEnabled(!isMaxLevel);
+                btnUpgrade.SetEnabled(!isMaxLevel && !IsUnderConstruction);
             }
         }
 
@@ -125,39 +124,34 @@ namespace Game.StrategyBuilding
             bool isMaxLevel = CurrentUpgradeLevel >= ActualPreset.levelConfigs.Count;
             if (isMaxLevel)
             {
-                // Hiển thị Tooltip Max Level thay vì giá nâng cấp
                 _Project.Scripts.Gameplay.Global.Tooltip.TextTooltipController.Instance.Display(
-                    "Level đã đạt đến tối đa", 
+                    "Level đã đạt đến tối đa",
                     evt.mousePosition + new Vector2(10, -10));
             }
             else
             {
-                // Gọi Tooltip của base class (hiển thị Cost) nếu chưa Max
                 base.HandleMouseEnterUpgradeButton(evt);
             }
         }
 
         protected override void BuildBehaviourLayoutUI(VisualElement container)
         {
-            var title = new Label("Trung Tâm Điều Hành");
+            var title = new Label("Operations Center");
             title.AddToClassList("behaviour-title");
 
             var row = new VisualElement();
-            row.AddToClassList("resource-row"); // Có thể xài chung CSS của CapacityVillager
+            row.AddToClassList("resource-row");
 
             var iconPlaceholder = new VisualElement();
             iconPlaceholder.AddToClassList("resource-icon-placeholder");
-            // TODO: Gán ảnh icon đại diện cho "Giới hạn công trình"
 
-            var nameLabel = new Label("Giới hạn xây dựng");
+            var nameLabel = new Label("Capacity Bonus");
             nameLabel.AddToClassList("resource-name");
 
             limitValueLabel = new Label();
             limitValueLabel.AddToClassList("resource-value");
-            
-            // Lấy giá trị ban đầu để hiển thị
-            int currentLimit = GamePropertiesRuntime.Instance.MaxBuildingNumber.Value;
-            UpdateLimitValueLabel(currentLimit);
+
+            UpdateLimitValueLabel(preAddedLimit);
 
             row.Add(iconPlaceholder);
             row.Add(nameLabel);
@@ -171,7 +165,7 @@ namespace Game.StrategyBuilding
         {
             if (limitValueLabel != null)
             {
-                limitValueLabel.text = $"{maxLimit} Công trình";
+                limitValueLabel.text = $"+{maxLimit}";
             }
         }
     }

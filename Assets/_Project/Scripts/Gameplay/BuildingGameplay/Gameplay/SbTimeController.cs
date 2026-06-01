@@ -29,7 +29,6 @@ namespace Game.BuildingGameplay
     public class SbTimeController : Singleton<SbTimeController>, ISaveLoadData<TimeControllerSaveData>
     {
         private const float TIME_UNIT = 5f;
-        private static float TotalTimeUnit => TIME_UNIT / Time.timeScale;
 
         [Inject] private GameplayTransition transition;
 
@@ -129,7 +128,7 @@ namespace Game.BuildingGameplay
                 SbGameplayController.ApplyResourceIncrement();
 
                 await UniTask.Delay(
-                    TimeSpan.FromSeconds(TotalTimeUnit),
+                    TimeSpan.FromSeconds(TIME_UNIT),
                     cancellationToken: token,
                     delayType: DelayType.DeltaTime
                 );

@@ -21,6 +21,7 @@ MonoBehaviour:
       sceneType: 0
       alwaysReload: 0
       completedActions: []
+    unloadUnusedAssets: 0
   worldMapSceneGroup:
     groupName: WorldMap
     scenes:
@@ -30,6 +31,17 @@ MonoBehaviour:
       sceneType: 0
       alwaysReload: 0
       completedActions: []
+    unloadUnusedAssets: 0
+  storySceneGroup:
+    groupName: Intro
+    scenes:
+    - reference:
+        asset: {fileID: 102900000, guid: e3057dc7b8db5df4d8ebdbad882e6137, type: 3}
+        guid: e3057dc7b8db5df4d8ebdbad882e6137
+      sceneType: 0
+      alwaysReload: 0
+      completedActions: []
+    unloadUnusedAssets: 0
   buildingGameplaySceneGroup:
     groupName: Building Gameplay
     scenes:
@@ -45,6 +57,7 @@ MonoBehaviour:
       sceneType: 0
       alwaysReload: 0
       completedActions: []
+    unloadUnusedAssets: 0
   baseGameplaySceneGroup:
     groupName: Base Gameplay
     scenes:
@@ -60,6 +73,7 @@ MonoBehaviour:
       sceneType: 0
       alwaysReload: 0
       completedActions: []
+    unloadUnusedAssets: 0
   towerDefenseSceneData:
     reference:
       asset: {fileID: 102900000, guid: 38ccd84595c08d441a86e00959134db0, type: 3}

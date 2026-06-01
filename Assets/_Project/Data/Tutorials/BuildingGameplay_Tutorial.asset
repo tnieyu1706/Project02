@@ -1,0 +1,167 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9007442143154672485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_a7df
+  m_EditorClassIdentifier: 
+  Message: A structure will have different types and behaviors, and surrounding contexts
+    that negatively/positively affect it and its surroundings.
+  DisplayType: 0
+  NodePosition: {x: 0, y: 541.6}
+--- !u!114 &-8930890206814953686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_cf64
+  m_EditorClassIdentifier: 
+  Message: To build structures, you can select them here or press B to open the list
+    of structures that can be built.
+  DisplayType: 2
+  NodePosition: {x: 0, y: 359.2}
+--- !u!114 &-6847633124805809593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_d8e5
+  m_EditorClassIdentifier: 
+  Message: A skill will require a certain amount of SP to unlock.
+  DisplayType: 0
+  NodePosition: {x: 0, y: 1137.6}
+--- !u!114 &-6729475965749893446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_bfd1
+  m_EditorClassIdentifier: 
+  Message: To begin the process of conquering an area, place your main building at
+    a location on the map to start building your base.
+  DisplayType: 0
+  NodePosition: {x: 0, y: 0}
+--- !u!114 &-5781147643192680595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_64f9
+  m_EditorClassIdentifier: 
+  Message: Select the building to construct, left-click to build, right-click to
+    cancel.
+  DisplayType: 0
+  NodePosition: {x: 0, y: 737.6}
+--- !u!114 &-3971609577427774476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_51f4
+  m_EditorClassIdentifier: 
+  Message: Otherwise, you will fail to capture the entire enemy base without defending
+    against enemy attacks.
+  DisplayType: 2
+  NodePosition: {x: 0, y: 1491.2}
+--- !u!114 &-2721158032368260019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_647d
+  m_EditorClassIdentifier: 
+  Message: Regarding the ultimate objective, you must capture the entire enemy base.
+  DisplayType: 2
+  NodePosition: {x: 0, y: 1320.7999}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3d01e822064f84a76e7826b6f78723, type: 3}
+  m_Name: BuildingGameplay_Tutorial
+  m_EditorClassIdentifier: 
+  TutorialId: Building_Tutorial
+  Steps:
+  - {fileID: -6729475965749893446}
+  - {fileID: 5363968507497193253}
+  - {fileID: -8930890206814953686}
+  - {fileID: -9007442143154672485}
+  - {fileID: -5781147643192680595}
+  - {fileID: 1816191668860335270}
+  - {fileID: -6847633124805809593}
+  - {fileID: -2721158032368260019}
+  - {fileID: -3971609577427774476}
+--- !u!114 &1816191668860335270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_896a
+  m_EditorClassIdentifier: 
+  Message: In addition to resources and buildings, you can unlock buildings or upgrade
+    attributes through skills.
+  DisplayType: 2
+  NodePosition: {x: 0, y: 936}
+--- !u!114 &5363968507497193253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5c9b5c64747a1aa1dabbe625d5268, type: 3}
+  m_Name: Step_c7fc
+  m_EditorClassIdentifier: 
+  Message: After building your base, you'll find in the building gameplay that you
+    need to manage resources through mining or constructing buildings.
+  DisplayType: 0
+  NodePosition: {x: 0, y: 177.6}

@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Building_ResourceCapacity_Wood1
   m_EditorClassIdentifier: 
   buildingId: WoodCapcity1
+  description: Use for increase wood capacity.
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
   buildWaitingTime: 18
+  buildingType: 0
   buildingCategory: 5
   tileLayer: 5
   buildingTile: {fileID: 11400000, guid: 447211a90c1cf364db3e1c60c8599775, type: 2}

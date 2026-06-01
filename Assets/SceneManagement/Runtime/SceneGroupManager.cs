@@ -29,7 +29,7 @@ namespace SceneManagement
 
         public event Action OnLoadEnded = delegate { };
 
-        public async UniTask LoadSceneAsync(SceneGroup sceneGroup, IProgress<float> progress)
+        public async UniTask LoadSceneAsync(SceneGroup sceneGroup, IProgress<float> progress, bool applyDelay = true)
         {
             OnLoadStarted?.Invoke();
             var timer = Stopwatch.StartNew();
@@ -88,7 +88,7 @@ namespace SceneManagement
                 OnActiveSceneChanged?.Invoke(sceneActiveName);
             }
 
-            await UniTask.Delay(TimeSpan.FromSeconds(delayCompletedAll));
+            if (applyDelay) await UniTask.Delay(TimeSpan.FromSeconds(delayCompletedAll));
 
             OnLoadEnded?.Invoke();
         }

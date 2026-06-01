@@ -4,23 +4,34 @@
 To provide a data-driven, graph-based tutorial system that cleanly separates tutorial sequence definition (data), execution logic, and visual rendering (UI/Spatial). It allows for creating complex tutorial flows without hardcoding scene dependencies.
 
 ## Core Components
-- **`TutorialData`** (`ScriptableObject`): Container holding a sequence of tutorial steps (`TutorialId`, `StartStep`).
-- **`TutorialStepData`** (`ScriptableObject`): Represents a single step, containing the message, `TutorialDisplayType`, and a reference to the `NextStep`.
-- **`TutorialManager`** (`Singleton MonoBehaviour`): Owns the runtime state of the active tutorial. Coordinates step transitions and persists completion status to `PlayerPrefs`.
-- **`TutorialUI`** (`MonoBehaviour`): Responsible for rendering the tutorial text and spatial hints (arrows/highlights) based on step data and anchor positions.
-- **`TutorialAnchor`** (`MonoBehaviour`): Attached to interactable GameObjects in the scene. Holds a reference to its corresponding `TutorialStepData` and automatically registers itself upon activation.
-- **`TutorialAnchorRegistry`** (`static class`): Acts as an in-memory spatial lookup, mapping `TutorialStepData` to the active `TutorialAnchor` instance in the scene.
+- **`ITutorialManager`** (`Interface`): Defines the contract for tutorial lifecycle and progression management.
+- **`TutorialData`** (`ScriptableObject`): Container holding a sequential list of tutorial steps (`TutorialId`, `Steps`).
+- **`TutorialStepData`** (`ScriptableObject`): Represents a single step, containing the message and `TutorialDisplayType`.
+- **`TutorialManager`** (`Singleton MonoBehaviour`): Owns the runtime state and `currentIndex`. Coordinates transitions and broadcasts state via events (`OnStepStarted`, `OnTutorialEnded`).
+- **`TutorialUI`** (`MonoBehaviour`): Frontend View. Subscribes to manager events. Renders text, handles World-to-Screen conversion for hints, and advances text-only steps via message panel click.
+- **`TutorialAnchor`** (`MonoBehaviour`): Attached to GameObjects. Holds a reference to its corresponding `TutorialStepData` and triggers the Manager.
+- **`TutorialAnchorRegistry`** (`static class`): Mapping `TutorialStepData` to the active `TutorialAnchor`.
+- **`TutorialGraphWindow`** (`EditorWindow`): Visual editor for `TutorialData`. Manages sequential list reconstruction, automatic node naming (`<DataName>_<Index>`), and drag-to-create node UX.
 
 ## Runtime Flow Summary
-The system operates on an event-driven pull/push model:
-1. `TutorialManager` initiates a sequence and *pulls* the required spatial position by querying the `TutorialAnchorRegistry` using the current `TutorialStepData`.
-2. It pushes the display command to `TutorialUI`.
-3. When the user interacts with the scene object, the `TutorialAnchor` *pushes* a trigger event back to the `TutorialManager` to advance the step.
+The system follows an event-driven MVC pattern:
+1. `TutorialManager` increments `currentIndex` and broadcasts `OnStepStarted` with the step data and the target anchor's `Transform`.
+2. `TutorialUI` receives the event and updates its visual state.
+3. `TutorialUI` continuously tracks the anchor's world position and converts it to screen space using `Registry<Camera>.GetFirst()`.
+4. User interaction via `TutorialAnchor` triggers `TutorialManager.Next(stepData)`, validating the sequence before advancing.
 
 ## Dependencies
-- Unity `PlayerPrefs` (for progress persistence).
-- Unity UI / Custom UI Framework (for `TutorialUI`).
-- `TutorialGraphWindow` / `TutorialStepNode` (Editor-only dependencies for visual scripting).
+- `TnieYuPackage.DesignPatterns.Registry` (for Camera lookup).
+- Unity UI (Screen Space Overlay Canvas).
+- `PlayerPrefs` (for progress persistence).
+
+## Constraints
+- TutorialManager is a Singleton but its lifecycle is managed by the Scene/Bootstrapper (no `DontDestroyOnLoad`).
+- TutorialManager must NOT reference TutorialUI.
+- PlayerPrefs key must use a constant prefix (`Tutorial_Complete_`).
+- TutorialStepData assets use persistent random IDs (`Step_XXXX`) to protect external references.
+- Graph Editor uses visual prefixes (e.g., `[0]`, `[1]`) for sequence order without renaming assets.
+- Tutorial progression MUST be index-based sequentially, not linked-list.
 
 ## Extension Points
 - `TutorialDisplayType` enum can be expanded for new hint styles.

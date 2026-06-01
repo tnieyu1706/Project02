@@ -44,7 +44,7 @@ namespace Game.StrategyBuilding
         protected int CalculateTotalCapacity()
         {
             if (!IsActive) return 0;
-            
+
             float baseCapacity = ActualPreset.defaultCapacityValue +
                                  (ActualPreset.incrementCapacityValue * (CurrentUpgradeLevel - 1));
 
@@ -79,7 +79,8 @@ namespace Game.StrategyBuilding
             // Trừ đi lượng sức chứa mà nhà này đang cung cấp
             if (PreAddedCapacity > 0)
             {
-                SbGameplayController.Instance.VillagerData.MaxVillagers.Value -= PreAddedCapacity;
+                if (SbGameplayController.HasInstance)
+                    SbGameplayController.Instance.VillagerData.MaxVillagers.Value -= PreAddedCapacity;
                 PreAddedCapacity = 0;
             }
         }
@@ -104,7 +105,7 @@ namespace Game.StrategyBuilding
             // nên ta có thể bỏ qua không popup.
             return popupTexts;
         }
-        
+
         protected override void SubHandleActiveBuildingApplyResource()
         {
             base.SubHandleActiveBuildingApplyResource();
@@ -117,7 +118,7 @@ namespace Game.StrategyBuilding
 
         protected override void BuildBehaviourLayoutUI(VisualElement container)
         {
-            var title = new Label("Cung cấp chỗ ở");
+            var title = new Label("Villager House");
             title.AddToClassList("behaviour-title");
 
             var capacityRow = new VisualElement();
@@ -127,11 +128,11 @@ namespace Game.StrategyBuilding
             iconPlaceholder.AddToClassList("resource-icon-placeholder");
             // TODO: Gán icon Dân làng thực tế: iconPlaceholder.style.backgroundImage = ...
 
-            var nameLabel = new Label("Sức chứa");
+            var nameLabel = new Label("Capacity");
             nameLabel.AddToClassList("resource-name");
 
             // Giá trị khởi tạo
-            capacityValueLabel = new Label($"+{CalculateTotalCapacity()} Người");
+            capacityValueLabel = new Label($"+{CalculateTotalCapacity()} People");
             capacityValueLabel.AddToClassList("resource-value");
 
             capacityRow.Add(iconPlaceholder);
@@ -146,7 +147,7 @@ namespace Game.StrategyBuilding
         {
             if (capacityValueLabel != null)
             {
-                capacityValueLabel.text = $"+{currentTotal} Người";
+                capacityValueLabel.text = $"+{currentTotal} People";
             }
         }
     }

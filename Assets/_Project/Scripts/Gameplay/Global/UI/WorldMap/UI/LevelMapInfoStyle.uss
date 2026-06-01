@@ -1,4 +1,4 @@
-/* Container để căn giữa các nội dung bên trong trên toàn màn hình */
+/* Container để căn giữa toàn màn hình */
 .popup-container {
     flex-grow: 1;
     align-items: center;
@@ -10,43 +10,93 @@
     bottom: 0;
 }
 
-/* Khung popup chính */
+/* Khung popup chính - Đã được tối ưu cho Sprite Panel */
 .main-panel {
-    background-color: rgb(45, 45, 45);
+    /* Đặt màu nền dự phòng trong trường hợp Sprite chưa load */
+    background-color: rgba(30, 30, 30, 0.8);
     border-radius: 15px;
-    padding: 30px;
-    width: 400px;
-    border-width: 2px;
-    border-color: rgb(150, 150, 150);
+
+    /* Thiết lập scale mode để ảnh Panel không bị biến dạng */
+    -unity-background-scale-mode: scale-to-fit;
+
+    /* Padding đẩy nội dung vào giữa, bạn có thể chỉnh lại cho khớp với viền panel_2.png */
+    padding: 60px 40px;
+    width: 560px;
     align-items: center;
+    justify-content: center;
 }
 
-/* Các nhãn Text */
+/* Tiêu đề */
 .title-label {
-    font-size: 24px;
+    font-size: 28px;
     -unity-font-style: bold;
-    color: white;
-    margin-bottom: 20px;
+    color: #f19e4b;
+    margin-bottom: 15px;
+    /* Hiệu ứng bóng chữ nhẹ giúp dễ đọc hơn trên nền game */
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
-.score-label {
-    font-size: 18px;
-    color: rgb(200, 200, 200);
-    margin-bottom: 10px;
+/* ==== HỆ THỐNG STAR SLIDER ==== */
+
+/* Vùng chứa bao ngoài thanh sao */
+.star-slider-container {
+    width: 180px; /* Kích thước tổng của 3 sao */
+    height: 60px;
+    margin-bottom: 15px;
+    /* Tuỳ chọn: thêm background mờ mờ ở đây nếu sprite sao của bạn không có nền */
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
 }
 
+/* Mặt nạ che sao (sẽ bị script C# can thiệp thay đổi % width từ 0 -> 100%) */
+.star-slider-mask {
+    height: 100%;
+    /* Quan trọng: che đi phần sao bị dư */
+    overflow: hidden;
+    /* Căn lề trái để khi width giảm, nó cắt dần từ phải qua trái */
+    align-items: flex-start;
+}
+
+/* Hình ảnh 3 sao */
+.star-image {
+    width: 180px; /* PHẢI BẰNG với chiều rộng của star-slider-container */
+    height: 100%;
+    /* Giữ nguyên tỷ lệ, không bị kéo giãn khi width của mask bị thay đổi */
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Trạng thái mở khóa */
 .status-label {
     font-size: 18px;
-    margin-bottom: 30px;
+    -unity-font-style: bold;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* Nút Play */
 .play-button {
     width: 200px;
-    height: 50px;
-    font-size: 20px;
+    height: 55px;
+    font-size: 22px;
     -unity-font-style: bold;
-    background-color: rgb(50, 150, 50);
+    background-color: rgb(76, 175, 80);
     color: white;
-    border-radius: 10px;
+    border-radius: 12px;
+    border-width: 0;
+    transition-duration: 0.1s;
+}
+
+.play-button:hover {
+    background-color: rgb(96, 195, 100);
+    scale: 1.05;
+}
+
+.play-button:active {
+    background-color: rgb(56, 155, 60);
+    scale: 0.95;
+}
+
+.play-button:disabled {
+    background-color: rgb(100, 100, 100);
+    color: rgb(180, 180, 180);
 }

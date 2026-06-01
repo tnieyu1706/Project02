@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -14,7 +15,7 @@ namespace SoundSystem.Core
         [SerializeField] private Vector2 pitchVariant = Vector2.zero;
 
         protected ObjectPool<AudioSource> Pool { get; set; }
-
+        
         public virtual float GetTotalVfxVolume(float volume)
         {
             return volume;
@@ -31,6 +32,8 @@ namespace SoundSystem.Core
                 5,
                 20
             );
+            
+            Pool.Clear();
         }
 
         private AudioSource OnCreateAudioPrefab()
@@ -40,7 +43,7 @@ namespace SoundSystem.Core
 
         private void OnGetAudioPrefab(AudioSource audioSource)
         {
-            audioSource?.gameObject.SetActive(true);
+            audioSource?.gameObject?.SetActive(true);
         }
 
         private void OnReleaseAudioPrefab(AudioSource audioSource)
@@ -78,9 +81,14 @@ namespace SoundSystem.Core
             }
             finally
             {
-                if (audioSource != null && Pool != null)
+                if (audioSource != null)
                 {
-                    Pool.Release(audioSource);
+                    audioSource.Stop();
+                    
+                    if (audioSource.gameObject != null && Pool != null)
+                    {
+                        Pool.Release(audioSource);
+                    }
                 }
             }
         }

@@ -226,6 +226,8 @@ GameObject:
   - component: {fileID: 218263010}
   - component: {fileID: 218263013}
   - component: {fileID: 218263014}
+  - component: {fileID: 218263015}
+  - component: {fileID: 218263016}
   m_Layer: 5
   m_Name: Level1
   m_TagString: Untagged
@@ -366,7 +368,57 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1405694003}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 218263015}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.TutorialAnchor, Core.Gameplay
+        m_MethodName: TriggerNextStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 218263016}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.Test.TutorialStopper,
+          Core.Gameplay
+        m_MethodName: StopTutorialWithSave
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &218263015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218263008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87165c63235c4d4aba21b85b17e74892, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetStep: {fileID: -7783590710909105498, guid: 429411f2996a27f45af5b5c2cedf6ff1, type: 2}
+--- !u!114 &218263016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218263008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf35c19c36d43bcbe94d97f838b3c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &250679337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,8 +1070,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelData:
     id:
-      value: a0acf2af-2f1a-44d0-8265-28694c9c3ba7
-    isUnlocked: 1
+      value: 7d19d1eb-ba90-40c8-8bd8-bb730b29e2c9
+    isUnlocked: 0
     score: 0
   level: {fileID: 11400000, guid: 78d9f45fab5d368428e2016237409dcb, type: 2}
   canvasGroup: {fileID: 951777789}
@@ -1212,6 +1264,53 @@ MonoBehaviour:
   levelMapComponents:
   - {fileID: 218263012}
   - {fileID: 951777792}
+--- !u!1 &1188890096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1188890098}
+  - component: {fileID: 1188890097}
+  m_Layer: 0
+  m_Name: TutorialStarter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1188890097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188890096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1358425410dd43c092f3c41cb4251615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tutorialData: {fileID: 11400000, guid: 429411f2996a27f45af5b5c2cedf6ff1, type: 2}
+  _forceRestart: 0
+  tutorialStartDelay: 1
+--- !u!4 &1188890098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188890096}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1405693999
 GameObject:
   m_ObjectHideFlags: 0
@@ -1384,6 +1483,8 @@ GameObject:
   - component: {fileID: 1503476894}
   - component: {fileID: 1503476893}
   - component: {fileID: 1503476892}
+  - component: {fileID: 1503476895}
+  - component: {fileID: 1503476896}
   m_Layer: 5
   m_Name: ReturnBtn
   m_TagString: Untagged
@@ -1454,7 +1555,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1503476893}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1503476896}
+        m_TargetAssemblyTypeName: Game.Global.TutorialSystem.Test.TutorialStopper,
+          Core.Gameplay
+        m_MethodName: StopTutorialImmediately
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1503476893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1493,6 +1607,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1503476890}
   m_CullTransparentMesh: 1
+--- !u!114 &1503476895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503476890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e60458937f499c9d880f21a3e1cc5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bindKey: 27
+--- !u!114 &1503476896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503476890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf35c19c36d43bcbe94d97f838b3c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1542649277
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,6 +1665,8 @@ MonoBehaviour:
   blurBackgroundId: Main
   uiDocument: {fileID: 1542649279}
   styleSheet: {fileID: 7433441132597879392, guid: f41f3b30efe84967a92563c1cc3d08e4, type: 3}
+  panelBackgroundSprite: {fileID: 21300000, guid: 0b3dcfd7ea81d964b81f1ab60d1d8a05, type: 3}
+  tripleStarSprite: {fileID: 21300000, guid: 07c0ac7a98e91044b8c861082ee999d9, type: 3}
 --- !u!114 &1542649279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2240,3 +2381,4 @@ SceneRoots:
   - {fileID: 2138530865}
   - {fileID: 398207589}
   - {fileID: 20947698}
+  - {fileID: 1188890098}

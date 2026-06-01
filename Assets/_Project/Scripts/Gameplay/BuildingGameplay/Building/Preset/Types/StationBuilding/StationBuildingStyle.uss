@@ -1,0 +1,55 @@
+/* Style cho tiêu đề của Trạm Mở Rộng (Station) */
+.behaviour-title {
+    font-size: 16px;
+    -unity-font-style: bold;
+    color: rgb(230, 240, 255); /* Trắng hơi pha xanh nhẹ để khác với Nhà chính */
+    margin-bottom: 8px;
+    margin-top: 8px;
+    -unity-text-align: middle-center;
+}
+
+/* Kế thừa từ class title-increase để tạo viền hoặc hiệu ứng nếu cần */
+.title-increase {
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(100, 200, 255, 0.3); /* Đường viền mờ dưới title */
+    padding-bottom: 4px;
+}
+
+/* Style cho dòng chứa thông tin giới hạn xây dựng */
+.resource-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(10, 25, 40, 0.6); /* Nền tối ám xanh, tạo cảm giác trạm công nghệ/tiền đồn */
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border-width: 1px;
+    border-color: rgba(100, 200, 255, 0.15); /* Viền mỏng xanh dương */
+}
+
+/* Khung hiển thị icon (khi chưa có ảnh sẽ hiện ô xám/xanh) */
+.resource-icon-placeholder {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(100, 200, 255, 0.2);
+    border-radius: 4px;
+    margin-right: 12px;
+}
+
+/* Tên của chỉ số (vd: "Capacity Slots") */
+.resource-name {
+    flex-grow: 1;
+    font-size: 14px;
+    color: rgb(200, 220, 230);
+    -unity-text-align: middle-left;
+}
+
+/* Giá trị chỉ số - Sử dụng màu Xanh lơ (Cyan/Light Blue) thay vì Vàng Gold của Nhà Chính */
+.resource-value {
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: rgb(0, 220, 255); /* Cyan sáng */
+    -unity-text-align: middle-right;
+}

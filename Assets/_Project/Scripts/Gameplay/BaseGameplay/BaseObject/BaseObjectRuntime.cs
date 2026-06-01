@@ -48,30 +48,19 @@ namespace Game.BaseGameplay
         {
             if (BaseObjectInteractSystem.HasInstance)
                 BaseObjectInteractSystem.Instance.ObjectRuntimes.Remove(this);
+
+            if (!gameObject.activeInHierarchy) return;
+
+            DestroyCurrentApplyPreset();
+
+            currentPreset = null;
         }
 
         protected virtual void SetPreset(TPreset preset)
         {
             if (currentPreset != null)
             {
-                foreach (var interactInstaller in currentPreset.interactStrategies)
-                {
-                    interactInstaller.DestroyInteract(this);
-                }
-
-                if (InteractStrategies.Count != 0)
-                {
-                    Debug.LogWarning(
-                        $"InteractStrategies is not empty when changing preset for {gameObject.name}. It may cause unexpected behavior if not cleared.");
-
-                    //clear
-                    // interactStrategies.Clear();
-                }
-
-                foreach (var configurator in currentPreset.configurators)
-                {
-                    configurator.UnConfigure(this);
-                }
+                DestroyCurrentApplyPreset();
             }
 
             currentPreset = preset;
@@ -86,6 +75,28 @@ namespace Game.BaseGameplay
             foreach (var configurator in currentPreset.configurators)
             {
                 configurator.Configure(this);
+            }
+        }
+
+        private void DestroyCurrentApplyPreset()
+        {
+            foreach (var interactInstaller in currentPreset.interactStrategies)
+            {
+                interactInstaller.DestroyInteract(this);
+            }
+
+            if (InteractStrategies.Count != 0)
+            {
+                Debug.LogWarning(
+                    $"InteractStrategies is not empty when changing preset for {gameObject.name}. It may cause unexpected behavior if not cleared.");
+
+                //clear
+                // interactStrategies.Clear();
+            }
+
+            foreach (var configurator in currentPreset.configurators)
+            {
+                configurator.UnConfigure(this);
             }
         }
 

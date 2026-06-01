@@ -41,7 +41,7 @@ namespace SceneManagement
             isLoading = false;
         }
 
-        public UniTask Load(SceneGroup sceneGroup)
+        public UniTask Load(SceneGroup sceneGroup, bool applyDelay = true)
         {
             if (isLoading)
             {
@@ -49,7 +49,7 @@ namespace SceneManagement
                 return UniTask.CompletedTask;
             }
 
-            return manager.LoadSceneAsync(sceneGroup, LoadingProgress);
+            return manager.LoadSceneAsync(sceneGroup, LoadingProgress, applyDelay);
         }
     }
 }

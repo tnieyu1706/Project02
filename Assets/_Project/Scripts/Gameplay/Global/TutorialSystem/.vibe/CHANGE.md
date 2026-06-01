@@ -1,14 +1,12 @@
-## [Turn 1] — Reverse-engineered Tutorial System architecture and workflow into VIBRA documentation.
+# [Turn 7] — Reverting to Persistent IDs in TutorialGraph
 
 **Files changed:**
-- None (Analysis only phase)
+- `Assets/_Project/Scripts/Gameplay/Global/TutorialSystem/Editor/TutorialGraphWindow.cs` — modified: reverted to persistent random IDs (`Step_<RandomID>`) for assets. Refactored naming logic to `UpdateNodeVisuals`, which adds a sequential prefix (`[Index]`) to node titles without renaming the underlying asset. Updated `LoadData` to reconstruct connections from the sequential list.
 
 **Docs updated:**
-- `Assets/_Project/Scripts/Gameplay/Global/TutorialSystem/.vibe/ARCHITECTURE.md` — created
-- `Assets/_Project/Scripts/Gameplay/Global/TutorialSystem/.vibe/FLOW.md` — created
-- `Assets/_Project/Scripts/Gameplay/Global/TutorialSystem/.vibe/SUMMARY.md` — created
-- `Assets/_Project/Scripts/Gameplay/Global/TutorialSystem/.vibe/HISTORY.md` — created
-- `Assets/_Project/Scripts/Gameplay/Global/TutorialSystem/.vibe/CHANGE.md` — created
+- `.vibe/ARCHITECTURE.md` — clarified node naming and persistence constraints.
+- `.vibe/CHANGE.md` — updated with turn 7 changes.
+- `.vibe/HISTORY.md` — appended turn 7 history.
 
 **Flagged:**
 - None

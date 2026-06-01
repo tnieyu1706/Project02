@@ -11,6 +11,7 @@ using TnieYuPackage.GlobalExtensions;
 using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
+using EventType = Game.BaseGameplay.EventType;
 
 namespace Game.BuildingGameplay
 {
@@ -113,7 +114,25 @@ namespace Game.BuildingGameplay
         private static void HandleAttackButtonClicked()
         {
             Instance.Hide();
-            Instance.transition.LoadBaseGameplayWithEvent(currentConfig).Forget();
+
+            // THAY ĐỔI WORFLOW TẠI ĐÂY
+            if (currentConfig.eventType == EventType.Attack)
+            {
+                // Gọi tới Singleton UI mới để chọn quân
+                if (ArmySelectToAttackUIToolkit.HasInstance)
+                {
+                    ArmySelectToAttackUIToolkit.Instance.Display(currentConfig, Instance.isStopTimer);
+                }
+                else
+                {
+                    Debug.LogError("[EventInfoUIToolkit] ArmySelectToAttackUIToolkit instance not found in scene!");
+                }
+            }
+            else
+            {
+                // Defense thì load thẳng như bình thường
+                Instance.transition.LoadBaseGameplayWithEvent(currentConfig).Forget();
+            }
         }
 
         [Button]

@@ -1,3 +1,4 @@
+using System.Globalization;
 using EditorAttributes;
 using KBCore.Refs;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.Splines;
 namespace Game.BaseGameplay
 {
     [RequireComponent(typeof(Animator))]
-    public class EnemyRuntime : EntityRuntime<EnemyPresetSo>
+    public class EnemyRuntime : EntityRuntime<EnemyPresetSo>, IBaseObjectInfoProvider
     {
         [Self] public SplineAnimate movementController;
         [ReadOnly] public Vector2 moveOffset = Vector2.zero;
@@ -19,7 +20,7 @@ namespace Game.BaseGameplay
         protected override void OnEnable()
         {
             base.OnEnable();
-            
+
             // ensure default animation is move-animation
             EntityAnimator.SetTrigger(BaseConstant.ENTITY_MOVE_TRIGGER);
         }
@@ -79,8 +80,43 @@ namespace Game.BaseGameplay
 
         private void OnEntityMoveEnd()
         {
-            BaseGameplayController.Instance.baseHealth.Value -= currentPreset.baseCausingDmg;
+            // BaseGameplayController.Instance.baseHealth.Value -= currentPreset.baseCausingDmg;
+            BaseGameplayController.Instance.CauseBaseDamage(currentPreset.baseCausingDmg);
             BaseGameplayPrefabSpawnManager.Instance.PoolTrackers[PrefabType.BaseEnemy].Release(gameObject);
         }
+
+        #region IBaseObjectInfoProvider Implementation
+
+        public string GetObjectName()
+        {
+            return currentPreset != null ? currentPreset.objectId : "Enemy";
+        }
+
+        public System.Collections.Generic.Dictionary<BaseObjPropertyType, string> GetObjectInfo()
+        {
+            var info = new System.Collections.Generic.Dictionary<BaseObjPropertyType, string>();
+
+            if (currentPreset == null) return info;
+
+            info.Add(BaseObjPropertyType.Type, currentPreset.armyType.ToString());
+            info.Add(BaseObjPropertyType.Health, $"{Hp.Value}/{currentPreset.maxHp}");
+            info.Add(BaseObjPropertyType.Defense, currentPreset.def.ToString(CultureInfo.InvariantCulture));
+            info.Add(BaseObjPropertyType.MoveSpeed, currentPreset.moveSpeed.ToString(CultureInfo.InvariantCulture));
+            info.Add(BaseObjPropertyType.BaseDamage, currentPreset.baseCausingDmg.ToString());
+            info.Add(BaseObjPropertyType.DropMoney, currentPreset.dropMoney.ToString());
+
+            // Lấy thêm thông số từ Behaviour/Strategy (nếu quái có khả năng bắn/đánh)
+            foreach (var strategy in InteractStrategyList)
+            {
+                if (strategy is IStrategyInfoProvider strategyInfo)
+                {
+                    strategyInfo.AppendStrategyInfo(info);
+                }
+            }
+
+            return info;
+        }
+
+        #endregion
     }
 }

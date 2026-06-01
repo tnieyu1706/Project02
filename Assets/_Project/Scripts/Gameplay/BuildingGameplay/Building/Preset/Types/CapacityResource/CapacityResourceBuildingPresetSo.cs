@@ -94,7 +94,7 @@ namespace Game.StrategyBuilding
         // ====================================================================
         protected override void BuildBehaviourLayoutUI(VisualElement container)
         {
-            var title = new Label("Sức chứa tối đa");
+            var title = new Label("Max Capacity");
             title.AddToClassList("behaviour-title");
             title.AddToClassList("title-capacity");
 

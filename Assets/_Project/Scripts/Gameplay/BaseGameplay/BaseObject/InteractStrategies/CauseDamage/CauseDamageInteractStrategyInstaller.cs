@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using TnieYuPackage.Utils;
@@ -18,13 +19,20 @@ namespace Game.BaseGameplay.Strategies
     /// <summary>
     /// Abstract Strategy quản lý luồng đánh, CanUse và UniTask cooldown
     /// </summary>
-    public abstract class CauseDamageInteractStrategy<TInstaller> : BaseObjectInteractStrategy<TInstaller>
+    public abstract class CauseDamageInteractStrategy<TInstaller> : BaseObjectInteractStrategy<TInstaller>, IStrategyInfoProvider
         where TInstaller : CauseDamageInteractStrategyInstaller
     {
         private bool isTracked = false;
 
         public CauseDamageInteractStrategy(TInstaller installer) : base(installer)
         {
+        }
+        
+        public void AppendStrategyInfo(System.Collections.Generic.Dictionary<BaseObjPropertyType, string> infoMap)
+        {
+            // Tự động đẩy thông số Sát thương và Tốc đánh vào UI
+            infoMap.TryAdd(BaseObjPropertyType.AttackDamage, ActualInstaller.baseDamage.ToString(CultureInfo.InvariantCulture));
+            infoMap.TryAdd(BaseObjPropertyType.AttackSpeed, ActualInstaller.attackCooldown.ToString(CultureInfo.InvariantCulture));
         }
 
         public override void OnInitBehaviour(IBaseObjectRuntime runtime)

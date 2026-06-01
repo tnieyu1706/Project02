@@ -35,14 +35,14 @@ namespace Game.StrategyBuilding
         {
             base.Setup();
             // Đăng ký lắng nghe mỗi khi hệ thống chạy ApplyResourceIncrement
-            SbGameplayController.OnActiveBuildingApplyResource += HandleProduceSkillPoints;
+            SbGameplayController.Instance.OnActiveBuildingApplyResource += HandleProduceSkillPoints;
         }
 
         public override void DestroyBehaviour()
         {
             base.DestroyBehaviour();
             // Hủy đăng ký lắng nghe để tránh lỗi Memory Leak khi phá nhà
-            SbGameplayController.OnActiveBuildingApplyResource -= HandleProduceSkillPoints;
+            SbGameplayController.Instance.OnActiveBuildingApplyResource -= HandleProduceSkillPoints;
         }
 
         /// <summary>
@@ -62,7 +62,8 @@ namespace Game.StrategyBuilding
             if (pointsToProduce > 0)
             {
                 // Cộng trực tiếp vào ObservableValue của GamePropertiesRuntime
-                GamePropertiesRuntime.Instance.SkillPoints.Value += pointsToProduce;
+                if (GamePropertiesRuntime.HasInstance)
+                    GamePropertiesRuntime.Instance.SkillPoints.Value += pointsToProduce;
             }
         }
 
@@ -96,7 +97,7 @@ namespace Game.StrategyBuilding
 
             return popupTexts;
         }
-        
+
         protected override void SubHandleActiveBuildingApplyResource()
         {
             base.SubHandleActiveBuildingApplyResource();
@@ -109,7 +110,7 @@ namespace Game.StrategyBuilding
 
         protected override void BuildBehaviourLayoutUI(VisualElement container)
         {
-            var title = new Label("Sản xuất Điểm Kỹ Năng");
+            var title = new Label("Produce SP Increase");
             title.AddToClassList("behaviour-title");
 
             var row = new VisualElement();
@@ -119,10 +120,10 @@ namespace Game.StrategyBuilding
             iconPlaceholder.AddToClassList("resource-icon-placeholder");
             // TODO: Gán ảnh icon Skill Point vào đây
 
-            var nameLabel = new Label("Skill Point");
+            var nameLabel = new Label("SP");
             nameLabel.AddToClassList("resource-name");
 
-            skillPointValueLabel = new Label($"+{CalculateSkillPointsToProduce()} / chu kỳ");
+            skillPointValueLabel = new Label($"+{CalculateSkillPointsToProduce()} / cycle");
             skillPointValueLabel.AddToClassList("resource-value");
 
             row.Add(iconPlaceholder);
@@ -137,7 +138,7 @@ namespace Game.StrategyBuilding
         {
             if (skillPointValueLabel != null)
             {
-                skillPointValueLabel.text = $"+{currentTotal} / chu kỳ";
+                skillPointValueLabel.text = $"+{currentTotal} / cycle";
             }
         }
     }

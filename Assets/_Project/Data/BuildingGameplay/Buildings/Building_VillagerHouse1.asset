@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Building_VillagerHouse1
   m_EditorClassIdentifier: 
   buildingId: VillagerHouse1
+  description: Use for increase villager capacity..
   defaultMaxVillagersCanUse: 1
   requireVillagers: 0
   buildWaitingTime: 8

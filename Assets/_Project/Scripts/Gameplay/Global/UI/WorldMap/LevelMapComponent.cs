@@ -27,7 +27,7 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
     public class LevelMapComponent : MonoBehaviour, ISaveLoadData<LevelData>, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private LevelData levelData;
-        [SerializeField, Required] private BuildingGameplayLevel level;
+        [Required] public BuildingGameplayLevel level;
         [SerializeField, Self] private CanvasGroup canvasGroup;
         [SerializeField] private Button button;
 
@@ -86,6 +86,12 @@ namespace _Project.Scripts.Gameplay.Global.UI.WorldMap
         public LevelData SaveData()
         {
             return levelData;
+        }
+
+        [Button]
+        private void ResetDataId()
+        {
+            levelData.id = Guid.NewGuid();
         }
     }
 }

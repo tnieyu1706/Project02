@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532d9e2b0a98429097168c7f05a12c53, type: 3}
   m_Name: WaLevel01
   m_EditorClassIdentifier: 
-  levelType: 0
   startMoney: 200
-  baseMaxHealth: 12
+  baseMaxHealth: 13
   levelScene:
     asset: {fileID: 102900000, guid: ff49758905358d54fb371d3f845dcda4, type: 3}
     guid: ff49758905358d54fb371d3f845dcda4
   waveRules:
   - maxBaseDamageOutput: 5
-    maxEntityDeploymentCount: 16
+    maxEntityDeploymentCount: 24
   - maxBaseDamageOutput: 7
-    maxEntityDeploymentCount: 16
+    maxEntityDeploymentCount: 30
   - maxBaseDamageOutput: 4
-    maxEntityDeploymentCount: 14
+    maxEntityDeploymentCount: 45

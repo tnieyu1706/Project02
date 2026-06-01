@@ -54,7 +54,7 @@ namespace Game.BaseGameplay
             await UniTask.WhenAny(
                 BaseGameplayPrefabSpawnManager.Instance.PoolTrackers[PrefabType.BaseEnemy]
                     .Waiting(),
-                UniTask.Delay(TimeSpan.FromSeconds(30), cancellationToken: token)
+                UniTask.Delay(TimeSpan.FromSeconds(90), cancellationToken: token)
             );
 
             Debug.Log($"[TdWaveController] End wave {currentWaveIndex.Value}...");
@@ -65,6 +65,14 @@ namespace Game.BaseGameplay
 
         #region EVENTS
 
+        public void CauseBaseDamage(int damageAmount)
+        {
+            if (OnCauseBaseDamageValid != null && !OnCauseBaseDamageValid()) return;
+
+            OnBaseTakenDamage?.Invoke();
+            baseHealth.Value -= damageAmount;
+        }
+
         private void OnEnable()
         {
             baseHealth.OnValueChanged += OnBaseHealthChanged;
@@ -73,9 +81,6 @@ namespace Game.BaseGameplay
 
         private void OnBaseHealthChanged(int changedValue)
         {
-            if (OnCauseBaseDamageValid != null && !OnCauseBaseDamageValid()) return;
-            
-            OnBaseTakenDamage?.Invoke();
             if (changedValue <= 0)
             {
                 OnGameplayBaseDestroyed?.Invoke();
@@ -110,6 +115,7 @@ namespace Game.BaseGameplay
 
         public void Setup(BaseGameplayLevel baseLevel, int maxWaveIndexSource)
         {
+            // baseHealth.SetValueWithoutEvents(baseLevel.baseMaxHealth);
             baseHealth.Value = baseLevel.baseMaxHealth;
             money.Value = baseLevel.startMoney;
             maxWaveIndex.Value = maxWaveIndexSource;

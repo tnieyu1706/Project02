@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ac918fa632e4ee0828d5dbc43a40798, type: 3}
+  m_Name: IntroStoryData
+  m_EditorClassIdentifier: 
+  pages:
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: The world stands on the brink of destruction.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: Endless waves of monsters are emerging from the Dark Lands.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: At a council of lords, I proposed uniting all regions to fight the
+      coming threat.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: My proposal was rejected, as the lords were divided by distrust
+      and selfish ambitions.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: Realizing that our division would lead to extinction, I chose a
+      different path.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: I will conquer and unite every region under a single banner.
+    duration: 10
+  - image: {fileID: 21300000, guid: 49ee2e447a6aece4ca314baca5177eb2, type: 3}
+    contentText: Only a united kingdom can survive the darkness that is approaching.
+    duration: 10

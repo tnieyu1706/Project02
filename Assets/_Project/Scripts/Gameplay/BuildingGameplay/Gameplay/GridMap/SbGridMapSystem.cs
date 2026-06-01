@@ -6,6 +6,7 @@ using TnieYuPackage.Utils;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using Game.Global;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Reflex.Attributes;
@@ -94,7 +95,27 @@ namespace Game.StrategyBuilding
         public Dictionary<Vector2Int, SbGridTileData> GridMap { get; } = new();
         public List<Vector2Int> BlockMap { get; } = new();
 
+        public static event System.Action<Vector2Int, SbGridTileData> OnTileCreated;
+        public static event System.Action<Vector2Int, SbGridTileData> OnTileDestroyed;
+        public static event System.Action OnMapCleared;
+
         public bool ValidForCreate(Vector2Int pos) => !BlockMap.Contains(pos) && !GridMap.ContainsKey(pos);
+
+        public bool HasAdjacentBuilding(Vector2Int pos)
+        {
+            foreach (var dir in Vector2IntUtils.Get8DirectionalVectors())
+            {
+                if (GridMap.TryGetValue(pos + dir, out var neighborTile))
+                {
+                    if (neighborTile.BuildingRuntime != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
         public SbGridTileData CreateAndWriteTile(Vector2Int pos, SbTileLayer layer, BuildingRuntime building = null)
         {
@@ -110,8 +131,6 @@ namespace Game.StrategyBuilding
         public void WriteTile(Vector2Int pos, SbGridTileData data)
         {
             GridMap[pos] = data;
-
-            // Có thể mở rộng sau này: nếu đang xây dựng thì hiển thị Sprite đang xây (scaffolding)
             gridTilemap.SetTile((Vector3Int)pos,
                 data.BuildingRuntime != null
                     ? data.BuildingRuntime.currentPreset.buildingTile
@@ -123,6 +142,7 @@ namespace Game.StrategyBuilding
             }
 
             HandleInfluenceOnCreate(data);
+            OnTileCreated?.Invoke(pos, data);
         }
 
         public SbGridTileData ReadTile(Vector2Int pos)
@@ -137,8 +157,6 @@ namespace Game.StrategyBuilding
             if (tileData.BuildingRuntime != null)
             {
                 Game.Global.GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value--;
-                
-                // THÊM: Phát âm thanh phá huỷ (chỉ phát nếu ô bị xoá là công trình)
                 if (buildingPresetManager?.destroySfx != null)
                 {
                     sfxManager?.PlayVfx(buildingPresetManager.destroySfx).Forget();
@@ -149,12 +167,12 @@ namespace Game.StrategyBuilding
             HandleInfluenceOnDestroy(tileData);
             gridTilemap.SetTile((Vector3Int)pos, null);
 
+            OnTileDestroyed?.Invoke(pos, tileData);
             return true;
         }
 
         #region Influence Controller
 
-        // THÊM: Hàm này cho phép gọi công khai từ BaseBuildingBehaviour khi hoàn thành xây dựng
         public void UpdateInfluenceForTile(Vector2Int pos)
         {
             if (GridMap.TryGetValue(pos, out var tileData))
@@ -166,8 +184,6 @@ namespace Game.StrategyBuilding
         private void HandleInfluenceOnCreate(SbGridTileData centerTile)
         {
             var centerBuilding = centerTile.BuildingRuntime?.behaviour;
-
-            // KIỂM TRA: Nếu công trình trung tâm ĐANG XÂY -> Không tính/phát Influence
             if (centerBuilding != null && centerBuilding.IsUnderConstruction) return;
 
             foreach (var dir in Vector2IntUtils.Get8DirectionalVectors())
@@ -175,8 +191,6 @@ namespace Game.StrategyBuilding
                 if (!GridMap.TryGetValue(centerTile.TilePosition + dir, out var neighborTile)) continue;
 
                 var neighborBuilding = neighborTile.BuildingRuntime?.behaviour;
-
-                // KIỂM TRA: Nếu công trình kế bên ĐANG XÂY -> Bỏ qua
                 if (neighborBuilding != null && neighborBuilding.IsUnderConstruction) continue;
 
                 if (neighborBuilding != null &&
@@ -220,7 +234,10 @@ namespace Game.StrategyBuilding
                 UnlinkInfluence(influencer: destroyedTile, impacted: impactedBuilding, dirToImpacted: dirToImpacted);
             }
 
-            var destroyedBuilding = destroyedTile.BuildingRuntime?.behaviour;
+            var buildingRuntime = destroyedTile.BuildingRuntime;
+            if (buildingRuntime == null) return;
+
+            var destroyedBuilding = buildingRuntime?.behaviour;
             if (destroyedBuilding == null) return;
 
             foreach (var kvp in destroyedBuilding.TileInfluencers.ToList())
@@ -231,8 +248,8 @@ namespace Game.StrategyBuilding
                     dirToImpacted: -dirFromImpactedToInfluencer);
             }
 
-            destroyedBuilding.DestroyBehaviour();
-            DestroyImmediate(destroyedTile.BuildingRuntime.gameObject);
+            buildingRuntime.DestroyBuilding();
+            DestroyImmediate(buildingRuntime.gameObject);
         }
 
         private void UnlinkInfluence(ITileInfluencer influencer, IBuildingImpacted impacted, Vector2Int dirToImpacted)
@@ -291,8 +308,6 @@ namespace Game.StrategyBuilding
                     {
                         buildingRuntime = SbSpawnBuildingSystem.SpawnBuildingDirectlyForLoad(dto.Position, preset);
 
-                        // QUAN TRỌNG: Gọi BindData cho Behaviour TRƯỚC khi ghi Map
-                        // Để khi WriteTile -> HandleInfluenceOnCreate có thể check đúng biến 'IsUnderConstruction'
                         if (buildingRuntime.behaviour != null && dto.BehaviourData != null)
                         {
                             var behaviourData =
@@ -310,7 +325,6 @@ namespace Game.StrategyBuilding
                     }
                 }
 
-                // Ghi vào Map (Tự động tính toán lại Influence với trạng thái IsUnderConstruction đã chuẩn)
                 CreateAndWriteTile(dto.Position, dto.TileLayer, buildingRuntime);
             }
         }
@@ -319,16 +333,25 @@ namespace Game.StrategyBuilding
         {
             foreach (var tile in GridMap.Values)
             {
-                if (tile.BuildingRuntime != null && tile.BuildingRuntime.gameObject != null)
+                // ĐÃ SỬA: Đảm bảo ngắt logic hoàn toàn (CancellationToken, UI binding,...) TRƯỚC KHI hủy GameObject
+                if (tile.BuildingRuntime != null)
                 {
-                    Destroy(tile.BuildingRuntime.gameObject);
+                    tile.BuildingRuntime.DestroyBuilding();
+
+                    if (tile.BuildingRuntime.gameObject != null)
+                    {
+                        Destroy(tile.BuildingRuntime.gameObject);
+                    }
                 }
 
                 gridTilemap.SetTile((Vector3Int)tile.TilePosition, null);
             }
 
             GridMap.Clear();
-            Game.Global.GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value = 0;
+            if (GamePropertiesRuntime.HasInstance)
+                GamePropertiesRuntime.Instance.CurrentBuildingNumber.Value = 0;
+
+            OnMapCleared?.Invoke();
         }
 
         #endregion

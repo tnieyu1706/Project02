@@ -22,8 +22,13 @@ namespace Game.BaseGameplay
         [SerializeField, Required] private Text maxWaveText;
         [SerializeField, Required] private Text moneyText;
 
+        [SerializeField] private float delayEndPanelDisplaySeconds = 1f;
         [SerializeField, Required] private GameObject winPanel;
         [SerializeField, Required] private GameObject losePanel;
+
+        [Header("Options")] [SerializeField] private Button gameSpeedButton;
+        [SerializeField] private Text gameSpeedText;
+        [SerializeField] private int maxTimeScale = 3;
 
         private bool hasTimeStop;
         private float preOpenMenuTimeScale;
@@ -42,6 +47,11 @@ namespace Game.BaseGameplay
         {
             playButton.onClick.AddListener(HandlePlayButtonClicked);
 
+            {
+                gameSpeedButton.onClick.AddListener(HandleGameSpeedChangeWithStatic);
+                SetTimeScaleWithUI(Mathf.FloorToInt(GameTimeController.TimeScale));
+            }
+
             BaseGameplayController.Instance.baseHealth.OnValueChanged += HandleBaseHealthChanged;
             BaseGameplayController.Instance.money.OnValueChanged += HandleMoneyChanged;
             BaseGameplayController.Instance.currentWaveIndex.OnValueChanged += HandleCurrentWaveIndexChanged;
@@ -49,8 +59,28 @@ namespace Game.BaseGameplay
 
             BaseGameplayController.Instance.OnWaveStarted += HandleWaveStarting;
             BaseGameplayController.Instance.OnWaveEnded += HandleWaveCompleted;
+            
+            // HandleBaseHealthChanged(BaseGameplayController.Instance.baseHealth.Value);
+            // HandleMoneyChanged(BaseGameplayController.Instance.money.Value);
+            // HandleCurrentWaveIndexChanged(BaseGameplayController.Instance.currentWaveIndex.Value);
+            // HandleMaxWaveIndexChanged(BaseGameplayController.Instance.maxWaveIndex.Value);
 
             Debug.Log($"[TdWaveController] OnEnable");
+        }
+
+        private void HandleGameSpeedChangeWithStatic()
+        {
+            int curTimeScale = Mathf.FloorToInt(GameTimeController.TimeScale);
+            // TODO: Get next time scale from current and maxTimeScale setup
+            var nextTimeScale = (curTimeScale % maxTimeScale) + 1;
+
+            SetTimeScaleWithUI(nextTimeScale);
+        }
+
+        private void SetTimeScaleWithUI(int nextTimeScale)
+        {
+            GameTimeController.SetTimeScale(nextTimeScale);
+            gameSpeedText.text = nextTimeScale.ToString();
         }
 
         private void HandlePlayButtonClicked()
@@ -90,6 +120,7 @@ namespace Game.BaseGameplay
 
         public void OnDisable()
         {
+            gameSpeedButton.onClick.RemoveAllListeners();
             playButton.onClick?.RemoveListener(HandlePlayButtonClicked);
 
             if (BaseGameplayController.HasInstance)
@@ -108,20 +139,27 @@ namespace Game.BaseGameplay
 
         #endregion
 
-        public void HandleConfirmGameplayButtonClicked()
+        public async void HandleConfirmGameplayButtonClicked()
         {
+            await UniTask.NextFrame(cancellationToken: this.GetCancellationTokenOnDestroy());
             transition.LoadBuildingGameplay().Forget();
         }
 
-        public void OpenWinPanel()
+        public async void OpenWinPanel()
         {
+            await UniTask.Delay(TimeSpan.FromSeconds(delayEndPanelDisplaySeconds));
+
             winPanel.SetActive(true);
+
             OnMenuPanelOpened();
         }
 
-        public void OpenLosePanel()
+        public async void OpenLosePanel()
         {
+            await UniTask.Delay(TimeSpan.FromSeconds(delayEndPanelDisplaySeconds));
+
             losePanel.SetActive(true);
+
             OnMenuPanelOpened();
         }
 

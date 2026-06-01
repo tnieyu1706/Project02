@@ -18,9 +18,9 @@ MonoBehaviour:
     asset: {fileID: 102900000, guid: 64ab3d5f97d6ffb45b9c7e064c0f5df5, type: 3}
     guid: 64ab3d5f97d6ffb45b9c7e064c0f5df5
   waveRules:
-  - maxBaseDamageOutput: 8
+  - maxBaseDamageOutput: 6
     maxEntityDeploymentCount: 26
-  - maxBaseDamageOutput: 6
-    maxEntityDeploymentCount: 20
-  - maxBaseDamageOutput: 6
-    maxEntityDeploymentCount: 30
+  - maxBaseDamageOutput: 8
+    maxEntityDeploymentCount: 32
+  - maxBaseDamageOutput: 8
+    maxEntityDeploymentCount: 40
