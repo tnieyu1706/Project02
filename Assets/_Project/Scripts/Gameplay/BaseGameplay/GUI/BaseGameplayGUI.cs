@@ -59,6 +59,11 @@ namespace Game.BaseGameplay
 
             BaseGameplayController.Instance.OnWaveStarted += HandleWaveStarting;
             BaseGameplayController.Instance.OnWaveEnded += HandleWaveCompleted;
+            
+            // HandleBaseHealthChanged(BaseGameplayController.Instance.baseHealth.Value);
+            // HandleMoneyChanged(BaseGameplayController.Instance.money.Value);
+            // HandleCurrentWaveIndexChanged(BaseGameplayController.Instance.currentWaveIndex.Value);
+            // HandleMaxWaveIndexChanged(BaseGameplayController.Instance.maxWaveIndex.Value);
 
             Debug.Log($"[TdWaveController] OnEnable");
         }

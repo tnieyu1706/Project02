@@ -188,7 +188,6 @@ namespace Game.StrategyBuilding
 
         public virtual void DestroyBehaviour()
         {
-            // ĐÃ SỬA: Safe-Dispose CancellationTokenSource để tránh lỗi ObjectDisposedException nếu bị gọi 2 lần (do System gọi, hoặc Unity OnDestroy gọi)
             if (behaviourCts != null)
             {
                 if (!behaviourCts.IsCancellationRequested)
@@ -248,8 +247,6 @@ namespace Game.StrategyBuilding
 
         public virtual void BindData(BuildingBehaviourSaveData data)
         {
-            // 0. SỬA LỖI NGHIÊM TRỌNG: Hủy ngay tiến trình xây dựng "ma" (Ghost Routine) 
-            // do hàm Setup() tự động kích hoạt trước khi BindData được gọi.
             if (behaviourCts != null)
             {
                 if (!behaviourCts.IsCancellationRequested)
@@ -260,9 +257,8 @@ namespace Game.StrategyBuilding
                 behaviourCts.Dispose();
             }
 
-            behaviourCts = new CancellationTokenSource(); // Khởi tạo lại Token mới, sạch sẽ hoàn toàn
+            behaviourCts = new CancellationTokenSource();
 
-            // 1. Nhả số dân hiện tại ra (do hàm Setup() có thể đã lỡ tự động gán lúc vừa khởi tạo)
             if (this.UsedVillagers > 0)
             {
                 SbGameplayController.Instance.VillagerData.RefundVillagers(this.UsedVillagers);
@@ -275,10 +271,8 @@ namespace Game.StrategyBuilding
             this.IsUnderConstruction = data.IsUnderConstruction;
             this.RemainingBuildTime = data.RemainingBuildTime;
 
-            // 2. SỬA LỖI: Phải đăng ký kéo dân từ Global Manager thay vì chỉ gán biến cục bộ
             if (data.UsedVillagers > 0)
             {
-                // Lúc này VillagerData đã được Load trước đó, nên chắc chắn có đủ dân để rút!
                 int actualReceived = SbGameplayController.Instance.VillagerData.UseVillagers(data.UsedVillagers);
                 this.UsedVillagers = actualReceived;
             }
@@ -296,6 +290,11 @@ namespace Game.StrategyBuilding
 
             UpdateResourceConsumption();
             RefreshBehaviour();
+
+            // ĐÃ SỬA: Gọi trực tiếp hàm vẽ Persistent Text ở đây.
+            // Điều này đảm bảo Text trên thế giới luôn được render sau khi nạp data xong,
+            // không phụ thuộc vào việc người chơi đã click mở bảng UI (rootPanel) hay chưa.
+            UpdateVillagerPersistentText();
 
             if (rootPanel != null) UpdateBuildingLayoutUI();
         }
@@ -393,7 +392,6 @@ namespace Game.StrategyBuilding
 
             var footerRow = container.CreateChild("building-footer-row");
 
-            // THÊM CỜ KIỂM TRA: Chỉ cho phép hiện nút Destroy nếu công trình đó cho phép phá hủy
             if (ActualPreset.allowDestroy)
             {
                 var btnDestroy = footerRow.CreateChild(new Button(HandleDestroyButtonClicked) { text = "Destroy" },
@@ -494,7 +492,6 @@ namespace Game.StrategyBuilding
             }
         }
 
-        // THÊM: Hàm public để hệ thống (như Nạn đói) có thể ép rút dân làng ra khỏi công trình
         public bool ForceRemoveOneVillager()
         {
             if (!ActualPreset.requireVillagers || IsBusy || UsedVillagers <= 0) return false;
@@ -505,8 +502,6 @@ namespace Game.StrategyBuilding
                 UsedVillagers -= actualRefunded;
                 UpdateResourceConsumption();
 
-                // Gọi RefreshBehaviour sẽ tự động kích hoạt logic tính toán lại của 
-                // IncreaseResourceBuildingBehaviour hoặc IncreaseSkillPointBuildingBehaviour
                 RefreshBehaviour();
                 UpdateBuildingLayoutUI();
                 return true;
